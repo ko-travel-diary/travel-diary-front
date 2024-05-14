@@ -1,5 +1,6 @@
 import React from 'react'
 import './style.css';
+import { Outlet } from 'react-router';
 
 function TopNavigation () {
 
@@ -10,7 +11,7 @@ function TopNavigation () {
                 <div className='top-navigation-title'>여행 일기</div>
             </div>
             <div className='top-navigation-main'>
-                <div className='top-navigation-item'>메인 페이지</div>
+                <div className='top-navigation-item-active'>메인 페이지</div>
                 <div className='vertical-divider'></div>
                 <div className='top-navigation-item'>관광명소 & 맛집 조회</div>
                 <div className='vertical-divider'></div>
@@ -20,7 +21,7 @@ function TopNavigation () {
             </div>
             <div className='top-navigation-right'>
                 <div className='primary-button'>로그인</div>
-                <div className='profile-icon'></div>
+                {/* <div className='profile-icon'></div>
                 <div className='top-navigation-right-drop-down'>
                     <div className='profile-icon'></div>
                     <div className='top-navigation-right-drop-down-box'>
@@ -30,7 +31,7 @@ function TopNavigation () {
                             <div>로그아웃</div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -40,6 +41,7 @@ export default function Container() {
   return (
     <div>
         <TopNavigation />
+        <Outlet />
     </div>
   )
 }
