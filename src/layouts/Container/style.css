@@ -1,0 +1,29 @@
+#top-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 16px;
+    height: 64px;
+}
+
+.top-navigation-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-navigation-logo {
+    width: 40px;
+    height: 40px;
+
+    background-image: url(../../assets/image/travel-title-icon.png);
+    background-size: 100% 100%;
+}
+
+.top-navigation-title {
+    font-style: WavvePADO;
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(64, 64, 64, 0.8);
+}
