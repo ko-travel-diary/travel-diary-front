@@ -1,0 +1,28 @@
+.sns-button-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.sns-button {
+    border-radius: 100%;
+    width: 56px;
+    height: 56px;
+
+    background-size: 100% 100%;
+    
+    cursor: pointer;
+}
+
+.naver {
+    background-image: url(../../assets/image/naver.png);
+}
+
+.kakao {
+    background-image: url(../../assets/image/kakao.png);
+}
+
+.google {
+    background-image: url(../../assets/image/google.png);
+}

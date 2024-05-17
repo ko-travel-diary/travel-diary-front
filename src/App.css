@@ -5,6 +5,9 @@
 
 .primary-button {
     display: flex;
+    justify-content: center;
+    align-items: center;
+
     border-radius: 8PX;
     padding: 12px 20px;
 
@@ -20,4 +23,9 @@
 
 .primary-button:hover {
     background-color: rgba(22, 121, 171, 0.85);
+}
+
+.full-width {
+    box-sizing: border-box;
+    width: 100%;
 }
