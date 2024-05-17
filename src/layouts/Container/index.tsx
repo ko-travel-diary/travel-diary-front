@@ -1,8 +1,14 @@
 import React from 'react'
 import './style.css';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
+import SignIn from 'src/views/authentication/SignIn';
+import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
 
 function TopNavigation () {
+
+    const navigator = useNavigate();
+
+    const onSignInButtonClickHandler = () => navigator(SIGN_IN_ABSOLUTE_PATH);
 
     return (
         <div id='top-navigation'>
@@ -20,7 +26,7 @@ function TopNavigation () {
                 <div className='top-navigation-item'>Q&A</div>
             </div>
             <div className='top-navigation-right'>
-                <div className='primary-button'>로그인</div>
+                <div className='primary-button' onClick={onSignInButtonClickHandler}>로그인</div>
                 {/* <div className='profile-icon'></div>
                 <div className='top-navigation-right-drop-down'>
                     <div className='profile-icon'></div>
