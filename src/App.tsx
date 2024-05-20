@@ -3,7 +3,7 @@ import './App.css';
 import Container from './layouts/Container';
 import { Route, Routes, useNavigate } from 'react-router';
 import Main from './views/Main';
-import { AUTH_PATH, MAIN_PATH, SERVICE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from './constant';
+import { AUTH_PATH, MAIN_PATH, MYPAGE_PATH, QNA_DETAIL_PATH, QNA_PATH, QNA_UPDATE_PATH, QNA_WRITE_PATH, REVIEW_DETAIL_PATH, REVIEW_PATH, REVIEW_UPDATE_PATH, REVIEW_WRITE_PATH, SCHEDULE_PATH, SERVICE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from './constant';
 import SignIn from './views/authentication/SignIn';
 import SignUp from './views/authentication/SignUp';
 
@@ -35,6 +35,22 @@ function App() {
           <Route index element={<AuthIndex />} />
           <Route path={SIGN_IN_PATH} element={<SignIn />} />
           <Route path={SIGN_UP_PATH} element={<SignUp />} />
+          <Route path={SERVICE_PATH} element={<></>}>
+            <Route path={REVIEW_PATH} element={<></>}>
+              <Route path={REVIEW_DETAIL_PATH} element={<></>} />
+              <Route path={REVIEW_UPDATE_PATH} element={<></>} />
+              <Route path={REVIEW_WRITE_PATH} element={<></>} />
+            </Route>
+            <Route path={QNA_PATH} element={<></>}>
+              <Route path={QNA_DETAIL_PATH} element={<></>} />
+              <Route path={QNA_UPDATE_PATH} element={<></>} />
+              <Route path={QNA_WRITE_PATH} element={<></>} />
+            </Route>
+            <Route path={MYPAGE_PATH} element={<></>} >
+              <Route path={MYPAE} element={<></>} />
+            </Route>
+            <Route path={} element={<></>} />
+          </Route>
         </Route>
     </Routes>
   );
