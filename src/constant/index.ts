@@ -1,5 +1,9 @@
+export const MAIN_PATH = '/';
+
 export const SNS_PATH = '/sns/:accessToken/:expires';
 export const AUTH_PATH = '/authentication';
+export const SIGN_IN_PATH = 'sign-in';
+export const SIGN_UP_PATH = 'sign-up';
 
 export const SERVICE_PATH = '/service';
 export const QNA_PATH = 'qna';
@@ -21,8 +25,11 @@ export const SCHEDULE_DETAIL_PATH = ':scheduleNumber';
 export const SCHEDULE_UPDATE_PATH = 'update/:scheduleNumber';
 
 // description : Navigation 절대 URL PATH
+export const MAIN_ABSOLUTE_PATH = MAIN_PATH;
 
 export const AUTH_ABSOLUTE_PATH = AUTH_PATH;
+export const SIGN_IN_ABSOLUTE_PATH = `${AUTH_PATH}/${SIGN_IN_PATH}`;
+export const SIGN_UP_ABSOLUTE_PATH = `${AUTH_PATH}/${SIGN_UP_PATH}`;
 
 export const QNA_ABSOLUTE_PATH = `${SERVICE_PATH}/${QNA_PATH}`;
 export const REVIEW_ABSOULUTE_PATH = `${SERVICE_PATH}/${REVIEW_PATH}`;
