@@ -3,7 +3,7 @@ import './App.css';
 import Container from './layouts/Container';
 import { Route, Routes, useNavigate } from 'react-router';
 import Main from './views/Main';
-import { AUTH_PATH, MAIN_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from './constant';
+import { AUTH_PATH, MAIN_PATH, SERVICE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from './constant';
 import SignIn from './views/authentication/SignIn';
 import SignUp from './views/authentication/SignUp';
 
