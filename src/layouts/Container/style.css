@@ -1,0 +1,62 @@
+#top-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 16px;
+    height: 64px;
+
+    background-color: rgba(255, 255, 255, 1);
+
+    /* text 드래그 방지 */
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+
+.top-navigation-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-navigation-logo {
+    width: 40px;
+    height: 40px;
+
+    background-image: url(../../assets/image/travel-title-icon.png);
+    background-size: 100% 100%;
+}
+
+.top-navigation-title {
+    font-style: WavvePADO;
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(7, 65, 115, 1);
+}
+
+.top-navigation-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.top-navigation-item {
+    font-style: WavvePADO;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(7, 65, 115, 0.8);
+
+    cursor: pointer;
+}
+
+.top-navigation-item:hover {
+    color: rgba(7, 65, 115, 1);
+
+    text-shadow: 0px 0px 5px rgba(7, 65, 115, 0.3);
+}
+
+.top-navigation-item-active {
+    color: rgba(7, 65, 115, 1);
+}

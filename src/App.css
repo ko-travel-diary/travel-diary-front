@@ -1,0 +1,31 @@
+.vertical-divider {
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 1);
+}
+
+.primary-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 8PX;
+    padding: 12px 20px;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: rgba(255, 255, 255, 1);
+
+    background-color: rgba(22, 121, 171, 0.6);
+
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    background-color: rgba(22, 121, 171, 0.85);
+}
+
+.full-width {
+    box-sizing: border-box;
+    width: 100%;
+}
