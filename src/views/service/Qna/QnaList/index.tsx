@@ -86,15 +86,6 @@ export default function QnaList() {
       if(isToggleOn) qnaList = qnaList.filter(qna => !qna.status)
         setQnaList(qnaList);
 
-      const totalLength = qnaList.length;
-      setTotalLength(totalLength);
-
-      const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-      setTotalPage(totalPage);
-
-      const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-      setTotalSection(totalSection);
-
       changePage(qnaList, totalLength);
 
       changeSection(totalPage);
@@ -112,8 +103,17 @@ export default function QnaList() {
             return;
         }
 
-        const {qnaList} = result as GetQnaListResponseDto;
+        const { qnaList } = result as GetQnaListResponseDto;
         changeQnaList(qnaList);
+
+        const totalLength = qnaList.length;
+        setTotalLength(totalLength);
+
+        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
+        setTotalPage(totalPage);
+
+        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
+        setTotalSection(totalSection);
 
         setCurrentPage(!qnaList.length ? 0 : 1);
         setCurrentSection(!qnaList.length ? 0 : 1);
@@ -134,8 +134,8 @@ export default function QnaList() {
       const { searchQnaList } = result as GetQnaSearchListResponseDto;
       changeQnaList(searchQnaList);
 
-      setCurrentPage(!qnaList.length ? 0 : 1);
-      setCurrentSection(!qnaList.length ? 0 : 1);
+      setCurrentPage(!searchQnaList.length ? 0 : 1);
+      setCurrentSection(!searchQnaList.length ? 0 : 1);
     };
 
   //                     event handler                     //
