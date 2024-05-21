@@ -69,12 +69,13 @@ function App() {
             <Route path={REVIEW_WRITE_PATH} element={<ReviewWrite />} />
           </Route>
 
-          <Route path={QNA_PATH} element={<></>}>
-            <Route index element={<></>} />
-            <Route path={QNA_DETAIL_PATH} element={<></>} />
-            <Route path={QNA_UPDATE_PATH} element={<></>} />
-            <Route path={QNA_WRITE_PATH} element={<></>} />
+          <Route path={QNA_PATH}>
+            <Route index element={<QnaList />} />
+            <Route path={QNA_DETAIL_PATH} element={<QnaDetail />} />
+            <Route path={QNA_UPDATE_PATH} element={<QnaUpdate />} />
+            <Route path={QNA_WRITE_PATH} element={<QnaWrite />} />
           </Route>
+
 
           <Route path={MYPAGE_PATH} element={<></>}>
             <Route index element={<></>} />
@@ -88,12 +89,17 @@ function App() {
             <Route path={MY_REVIEWLIST_PATH} element={<></>} />
           </Route>
 
-          <Route path={ADMINPAGE_PATH} element={<></>}>
+          <Route path={ADMINPAGE_PATH} element={<AdminContainer />}>
             <Route index element={<></>} />
-            <Route path={USER_LIST_PATH} element={<></>} />
-            <Route path={TOUR_ADD_PATH} element={<></>} />
-            <Route path={REST_ADD_PATH} element={<></>} />
+            <Route path={USER_LIST_PATH} element={<UserList />} />
+            <Route path={TOUR_LIST_PATH} element={<TourAdd />} />
+              <Route path={TOUR_ADD_PATH} element={<TourAdd />} />
+            </Route>
+            <Route path={REST_LIST_PATH} element={<RestAdd />} />
+              <Route path={REST_ADD_PATH} element={<RestAdd />} />
+            </Route>
           </Route>
+
 
           <Route path={TOUR_PATH} element={<></>}>
             <Route index element={<></>} />
