@@ -1,11 +1,12 @@
 import ResponseDto from "src/apis/response.dto";
+import { RestaurantListItem } from "src/types";
 
 export interface GetSearchRestaurantListResponseDto extends ResponseDto {
-    restaurantList: string //RestaurantListItem[]	;
+    restaurantListItem: RestaurantListItem[];
 }
 
 export interface GetRestaurantListResponseDto extends ResponseDto {
-    restaurantList: string //RestaurantListItem[]	;
+    restaurantListItem: RestaurantListItem[];
 }
 
 export interface GetRestaurantResponseDto extends ResponseDto {
