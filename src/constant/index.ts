@@ -90,7 +90,7 @@ export const SERVER_QNA_MODULE_URL = `${SERVER_API_URL}/qna`;
 export const POST_QNA_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/`;
 export const POST_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
 export const GET_QNA_LIST_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list`;
-export const GET_SEARCH_QNA_LISTT_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list/search`;
+export const GET_SEARCH_QNA_LIST_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list/search`;
 export const GET_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
 export const PATCH_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
 export const PATCH_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
@@ -98,11 +98,14 @@ export const DELETE_QNA_REQUEST_URL = (receptionNumber: number | string) => `${S
 export const DELETE_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
 
 export const SERVER_REVIEW_MODULE_URL = `${SERVER_API_URL}/review`;
+export const SEARCH_REVIEW_MODULE_URL = `${SERVER_REVIEW_MODULE_URL}/list/search`
 export const POST_REVIEW_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/`;
 export const POST_REVIEW_COMMENT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment`;
 export const GET_REVIEW_LIST_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/list`;
 export const GET_REVIEW_MY_LIST_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/post/list`;
-export const GET_SEARCH_REVIEW_REQUEST_LIST_URL = `${SERVER_REVIEW_MODULE_URL}/list/search`;
+export const GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}/title`;
+export const GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}/writer`;
+export const GET_WRITE_DATE_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}/writedate`;
 export const GET_COMMENT_LIST_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment/list`
 export const GET_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
 export const PATCH_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
@@ -142,5 +145,5 @@ export const GET_SEARCH_RESTAURANT_LIST_REQUEST_URL = `${SERVER_RESTAURANT_MODUL
 export const POST_RESTAURANT_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/addRestaurant`;
 
 // description : Board Const.
-export const COUNT_PER_PAGE = 3;
-export const COUNT_PER_SECTION = 3;
+export const COUNT_PER_PAGE = 10;
+export const COUNT_PER_SECTION = 10;
