@@ -1,7 +1,8 @@
 import ResponseDto from "src/apis/response.dto";
+import { UserListItem } from "src/types";
 
 export interface GetUserListResponseDto extends ResponseDto {
-    userInfoList: string; ///수정해야함 리스트아이템
+    userListItem: UserListItem[];
 }
 
 export interface GetUserInfoResponseDto extends ResponseDto {
