@@ -2,28 +2,32 @@ import React from 'react'
 import './style.css';
 import { Outlet, useNavigate } from 'react-router';
 import SignIn from 'src/views/authentication/SignIn';
-import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
+import { MAIN_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, TOURATTRACTIONS_ABSOULUTE_PATH } from 'src/constant';
 
 function TopNavigation () {
 
     const navigator = useNavigate();
 
     const onSignInButtonClickHandler = () => navigator(SIGN_IN_ABSOLUTE_PATH);
+    const onMainPageButtonClickHandler = () => navigator(MAIN_ABSOLUTE_PATH);
+    const onTourButtonClickHandler = () => navigator(TOURATTRACTIONS_ABSOULUTE_PATH);
+    const onReivewButtonClickHandler = () => navigator(REVIEW_ABSOULUTE_PATH);
+    const onQnaButtonClickHandler = () => navigator(QNA_ABSOLUTE_PATH);
 
     return (
         <div id='top-navigation'>
             <div className='top-navigation-left'>
                 <div className='top-navigation-logo'></div>
-                <div className='top-navigation-title'>여행 일기</div>
+                <div className='top-navigation-title' onClick={onMainPageButtonClickHandler}>여행 일기</div>
             </div>
             <div className='top-navigation-main'>
-                <div className='top-navigation-item-active'>메인 페이지</div>
+                <div className='top-navigation-item-active' onClick={onMainPageButtonClickHandler}>메인 페이지</div>
                 <div className='vertical-divider'></div>
-                <div className='top-navigation-item'>관광명소 & 맛집 조회</div>
+                <div className='top-navigation-item' onClick={onTourButtonClickHandler}>관광명소 & 맛집 조회</div>
                 <div className='vertical-divider'></div>
-                <div className='top-navigation-item'>여행 후기 게시글</div>
+                <div className='top-navigation-item' onClick={onReivewButtonClickHandler}>여행 후기 게시글</div>
                 <div className='vertical-divider'></div>
-                <div className='top-navigation-item'>Q&A</div>
+                <div className='top-navigation-item' onClick={onQnaButtonClickHandler}>Q&A</div>
             </div>
             <div className='top-navigation-right'>
                 <div className='primary-button' onClick={onSignInButtonClickHandler}>로그인</div>

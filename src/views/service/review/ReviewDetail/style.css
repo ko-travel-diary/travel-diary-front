@@ -1,0 +1,30 @@
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+#reivew-detail-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 200px;
+}
+
+.review-detail-top-info{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.review-detail-title{
+    font-size: 30px;
+}
+
+.review-detail-content{
+
+}
