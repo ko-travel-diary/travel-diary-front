@@ -34,6 +34,8 @@ export const PROFILE_UPDATE_PATH = 'profileUpdate';
 export const MY_REVIEWLIST_PATH = 'reviewList';
 
 // ADMIN
+export const TOUR_LIST_PATH = 'tourList';
+export const REST_LIST_PATH = 'restList';
 export const TOUR_ADD_PATH = 'addTour';
 export const REST_ADD_PATH = 'addRest';
 export const USER_LIST_PATH = 'userList';
@@ -65,9 +67,11 @@ export const SCHEDULE_DETAIL_ABSOLUTE_PATH = (scheduleNumber: string | number) =
 export const SCHEDULE_UPDATE_ABSOLUTE_PATH = (scheduleNumber: string | number) => `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/update/${scheduleNumber}`;
 
 export const ADMINPAGE_ABSOULUTE_PAGE = `${SERVICE_PATH}/${ADMINPAGE_PATH}`;
-// export const SCHEDULE_WRITE_ABSOLUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${SCHEDULE_WRITE_PATH}`;
-// export const SCHEDULE_DETAIL_ABSOLUTE_PATH = (scheduleNumber: string | number) => `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${scheduleNumber}`;
-// export const SCHEDULE_UPDATE_ABSOLUTE_PATH = (scheduleNumber: string | number) => `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/update/${scheduleNumber}`;
+export const ADMINPAGE_USER_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${USER_LIST_PATH}`;
+export const ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${TOUR_LIST_PATH}`;
+export const ADMINPAGE_REST_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${REST_LIST_PATH}`;
+export const ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${TOUR_ADD_PATH}`;
+export const ADMINPAGE_REST_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${REST_ADD_PATH}`;
 
 // description : API URL PATH
 export const SERVER_DOMAIN_URL = 'http://localhost:4000';
@@ -86,7 +90,7 @@ export const SERVER_QNA_MODULE_URL = `${SERVER_API_URL}/qna`;
 export const POST_QNA_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/`;
 export const POST_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
 export const GET_QNA_LIST_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list`;
-export const GET_SEARCH_QNA_LIST_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list/search`;
+export const GET_SEARCH_QNA_LISTT_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list/search`;
 export const GET_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
 export const PATCH_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
 export const PATCH_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
@@ -97,11 +101,8 @@ export const SERVER_REVIEW_MODULE_URL = `${SERVER_API_URL}/review`;
 export const POST_REVIEW_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/`;
 export const POST_REVIEW_COMMENT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment`;
 export const GET_REVIEW_LIST_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/list`;
-export const SEARCH_REVIEW_MODULE_URL = `${GET_REVIEW_LIST_REQUEST_URL}/search`;
 export const GET_REVIEW_MY_LIST_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/post/list`;
-export const GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}/title`;
-export const GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}writer`;
-export const GET_WRITE_DATE_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}writedate`;
+export const GET_SEARCH_REVIEW_REQUEST_LIST_URL = `${SERVER_REVIEW_MODULE_URL}/list/search`;
 export const GET_COMMENT_LIST_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment/list`
 export const GET_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
 export const PATCH_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
@@ -141,5 +142,5 @@ export const GET_SEARCH_RESTAURANT_LIST_REQUEST_URL = `${SERVER_RESTAURANT_MODUL
 export const POST_RESTAURANT_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/addRestaurant`;
 
 // description : Board Const.
-export const COUNT_PER_PAGE = 10;
-export const COUNT_PER_SECTION = 10;
+export const COUNT_PER_PAGE = 3;
+export const COUNT_PER_SECTION = 3;
