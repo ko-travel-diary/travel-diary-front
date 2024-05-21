@@ -1,0 +1,162 @@
+#user-list-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-list-top{
+    margin-top: 10px;
+}
+.user-list-count-text .emphasis {
+    color: rgba(64, 64, 64, 1);
+}
+
+.user-list-table{
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+.user-list-table-top{
+    display: flex;
+    gap: 200px;
+    align-items: center;
+
+    padding: 15px 24px;
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
+
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+
+    color: rgba(64, 64, 64, 1);
+}
+
+.user-list-bottom{
+    display: flex;
+    justify-content: space-between;
+}
+.user-list-bottom-left{
+    width: 300px;
+}
+.user-list-bottom-middle{
+    display: flex;
+}
+.user-list-pagenation{
+    display: flex;
+    gap: 8px;
+}
+.user-list-bottom-right{
+    width: 300px;
+}
+
+.user-list-page-left {
+    width: 40px;
+    height: 40px;
+
+    background-image: url('../../../../assets/image/page-left.png');
+    background-size: 100% 100%;
+
+    cursor: pointer;
+}
+.user-list-page-box {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.user-list-page{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    
+    color: rgba(138, 146, 166, 1);
+
+    cursor: pointer;
+}
+.user-list-page-active{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    
+    color: rgba(64, 64, 64, 1);
+
+    cursor: default;
+}
+.user-list-page-right {
+    width: 40px;
+    height: 40px;
+
+    background-image: url('../../../../assets/image/page-right.png');
+    background-size: 100% 100%;
+
+    cursor: pointer;
+}
+
+.user-list-search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.user-list-search-input-box {
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 6px;
+    padding: 8px 16px;
+
+    width: 168px;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+.user-list-search-input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 175%;
+}
+
+
+.primary-button {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 24px;
+
+    background-color: rgba(28, 87, 232, 1);
+    border-radius: 6px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 175%;
+
+    color: rgba(255, 255, 255, 1);
+}
+
+.user-list-table-box{
+    display: flex;
+    gap: 200px;
+    text-align: center;
+
+    margin: 10px 0
+}
+.user-list-table-number {
+    width: 100px;
+}
+.user-list-table-id {
+    width: 100px;
+}
+.user-list-table-email {
+    width: 100px;
+}
+.user-list-table-delete {
+    width: 100px;
+}
