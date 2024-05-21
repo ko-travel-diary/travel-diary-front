@@ -1,6 +1,6 @@
 import axios from "axios"
 import { PostQnaCommentRequestDto, PostQnaRequestDto } from "./dto/request"
-import { DELETE_QNA_COMMENT_REQUEST_URL, DELETE_QNA_REQUEST_URL, GET_QNA_LIST_REQUEST_URL, GET_QNA_REQUEST_URL, GET_SEARCH_QNA_LISTT_REQUEST_URL, PATCH_QNA_COMMENT_REQUEST_URL, PATCH_QNA_REQUEST_URL, POST_QNA_COMMENT_REQUEST_URL, POST_QNA_REQUEST_URL } from "src/constant";
+import { DELETE_QNA_COMMENT_REQUEST_URL, DELETE_QNA_REQUEST_URL, GET_QNA_LIST_REQUEST_URL, GET_QNA_REQUEST_URL, GET_SEARCH_QNA_LIST_REQUEST_URL, PATCH_QNA_COMMENT_REQUEST_URL, PATCH_QNA_REQUEST_URL, POST_QNA_COMMENT_REQUEST_URL, POST_QNA_REQUEST_URL } from "src/constant";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
 import ResponseDto from "../response.dto";
 import { GetQnaListResponseDto, GetQnaResponseDto, GetQnaSearchListResponseDto } from "./dto/response";
