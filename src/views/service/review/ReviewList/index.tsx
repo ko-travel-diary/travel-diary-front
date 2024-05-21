@@ -52,6 +52,7 @@ export default function ReviewList () {
     const [currentSection, setCurrentSection] = useState<number>(1);
 
     const [searchWord, setSearchWord] = useState<string>('');
+    const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
 
     const [selectedOption, setSelectedOption] = useState<string>('writer');
 
@@ -128,8 +129,10 @@ export default function ReviewList () {
             return;
         }
 
-        const{ reviewBoardList } = result as GetReviewWriteDateSearchRequestDto;
-        changeBoardList(reviewBoardList);
+        const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        changeBoardList(reviewSearchList);
+
+        if(reviewSearchList.length == 0) alert('검색 결과가 없습니다.');
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
@@ -147,8 +150,10 @@ export default function ReviewList () {
             return;
         }
 
-        const{ reviewBoardList } = result as GetReviewWriteDateSearchRequestDto;
-        changeBoardList(reviewBoardList);
+        const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        changeBoardList(reviewSearchList);
+
+        if(reviewSearchList.length == 0) alert('검색 결과가 없습니다.');
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
@@ -166,8 +171,10 @@ export default function ReviewList () {
             return;
         }
 
-        const{ reviewBoardList } = result as GetReviewWriteDateSearchRequestDto;
-        changeBoardList(reviewBoardList);
+        const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        changeBoardList(reviewSearchList);
+
+        if(reviewSearchList.length == 0) alert('검색 결과가 없습니다.');
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
@@ -233,6 +240,10 @@ export default function ReviewList () {
     useEffect(() => {
         setSelectedOption(selectedOption);
     }, [selectedOption]);
+
+    useEffect(() => {
+        setSearchButtonStatus(!setSearchButtonStatus);
+    }, [searchButtonStatus])
 
     //                    render                    //
     return (
