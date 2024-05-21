@@ -33,7 +33,7 @@ export const getQnaListRequest = async () => {
 // function: Q&A 검색 리스트 불러오기 API 함수
 export const getQnaSearchListRequest = async (accessToken: string, word: string) => {
     const config = {...bearerAuthorization(accessToken), params: {word}}
-    const result = await axios.get(GET_SEARCH_QNA_LISTT_REQUEST_URL, config)
+    const result = await axios.get(GET_SEARCH_QNA_LIST_REQUEST_URL, config)
         .then(requestHandler<GetQnaSearchListResponseDto>)
         .catch(requestErrorHandler);
     return result;

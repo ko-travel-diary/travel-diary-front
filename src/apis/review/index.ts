@@ -56,8 +56,8 @@ export const getTravelReviewBoardRequest = async() => {
 }
 
 // function : 리뷰 게시물 제목 + 내용 검색 목록 불러오기 API 함수
-export const getTravelReviewTitleAndContentSearchRequest = async(word: string) => {
-    const config = {params: {word}}
+export const getTravelReviewTitleAndContentSearchRequest = async(searchWord: string) => {
+    const config = {params: {searchWord}}
     const result = await axios.get(GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL, config)
         .then(requestHandler<GetReviewTitleAndContentSearchRequestDto>)
         .catch(requestErrorHandler);
@@ -65,8 +65,8 @@ export const getTravelReviewTitleAndContentSearchRequest = async(word: string) =
 }
 
 // function : 리뷰 게시물 작성자 검색 목록 불러오기 API 함수
-export const getTravelReviewWriterSearchRequest = async(word: string) => {
-    const config = {params: {word}}
+export const getTravelReviewWriterSearchRequest = async(searchWord: string) => {
+    const config = {params: {searchWord}}
     const result = await axios.get(GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL, config)
         .then(requestHandler<GetReviewWriterSearchRequestDto>)
         .catch(requestErrorHandler);
@@ -74,8 +74,8 @@ export const getTravelReviewWriterSearchRequest = async(word: string) => {
 }
 
 // function : 리뷰 게시물 작성일 검색 목록 불러오기 API 함수
-export const getTravelReviewWriteDateSearchRequest = async(word: string) => {
-    const config = {params: {word}}
+export const getTravelReviewWriteDateSearchRequest = async(searchWord: string) => {
+    const config = {params: {searchWord}}
     const result = await axios.get(GET_WRITE_DATE_SEARCH_REVIEW_REQUEST_LIST_URL, config)
         .then(requestHandler<GetReviewWriteDateSearchRequestDto>)
         .catch(requestErrorHandler);

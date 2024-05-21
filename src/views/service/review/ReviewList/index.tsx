@@ -5,7 +5,7 @@ import { ReviewBoardListItem } from "src/types";
 import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { ChangeEvent, useEffect, useState } from "react";
 import { getTravelReviewBoardRequest, getTravelReviewTitleAndContentSearchRequest, getTravelReviewWriteDateSearchRequest, getTravelReviewWriterSearchRequest } from "src/apis/review";
-import { GetTravelReviewBoardResponseDto } from "src/apis/review/dto/response";
+import { GetReviewTitleAndContentSearchRequestDto, GetReviewWriteDateSearchRequestDto, GetReviewWriterSearchRequestDto, GetTravelReviewBoardResponseDto } from "src/apis/review/dto/response";
 import ResponseDto from "src/apis/response.dto";
 
 //                    component                    //
@@ -51,12 +51,15 @@ export default function ReviewList () {
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
 
+    const [searchWord, setSearchWord] = useState<string>('');
+
     const [selectedOption, setSelectedOption] = useState<string>('writer');
 
     //                    function                    //
     const navigator = useNavigate();
 
     const changePage = (boardList: ReviewBoardListItem[], totalLenght: number) => {
+        if (!boardList || !Array.isArray(boardList) || boardList.length === 0) return;
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
@@ -113,6 +116,63 @@ export default function ReviewList () {
 
     };
 
+    const getTravelReviewTitleAndContentSearchResponse = (result: ResponseDto | GetReviewTitleAndContentSearchRequestDto | null) => {
+        const message =
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '검색어를 입력하세요.' : 
+            result.code === 'AF' ? '인증에 실패했습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const{ reviewBoardList } = result as GetReviewWriteDateSearchRequestDto;
+        changeBoardList(reviewBoardList);
+
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
+    };
+    
+    const getTravelReviewWriteDateSearchResponse = (result: ResponseDto | GetReviewWriteDateSearchRequestDto | null) => {
+        const message =
+        !result ? '서버에 문제가 있습니다.' :
+        result.code === 'VF' ? '검색어를 입력하세요.' : 
+        result.code === 'AF' ? '인증에 실패했습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const{ reviewBoardList } = result as GetReviewWriteDateSearchRequestDto;
+        changeBoardList(reviewBoardList);
+
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
+    };
+
+    const getTravelReviewWriterSearchResponse = (result: ResponseDto | GetReviewWriterSearchRequestDto | null) => {
+        const message =
+        !result ? '서버에 문제가 있습니다.' :
+        result.code === 'VF' ? '검색어를 입력하세요.' : 
+        result.code === 'AF' ? '인증에 실패했습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const{ reviewBoardList } = result as GetReviewWriteDateSearchRequestDto;
+        changeBoardList(reviewBoardList);
+
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
+    };
+
     //                    event handler                    //
     const onPageClickHandler = (page: number) => {
         setCurrentPage(page);
@@ -138,17 +198,21 @@ export default function ReviewList () {
         setSelectedOption(event.target.value);
     };
 
+    const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        const searchWord = event.target.value;
+        setSearchWord(searchWord);
+    };
+
     const onSearchButtonClickHandler = () => {
-        const searchWord = "";
-        if(selectedOption == "writer"){
-            getTravelReviewTitleAndContentSearchRequest(searchWord).then();
-        };
-        if(selectedOption == "write-date"){
-            getTravelReviewWriteDateSearchRequest(searchWord).then();
-        };
-        if(selectedOption == "title-contents"){
-            getTravelReviewWriterSearchRequest(searchWord).then();
-        };
+        if(selectedOption == "writer")
+            getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
+        
+        if(selectedOption == "write-date")
+            getTravelReviewWriteDateSearchRequest(searchWord).then(getTravelReviewWriteDateSearchResponse);
+        
+        if(selectedOption == "title-contents")
+            getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
+        
     };
 
     //                    effect                    //
@@ -191,11 +255,11 @@ export default function ReviewList () {
                 </div>
                 <div className="review-search-box">
                     <div className="review-search-input-box">
-                        <input className="review-search-input" placeholder="검색어를 입력하세요."></input>
+                        <input className="review-search-input" placeholder="검색어를 입력하세요." value={searchWord} onChange={onSearchWordChangeHandler}></input>
                     </div>
-                    <div className="review-search-button primary-button">검색</div>
+                    <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
-                <div className="rightbox">
+                <div className="writebox">
                     <div className="review-write-button primary-button" onClick={onWriteButtonClickHandler}>글쓰기</div>
                 </div>
             </div>
