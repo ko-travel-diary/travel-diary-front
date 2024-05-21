@@ -1,0 +1,40 @@
+#main-wrapper {
+    position: relative;
+}
+
+
+.main-side {
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+}
+
+.main-side-container {
+    height: calc(100% - 2px);
+    width: 600px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(7, 65, 115, 1);
+}
+
+.main-side-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(7, 65, 115, 1);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    height: 60px;
+    width: 25px;
+
+    background-color: rgba(255, 255, 255, 0.8);
+
+    cursor: pointer;
+}
+
+.main-side-button:hover {
+    background-color: rgb(152, 171, 238);
+}
