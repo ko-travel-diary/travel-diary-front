@@ -1,5 +1,6 @@
 export interface QnaListItem{
     receptionNumber: number;
+    status: string;
     qnaTitle: string;
     qnaContent: string;
     qnaWriterId: string;

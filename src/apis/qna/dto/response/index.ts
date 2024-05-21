@@ -2,11 +2,11 @@ import ResponseDto from "src/apis/response.dto";
 import { QnaListItem } from "src/types";
 
 export interface GetQnaListResponseDto extends ResponseDto{
-    qnaListItem: QnaListItem[];
+    qnaList: QnaListItem[];
 }
 
 export interface GetQnaSearchListResponseDto extends ResponseDto{
-    qnaListItem: QnaListItem[];
+    searchQnaList: QnaListItem[];
 }
 
 export interface GetQnaResponseDto extends ResponseDto{
