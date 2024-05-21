@@ -11,8 +11,18 @@ export interface GetTravelReviewBoardResponseDto extends ResponseDto {
     reviewBoardList : ReviewBoardListItem[];
 }
 
-// description : 리뷰 게시물 검색 목록 불러오기 Response Body DTO
-export interface GetTravelReviewSearchResponseDto extends ResponseDto {
+// description : 리뷰 게시물  제목+내용 검색 목록 불러오기 Response Body DTO
+export interface GetReviewTitleAndContentSearchRequestDto extends ResponseDto {
+    reviewBoardList : ReviewBoardListItem[];
+}
+
+// description : 리뷰 게시물 작성일 검색 목록 불러오기 Response Body DTO
+export interface GetReviewWriteDateSearchRequestDto extends ResponseDto {
+    reviewBoardList : ReviewBoardListItem[];
+}
+
+// description : 리뷰 게시물 작성자 검색 목록 불러오기 Response Body DTO
+export interface GetReviewWriterSearchRequestDto extends ResponseDto {
     reviewBoardList : ReviewBoardListItem[];
 }
 

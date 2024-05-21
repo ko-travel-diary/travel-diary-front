@@ -51,7 +51,7 @@ export interface ReviewBoardListItem{
     reviewContent: string;
     writerId: string;
     reviewDatetime: string;
-    travelReviewImageUrl: string[];
+    travelReviewImageUrl: string;
     reviewViewCount: number;
     reviewFavoriteCount: number;
 }

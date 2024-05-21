@@ -35,7 +35,10 @@ import {
 } from "./constant";
 import SignIn from "./views/authentication/SignIn";
 import SignUp from "./views/authentication/SignUp";
-import Review from "./views/Main/service/review";
+import ReviewList from "./views/service/review/ReviewList";
+import ReviewDetail from "./views/service/review/ReviewDetail";
+import ReviewUpdate from "./views/service/review/ReviewUpdate";
+import ReviewWrite from "./views/service/review/ReviewWrite";
 
 //                    Component : 인증화면 index 컴포넌트                     //
 function AuthIndex() {
@@ -58,12 +61,12 @@ function App() {
     <Routes>
       <Route path={MAIN_PATH} element={<Container />}>
         <Route index element={<Main />} />
-        <Route path={SERVICE_PATH} element={<></>}>
-          <Route path={REVIEW_PATH} element={<Review/>}>
-            <Route index element={<></>} />
-            <Route path={REVIEW_DETAIL_PATH} element={<></>} />
-            <Route path={REVIEW_UPDATE_PATH} element={<></>} />
-            <Route path={REVIEW_WRITE_PATH} element={<></>} />
+        <Route path={SERVICE_PATH}>
+          <Route path={REVIEW_PATH}>
+            <Route index element={<ReviewList />} />
+            <Route path={REVIEW_DETAIL_PATH} element={<ReviewDetail />} />
+            <Route path={REVIEW_UPDATE_PATH} element={<ReviewUpdate />} />
+            <Route path={REVIEW_WRITE_PATH} element={<ReviewWrite />} />
           </Route>
 
           <Route path={QNA_PATH} element={<></>}>
