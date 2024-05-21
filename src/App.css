@@ -29,3 +29,11 @@
     box-sizing: border-box;
     width: 100%;
 }
+
+.error {
+    color: rgba(231, 41, 41, 1);
+}
+
+.primary {
+    color: rgba(22, 121, 171, 1);
+}
