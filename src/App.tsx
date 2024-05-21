@@ -35,6 +35,7 @@ import {
 } from "./constant";
 import SignIn from "./views/authentication/SignIn";
 import SignUp from "./views/authentication/SignUp";
+import Review from "./views/Main/service/review";
 
 //                    Component : 인증화면 index 컴포넌트                     //
 function AuthIndex() {
@@ -58,7 +59,7 @@ function App() {
       <Route path={MAIN_PATH} element={<Container />}>
         <Route index element={<Main />} />
         <Route path={SERVICE_PATH} element={<></>}>
-          <Route path={REVIEW_PATH} element={<></>}>
+          <Route path={REVIEW_PATH} element={<Review/>}>
             <Route index element={<></>} />
             <Route path={REVIEW_DETAIL_PATH} element={<></>} />
             <Route path={REVIEW_UPDATE_PATH} element={<></>} />
