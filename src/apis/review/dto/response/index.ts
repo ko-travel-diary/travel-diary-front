@@ -1,9 +1,9 @@
 import ResponseDto from "src/apis/response.dto";
-import { ReviewBoardListItem, ReviewCommentListItem } from "src/types";
+import { ReviewBoardListItem, reviewCommentList } from "src/types";
 
 // description : 리뷰 게시물의 전체 댓글 & 답글 불러오기 Response Body DTO
 export interface GetTravelReviewCommentListResponseDto extends ResponseDto {
-    reviewCommentList : ReviewCommentListItem[];
+    reviewCommentList : reviewCommentList[];
 }
 
 // description : 리뷰 게시물 목록 불러오기 Response Body DTO

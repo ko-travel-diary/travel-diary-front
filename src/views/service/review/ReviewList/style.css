@@ -57,12 +57,10 @@ html::-webkit-scrollbar {
     width: 100%;
     height: 100%;
 
-    border: none;
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
     border-radius: 8px;
 
-    font-style: WavvePADO;
     font-size: 20px;
     font-weight: 700;
 }

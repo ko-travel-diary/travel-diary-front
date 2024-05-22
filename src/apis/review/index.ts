@@ -83,7 +83,7 @@ export const getTravelReviewWriteDateSearchRequest = async(word: string) => {
 }
 
 // function : 리뷰 게시물 상세보기 API 함수
-export const GetTravelReviewDetailRequest = async(reviewNumber: number | string) => {
+export const getTravelReviewDetailRequest = async(reviewNumber: number | string) => {
     const result = await axios.get(GET_REVIEW_REQUEST_URL(reviewNumber))
         .then(requestHandler<GetTravelReviewDetailResponseDto>)
         .catch(requestErrorHandler);
@@ -91,7 +91,7 @@ export const GetTravelReviewDetailRequest = async(reviewNumber: number | string)
 }
 
 // function : 내가 쓴 리뷰 게시물 불러오기 API 함수
-export const GetTravelReviewMyListRequest = async(accessToken: string) => {
+export const getTravelReviewMyListRequest = async(accessToken: string) => {
     const result = await axios.get(GET_REVIEW_MY_LIST_REQUEST_URL, bearerAuthorization(accessToken))
         .then(requestHandler<GetTravelReviewMyListResponseDto>)
         .catch(requestErrorHandler);

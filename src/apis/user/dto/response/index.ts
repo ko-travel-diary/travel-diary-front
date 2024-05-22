@@ -14,3 +14,7 @@ export interface GetUserInfoResponseDto extends ResponseDto {
 export interface GetSearchUserListResponseDto extends ResponseDto {
     searchUserListItem: UserListItem[];
 }
+
+export interface PostUserNickNameResponseDto extends ResponseDto {
+    nickName: string;
+}
