@@ -21,6 +21,27 @@
     cursor: pointer;
 }
 
+.error-button {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 24px;
+
+    background-color: rgba(255,84,64,1);
+    border-radius: 6px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 175%;
+
+    color: white;
+
+    cursor: pointer;
+}
+
 .disable-button {
     box-sizing: border-box;
     display: flex;
@@ -40,13 +61,12 @@
     color: rgba(255,255,255,1);
 }
 
-
 .primary-button:hover {
     background-color: rgba(22, 121, 171, 0.85);
 }
 
-.error {
-    color: rgba(255,84,62,1);
+.error-button:hover {
+    background-color: rgb(240, 46, 25);
 }
 
 .primary-bedge {

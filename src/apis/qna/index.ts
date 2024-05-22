@@ -1,5 +1,5 @@
 import axios from "axios"
-import { PostQnaCommentRequestDto, PostQnaRequestDto } from "./dto/request"
+import { PatchQnaRequestDto, PostQnaCommentRequestDto, PostQnaRequestDto } from "./dto/request"
 import { DELETE_QNA_COMMENT_REQUEST_URL, DELETE_QNA_REQUEST_URL, GET_QNA_LIST_REQUEST_URL, GET_QNA_REQUEST_URL, GET_SEARCH_QNA_LIST_REQUEST_URL, PATCH_QNA_COMMENT_REQUEST_URL, PATCH_QNA_REQUEST_URL, POST_QNA_COMMENT_REQUEST_URL, POST_QNA_REQUEST_URL } from "src/constant";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
 import ResponseDto from "../response.dto";
@@ -15,7 +15,7 @@ export const postQnaRequest = async (requestBody: PostQnaRequestDto, accessToken
 }
 
 // function: Q&A 댓글 작성 API 함수
-export const postQnaComment = async (requestBody: PostQnaCommentRequestDto ,receptionNumber: number | string, accessToken: string) => {
+export const postQnaCommentRequest = async (requestBody: PostQnaCommentRequestDto ,receptionNumber: number | string, accessToken: string) => {
     const result = await axios.post(POST_QNA_COMMENT_REQUEST_URL(receptionNumber), requestBody, bearerAuthorization(accessToken))
         .then(requestHandler<PostQnaCommentRequestDto>)
         .catch(requestErrorHandler)
@@ -41,6 +41,7 @@ export const getQnaSearchListRequest = async (word: string, accessToken: string 
 
 // function: Q&A 상세보기 API 함수
 export const getQnaRequest = async (receptionNumber: number | string, accessToken: string) => {
+    console.log(accessToken);
     const result = await axios.get(GET_QNA_REQUEST_URL(receptionNumber), bearerAuthorization(accessToken))
         .then(requestHandler<GetQnaResponseDto>)
         .catch(requestErrorHandler);
@@ -48,8 +49,8 @@ export const getQnaRequest = async (receptionNumber: number | string, accessToke
 }
 
 // function: Q&A 수정 API 함수
-export const patchQnaRequest = async (receptionNumber: number | string,accessToken: string) => {
-    const result = await axios.patch(PATCH_QNA_REQUEST_URL(receptionNumber), bearerAuthorization(accessToken))
+export const patchQnaRequest = async (receptionNumber: number | string, requestBody: PatchQnaRequestDto, accessToken: string) => {
+    const result = await axios.patch(PATCH_QNA_REQUEST_URL(receptionNumber), requestBody, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;

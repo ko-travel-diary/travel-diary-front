@@ -13,7 +13,7 @@ export interface GetQnaResponseDto extends ResponseDto{
     receptionNumber: number;
     qnaTitle: string;
     qnaContent: string;
-    writerId: string;
+    qnaWriterId: string;
     qnaDatetime: string;
     qnaStatus: boolean;
     qnaComment: string;
