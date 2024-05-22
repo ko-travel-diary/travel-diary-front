@@ -12,4 +12,4 @@ export const requestErrorHandler = (error: any) => {
     return responseBody as ResponseDto;
 }
 
-export const bearerAuthorization = (accessToken: string) => ({headers: {'Authorization': `Bearer ${accessToken}`}});
+export const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}`}});

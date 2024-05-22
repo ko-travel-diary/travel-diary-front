@@ -18,8 +18,7 @@ import { bearerAuthorization } from 'src/apis';
 function ReviewCommentLists ({
     reviewCommentNumber,
     reviewCommentWriterId,
-    commentContent,
-    commentParentsNumber
+    commentContent
 }: reviewCommentList) {
 
     //                    state                    //
@@ -270,16 +269,14 @@ export default function ReviewDetail () {
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
-
-        console.log(loginUserRole);
-
+        console.log(loginUserId);
         getTravelReviewDetailRequest(reviewNumber).then(getTravelReviewDetailResponse);
         getTravelReviewCommentListRequest(reviewNumber).then(getTravelReviewCommentListResponse)
     }, []);
 
     //                    render                    //
-    const userStatus = (loginUserId != reviewWriterId) ? 
-        (loginUserRole != 'ROLE_ADMIN') ? 
+    const userStatus = (loginUserId !== reviewWriterId) ? 
+        (loginUserRole !== 'ROLE_ADMIN') ? 
         <></> :
         <div className='review-detail-user-role'> 
             <div className='primary-button review-middle-button' onClick={onDeleteButtonClickHandler}>삭제</div>

@@ -112,7 +112,7 @@ export const PATCH_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SE
 export const PATCH_REVIEW_COMMENT_REQUEST_URL = (commentNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/comment/${commentNumber}`;
 export const PATCH_INCREASE_VIEW_COUNT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/view-count`;
 export const PATCH_FAVORITE_COUNT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/favorite`;
-export const DELETE_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
+export const DELETE_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/delete/${reviewNumber}`;
 export const DELETE_REVIEW_COMMENT_REQUEST_URL = (commentNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/comment/${commentNumber}`;
 
 export const SERVER_MYPAGE_MODULE_URL = `${SERVER_API_URL}/mypage`;
