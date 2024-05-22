@@ -8,9 +8,9 @@ interface UserStore {
 }
 
 const useUserStore = create<UserStore>(set => ({
-    loginUserId: 'admin',
+    loginUserId: '',
     setLoginUserId: (loginUserId: string) => set(state => ({...state, loginUserId})),
-    loginUserRole: 'ROLE_ADMIN',
+    loginUserRole: '',
     setLoginUserRole: (loginUserRole: string) => set(state => ({...state, loginUserRole}))
 }));
 
