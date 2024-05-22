@@ -1,10 +1,13 @@
 import React from 'react'
+import './style.css'
 
-//                  Component                   //
-export default function RestList() {
-
-    //                  Render                   //
+export default function RestAdd() {
     return (
-        <div>RestAdd</div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     )
 }

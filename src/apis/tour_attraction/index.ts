@@ -14,8 +14,9 @@ export const getTourAttractionsListRequest = async () => {
 };
 
 //      function: 관광지 검색어 리스트 불러오기 API 함수       //
-export const getSearchTourAttractionsListRequest = async () => {
-    const result = await axios.get(GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL)
+export const getSearchTourAttractionsListRequest = async (searchWord: string) => {
+    const config = {params: {searchWord}};
+    const result = await axios.get(GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL, config)
         .then(requestHandler<GetSearchTourAttractionsListResponseDto>)
         .catch(requestErrorHandler);
     return result;

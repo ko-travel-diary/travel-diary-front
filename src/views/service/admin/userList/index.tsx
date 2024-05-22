@@ -80,6 +80,7 @@ export default function UserList() {
     const navigator = useNavigate();
 
     const changePage = (userList: UserListItem[], totalLength: number) => {
+        if (!userList || !Array.isArray(userList) || userList.length === 0) return;
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
@@ -124,15 +125,11 @@ export default function UserList() {
 
         if (!result || result.code !== 'SU') {
             alert(message);
-            // if(result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            if(result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
 
         const {userListItem} = result as GetUserListResponseDto;
-        if (!userListItem) {
-            alert('유저 리스트를 불러오는데 실패했습니다.');
-            return;
-        }
         changeUserList(userListItem);
 
         setCurrentPage(!userListItem.length ? 0 : 1);

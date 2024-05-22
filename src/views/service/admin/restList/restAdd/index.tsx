@@ -5,6 +5,6 @@ export default function TourAdd() {
 
     //                  Render                   //
     return (
-        <div>RestAdd</div>
+        <div>TourAdd</div>
     )
 }
