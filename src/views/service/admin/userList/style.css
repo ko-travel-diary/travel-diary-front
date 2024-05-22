@@ -1,10 +1,14 @@
 #user-list-wrapper{
+    margin: 0 auto;
     display: flex;
+    max-width: 1136px;
     flex-direction: column;
+    
     gap: 10px;
 }
 
 .user-list-top{
+    
     margin-top: 10px;
 }
 .user-list-count-text .emphasis {
@@ -12,12 +16,13 @@
 }
 
 .user-list-table{
-    border: 1px solid rgba(238, 238, 238, 1);
-    border-radius: 8px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+    height: 750px;
 
     background-color: rgba(255, 255, 255, 1);
 }
@@ -145,18 +150,56 @@
     display: flex;
     gap: 200px;
     text-align: center;
-
-    margin: 10px 0
+    
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
 }
 .user-list-table-number {
-    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin-left: 10px;
+    width: 200px;
 }
 .user-list-table-id {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 100px;
 }
 .user-list-table-email {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 100px;
 }
 .user-list-table-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 10px;
     width: 100px;
+}
+
+.error-button {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 20px;
+
+    background-color: rgba(255, 84, 64, 1);
+    border-radius: 6px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 175%;
+
+    color: rgba(255, 255, 255, 1);
 }

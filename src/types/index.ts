@@ -22,6 +22,7 @@ export interface ScheduleListItem{
 export interface UserListItem{
     userId: string;
     userEmail: string;
+    joinDate: string;
 }
 
 export interface TourAttractionsListItem{

@@ -10,3 +10,7 @@ export interface GetUserInfoResponseDto extends ResponseDto {
     userId: string;
     userEmail: string;
 }
+
+export interface GetSearchUserListResponseDto extends ResponseDto {
+    searchUserListItem: UserListItem[];
+}

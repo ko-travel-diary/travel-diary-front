@@ -1,9 +1,9 @@
 import axios from "axios";
 import { DeleteAdminUserRequestDto, DeleteUserRequestDto, PatchUserInfoRequestDto } from "./dto/request";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
-import { DELETE_ADMIN_USER_REQUEST_URL, DELETE_USER_REQUEST_URL, GET_USER_LIST_REQUEST_URL, PATCH_USER_INFO_REQUEST_URL } from "src/constant";
+import { DELETE_ADMIN_USER_REQUEST_URL, DELETE_USER_REQUEST_URL, GET_SEARCH_USER_LIST_REQUEST_URL, GET_USER_LIST_REQUEST_URL, PATCH_USER_INFO_REQUEST_URL } from "src/constant";
 import ResponseDto from "../response.dto";
-import { GetUserInfoResponseDto, GetUserListResponseDto } from "./dto/response";
+import { GetSearchUserListResponseDto, GetUserInfoResponseDto, GetUserListResponseDto } from "./dto/response";
 
 //      function: 유저 정보 리스트 불러오기 API 함수       //
 export const getUserListRequest = async (accessToken: string) => {
@@ -19,6 +19,15 @@ export const getUserInfoRequest = async (accessToken: string) => {
     .then(requestHandler<GetUserInfoResponseDto>)
     .catch(requestErrorHandler);
 return result;
+}
+
+//      function: 키워드 포함 유저 리스트 검색 API 함수       //
+export const getSearchUserListRequest = async (word: string, accessToken: string) => {
+    const config = {...bearerAuthorization(accessToken), params: {word}};
+    const result = await axios.get(GET_SEARCH_USER_LIST_REQUEST_URL, config)
+        .then(requestHandler<GetSearchUserListResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
 }
 
 //      function: 로그인 유저 프로필 정보 수정 API 함수       //

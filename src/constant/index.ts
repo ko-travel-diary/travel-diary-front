@@ -127,6 +127,7 @@ export const DELETE_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => 
 export const SERVER_USER_MODULE_URL = `${SERVER_API_URL}/user`;
 export const POST_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
 export const GET_USER_LIST_REQUEST_URL = `${SERVER_USER_MODULE_URL}/userlist`;
+export const GET_SEARCH_USER_LIST_REQUEST_URL = `${SERVER_USER_MODULE_URL}/userlist/search`;
 export const GET_USER_INFO_REQUEST_URL = (userId: number | string) => `${SERVER_USER_MODULE_URL}/${userId}`;
 export const PATCH_USER_INFO_REQUEST_URL = `${SERVER_USER_MODULE_URL}/edit`;
 export const DELETE_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/cancel-account`;
