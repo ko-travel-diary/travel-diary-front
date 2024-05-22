@@ -118,29 +118,32 @@
 }
 
 .qna-list-reception-number {
-    width: 50px;
+    width: 70px;
 }
 
 .qna-list-status {
-    width: 35px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 70px;
 }
 
 .qna-list-title {
-    width: 300px;
+    width: 400px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .qna-list-writer-id {
-    width: 50px;
+    width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .qna-list-write-date {
-    width: 70px;
+    width: 90px;
 }
 
 .qna-list-bottom {

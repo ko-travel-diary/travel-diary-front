@@ -91,7 +91,7 @@ export const POST_QNA_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/`;
 export const POST_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
 export const GET_QNA_LIST_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list`;
 export const GET_SEARCH_QNA_LIST_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/list/search`;
-export const GET_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
+export const GET_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/list/${receptionNumber}`;
 export const PATCH_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
 export const PATCH_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}/comment`;
 export const DELETE_QNA_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_QNA_MODULE_URL}/${receptionNumber}`;
@@ -126,6 +126,7 @@ export const DELETE_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => 
 
 export const SERVER_USER_MODULE_URL = `${SERVER_API_URL}/user`;
 export const POST_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
+export const POST_USER_NICKNAME_REQUEST_URL = `${SERVER_USER_MODULE_URL}/nickName`;
 export const GET_USER_LIST_REQUEST_URL = `${SERVER_USER_MODULE_URL}/userlist`;
 export const GET_SEARCH_USER_LIST_REQUEST_URL = `${SERVER_USER_MODULE_URL}/userlist/search`;
 export const GET_USER_INFO_REQUEST_URL = (userId: number | string) => `${SERVER_USER_MODULE_URL}/${userId}`;

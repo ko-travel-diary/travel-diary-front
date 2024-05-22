@@ -13,7 +13,7 @@ import ResponseDto from 'src/apis/response.dto';
 function ListItem(
   {
     receptionNumber,
-    status,
+    qnaStatus,
     qnaTitle,
     qnaWriterId,
     qnaDatetime
@@ -29,7 +29,7 @@ function ListItem(
       <div className='qna-list-table-list' onClick={onClickHandler}>
           <div className='qna-list-reception-number'>{receptionNumber}</div>
           <div className='qna-list-status'>
-              {status ?
+              {qnaStatus ?
               <div className='disable-bedge'>완료</div> :
               <div className='primary-bedge'>접수</div>
               }   
@@ -83,7 +83,7 @@ export default function QnaList() {
     };
 
     const changeQnaList = (qnaList: QnaListItem[]) => {
-      if(isToggleOn) qnaList = qnaList.filter(qna => !qna.status)
+      if(isToggleOn) qnaList = qnaList.filter(qna => !qna.qnaStatus)
         setQnaList(qnaList);
 
       changePage(qnaList, totalLength);
@@ -140,7 +140,7 @@ export default function QnaList() {
 
   //                     event handler                     //
   const onWriteButtonClickHandler = () => {
-    if(loginUserRole !== 'ROLE_USER') return;
+    // if(loginUserRole !== 'ROLE_USER') return;
     navigator(QNA_WRITE_ABSOLUTE_PATH);
 };
 
