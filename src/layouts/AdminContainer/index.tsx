@@ -12,7 +12,7 @@ function SideNavigation () {
     //                  event handler                   //
     const onUserListHandler = () => navigator(ADMINPAGE_USER_LIST_ABSOLUTE_PATH);
     const onTourListHandler = () => navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
-    const onRestListHandler = () => navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH)
+    const onRestListHandler = () => navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
 
     //                  Render                  //
     return (

@@ -1,6 +1,6 @@
 export interface QnaListItem{
     receptionNumber: number;
-    status: string;
+    qnaStatus: string;
     qnaTitle: string;
     qnaContent: string;
     qnaWriterId: string;
@@ -25,12 +25,12 @@ export interface UserListItem{
     joinDate: string;
 }
 
-export interface TourAttractionsListItem{
-    tourAttractionsImageUrl: string;
-    tourAttractionsName: string;
-    tourAttractionsLocation: string;
-    tourAttractionsTelNumber: string;
-    tourAttractionsHours: string;
+export interface tourAttractionsListItem{
+    tourattractionsImageUrl: string;
+    tourattractionsName: string;
+    tourattractionsLocation: string;
+    tourattractionsTelNumber: string;
+    tourattractionsHours: string;
 }
 
 export interface RestaurantListItem{
@@ -41,10 +41,11 @@ export interface RestaurantListItem{
     restaurantHours: string;
 }
 
-export interface ReviewCommentListItem{
+export interface reviewCommentList{
+    commentContent: string;
     reviewCommentNumber: number;
     reviewCommentWriterId: string;
-    commentContent: string;
+    commentParentsNumber: number;
 }
 
 export interface ReviewBoardListItem{

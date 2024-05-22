@@ -49,6 +49,8 @@ import AdminContainer from "./layouts/AdminContainer";
 import UserList from "./views/service/admin/userList";
 import TourAdd from "./views/service/admin/restList/restAdd";
 import RestAdd from "./views/service/admin/tourList/tourAdd";
+import TourList from "./views/service/admin/tourList";
+import RestList from "./views/service/admin/restList";
 
 //                    Component : 인증화면 index 컴포넌트                     //
 function AuthIndex() {
@@ -100,14 +102,11 @@ function App() {
           </Route>
 
           <Route path={ADMINPAGE_PATH} element={<AdminContainer />}>
-            <Route index element={<></>} />
             <Route path={USER_LIST_PATH} element={<UserList />} />
-            <Route path={TOUR_LIST_PATH} element={<TourAdd />} />
-              <Route path={TOUR_ADD_PATH} element={<TourAdd />} />
-            </Route>
-            <Route path={REST_LIST_PATH} element={<RestAdd />} />
-              <Route path={REST_ADD_PATH} element={<RestAdd />} />
-            </Route>
+            <Route path={TOUR_LIST_PATH} element={<TourList />} />
+            <Route path={TOUR_ADD_PATH} element={<TourAdd />} />
+            <Route path={REST_LIST_PATH} element={<RestList />} />
+            <Route path={REST_ADD_PATH} element={<RestAdd />} />
           </Route>
 
 
@@ -116,13 +115,15 @@ function App() {
             <Route path={TOUR_DETAIL_PATH} element={<></>} />
             <Route path={REST_DETAIL_PATH} element={<></>} />
           </Route>
+        </Route>
+      </Route>
 
-          <Route path={AUTH_PATH}>
-            <Route index element={<AuthIndex />} />
-            <Route path={SIGN_IN_PATH} element={<SignIn />} />
-            <Route path={SIGN_UP_PATH} element={<SignUp />} />
-          </Route>
-      </Routes>
+      <Route path={AUTH_PATH}>
+        <Route index element={<AuthIndex />} />
+        <Route path={SIGN_IN_PATH} element={<SignIn />} />
+        <Route path={SIGN_UP_PATH} element={<SignUp />} />
+      </Route>
+    </Routes>
   );
 }
 

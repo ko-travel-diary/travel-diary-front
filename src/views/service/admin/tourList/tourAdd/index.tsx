@@ -1,10 +1,7 @@
 import React from 'react'
 
-//                  Component                   //
-export default function RestAdd() {
-
-    //                  Render                   //
+export default function TourAdd() {
     return (
-        <div>RestAdd</div>
+        <div>index</div>
     )
 }
