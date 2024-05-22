@@ -266,7 +266,7 @@ export default function ReviewList () {
                 </div>
                 <div className="review-search-box">
                     <div className="review-search-input-box">
-                        <input className="review-search-input" placeholder="검색어를 입력하세요." value={searchWord} onChange={onSearchWordChangeHandler}></input>
+                        <input className="review-search-input" placeholder="검색어를 입력하세요." value={searchWord} onChange={onSearchWordChangeHandler} />
                     </div>
                     <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>검색</div>
                 </div>

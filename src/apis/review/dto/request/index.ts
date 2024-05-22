@@ -9,7 +9,7 @@ export interface PostTravelReviewRequestDto {
 // description: 리뷰 게시글의 댓글 & 답글 작성 Request Body DTO //
 export interface PostTravelReviewCommentRequestDto {
     commentContent : string;
-    commentParensNumber : number;
+    commentParentsNumber : number | null;
 }
 
 // description: 리뷰 게시글 수정 Request Body DTO //

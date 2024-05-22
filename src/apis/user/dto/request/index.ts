@@ -1,3 +1,7 @@
+export interface PostUserNickNameRequestDto {
+    writerId: string;
+}
+
 export interface PatchUserInfoRequestDto {
     nickName: string;
     profileImage: string;

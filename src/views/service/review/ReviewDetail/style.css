@@ -21,10 +21,127 @@ html::-webkit-scrollbar {
     justify-content: flex-end;
 }
 
+.review-detail-content-wrapper{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+}
+
 .review-detail-title{
+    margin: 0px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(7, 65, 115, 0.2);
+
     font-size: 30px;
 }
 
 .review-detail-content{
+    margin: 0px;
+    padding: 10px;
 
+    font-size: 20px;
+}
+
+.review-detail-middle{
+    display: flex;
+    flex-direction: row;
+}
+
+.list-page-box{
+    width: 1400px;
+}
+
+.list-page-navi{
+    width: 60px;
+}
+
+.list-page-navi:hover{
+    cursor: pointer;
+}
+
+.under-line-text{
+    text-decoration: underline;
+}
+
+.review-detail-user-role{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+
+.review-middle-button{
+    width: 80px;
+}
+
+.review-detail-bottom{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.comments-content{
+    display: flex;
+    width: 1350px;
+}
+
+.comments-button-box{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.review-detail-comments-box{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(7, 65, 115, 0.2);
+    padding: 10px;
+}
+
+.comments-content-box{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid rgba(7, 65, 115, 0.2);
+    padding: 10px;
+    margin: 20px;
+    gap: 10px;
+}
+
+.review-detail-comment-input-box{
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+}
+
+.comment-input{
+    width: 1400px;
+    height: 50px;
+
+    outline: none;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+
+    font-size: 15px;
+}
+
+.comments-recommend:hover{
+    cursor: pointer;
+}
+
+.recomment-input {
+    width: 1200px;
+    height: 20px;
+
+    outline: none;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+
+    font-size: 15px;
+}
+
+.comments-recommend-button{
+    width: 60px;
+}
+
+.comments-recommend-button:hover {
+    cursor: pointer;
 }
