@@ -13,7 +13,7 @@ import { PatchQnaRequestDto } from 'src/apis/qna/dto/request';
 export default function QnaUpdate() {
 
   //                    state                     //
-    const qnaContentRef = useRef<HTMLTextAreaElement | null>(null);
+  const qnaContentRef = useRef<HTMLTextAreaElement | null>(null);
     const { loginUserId, loginUserRole } = useUserStore();
     const { receptionNumber } = useParams();
     const [cookies] = useCookies();
@@ -113,21 +113,20 @@ export default function QnaUpdate() {
     }, [loginUserRole])
 
   //                    render : QnA 화면 컴포넌트                     //
-  return (
-    <div id="qna-write-wrapper">
-        <div className='qna-write-top'>
-            <div className='qna-write-title-box'>
-                <input className='qna-write-title-input' placeholder='제목을 입력해주세요. / 30자' maxLength={30} value={qnaTitle} onChange={onQnaTitleChangeHandler} />
+    return (
+        <div id="qna-write-wrapper">
+            <div className='qna-write-top'>
+                <div className='qna-write-title-box'>
+                    <input className='qna-write-title-input' placeholder='제목을 입력해주세요. / 30자' maxLength={30} value={qnaTitle} onChange={onQnaTitleChangeHandler} />
+                </div>
+            </div>
+            <div className='qna-write-contents-box'>
+                <textarea ref={qnaContentRef} className='qna-write-contents-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} value={qnaContent} onChange={onQnaContentsChangeHandler} />
+            </div>
+            <div className='qna-write-bottom'>
+                <div style={{width: '250px'}}></div>
+                <div className='primary-button' onClick={onUpdateButtonClickHandler}>수정</div>
             </div>
         </div>
-        <div className='qna-write-contents-box'>
-            <textarea ref={qnaContentRef} className='qna-write-contents-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} value={qnaContent} onChange={onQnaContentsChangeHandler} />
-        </div>
-        <div className='qna-write-bottom'>
-            <div style={{width: '250px'}}></div>
-            <div className='primary-button' onClick={onUpdateButtonClickHandler}>수정</div>
-        </div>
-    </div>
-
-);
+    );
 }

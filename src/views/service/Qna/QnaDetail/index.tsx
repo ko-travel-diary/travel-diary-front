@@ -6,9 +6,8 @@ import { useCookies } from 'react-cookie';
 import { GetQnaResponseDto } from 'src/apis/qna/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, QNA_UPDATE_ABSOLUTE_PATH } from 'src/constant';
-import { deleteQnaCommentRequest, deleteQnaRequest, getQnaRequest, postQnaCommentRequest } from 'src/apis/qna';
-import { PostQnaCommentRequestDto } from 'src/apis/qna/dto/request';
-import { access } from 'fs';
+import { deleteQnaCommentRequest, deleteQnaRequest, getQnaRequest, patchQnaCommentRequest, postQnaCommentRequest, postQnaRequest } from 'src/apis/qna';
+import { PatchQnaCommentRequestDto, PostQnaCommentRequestDto } from 'src/apis/qna/dto/request';
 
 //                    Component : Qna 화면 컴포넌트                     //
 export default function QnaDetail() {
@@ -25,6 +24,8 @@ export default function QnaDetail() {
   const [qnaStatus, setQnaStatus] = useState<boolean>(false);
   const [qnaComment, setQnaComment] = useState<string | null>(null);
   const [qnaCommentRows, setQnaCommentRows] = useState<number>(1);
+  const [qnaCommentUpdate, setQnaCommentUpdate] = useState<string>('');
+  const [qnaCommentUpdateRows, setQnaCommentUpdateRows] = useState<number>(1);
 
   //                     function                     //
   const navigator = useNavigate();
@@ -68,10 +69,28 @@ export default function QnaDetail() {
         if(!result || result.code !== 'SU') {
             alert(message);
             return;
-        }
+        };
+        alert('입력이 완료되었습니다.');
 
         if(!receptionNumber || !cookies.accessToken) return;
         getQnaRequest(receptionNumber, cookies.accessToken).then(getQnaResponse);
+    };
+
+    const patchQnaCommentResponse = (result: ResponseDto | null) => {
+      const message =
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'AF' ? '권한이 없습니다.' :
+            result.code === 'VF' ? '입력 데이터가 올바르지 않습니다.' :
+            result.code === 'NB' ? '존재하지 않는 게시물입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if(!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        };
+        alert('수정이 완료되었습니다.');
+
+        window.location.reload();
     };
 
     const deleteQnaResponse = (result: ResponseDto | null) => {
@@ -92,23 +111,36 @@ export default function QnaDetail() {
 
     const deleteQnaCommentResponse = (result: ResponseDto | null) => {
       const message =
-          !result ? '서버에 문제가 있습니다.' :
-          result.code === 'AF' ? '권한이 없습니다.' :
-          result.code === 'VF' ? '올바르지 않은 접수 번호입니다.' :
-          result.code === 'NB' ? '존재하지 않는 접수 번호입니다.' :
-          result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        !result ? '서버에 문제가 있습니다.' :
+        result.code === 'AF' ? '권한이 없습니다.' :
+        result.code === 'VF' ? '올바르지 않은 접수 번호입니다.' :
+        result.code === 'NB' ? '존재하지 않는 접수 번호입니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
       if(!result || result.code !== 'SU') {
-          alert(message);
-          return;
-        }
+        alert(message);
+        return;
+      }
+
+      if(!receptionNumber) return;
+      getQnaRequest(receptionNumber, cookies.accessToken).then(getQnaResponse);
   };
 
   //                     event handler                     //
+  const onCommentUpdateChangeHandler = (event:ChangeEvent<HTMLTextAreaElement>) => {
+    if(!qnaComment || !qnaComment.trim() || loginUserRole !== "ROLE_ADMIN") return;
+    const qnaCommentUpdate = event.target.value;
+    setQnaCommentUpdate(qnaCommentUpdate);
+
+    const qnaCommentUpdateRows = qnaCommentUpdate.split('\n').length;
+    setQnaCommentUpdateRows(qnaCommentUpdateRows);
+  };
+
   const onCommentChangeHandler = (event:ChangeEvent<HTMLTextAreaElement>) => {
     if(qnaStatus || loginUserRole !== "ROLE_ADMIN") return;
     const qnaComment = event.target.value;
     setQnaComment(qnaComment);
+
     const qnaCommentRows = qnaComment.split('\n').length;
     setQnaCommentRows(qnaCommentRows);
   };
@@ -118,8 +150,8 @@ export default function QnaDetail() {
     if(!receptionNumber) return;
 
     const requestBody: PostQnaCommentRequestDto = { qnaComment };
-    postQnaCommentRequest(requestBody, receptionNumber, cookies.accessToken).then();
-};
+    postQnaCommentRequest(requestBody, receptionNumber, cookies.accessToken).then(postQnaCommentResponse);
+  };
 
   const onListClickHandler = () => {
     navigator(QNA_ABSOLUTE_PATH);
@@ -131,24 +163,30 @@ export default function QnaDetail() {
   };
 
   const onUpdateCommentClickHandler = () => {
-    if(!receptionNumber || loginUserRole !== "ROLE_ADMIN") return;
+    if(!qnaComment || !qnaComment.trim() || loginUserRole !== 'ROLE_ADMIN' || !cookies.accessToken) return;
+    if(!receptionNumber) return;
+    if(!qnaCommentUpdate) return;
+
+    const requestBody: PatchQnaCommentRequestDto = { qnaComment: qnaCommentUpdate };
+    patchQnaCommentRequest(receptionNumber, requestBody, cookies.accessToken).then(patchQnaCommentResponse);
   };
 
   const onDeleteQnaClickHandler = () => {
     if(!receptionNumber || loginUserId !== qnaWriterId || qnaStatus || !cookies.accessToken) return;
-    const isConfirm = window.confirm('정말로 삭제하시겠습니까?');
-    if(!isConfirm) return;
+    const isQnaConfirm = window.confirm('정말로 삭제하시겠습니까?');
+    if(!isQnaConfirm) return;
     
     deleteQnaRequest(receptionNumber, cookies.accessToken).then(deleteQnaResponse)
   };
 
   const onDeleteCommentClickHandler = () => {
-    if(!receptionNumber || loginUserId !== qnaWriterId || qnaStatus || !cookies.accessToken) return;
-    const isConfirm = window.confirm('정말로 삭제하시겠습니까?');
-    if(!isConfirm) return;
+    if(!receptionNumber || loginUserRole !== 'ROLE_ADMIN' || !cookies.accessToken) return;
+    const isCommentConfirm = window.confirm('정말로 삭제하시겠습니까?');
+    if(!isCommentConfirm) return;
   
     deleteQnaCommentRequest(receptionNumber, cookies.accessToken).then(deleteQnaCommentResponse)
   };
+
   //                    effect                     //
   useEffect(() => {
     if(!receptionNumber) return;
@@ -170,33 +208,41 @@ export default function QnaDetail() {
             <div className='qna-detail-title-box'>{qnaTitle}</div>
             <div className='qna-detail-contents-box'>{qnaContent}</div>
         </div>
-        {/* {loginUserRole === 'ROLE_ADMIN' && !status && */}
+        
         <div className='qna-detail-button-box'>
             <div className='qna-show-list' onClick={onListClickHandler}>목록보기</div>
-            {/* {loginUserId === writerId && loginUserRole === 'ROLE_USER' && */}
+            {loginUserId === qnaWriterId && loginUserRole === 'ROLE_USER' &&
             <div className='qna-detail-owner-button-box'>
               <div className='primary-button' onClick={onUpdateQnaClickHandler}>수정</div>
               <div className='error-button' onClick={onDeleteQnaClickHandler}>삭제</div>
             </div>
-            {/* } */}
+            }
         </div>
-        
+        { loginUserRole === 'ROLE_ADMIN' &&
         <div className='qna-detail-comment-box'>
-          <div className='primary-bedge'>관리자</div>
+          <div className='admin-bedge'>관리자</div>
           <div className='qna-comment-right-box'>
             <div className='qna-detail-comment'>{qnaComment}</div>
             <div className='qna-detail-owner-button-box'>
-              <div className='primary-button' onClick={onUpdateCommentClickHandler}>수정</div>
               <div className='error-button' onClick={onDeleteCommentClickHandler}>삭제</div>
             </div>
           </div>
-        </div>
-            {/* } */}
+            <div className='qna-detail-comment-write-box'>
+          <div className='qna-detail-comment-textarea-box'>
+            <textarea style={{height: `${28 * qnaCommentRows}px`}} className='qna-detail-comment-textarea' placeholder='댓글을 작성해주세요.' value={qnaCommentUpdate == null ? '' : qnaCommentUpdate} onChange={onCommentUpdateChangeHandler} />
+          </div>
+          <div className='primary-button' onClick={onUpdateCommentClickHandler}>수정</div>
+          </div>
+        </div>  
+        }
+        { loginUserRole === 'ROLE_ADMIN' && !qnaStatus &&
         <div className='qna-detail-comment-write-box'>
           <div className='qna-detail-comment-textarea-box'>
-            <textarea style={{height: `${28 * qnaCommentRows}px`}} className='qna-detail-comment-textarea' placeholder='댓글을 작성해주세요.' onChange={onCommentChangeHandler}/></div>
-            <div className='primary-button' onClick={onCommentSubmitClickHandler}>댓글달기</div>
+            <textarea style={{height: `${28 * qnaCommentRows}px`}} className='qna-detail-comment-textarea' placeholder='댓글을 작성해주세요.' value={qnaComment == null ? '' : qnaComment} onChange={onCommentChangeHandler}/>
+          </div>
+          <div className='primary-button' onClick={onCommentSubmitClickHandler}>댓글달기</div>
         </div>
+        }
     </div>
   );
 }

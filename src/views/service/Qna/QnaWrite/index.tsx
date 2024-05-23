@@ -2,9 +2,9 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css';
 import { useUserStore } from 'src/stores';
 import { useCookies } from 'react-cookie';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import ResponseDto from 'src/apis/response.dto';
-import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, QNA_DETAIL_ABSOLUTE_PATH, QNA_DETAIL_PATH } from 'src/constant';
+import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, QNA_DETAIL_ABSOLUTE_PATH } from 'src/constant';
 import { PostQnaRequestDto } from 'src/apis/qna/dto/request';
 import { postQnaRequest } from 'src/apis/qna';
 
@@ -13,9 +13,11 @@ export default function QnaWrite() {
 
     //                    state                     //
     const contentsRef = useRef<HTMLTextAreaElement | null>(null);
-    const {loginUserRole} = useUserStore();
+
+    const { loginUserRole } = useUserStore();
+
     const [cookies] = useCookies();
-    const { receptionNumber } = useParams();
+
     const[qnaTitle, setQnaTitle] = useState<string>('');
     const[qnaContent, setQnaContent] = useState<string>('');
 
@@ -35,8 +37,7 @@ export default function QnaWrite() {
             return;
         }
 
-        if(!receptionNumber) return;
-        navigator(QNA_DETAIL_ABSOLUTE_PATH(receptionNumber));
+        navigator(QNA_ABSOLUTE_PATH);
     };
 
   //                     event handler                     //
@@ -65,12 +66,12 @@ export default function QnaWrite() {
     };
 
 //                   effect                        //
-  // useEffect(() => {
-  //   if(loginUserRole === 'ROLE_ADMIN') {
-  //     navigator(QNA_DETAIL_PATH);
-  //     return;
-  // }
-  // }, [loginUserRole]);
+    useEffect(() => {
+        if(loginUserRole === 'ROLE_ADMIN') {
+            navigator(AUTH_ABSOLUTE_PATH);
+            return;
+    }
+}, [loginUserRole]);
 
   //                    render : QnA 화면 컴포넌트                     //
     return (
