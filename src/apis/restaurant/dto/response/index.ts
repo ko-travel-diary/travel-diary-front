@@ -12,7 +12,7 @@ export interface GetRestaurantListResponseDto extends ResponseDto {
 export interface GetRestaurantResponseDto extends ResponseDto {
     restaurantImageUrl: string[];
     restaurantName: string;
-    restaurantlocation: string;
-    restaurantrTelNumber: string;
+    restaurantLocation: string;
+    restaurantTelNumber: string;
     restaurantHours: string;
 }

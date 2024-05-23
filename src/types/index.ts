@@ -25,16 +25,16 @@ export interface UserListItem{
     joinDate: string;
 }
 
-export interface tourAttractionsListItem{
-    tourattractionsImageUrl: string;
-    tourattractionsName: string;
-    tourattractionsLocation: string;
-    tourattractionsTelNumber: string;
-    tourattractionsHours: string;
+export interface TourAttractionsListItem{
+    tourAttractionsImageUrl: string;
+    tourAttractionsName: string;
+    tourAttractionsLocation: string;
+    tourAttractionsTelNumber: string;
+    tourAttractionsHours: string;
 }
 
 export interface RestaurantListItem{
-    restaurantReviewImageUrl: string;
+    restaurantImageUrl: string;
     restaurantName: string;
     restaurantLocation: string;
     restaurantTelNumber: string;
