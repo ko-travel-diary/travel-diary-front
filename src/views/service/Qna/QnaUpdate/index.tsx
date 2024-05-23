@@ -13,7 +13,7 @@ import { PatchQnaRequestDto } from 'src/apis/qna/dto/request';
 export default function QnaUpdate() {
 
   //                    state                     //
-  const qnaContentRef = useRef<HTMLTextAreaElement | null>(null);
+    const qnaContentRef = useRef<HTMLTextAreaElement | null>(null);
     const { loginUserId, loginUserRole } = useUserStore();
     const { receptionNumber } = useParams();
     const [cookies] = useCookies();

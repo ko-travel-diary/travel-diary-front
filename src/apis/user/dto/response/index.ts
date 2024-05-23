@@ -9,6 +9,7 @@ export interface GetUserInfoResponseDto extends ResponseDto {
     profileImage: string;
     userId: string;
     userEmail: string;
+    userRole: string;
 }
 
 export interface GetSearchUserListResponseDto extends ResponseDto {

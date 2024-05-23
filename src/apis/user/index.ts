@@ -1,7 +1,7 @@
 import axios from "axios";
 import { DeleteAdminUserRequestDto, DeleteUserRequestDto, PatchUserInfoRequestDto, PostUserNickNameRequestDto } from "./dto/request";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
-import { DELETE_ADMIN_USER_REQUEST_URL, DELETE_USER_REQUEST_URL, GET_SEARCH_USER_LIST_REQUEST_URL, GET_USER_LIST_REQUEST_URL, PATCH_USER_INFO_REQUEST_URL, POST_USER_NICKNAME_REQUEST_URL } from "src/constant";
+import { DELETE_ADMIN_USER_REQUEST_URL, DELETE_USER_REQUEST_URL, GET_SEARCH_USER_LIST_REQUEST_URL, GET_USER_LIST_REQUEST_URL, GET_USER_REQUEST_URL, PATCH_USER_INFO_REQUEST_URL, POST_USER_NICKNAME_REQUEST_URL } from "src/constant";
 import ResponseDto from "../response.dto";
 import { GetSearchUserListResponseDto, GetUserInfoResponseDto, GetUserListResponseDto, PostUserNickNameResponseDto } from "./dto/response";
 
@@ -15,7 +15,7 @@ export const getUserListRequest = async (accessToken: string) => {
 
 //      function: 로그인 유저 정보 불러오기 API 함수       //
 export const getUserInfoRequest = async (accessToken: string) => {
-    const result = await axios.get(GET_USER_LIST_REQUEST_URL, bearerAuthorization(accessToken))
+    const result = await axios.get(GET_USER_REQUEST_URL, bearerAuthorization(accessToken))
     .then(requestHandler<GetUserInfoResponseDto>)
     .catch(requestErrorHandler);
 return result;

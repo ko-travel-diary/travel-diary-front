@@ -4,15 +4,14 @@ import { useCookies } from 'react-cookie';
 import { useUserStore } from 'src/stores';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from 'src/constant';
-import { GetTravelReviewCommentListResponseDto, GetTravelReviewDetailResponseDto } from 'src/apis/review/dto/response';
+import { GetTravelReviewCommentListResponseDto, GetTravelReviewDetailResponseDto, GetTravelReviewFavoriteStatusResponseDto } from 'src/apis/review/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { postUserNickNameRequest } from 'src/apis/user';
 import { PostUserNickNameRequestDto } from 'src/apis/user/dto/request';
-import { deleteTravelReviewReqeust, getTravelReviewCommentListRequest, getTravelReviewDetailRequest, postTravelReviewCommentRequest } from 'src/apis/review';
+import { deleteTravelReviewReqeust, favoriteCountRequest, getTravelReviewCommentListRequest, getTravelReviewDetailRequest, getTravelReviewFavoriteStatusRequest, increaseViewCountRequest, postTravelReviewCommentRequest } from 'src/apis/review';
 import { PostUserNickNameResponseDto } from 'src/apis/user/dto/response';
 import { reviewCommentList } from 'src/types';
 import { PostTravelReviewCommentRequestDto } from 'src/apis/review/dto/request';
-import { bearerAuthorization } from 'src/apis';
 
 //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
 function ReviewCommentLists ({
@@ -58,7 +57,7 @@ function ReviewCommentLists ({
         setRecommendstate(!recommendstate);
     };
 
-    const onRecommendCotentChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onRecommendCotentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const recommentContent = event.target.value;
         setRecommendContent(recommentContent);
     };
@@ -79,7 +78,7 @@ function ReviewCommentLists ({
                     <div className='comments-content-box'>
                         <div className='comments-content'>{commentContent}</div>
                         <div className='comments-recommend-box'>
-                                <input className='recomment-input' placeholder='댓글을 입력해주세요.' value={recommentContent} onChange={onRecommendCotentChangeHandler}/>
+                                <textarea className='recomment-textarea' placeholder='댓글을 입력해주세요.' value={recommentContent} onChange={onRecommendCotentChangeHandler}/>
                                 <div className='comments-recommend-button' onClick={onRecommendWriteClickHandler}>댓글작성</div>
                         </div>
                         {false && <div >삭제</div>} 
@@ -112,9 +111,20 @@ export default function ReviewDetail () {
     //                    function                    //
     const navigator = useNavigate();
 
-    //                    event handler                    //
-    const onListButtonClickHandler = () => {
-        navigator(REVIEW_ABSOULUTE_PATH);
+    const increaseViewCountResponse = (result: ResponseDto | null) => {
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'NB' ? '존재하지 않는 게시글입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        
+        if(!result || result.code !== 'SU'){
+            alert(message);
+            return;
+        }
+
+        if(!reviewNumber) return;
+        
+        getTravelReviewDetailRequest(reviewNumber).then(getTravelReviewDetailResponse);
     };
 
     const postUserNickNameResponse = (result: ResponseDto | PostUserNickNameResponseDto | null) => {
@@ -219,7 +229,45 @@ export default function ReviewDetail () {
         alert('댓글 작성에 성공하셨습니다.');
         window.location.href = window.location.href;
     };
-    
+
+    const favoriteCountResonse = (result: ResponseDto | null) => {
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'NB' ? '존재하지 않는 게시글입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        
+        if(!result || result.code !== 'SU'){
+            alert(message);
+            return;
+        }
+
+        if(!reviewNumber) return;
+        
+        getTravelReviewDetailRequest(reviewNumber).then(getTravelReviewDetailResponse);
+    };
+
+    const getTravelReviewFavoriteStatusResponse = (result:ResponseDto | GetTravelReviewFavoriteStatusResponseDto | null) => {
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'NB' ? '존재하지 않는 게시글입니다.' :
+            result.code === 'AF' ? '로그인후 이용해주세요.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        
+        if(!result || result.code !== 'SU'){
+            alert(message);
+            return;
+        }
+
+        const { favoriteStatus } = result as GetTravelReviewFavoriteStatusResponseDto;
+
+        setRecommendstate(favoriteStatus);
+    };
+
+    //                    event handler                    //
+    const onListButtonClickHandler = () => {
+        navigator(REVIEW_ABSOULUTE_PATH);
+    };
+
     const onUpdateButtonClickHandler = () => {
         if(loginUserId != reviewWriterId){
             alert("권한이 없습니다.")
@@ -257,9 +305,22 @@ export default function ReviewDetail () {
         postTravelReviewCommentRequest(reviewNumber, requestBody, cookies.accessToken).then(postTravelReviewCommentResponse);
     }
 
-    const onCommentContentChageHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onCommentContentChageHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const commentContent = event.target.value;
         setCommentContent(commentContent);
+    };
+
+    const onRecommendButtonClickHandler = () => {
+        if(!cookies.accessToken){
+            alert('로그인후 이용해주세요');
+            return;
+        }
+        if(!reviewNumber){
+            alert('존재하지 않는 게시글 입니다.')
+            return;
+        }
+        setRecommendstate(!recommendStatus);
+        favoriteCountRequest(reviewNumber, cookies.accessToken).then(favoriteCountResonse);
     };
 
     //                    effect                    //
@@ -269,9 +330,9 @@ export default function ReviewDetail () {
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
-        console.log(loginUserId);
-        getTravelReviewDetailRequest(reviewNumber).then(getTravelReviewDetailResponse);
-        getTravelReviewCommentListRequest(reviewNumber).then(getTravelReviewCommentListResponse)
+        increaseViewCountRequest(reviewNumber).then(increaseViewCountResponse);
+        getTravelReviewCommentListRequest(reviewNumber).then(getTravelReviewCommentListResponse);
+        getTravelReviewFavoriteStatusRequest(reviewNumber, cookies.accessToken).then(getTravelReviewFavoriteStatusResponse);
     }, []);
 
     //                    render                    //
@@ -285,6 +346,8 @@ export default function ReviewDetail () {
             <div className='primary-button review-middle-button' onClick={onUpdateButtonClickHandler}>수정</div>    
             <div className='primary-button review-middle-button' onClick={onDeleteButtonClickHandler}>삭제</div>    
         </div>;
+
+    const [recommendStatus, setRecommendstate] = useState<boolean>(false);
     return(
         <div id='reivew-detail-wrapper'>
 
@@ -303,7 +366,13 @@ export default function ReviewDetail () {
             </div>
 
             <div className='review-detail-content-wrapper'>
-                <div className='review-detail-title'>{reviewTitle}</div>
+                <div className='review-detail-title-box'>
+                    <div className='review-detail-title'>{reviewTitle}</div>
+                    {recommendStatus ? 
+                    <div className='recommend-button-clicked' onClick={onRecommendButtonClickHandler}></div>:
+                    <div className='recommend-button' onClick={onRecommendButtonClickHandler}></div>
+                    }
+                </div>
                 <div className='review-detail-content' style={{
                     backgroundImage: `url(${travelReviewImageUrl[0]})`,
                     width: '200px',
@@ -325,8 +394,8 @@ export default function ReviewDetail () {
                 <div className='review-detail-comments-box'>
                     {commentList.map(item => <ReviewCommentLists {...item} />)}
                 </div>
-                <div className='review-detail-comment-input-box'>
-                    <input className='comment-input' placeholder='댓글을 입력해주세요.' value={commentContent} onChange={onCommentContentChageHandler}/>
+                <div className='review-detail-comment-textarea-box'>
+                    <textarea className='comment-textarea' placeholder='댓글을 입력해주세요.' value={commentContent} onChange={onCommentContentChageHandler}/>
                     <div className='primary-button' onClick={onWriteCommentButtonClickHandler}>댓글달기</div>
                 </div>
             </div>
