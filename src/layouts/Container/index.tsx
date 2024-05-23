@@ -1,19 +1,63 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './style.css';
 import { Outlet, useNavigate } from 'react-router';
 import SignIn from 'src/views/authentication/SignIn';
 import { MAIN_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, TOURATTRACTIONS_ABSOULUTE_PATH } from 'src/constant';
+import { useUserStore } from 'src/stores';
+import { useCookies } from 'react-cookie';
+import { getUserInfoRequest } from 'src/apis/user';
+import { GetUserInfoResponseDto } from 'src/apis/user/dto/response';
+import ResponseDto from 'src/apis/response.dto';
 
 function TopNavigation () {
 
+    //                                       state                                        //
+    const { setLoginUserId, setLoginUserRole } = useUserStore();
+    const [cookies] = useCookies();
+    
+
+    //                  function                   //
     const navigator = useNavigate();
 
+    const getSignInUserResponse = (result: GetUserInfoResponseDto | ResponseDto | null) => {
+
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'AF' ? '인증에 실패하였습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if(!result || result.code !== 'SU') {
+            alert(message);
+            navigator(MAIN_ABSOLUTE_PATH);
+            return;
+        }
+
+        const { userId, userRole } = result as GetUserInfoResponseDto;
+        setLoginUserId(userId);
+        setLoginUserRole(userRole);
+    };
+
+    //                  event handler                   //
     const onSignInButtonClickHandler = () => navigator(SIGN_IN_ABSOLUTE_PATH);
     const onMainPageButtonClickHandler = () => navigator(MAIN_ABSOLUTE_PATH);
     const onTourButtonClickHandler = () => navigator(TOURATTRACTIONS_ABSOULUTE_PATH);
     const onReivewButtonClickHandler = () => navigator(REVIEW_ABSOULUTE_PATH);
     const onQnaButtonClickHandler = () => navigator(QNA_ABSOLUTE_PATH);
 
+    //                  effect                    //
+    useEffect(() => {
+        
+        if(!cookies.accessToken) {
+            navigator(MAIN_ABSOLUTE_PATH);
+            return;
+        }
+
+        getUserInfoRequest(cookies.accessToken).then(getSignInUserResponse);
+
+    }, [cookies.accessToken]);
+
+
+    //                  Render                  //
     return (
         <div id='top-navigation'>
             <div className='top-navigation-left'>

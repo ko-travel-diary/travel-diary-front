@@ -44,3 +44,13 @@ export interface GetTravelReviewDetailResponseDto extends ResponseDto {
 export interface GetTravelReviewMyListResponseDto extends ResponseDto {
     reviewBoardList : ReviewBoardListItem[];
 }
+
+// description : 해당 게시물에 내가 좋아요 누른 상태 불러오기 Response Body DTO
+export interface GetTravelReviewFavoriteStatusResponseDto extends ResponseDto {
+    favoriteStatus : boolean;
+}
+
+// description : 내가 쓴 리뷰 게시물 불러오기 Response Body DTO
+export interface PostTravelReviewResponseDto extends ResponseDto {
+    reviewNumber : number;
+}

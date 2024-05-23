@@ -27,12 +27,19 @@ html::-webkit-scrollbar {
     border: 1px solid rgba(7, 65, 115, 0.2);
 }
 
-.review-detail-title{
+.review-detail-title-box{
+    display: flex;
+    flex-direction: row;
     margin: 0px;
     padding: 10px;
     border-bottom: 1px solid rgba(7, 65, 115, 0.2);
 
     font-size: 30px;
+    justify-content: space-between;
+}
+
+.review-detail-title{
+    width: 1200px;
 }
 
 .review-detail-content{
@@ -108,15 +115,17 @@ html::-webkit-scrollbar {
     gap: 10px;
 }
 
-.review-detail-comment-input-box{
+.review-detail-comment-textarea-box{
     display: flex;
     flex-direction: row;
     gap: 7px;
 }
 
-.comment-input{
+.comment-textarea{
     width: 1400px;
     height: 50px;
+    
+    resize: none;
 
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
@@ -128,10 +137,11 @@ html::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.recomment-input {
+.recomment-textarea {
     width: 1200px;
     height: 20px;
-
+    
+    resize: none;
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
 
@@ -144,4 +154,29 @@ html::-webkit-scrollbar {
 
 .comments-recommend-button:hover {
     cursor: pointer;
+}
+
+.recommend-button{
+    width: 30px;
+    height: 30px;
+
+    background-image: url('../../../../assets/image/recommend-button.png');
+    background-size: 100%;
+}
+
+.recommend-button-clicked{
+    width: 30px;
+    height: 30px;
+
+    background-image: url('../../../../assets/image/recommend-button-click.png');
+    background-size: 100%;
+}
+
+.recommend-button-clicked:hover{
+    cursor: pointer;
+}
+
+.recommend-button:hover{
+    cursor: pointer;
+
 }

@@ -108,6 +108,7 @@ export const GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE
 export const GET_WRITE_DATE_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}/writedate`;
 export const GET_COMMENT_LIST_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment/list`
 export const GET_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
+export const GET_REVIEW_FAVORITE_STATUS_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/`;
 export const PATCH_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}`;
 export const PATCH_REVIEW_COMMENT_REQUEST_URL = (commentNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/comment/${commentNumber}`;
 export const PATCH_INCREASE_VIEW_COUNT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/view-count`;
@@ -125,8 +126,8 @@ export const PATCH_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => `
 export const DELETE_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${scheduleNumber}`;
 
 export const SERVER_USER_MODULE_URL = `${SERVER_API_URL}/user`;
-export const POST_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
 export const POST_USER_NICKNAME_REQUEST_URL = `${SERVER_USER_MODULE_URL}/nickName`;
+export const GET_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
 export const GET_USER_LIST_REQUEST_URL = `${SERVER_USER_MODULE_URL}/userlist`;
 export const GET_SEARCH_USER_LIST_REQUEST_URL = `${SERVER_USER_MODULE_URL}/userlist/search`;
 export const GET_USER_INFO_REQUEST_URL = (userId: number | string) => `${SERVER_USER_MODULE_URL}/${userId}`;
