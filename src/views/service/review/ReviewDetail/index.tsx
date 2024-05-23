@@ -12,6 +12,7 @@ import { deleteTravelReviewReqeust, favoriteCountRequest, getTravelReviewComment
 import { PostUserNickNameResponseDto } from 'src/apis/user/dto/response';
 import { reviewCommentList } from 'src/types';
 import { PostTravelReviewCommentRequestDto } from 'src/apis/review/dto/request';
+import { useReviewNumberStore } from 'src/stores/useReviewNumberStores';
 
 //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
 function ReviewCommentLists ({
@@ -93,6 +94,7 @@ function ReviewCommentLists ({
 export default function ReviewDetail () {
     //                    state                    //
     const { loginUserId, loginUserRole } = useUserStore();
+    const { setUpdateReviewNumber } = useReviewNumberStore();
     const { reviewNumber } = useParams();
     const [cookies] = useCookies();
 
@@ -277,6 +279,7 @@ export default function ReviewDetail () {
             alert("존재하지 않는 게시글 입니니다.")
             return;
         }
+        setUpdateReviewNumber(reviewNumber);
         navigator(REVIEW_UPDATE_ABSOLUTE_PATH(reviewNumber));
     };
 
