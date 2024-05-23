@@ -19,32 +19,33 @@ function ListItem(
     qnaDatetime
   }: QnaListItem) {
 
-    //                     function                     //
-    const navigator = useNavigate();
+  //                     function                     //
+  const navigator = useNavigate();
 
-    //                     event handler                     //
-    const onClickHandler = () => navigator(QNA_DETAIL_ABSOLUTE_PATH(receptionNumber));
+  //                     event handler                     //
+  const onClickHandler = () => navigator(QNA_DETAIL_ABSOLUTE_PATH(receptionNumber));
 
-    return (
-      <div className='qna-list-table-list' onClick={onClickHandler}>
-          <div className='qna-list-reception-number'>{receptionNumber}</div>
-          <div className='qna-list-status'>
-              {qnaStatus ?
-              <div className='disable-bedge'>완료</div> :
-              <div className='primary-bedge'>접수</div>
-              }   
-          </div>
-          <div className='qna-list-title' style={{textAlign : 'left'}}>{qnaTitle}</div>
-          <div className='qna-list-writer-id'>{qnaWriterId}</div>
-          <div className='qna-list-write-date'>{qnaDatetime}</div>
+  return (
+    <div className='qna-list-table-list' onClick={onClickHandler}>
+      <div className='qna-list-reception-number'>{receptionNumber}</div>
+      <div className='qna-list-status'>
+          {qnaStatus ?
+          <div className='disable-bedge'>완료</div> :
+          <div className='primary-bedge'>접수</div>
+          }   
       </div>
-    );
-  }
+      <div className='qna-list-title' style={{textAlign : 'left'}}>{qnaTitle}</div>
+      <div className='qna-list-writer-id'>{qnaWriterId}</div>
+      <div className='qna-list-write-date'>{qnaDatetime}</div>
+    </div>
+  );
+  };
+
 //                    Component : Qna 화면 컴포넌트                     //
 export default function QnaList() {
 
   //                    state                     //
-  const {loginUserRole} = useUserStore();
+  const { loginUserRole } = useUserStore();
 
   const [cookies] = useCookies();
 
@@ -64,128 +65,129 @@ export default function QnaList() {
   const navigator = useNavigate();
 
   const changePage = (qnaList: QnaListItem[], totalLength: number) => {
-      if(!currentPage) return;
-      const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-      let endIndex = currentPage * COUNT_PER_PAGE;
-      if(endIndex > totalLength - 1) endIndex = totalLength;
-      const viewList = qnaList.slice(startIndex, endIndex);
-      setViewList(viewList);
-    };
+    if(!currentPage) return;
+    const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
+    let endIndex = currentPage * COUNT_PER_PAGE;
+    if(endIndex > totalLength - 1) endIndex = totalLength;
+    const viewList = qnaList.slice(startIndex, endIndex);
+    setViewList(viewList);
+  };
 
-    const changeSection = (totalPage: number) => {
-      if(!currentSection) return;
-      const startPage = (currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1));
-      let endPage = currentSection * COUNT_PER_SECTION;
-      if(endPage > totalPage) endPage = totalPage;
-      const pageList: number[] = [];
-      for(let page = startPage; page <= endPage; page++) pageList.push(page);
-      setPageList(pageList);
-    };
+  const changeSection = (totalPage: number) => {
+    if(!currentSection) return;
+    const startPage = (currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1));
+    let endPage = currentSection * COUNT_PER_SECTION;
+    if(endPage > totalPage) endPage = totalPage;
+    const pageList: number[] = [];
+    for(let page = startPage; page <= endPage; page++) pageList.push(page);
+    setPageList(pageList);
+  };
 
-    const changeQnaList = (qnaList: QnaListItem[]) => {
-      if(isToggleOn) qnaList = qnaList.filter(qna => !qna.qnaStatus)
-        setQnaList(qnaList);
+  const changeQnaList = (qnaList: QnaListItem[]) => {
+    if(isToggleOn) qnaList = qnaList.filter(qna => !qna.qnaStatus)
+    setQnaList(qnaList);
 
-      changePage(qnaList, totalLength);
+    const totalLength = qnaList.length;
+    setTotalLength(totalLength);
 
-      changeSection(totalPage);
+    const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
+    setTotalPage(totalPage);
+
+    const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
+    setTotalSection(totalSection);
+
+    changePage(qnaList, totalLength);
+    changeSection(totalPage);
   }
 
   const getQnaListResponse = (result: GetQnaListResponseDto | ResponseDto | null) => {
     const message =
-        !result ? '서버에 문제가 있습니다.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : "";
+      !result ? '서버에 문제가 있습니다.' :
+      result.code === 'AF' ? '인증에 실패했습니다.' :
+      result.code === 'DBE' ? '서버에 문제가 있습니다.' : "";
 
-        if(!result || result.code !== 'SU') {
-            alert(message);
-            if(result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
-            return;
-        }
+      if(!result || result.code !== 'SU') {
+        alert(message);
+        if(result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+        return;
+    }
 
-        const { qnaList } = result as GetQnaListResponseDto;
-        changeQnaList(qnaList);
+    const { qnaList } = result as GetQnaListResponseDto;
+    changeQnaList(qnaList);
 
-        const totalLength = qnaList.length;
-        setTotalLength(totalLength);
+    setCurrentPage(1);
+    setCurrentSection(1);
 
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
+  };
 
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        setCurrentPage(!qnaList.length ? 0 : 1);
-        setCurrentSection(!qnaList.length ? 0 : 1);
-    };
-
-    const getQnaSearchListResponse = (result: GetQnaSearchListResponseDto | ResponseDto | null) => {
-      const message =
-        !result ? '서버에 문제가 있습니다.' :
-        result.code === 'VF' ? '검색어를 입력하세요.' :
-        result.code === 'AF' ? '인증에 실패했습니다.' :
-        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+  const getQnaSearchListResponse = (result: GetQnaSearchListResponseDto | ResponseDto | null) => {
+    const message =
+      !result ? '서버에 문제가 있습니다.' :
+      result.code === 'VF' ? '검색어를 입력하세요.' :
+      result.code === 'AF' ? '인증에 실패했습니다.' :
+      result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
       if(!result || result.code !== 'SU') {
         alert(message);
         if(result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
         return result;
       }
-      const { searchQnaList } = result as GetQnaSearchListResponseDto;
-      changeQnaList(searchQnaList);
+    const { searchQnaList } = result as GetQnaSearchListResponseDto;
+    changeQnaList(searchQnaList);
 
-      setCurrentPage(!searchQnaList.length ? 0 : 1);
-      setCurrentSection(!searchQnaList.length ? 0 : 1);
-    };
+    setCurrentPage(!searchQnaList.length ? 0 : 1);
+    setCurrentSection(!searchQnaList.length ? 0 : 1);
+  };
 
   //                     event handler                     //
   const onWriteButtonClickHandler = () => {
-    // if(loginUserRole !== 'ROLE_USER') return;
+    if(loginUserRole !== 'ROLE_USER') return;
     navigator(QNA_WRITE_ABSOLUTE_PATH);
-};
+  };
 
-const onPageClickHandler = (page: number) => {
+  const onPageClickHandler = (page: number) => {
     setCurrentPage(page);
-};
+  };
 
-const onPreSectionClickHandler = () => {
+  const onPreSectionClickHandler = () => {
     if(currentSection <= 1) return;
     setCurrentSection(currentSection - 1);
     setCurrentPage((currentSection-1) * COUNT_PER_SECTION);
-};
+  };
 
-const onNextSectionClickHandler = () => {
+  const onNextSectionClickHandler = () => {
     if(currentSection === totalSection) return;
     setCurrentSection(currentSection + 1);
     setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
-};
+  };
 
-const onSearchWordChangeHandler = (event:ChangeEvent<HTMLInputElement>) => {
+  const onSearchWordChangeHandler = (event:ChangeEvent<HTMLInputElement>) => {
     const searchWord = event.target.value;
     setSearchWord(searchWord);
-}
+  };
 
-const onPasswordKeydownHandler = (event:KeyboardEvent<HTMLInputElement>) => {
+  const onPasswordKeydownHandler = (event:KeyboardEvent<HTMLInputElement>) => {
     if(event.key === 'Enter') return onSearchButtonClickHandler();
-};
+  };
 
-const onSearchButtonClickHandler = () => {
+  const onSearchButtonClickHandler = () => {
     if(!searchWord) return;
     if(!cookies.accessToken) return;
     getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
-};
+  };
 
   const onToggleClickHandler = () => {
+    if(loginUserRole !== 'ROLE_ADMIN') return;
     setToggleOn(!isToggleOn);
   };
 
   //                    effect                     //
   useEffect(() => {
     getQnaListRequest().then(getQnaListResponse);
-  }, [isToggleOn])
+  }, [])
 
   useEffect(() => {
-    if(!cookies.accessToken) return;
+    if(!cookies.accessToken || loginUserRole !== 'ROLE_ADMIN') return;
     getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
   }, [isToggleOn])
 
@@ -206,52 +208,54 @@ const onSearchButtonClickHandler = () => {
   const searchButtonClass = searchWord ? 'primary-button' : 'disable-button';
 
   return (
-        <div id='qna-list-wrapper'>
-          <div className='qna-list-top'>
-            <div className='qna-list-top-left'>전체 <span className='emphasis'>{totalLength}건</span> | 페이지 <span className='emphasis'>{currentPage}/{totalPage}</span></div>
-            <div className='qna-list-top-right'>
-              <div className={toggleClass} onClick={onToggleClickHandler}></div>
-              {loginUserRole === 'ROLE_USER' ?
-              <div className='qna-list-top-right-text'>내가 쓴 문의내역</div> :
-              <div className='qna-list-top-right-text'>미완료 보기</div> 
-              }
-            </div>
-          </div>
-
-          <div className='qna-list-table'>
-            <div className='qna-list-table-title'>
-              <div className='qna-list-reception-number'>접수번호</div>
-              <div className='qna-list-status'>상태</div>
-              <div className='qna-list-title'>제목</div>
-              <div className='qna-list-writer-id'>작성자</div>
-              <div className='qna-list-write-date'>작성일</div>
-            </div>
-            {viewList.map(item => <ListItem key={item.receptionNumber} {...item} />)}
-          </div>
-
-          <div className='qna-list-bottom'>
-          <div className='qna-list-write-box' onClick={onWriteButtonClickHandler}>글쓰기</div>
-
-            <div className='qna-list-pagenation'>
-              <div className='qna-list-page-left' onClick={onPreSectionClickHandler}></div>
-              <div className='qna-list-page-box'>
-                {pageList.map(page => 
-                  page === currentPage ?
-                  <div className='qna-list-page-active' key={page}>{page}</div> :
-                  <div className='qna-list-page' onClick={() => onPageClickHandler(page)} key={page}>{page}</div>
-                  )}
-              </div>
-              <div className='qna-list-page-right' onClick={onNextSectionClickHandler}></div>
-            </div>
-
-            <div className='qna-list-bottom-right'>
-              <div className='qna-list-search-box'>
-                <input className='qna-list-search-input' placeholder='검색어를 입력해주세요.' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onPasswordKeydownHandler}></input>
-              </div>
-              <div className={searchButtonClass} onClick={onSearchButtonClickHandler}>검색</div>
-            </div>
-
-          </div>
-          
+    <div id='qna-list-wrapper'>
+      <div className='qna-list-top'>
+        <div className='qna-list-top-left'>전체 <span className='emphasis'>{totalLength}건</span> | 페이지 <span className='emphasis'>{currentPage}/{totalPage}</span></div>
+        <div className='qna-list-top-right'>
+          { loginUserRole === 'ROLE_USER' ?
+          <div className='qna-list-top-right-text'>내가 쓴 문의내역</div> :
+          <>
+          <div className={toggleClass} onClick={onToggleClickHandler}></div>
+          <div className='qna-list-admin-text'>미완료 보기</div>
+          </>
+          }
         </div>
+      </div>
+
+      <div className='qna-list-table'>
+        <div className='qna-list-table-title'>
+          <div className='qna-list-reception-number'>접수번호</div>
+          <div className='qna-list-status'>상태</div>
+          <div className='qna-list-title'>제목</div>
+          <div className='qna-list-writer-id'>작성자</div>
+          <div className='qna-list-write-date'>작성일</div>
+        </div>
+        {viewList.map(item => <ListItem key={item.receptionNumber} {...item} />)}
+      </div>
+
+      <div className='qna-list-bottom'>
+      <div className='qna-list-write-box' onClick={onWriteButtonClickHandler}>글쓰기</div>
+
+        <div className='qna-list-pagenation'>
+          <div className='qna-list-page-left' onClick={onPreSectionClickHandler}></div>
+          <div className='qna-list-page-box'>
+            {pageList.map(page => 
+              page === currentPage ?
+              <div className='qna-list-page-active' key={page}>{page}</div> :
+              <div className='qna-list-page' onClick={() => onPageClickHandler(page)} key={page}>{page}</div>
+              )}
+          </div>
+          <div className='qna-list-page-right' onClick={onNextSectionClickHandler}></div>
+        </div>
+
+        <div className='qna-list-bottom-right'>
+          <div className='qna-list-search-box'>
+            <input className='qna-list-search-input' placeholder='검색어를 입력해주세요.' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onPasswordKeydownHandler}></input>
+          </div>
+          <div className={searchButtonClass} onClick={onSearchButtonClickHandler}>검색</div>
+        </div>
+
+      </div>
+          
+    </div>
   )}

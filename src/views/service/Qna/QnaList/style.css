@@ -66,6 +66,8 @@
     height: 20px;
     background-image: url(../../../../assets/image/toggle-active.png);
     background-size: 100% 100%;
+
+    cursor: pointer;
 }
 
 .qna-list-top-right-text {

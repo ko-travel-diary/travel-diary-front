@@ -47,10 +47,11 @@ import QnaUpdate from "./views/service/Qna/QnaUpdate";
 import QnaWrite from "./views/service/Qna/QnaWrite";
 import AdminContainer from "./layouts/AdminContainer";
 import UserList from "./views/service/admin/userList";
-import TourAdd from "./views/service/admin/restList/restAdd";
-import RestAdd from "./views/service/admin/tourList/tourAdd";
+import TourAdd from "./views/service/admin/restList/tourAdd";
+import RestAdd from "./views/service/admin/tourList/restAdd";
 import TourList from "./views/service/admin/tourList";
 import RestList from "./views/service/admin/restList";
+import SearchTourList from "./views/service/SearchTourList";
 
 //                    Component : 인증화면 index 컴포넌트                     //
 function AuthIndex() {
@@ -110,8 +111,8 @@ function App() {
           </Route>
 
 
-          <Route path={TOUR_PATH} element={<></>}>
-            <Route index element={<></>} />
+          <Route path={TOUR_PATH}>
+            <Route index element={<SearchTourList />} />
             <Route path={TOUR_DETAIL_PATH} element={<></>} />
             <Route path={REST_DETAIL_PATH} element={<></>} />
           </Route>
