@@ -1,5 +1,5 @@
 export interface PostRestaurantRequestDto {
-    trestaurantName: string;
+    restaurantName: string;
     restaurantLocation: string;
     restaurantTelNumber: string;
     restaurantHours: string;

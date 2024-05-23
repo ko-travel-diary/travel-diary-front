@@ -169,17 +169,13 @@
     width: 100px;
 }
 .tour-list-table-name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     width: 150px;
 }
-.tour-list-table-locate {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+.tour-list-table-locate{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -187,10 +183,6 @@
     width: 150px;
 }
 .tour-list-table-tel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -198,14 +190,14 @@
     width: 150px;
 }
 .tour-list-table-hours {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     margin-right: 10px;
     width: 150px;
+}
+.long-text{
+    line-height: 49px;
+    text-align: left;
 }

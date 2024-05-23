@@ -1,4 +1,4 @@
-+#user-list-wrapper{
+#user-list-wrapper{
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     height: 44px;
+
 }
 .user-list-count-text .emphasis {
     color: rgba(64, 64, 64, 1);
@@ -184,22 +185,4 @@
 
     margin-right: 10px;
     width: 100px;
-}
-.error-button {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 8px 20px;
-
-    background-color: rgba(255, 84, 64, 1);
-    border-radius: 6px;
-
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 175%;
-
-    color: rgba(255, 255, 255, 1);
 }

@@ -1,19 +1,19 @@
 import ResponseDto from "src/apis/response.dto";
-import { tourAttractionsListItem } from "src/types";
+import { TourAttractionsListItem } from "src/types";
 
 export interface GetSearchTourAttractionsListResponseDto extends ResponseDto {
-    tourAttractionsListItem: tourAttractionsListItem[];
+    tourAttractionsListItem: TourAttractionsListItem[];
 }
 
 export interface GetTourAttractionsListResponseDto extends ResponseDto {
-    tourAttractionsListItem: tourAttractionsListItem[];
+    tourAttractionsListItem: TourAttractionsListItem[];
 }
 
 export interface GetTourAttractionsResponseDto extends ResponseDto {
-    tourattractionsImageUrl: string[];
-    tourattractionsName: string;
-    tourattractionsLocation: string;
-    tourattractionsTelNumber: string;
-    tourattractionsHours: string;
-    tourattractionsOutline: string;
+    tourAttractionsImageUrl: string[];
+    tourAttractionsName: string;
+    tourAttractionsLocation: string;
+    tourAttractionsTelNumber: string;
+    tourAttractionsHours: string;
+    tourAttractionsOutline: string;
 }

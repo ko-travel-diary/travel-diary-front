@@ -14,8 +14,9 @@ export const getRestaurantListRequest = async () => {
 };
 
 //      function: 음식점 검색 리스트 불러오기 API 함수       //
-export const getSearchRestaurantListRequest = async () => {
-    const result = await axios.get(GET_SEARCH_RESTAURANT_LIST_REQUEST_URL)
+export const getSearchRestaurantListRequest = async (searchWord: string) => {
+    const config = {params: {searchWord}}
+    const result = await axios.get(GET_SEARCH_RESTAURANT_LIST_REQUEST_URL, config)
         .then(requestHandler<GetSearchRestaurantListResponseDto>)
         .catch(requestErrorHandler);
     return result;

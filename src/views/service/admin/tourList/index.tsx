@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css'
-import { tourAttractionsListItem } from 'src/types';
+import { TourAttractionsListItem } from 'src/types';
 import { useCookies } from 'react-cookie';
 import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from 'src/constant';
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from 'src/apis/tour_attraction/dto/response';
@@ -9,19 +9,19 @@ import { useNavigate } from 'react-router';
 import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from 'src/apis/tour_attraction';
 
 //                  Component                   //
-export function TourListItems ({tourattractionsImageUrl, tourattractionsName, tourattractionsLocation, tourattractionsTelNumber, tourattractionsHours}: tourAttractionsListItem) {
+export function TourListItems ({tourAttractionsImageUrl, tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours}: TourAttractionsListItem) {
     
     //                  Render                  //
     return (
         <div className='tour-list-table-box'>
-            {tourattractionsImageUrl === null ?
+            {tourAttractionsImageUrl === null ?
                 <div className='tour-list-table-image'><img width='75px' height='50px' src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
-                <div className='tour-list-table-image'><img width='75px' height='50px' src={`${tourattractionsImageUrl}`} /></div>
+                <div className='tour-list-table-image'><img width='75px' height='50px' src={`${tourAttractionsImageUrl}`} /></div>
             }
-            <div className='tour-list-table-name'>{tourattractionsName}</div>
-            <div className='tour-list-table-locate'>{tourattractionsLocation}</div>
-            <div className='tour-list-table-tel'>{tourattractionsTelNumber}</div>
-            <div className='tour-list-table-hours'>{tourattractionsHours}</div>
+            <div className='tour-list-table-name long-text'>{tourAttractionsName}</div>
+            <div className='tour-list-table-locate long-text'>{tourAttractionsLocation}</div>
+            <div className='tour-list-table-tel long-text'>{tourAttractionsTelNumber}</div>
+            <div className='tour-list-table-hours long-text'>{tourAttractionsHours}</div>
         </div>
     )
 }
@@ -32,8 +32,8 @@ export default function TourList() {
     //                  state                  //
     const [cookies] = useCookies();
 
-    const [tourList, setTourList] = useState<tourAttractionsListItem[]>([]);
-    const [viewList, setViewList] = useState<tourAttractionsListItem[]>([]);
+    const [tourList, setTourList] = useState<TourAttractionsListItem[]>([]);
+    const [viewList, setViewList] = useState<TourAttractionsListItem[]>([]);
 
     const [totalLength, setTotalLength] = useState<number>(0);
 
@@ -52,7 +52,7 @@ export default function TourList() {
     //                  function                    //
     const navigator = useNavigate();
 
-    const changePage = (tourList: tourAttractionsListItem[], totalLength: number) => {
+    const changePage = (tourList: TourAttractionsListItem[], totalLength: number) => {
         if (!tourList || !Array.isArray(tourList) || tourList.length === 0) return;
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
@@ -72,7 +72,7 @@ export default function TourList() {
         setPageList(pageList);
     };
 
-    const changeTourList = (tourList: tourAttractionsListItem[]) => {
+    const changeTourList = (tourList: TourAttractionsListItem[]) => {
         setTourList(tourList);
 
         const totalLength = tourList.length;
@@ -129,7 +129,7 @@ export default function TourList() {
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
     }
 
-    //                  event handler                   //
+    //                  Event handler                   //
     const onPageClickHandler = (page: number) => {
         setCurrentPage(page)
     }
@@ -217,7 +217,7 @@ export default function TourList() {
                 <div className='tour-list-bottom-right'>
                     <div className='tour-list-search-box'>
                         <div className='tour-list-search-input-box'>
-                        <input className='tour-list-search-input' placeholder='아이디로 검색.' value={searchWord} onChange={onSearchWordChangeHandler}/>
+                        <input className='tour-list-search-input' placeholder='관광명소명으로 검색' value={searchWord} onChange={onSearchWordChangeHandler}/>
                         </div>
                         <div className='primary-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>
