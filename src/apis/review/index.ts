@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PatchTravelCommentRequestDto, PostTravelReviewCommentRequestDto, PostTravelReviewRequestDto } from "./dto/request";
+import { PatchTravelReviewRequestDto, PostTravelReviewCommentRequestDto, PostTravelReviewRequestDto } from "./dto/request";
 import { DELETE_REVIEW_COMMENT_REQUEST_URL, DELETE_REVIEW_REQUEST_URL, GET_COMMENT_LIST_REQUEST_URL, GET_REVIEW_FAVORITE_STATUS_REQUEST_URL, GET_REVIEW_LIST_REQUEST_URL, GET_REVIEW_MY_LIST_REQUEST_URL, GET_REVIEW_REQUEST_URL, GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL, GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL, GET_WRITE_DATE_SEARCH_REVIEW_REQUEST_LIST_URL, PATCH_FAVORITE_COUNT_REQUEST_URL, PATCH_INCREASE_VIEW_COUNT_REQUEST_URL, PATCH_REVIEW_COMMENT_REQUEST_URL, PATCH_REVIEW_REQUEST_URL, POST_REVIEW_COMMENT_REQUEST_URL, POST_REVIEW_REQUEST_URL } from "src/constant";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
 import ResponseDto from "../response.dto";
@@ -23,7 +23,7 @@ export const postTravelReviewCommentRequest = async(reviewNumber: number | strin
 }
 
 // function : 리뷰 게시물 수정 API 함수
-export const patchTravelReviewRequestDto = async(reviewNumber: number | string, RequestBody: PatchTravelCommentRequestDto, accessToken: string) => {
+export const patchTravelReviewRequestDto = async(reviewNumber: number | string, RequestBody: PatchTravelReviewRequestDto, accessToken: string) => {
     const result = await axios.patch(PATCH_REVIEW_REQUEST_URL(reviewNumber), RequestBody, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
@@ -98,7 +98,7 @@ export const getTravelReviewMyListRequest = async(accessToken: string) => {
     return result;
 }
 
-// function : 내가 쓴 리뷰 게시물 불러오기 API 함수
+// function : 해당 게시물에 유저가 좋아요 눌렀는지 상태 불러오기 API 함수
 export const getTravelReviewFavoriteStatusRequest = async(reviewNumber: number | string, accessToken: string) => {
     const result = await axios.get(GET_REVIEW_FAVORITE_STATUS_REQUEST_URL(reviewNumber), bearerAuthorization(accessToken))
         .then(requestHandler<GetTravelReviewFavoriteStatusResponseDto>)
