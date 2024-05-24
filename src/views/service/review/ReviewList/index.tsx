@@ -174,7 +174,7 @@ export default function ReviewList () {
         const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
         changeBoardList(reviewSearchList);
 
-        if(reviewSearchList.length == 0) alert('검색 결과가 없습니다.');
+        if(reviewSearchList.length === 0) alert('검색 결과가 없습니다.');
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
@@ -211,13 +211,13 @@ export default function ReviewList () {
     };
 
     const onSearchButtonClickHandler = () => {
-        if(selectedOption == "writer")
+        if(selectedOption === "writer")
             getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
         
-        if(selectedOption == "write-date")
+        if(selectedOption === "write-date")
             getTravelReviewWriteDateSearchRequest(searchWord).then(getTravelReviewWriteDateSearchResponse);
         
-        if(selectedOption == "title-contents")
+        if(selectedOption === "title-contents")
             getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
         
     };
