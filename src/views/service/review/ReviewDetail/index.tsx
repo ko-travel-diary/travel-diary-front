@@ -271,7 +271,7 @@ export default function ReviewDetail () {
     };
 
     const onUpdateButtonClickHandler = () => {
-        if(loginUserId != reviewWriterId){
+        if(loginUserId !== reviewWriterId){
             alert("권한이 없습니다.")
             return;
         }
@@ -284,7 +284,7 @@ export default function ReviewDetail () {
     };
 
     const onDeleteButtonClickHandler = () => {
-        if(loginUserId != reviewWriterId && loginUserRole != 'ROLE_ADMIN'){
+        if(loginUserId !== reviewWriterId && loginUserRole !== 'ROLE_ADMIN'){
             alert("권한이 없습니다.")
             return;
         }

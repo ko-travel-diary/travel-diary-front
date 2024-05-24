@@ -77,8 +77,11 @@ export const ADMINPAGE_REST_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PAT
 export const SERVER_DOMAIN_URL = 'http://localhost:4000';
 export const SERVER_API_URL = `${SERVER_DOMAIN_URL}/traveldiary/v1`;
 
-export const SERVER_AUTH_MODULE_URL = `${SERVER_API_URL}/auth`;
+export const SEVER_IMAGE_FILE_MODULE_URL = `${SERVER_API_URL}/image`;
+export const IMAGE_UPLOAD_URL = `${SEVER_IMAGE_FILE_MODULE_URL}/upload`;
+export const IMAGE_LOAD_URL = (imageUrl: string) => `${SEVER_IMAGE_FILE_MODULE_URL}/file/${imageUrl}`
 
+export const SERVER_AUTH_MODULE_URL = `${SERVER_API_URL}/auth`;
 export const SIGN_IN_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/sign-in`;
 export const ID_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/id-check`;
 export const NICKNAME_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/nickname-check`;

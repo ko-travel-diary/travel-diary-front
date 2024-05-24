@@ -16,7 +16,8 @@ export default function ReviewWrite () {
 
     const [reviewContent, setReivewContent] = useState<string> ('');
     const [reviewTitle, setReviewTitle] = useState<string> ('');
-    const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]> ([]);
+    const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
+    const photoInput = useRef();
 
     //                    function                     //
     const navigator = useNavigate();
@@ -39,14 +40,20 @@ export default function ReviewWrite () {
         navigator(REVIEW_DETAIL_ABSOLUTE_PATH(reviewNumber));
     };
 
-    //                     event handler                     //
-    const onReviewContentChangeHandler = (event:ChangeEvent<HTMLTextAreaElement>) => {
-        const reivewContent = event.target.value;
-        setReivewContent(reivewContent);
+    const imageInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files || !event.target.files[0]) return;
+        const file = event.target.files[0];
+        setTravelReviewImageUrl(file);
+    };
 
-        if(!contentsRef.current) return;
+    //                     event handler                     //
+    const onReviewContentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        const reviewContent = event.target.value;
+        setReivewContent(reviewContent);
+    
+        if (!contentsRef.current) return;
         contentsRef.current.style.height = 'auto';
-        contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`
+        contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
     };
 
     const onReviewTitleChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -62,12 +69,24 @@ export default function ReviewWrite () {
         postTravelReviewRequest(requestBody, cookies.accessToken).then(postTravelReviewResponse);
     };
 
+    const onImageUploadButtonClickHandler = () => {
+        photoInput.current.click();
+    };
+
     //                    render : review 작성 화면 컴포넌트                     //
     return(
         <div id='review-write-wrapper'>
             <div className='null-box'></div>
             <div className='write-button-wrapper'>
-                <div className='update-image-button primary-button'>사진 추가</div>
+                <input
+                type="file"
+                accept="image/jpg, image/png"
+                multiple
+                ref={photoInput}
+                onChange={imageInputOnChange}
+                style={{ display: 'none' }}
+                />
+                <div className='update-image-button primary-button' onClick={onImageUploadButtonClickHandler}>사진 추가</div>
                 <div className='update-my-travel-diary-butoon primary-button'>나의 여행일정 불러오기</div>
             </div>
             <div className='write-contents-box'>
