@@ -70,6 +70,8 @@ export default function QnaUpdate() {
             return;
         }
 
+        alert('수정이 완료되었습니다.');
+
         if(!receptionNumber) return;
         navigator(QNA_DETAIL_ABSOLUTE_PATH(receptionNumber));
     }

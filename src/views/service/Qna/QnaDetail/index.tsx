@@ -70,7 +70,8 @@ export default function QnaDetail() {
             alert(message);
             return;
         };
-        alert('입력이 완료되었습니다.');
+
+        alert('댓글 입력이 완료되었습니다.');
 
         if(!receptionNumber || !cookies.accessToken) return;
         getQnaRequest(receptionNumber, cookies.accessToken).then(getQnaResponse);
@@ -88,6 +89,7 @@ export default function QnaDetail() {
             alert(message);
             return;
         };
+
         alert('수정이 완료되었습니다.');
 
         window.location.reload();
@@ -105,6 +107,8 @@ export default function QnaDetail() {
             alert(message);
             return;
         }
+        
+        alert('게시물 삭제가 완료되었습니다.');
 
         navigator(QNA_ABSOLUTE_PATH);
     };
@@ -121,6 +125,8 @@ export default function QnaDetail() {
         alert(message);
         return;
       }
+
+      alert('댓글 삭제가 완료되었습니다.');
 
       if(!receptionNumber) return;
       getQnaRequest(receptionNumber, cookies.accessToken).then(getQnaResponse);
@@ -172,7 +178,7 @@ export default function QnaDetail() {
   };
 
   const onDeleteQnaClickHandler = () => {
-    if(!receptionNumber || loginUserId !== qnaWriterId || qnaStatus || !cookies.accessToken) return;
+    if(!receptionNumber || loginUserId !== qnaWriterId || !cookies.accessToken) return;
     const isQnaConfirm = window.confirm('정말로 삭제하시겠습니까?');
     if(!isQnaConfirm) return;
     

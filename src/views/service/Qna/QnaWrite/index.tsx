@@ -36,7 +36,8 @@ export default function QnaWrite() {
             navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
-
+        
+        alert('작성이 완료되었습니다.');
         navigator(QNA_ABSOLUTE_PATH);
     };
 
