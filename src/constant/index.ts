@@ -73,6 +73,9 @@ export const ADMINPAGE_REST_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PA
 export const ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${TOUR_ADD_PATH}`;
 export const ADMINPAGE_REST_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${REST_ADD_PATH}`;
 
+export const TOURATTRACTIONS_DETAIL_ABSOULUTE_PATH = (tourAttractionsNumber : string | number) => `${SERVICE_PATH}/tourlist/${tourAttractionsNumber}`;
+export const RESTAURANT_DETAIL_ABSOULUTE_PATH = (restaurantNumber : string | number) => `${SERVICE_PATH}/restlist/${restaurantNumber}`;
+
 // description : API URL PATH
 export const SERVER_DOMAIN_URL = 'http://localhost:4000';
 export const SERVER_API_URL = `${SERVER_DOMAIN_URL}/traveldiary/v1`;

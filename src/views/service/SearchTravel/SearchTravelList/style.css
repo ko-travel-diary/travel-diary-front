@@ -1,0 +1,229 @@
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+#travelList-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 200px;
+}
+
+.travel-search-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    width: 100%;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
+
+    gap: 20px;
+    padding: 20px;
+}
+
+.travel-search-location {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    align-items: center;
+    justify-items: center;
+
+    font-size: 20px;
+}
+
+.travel-search-category {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    align-items: center;
+    justify-items: center;
+
+    font-size: 20px;
+}
+
+.travel-font{
+    font-style: WavvePADO;
+    font-size: 20px;
+    font-weight: 700;
+    color: rgba(7, 65, 115, 1);
+}
+
+.travel-search-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.travel-search-input-box {
+    display: flex;
+    gap: 20px;
+}
+
+.travel-search-input{    
+    width: 700px;
+    
+    outline: none;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.travel-list-table-th {
+    display: flex;
+    align-items: center;
+    padding: 15px 24px;
+
+    border: 1px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
+
+    gap: 95px;
+    
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    
+    color: rgba(64,64,64,1);
+}
+
+.travel-list-table:hover {
+    cursor: pointer;
+    color: rgba(238,238,238,0.8);
+}
+
+.travel-list-table-title {
+    display: flex;
+
+    gap: 100px;
+
+    padding-bottom: 20px;
+}
+
+.travel-title {
+    color: lightslategrey;
+}
+
+.travel-name {
+    display: flex;
+    gap: 10px;
+
+    width: 450px;
+    text-align: start;
+}
+
+.travel-telNumber {
+    display: flex;
+    gap: 10px;
+
+    width: 450px;
+    text-align: start;
+}
+
+.travel-location {
+    display: flex;
+    gap: 10px;
+
+    width: 450px;
+    text-align: start;
+}
+
+.travel-hours {
+    display: flex;
+    gap: 10px;
+
+    width: 450px;
+    text-align: start;
+}
+
+.travel-list-table-outline {
+    display: flex;
+    flex-direction: column;
+    
+    gap: 10px;
+}
+
+.travel-outline-text {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    gap: 10px;
+}
+
+.travel-outline {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+    width: 1050px;
+}
+
+.travel-list-picture {
+    width: 200px;
+}
+
+.travel-list-bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.travel-list-pagenation {
+    display: flex;
+    align-items: center;
+
+    gap: 24px; 
+}
+
+.travel-list-page-left {
+    width: 40px;
+    height: 40px;
+
+    background-image: url(../../../../assets/image/page-left.png);
+    background-size: 100% 100%;
+
+    cursor: pointer;
+}
+
+.travel-list-page-right {
+    width: 40px;
+    height: 40px;
+
+    background-image: url(../../../../assets/image/page-right.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+
+.travel-list-page-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.travel-list-page {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+
+    color: rgba(148,146,166,1);
+
+    cursor: pointer;
+}
+
+.travel-list-page-active {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+
+    color: rgba(64,64,64,1);
+
+    cursor: default;
+}

@@ -67,7 +67,7 @@ function TopNavigation () {
             <div className='top-navigation-main'>
                 <div className='top-navigation-item-active' onClick={onMainPageButtonClickHandler}>메인 페이지</div>
                 <div className='vertical-divider'></div>
-                <div className='top-navigation-item' onClick={onTourButtonClickHandler}>관광명소 & 맛집 조회</div>
+                <div className='top-navigation-item' onClick={onTourButtonClickHandler}>관광명소 & 음식점 조회</div>
                 <div className='vertical-divider'></div>
                 <div className='top-navigation-item' onClick={onReivewButtonClickHandler}>여행 후기 게시글</div>
                 <div className='vertical-divider'></div>

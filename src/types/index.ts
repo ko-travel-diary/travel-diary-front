@@ -26,19 +26,25 @@ export interface UserListItem{
 }
 
 export interface TourAttractionsListItem{
+    tourAttractionsNumber: number;
     tourAttractionsImageUrl: string;
     tourAttractionsName: string;
     tourAttractionsLocation: string;
     tourAttractionsTelNumber: string;
     tourAttractionsHours: string;
+    tourAttractionsOutline: string;
 }
 
 export interface RestaurantListItem{
+    restaurantNumber: number;
     restaurantImageUrl: string;
     restaurantName: string;
     restaurantLocation: string;
     restaurantTelNumber: string;
     restaurantHours: string;
+    restaurantOutline: string;
+    restaurantMainMenu: string;
+    restaurantServiceMenu: string;
 }
 
 export interface reviewCommentList{
