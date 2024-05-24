@@ -32,7 +32,7 @@ export const getTourAttractionsRequest = async (tourattractionsNumber: number | 
 
 //      function: 관광지 추가 API 함수       //
 export const postTourAttractionsRequest = async (requestBody: PostTourAttractionsRequestDto, accessToken: string) => {
-    const result = await axios.put(POST_TOURATTRACTIONS_REQUEST_URL, requestBody, bearerAuthorization(accessToken))
+    const result = await axios.post(POST_TOURATTRACTIONS_REQUEST_URL, requestBody, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;

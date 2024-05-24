@@ -4,8 +4,10 @@ import { useCookies } from 'react-cookie'
 import { PostRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
-import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
+import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
 import { postRestaurantRequest } from 'src/apis/restaurant';
+import axios from 'axios';
+
 
 //                  Component                   //
 export default function RestAdd() {
@@ -13,27 +15,25 @@ export default function RestAdd() {
     //                  State                   //
     const [cookies] = useCookies();
 
+    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
+    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
+
     const [restaurantName, setRestaurantName] = useState<string>('');
     const [restaurantLocation, setRestaurantLocation] = useState<string>('');
     const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>('');
     const [restaurantHours, setRestaurantHours] = useState<string>('');
     const [restaurantOutline, setRestaurantOutline] = useState<string>('');
-    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string>('');
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');
-    const [restaurantLat, setRestaurantLat] = useState<string>('1');
-    const [restaurantLng, setRestaurantLng] = useState<string>('1');
+    const [restaurantLat, setRestaurantLat] = useState<string>('');
+    const [restaurantLng, setRestaurantLng] = useState<string>('');
     
     //                  Function                    //
     const navigator = useNavigate();
 
-    const changePostElement = () => {
-        
-    }
-
     const postRestaurantResponse = (result: ResponseDto | null ) => {
         const message =
-            !result ? "서버에 문제가 있습니다.." : 
+            !result ? "서버에 문제가 있습니다." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
             result.code === 'AF' ? '권한이 없습니다.' : 
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
@@ -44,7 +44,6 @@ export default function RestAdd() {
             return;
         }
 
-        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
     }
 
     //                  Event Handler                   //
@@ -68,14 +67,17 @@ export default function RestAdd() {
         setRestaurantHours(hours);
     }
 
-    const onRestaurantOutlineChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onRestaurantOutlineChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const outLine = event.target.value;
         setRestaurantOutline(outLine);
     }
 
-    const onRestaurantImageUrlChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        const imageUrl = event.target.value;
-        setRestaurantImageUrl(imageUrl);
+    const onRestaurantImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files || !event.target.files.length) return;
+        const file = event.target.files[0];
+        setRestaurantImage([...restaurantImage, file]);
+        const url = URL.createObjectURL(file);
+        setRestaurantImageUrl([...restaurantImageUrl, url]);
     }
 
     const onRestaurantMainMenuChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -88,19 +90,36 @@ export default function RestAdd() {
         setRestaurantServiceMenu(serviceMenu);
     }
 
-    const onRegisterButtonClickHandler = () =>{
+    const onRegisterButtonClickHandler = async () =>{
         if (!restaurantName.trim() || !restaurantLocation.trim() || !restaurantTelNumber.trim() || !restaurantHours.trim() || 
-        !restaurantOutline.trim() || !restaurantImageUrl.trim() || !restaurantMainMenu.trim() || !restaurantServiceMenu.trim()) return;
+        !restaurantOutline.trim() || !restaurantMainMenu.trim() || !restaurantServiceMenu.trim()) return;
 
         if (!cookies.accessToken) return;
 
-        // const requestBody: PostRestaurantRequestDto = {
-        //     restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
-        //     restaurantImageUrl[...], 
-        //     restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
-        // }
+        for (const image of restaurantImage) {
+            const data = new FormData();
+            data.append('file', image);
+            const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
+                .then(response => response.data as string)
+                .catch(error => null);
+            
+            if (!url) continue;
+            console.log(url);
+            restaurantImageUrl.push(url);
+        }
 
-        // postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
+        setRestaurantLat("1");
+        setRestaurantLng("1");
+
+        const requestBody: PostRestaurantRequestDto = {
+            restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
+            restaurantImageUrl,
+            restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
+        }
+
+        postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
+
+        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
     }
 
     //                  Render                   //
@@ -110,54 +129,54 @@ export default function RestAdd() {
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-name'>▣ 음식점 이름</div>
                     <div className='rest-register-name-box rest-register-element'>
-                        <input className='rest-register-name-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-name-input rest-register-input-element' placeholder='이름을 입력해주세요.' onChange={onRestaurantNameChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-address'>▣ 음식점 주소</div>
                     <div className='rest-register-address-box rest-register-element'>
-                        <input className='rest-register-address-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-address-input rest-register-input-element' placeholder='주소를 입력해주세요.' onChange={onRestaurantLocationChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-tel'>▣ 음식점 연락처</div>
                     <div className='rest-register-tel-box rest-register-element'>
-                        <input className='rest-register-tel-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-tel-input rest-register-input-element' placeholder='연락처를 입력해주세요.' onChange={onRestaurantTelNumberChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-hour'>▣ 음식점 영업시간</div>
                     <div className='rest-register-hour-box rest-register-element'>
-                        <input className='rest-register-hour-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-hour-input rest-register-input-element' placeholder='영업시간 입력해주세요.' onChange={onRestaurantHoursChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-main'>▣ 음식점 메인메뉴</div>
                     <div className='rest-register-main-box rest-register-element'>
-                        <input className='rest-register-main-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-main-input rest-register-input-element' placeholder='메인메뉴를 입력해주세요.' onChange={onRestaurantMainMenuChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-service'>▣ 음식점 취급메뉴</div>
                     <div className='rest-register-service-box rest-register-element'>
-                        <input className='rest-register-service-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-service-input rest-register-input-element' placeholder='제목을 입력해주세요.' onChange={onRestauranServiceMenuChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-outline'>▣ 음식점 개요</div>
                     <div className='rest-register-name-box rest-register-element'>
-                        <textarea className='rest-register-outline-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} />
+                        <textarea className='rest-register-outline-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} onChange={onRestaurantOutlineChangeHandler} />
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-image'>▣ 음식점 사진</div>
                     <div className='rest-register-image-box rest-register-element'>
-                        <input className='rest-register-image-input rest-register-input-element' placeholder='제목을 입력해주세요.'/>
+                        <input className='rest-register-image-input rest-register-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>
                     </div>
                 </div>
             </div>
             <div className='rest-register-bottom'>
-                <div className='primary-button'>등록</div>
+                <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
             </div>
         </div>
     )

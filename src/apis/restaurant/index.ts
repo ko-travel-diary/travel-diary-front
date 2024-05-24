@@ -32,7 +32,7 @@ export const getRestaurantRequest = async (RestaurantNumber: number | string) =>
 
 //      function: 음식점 추가 API 함수       //
 export const postRestaurantRequest = async (requestBody: PostRestaurantRequestDto, accessToken: string) => {
-    const result = await axios.put(POST_RESTAURANT_REQUEST_URL, requestBody, bearerAuthorization(accessToken))
+    const result = await axios.post(POST_RESTAURANT_REQUEST_URL, requestBody, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
