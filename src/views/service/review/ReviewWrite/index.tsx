@@ -16,8 +16,9 @@ export default function ReviewWrite () {
 
     const [reviewContent, setReivewContent] = useState<string> ('');
     const [reviewTitle, setReviewTitle] = useState<string> ('');
+    const [travelReviewImage, setTravelReviewImage] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const photoInput = useRef();
+    const photoInput = useRef<HTMLInputElement | null>(null);
 
     //                    function                     //
     const navigator = useNavigate();
@@ -41,9 +42,11 @@ export default function ReviewWrite () {
     };
 
     const imageInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files || !event.target.files[0]) return;
+        if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setTravelReviewImageUrl(file);
+        setTravelReviewImage([...travelReviewImage, file]);
+        const url = URL.createObjectURL(file);
+        setTravelReviewImageUrl([...travelReviewImageUrl, url]);
     };
 
     //                     event handler                     //
@@ -65,11 +68,20 @@ export default function ReviewWrite () {
         if(!reviewTitle.trim() || !reviewContent.trim()) return;
         if(!cookies.accessToken) return;
 
+        const travelReviewImageUrl: string[] = [];
+
+        // travelReviewImage upload 반복작업
+        for (const image of travelReviewImage) {
+            // url
+            travelReviewImageUrl.push('')
+        }
+
         const requestBody: PostTravelReviewRequestDto = {reviewTitle, reviewContent, travelReviewImageUrl }; 
         postTravelReviewRequest(requestBody, cookies.accessToken).then(postTravelReviewResponse);
     };
 
     const onImageUploadButtonClickHandler = () => {
+        if (!photoInput.current) return;
         photoInput.current.click();
     };
 
@@ -96,6 +108,9 @@ export default function ReviewWrite () {
                 <div className='write-content-box'>
                     <textarea ref={contentsRef} rows={10} placeholder='내용을 입력해주세요' maxLength={1000} className='write-content-textarea' onChange={onReviewContentChangeHandler} value={reviewContent}/>
                 </div>
+            </div>
+            <div>
+                {travelReviewImageUrl.map(url => <img src={url} />)}
             </div>
             <div className='write-update-button'>
                 <div className='primary-button' onClick={onPostReviewButtonClickHandler}>올리기</div>
