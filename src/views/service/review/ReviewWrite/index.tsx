@@ -4,9 +4,10 @@ import { useCookies } from 'react-cookie';
 import { PostTravelReviewRequestDto } from 'src/apis/review/dto/request';
 import { postTravelReviewRequest } from 'src/apis/review';
 import ResponseDto from 'src/apis/response.dto';
-import { REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from 'src/constant';
+import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from 'src/constant';
 import { useNavigate } from 'react-router';
 import { PostTravelReviewResponseDto } from 'src/apis/review/dto/response';
+import axios from 'axios';
 
 export default function ReviewWrite () {
 
@@ -41,14 +42,6 @@ export default function ReviewWrite () {
         navigator(REVIEW_DETAIL_ABSOLUTE_PATH(reviewNumber));
     };
 
-    const imageInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files || !event.target.files.length) return;
-        const file = event.target.files[0];
-        setTravelReviewImage([...travelReviewImage, file]);
-        const url = URL.createObjectURL(file);
-        setTravelReviewImageUrl([...travelReviewImageUrl, url]);
-    };
-
     //                     event handler                     //
     const onReviewContentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const reviewContent = event.target.value;
@@ -64,7 +57,15 @@ export default function ReviewWrite () {
         setReviewTitle(reviewTitle);
     };
 
-    const onPostReviewButtonClickHandler = () => {
+    const imageInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files || !event.target.files.length) return;
+        const file = event.target.files[0];
+        setTravelReviewImage([...travelReviewImage, file]);
+        const url = URL.createObjectURL(file);
+        setTravelReviewImageUrl([...travelReviewImageUrl, url]);
+    };
+
+    const onPostReviewButtonClickHandler = async () => {
         if(!reviewTitle.trim() || !reviewContent.trim()) return;
         if(!cookies.accessToken) return;
 
@@ -72,8 +73,12 @@ export default function ReviewWrite () {
 
         // travelReviewImage upload 반복작업
         for (const image of travelReviewImage) {
-            // url
-            travelReviewImageUrl.push('')
+            const data = new FormData();
+            data.append('file', image);
+            const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } }).then(response => response.data as string).catch(error => null);
+            if (!url) continue;
+            console.log(url);
+            travelReviewImageUrl.push(url);
         }
 
         const requestBody: PostTravelReviewRequestDto = {reviewTitle, reviewContent, travelReviewImageUrl }; 
