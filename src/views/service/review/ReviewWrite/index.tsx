@@ -8,6 +8,8 @@ import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } 
 import { useNavigate } from 'react-router';
 import { PostTravelReviewResponseDto } from 'src/apis/review/dto/response';
 import axios from 'axios';
+import { getScheduleDetailRequest, getScheduleListRequest } from 'src/apis/schedule';
+import { GetScheduleListResponseDto } from 'src/apis/schedule/dto/response';
 
 export default function ReviewWrite () {
 
@@ -19,6 +21,7 @@ export default function ReviewWrite () {
     const [reviewTitle, setReviewTitle] = useState<string> ('');
     const [travelReviewImage, setTravelReviewImage] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
+    const [travelScheduleName, setTravelScheduleName] = useState<string[]>([]);
     const photoInput = useRef<HTMLInputElement | null>(null);
 
     //                    function                     //
@@ -40,6 +43,21 @@ export default function ReviewWrite () {
         const { reviewNumber } = result as PostTravelReviewResponseDto;
 
         navigator(REVIEW_DETAIL_ABSOLUTE_PATH(reviewNumber));
+    };
+
+    const getScheduleListResponse = (result: ResponseDto | GetScheduleListResponseDto | null) => {
+        const message =
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'AF' ? '권한이 없습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : "";
+
+        if(!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const { travelScheduleName } = result as GetScheduleListResponseDto;
+        setTravelScheduleName([...travelScheduleName]);
     };
 
     //                     event handler                     //
@@ -90,7 +108,25 @@ export default function ReviewWrite () {
         photoInput.current.click();
     };
 
+    const onMyTravelDiaryLoadButtonClickHandler = () => {
+        if(!cookies.accessToken){
+            alert("로그인 후 이용해주세요.")
+            return;
+        }
+        getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+        setMyTravelDiaryLoadButtonStatus(!myTravelDiaryLoadButtonStatus);
+    };
+
+    const onTravelScheduleNameButtonClickHandler = () => {
+        if(!cookies.accessToken){
+            alert("로그인 후 이용해주세요.")
+            return;
+        }
+        // getScheduleDetailRequest
+    };
+
     //                    render : review 작성 화면 컴포넌트                     //
+    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
     return(
         <div id='review-write-wrapper'>
             <div className='null-box'></div>
@@ -104,18 +140,32 @@ export default function ReviewWrite () {
                 style={{ display: 'none' }}
                 />
                 <div className='update-image-button primary-button' onClick={onImageUploadButtonClickHandler}>사진 추가</div>
-                <div className='update-my-travel-diary-butoon primary-button'>나의 여행일정 불러오기</div>
+                {myTravelDiaryLoadButtonStatus? 
+                <div className='my-travel-diary-load-butoon primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기
+                    <div className='my-travel-diaty-list-box'>{travelScheduleName.map(travelScheduleName => (
+                        <div style={{color: 'black'}} onClick={onTravelScheduleNameButtonClickHandler}>{travelScheduleName}</div>
+                    ))}</div>
+                </div>
+                :
+                <div className='my-travel-diary-load-butoon primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
+                }
             </div>
             <div className='write-contents-box'>
                 <div className='write-title-box'>
                     <textarea  placeholder='제목을 입력해주세요' className='write-title-textarea' onChange={onReviewTitleChangeHandler} value={reviewTitle}/>
                 </div>
                 <div className='write-content-box'>
+                    {travelReviewImageUrl.map(url => (
+                        <div className='review-detail-content' key={url} style={{
+                            backgroundImage: `url(${url})`,
+                            width: '200px',
+                            height: '200px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}></div>
+                    ))}
                     <textarea ref={contentsRef} rows={10} placeholder='내용을 입력해주세요' maxLength={1000} className='write-content-textarea' onChange={onReviewContentChangeHandler} value={reviewContent}/>
                 </div>
-            </div>
-            <div>
-                {travelReviewImageUrl.map(url => <img src={url} />)}
             </div>
             <div className='write-update-button'>
                 <div className='primary-button' onClick={onPostReviewButtonClickHandler}>올리기</div>

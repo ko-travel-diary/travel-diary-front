@@ -376,13 +376,15 @@ export default function ReviewDetail () {
                     <div className='recommend-button' onClick={onRecommendButtonClickHandler}></div>
                     }
                 </div>
-                <div className='review-detail-content' style={{
-                    backgroundImage: `url(${travelReviewImageUrl[0]})`,
-                    width: '200px',
-                    height: '200px',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
+                {travelReviewImageUrl.map(url => (
+                    <div className='review-detail-content' key={url} style={{
+                        backgroundImage: `url(${url})`,
+                        width: '200px',
+                        height: '200px',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
                     }}></div>
+                ))}
                 <div className='review-detail-content'>{reviewContents}</div>
             </div>
 

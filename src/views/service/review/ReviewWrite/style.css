@@ -76,3 +76,18 @@ html::-webkit-scrollbar {
     display: flex;
     justify-content: flex-end;
 }
+
+.my-travel-diary-load-butoon{
+    position: relative;
+}
+
+.my-travel-diaty-list-box{
+    position: absolute;
+    top: 0%;
+    right:100%;
+
+    width: 200px;
+    height: 600px;
+    background-color: white;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+}
