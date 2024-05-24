@@ -120,7 +120,7 @@ export const DELETE_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${S
 export const DELETE_REVIEW_COMMENT_REQUEST_URL = (commentNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/comment/${commentNumber}`;
 
 export const SERVER_MYPAGE_MODULE_URL = `${SERVER_API_URL}/mypage`;
-export const SERVER_SCHEDULE_MODULE_URL = `${SERVER_MYPAGE_MODULE_URL}/schedule`;
+export const SERVER_SCHEDULE_MODULE_URL = `${SERVER_API_URL}/schedule`;
 export const POST_SCHEDULE_REQUEST_URL = `${SERVER_SCHEDULE_MODULE_URL}/`;
 export const GET_SCHEDULE_LIST_REQUEST_URL = `${SERVER_SCHEDULE_MODULE_URL}/list`;
 export const GET_SEARCH_SCHEDULE_REQUEST_LIST_URL = `${SERVER_SCHEDULE_MODULE_URL}/list/search`;
