@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css'
 import { RestaurantListItem } from 'src/types'
 import { useCookies } from 'react-cookie';
-import { ADMINPAGE_REST_ADD_ABSOLUTE_PATH, ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, RESTAURANT_DETAIL_ABSOULUTE_PATH } from 'src/constant';
+import { ADMINPAGE_REST_ADD_ABSOLUTE_PATH, ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, RESTAURANT_DETAIL_ABSOLUTE_PATH } from 'src/constant';
 import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
@@ -20,7 +20,7 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
     }
 
     const onRestaurantListClickHandler = () => {
-        navigator(RESTAURANT_DETAIL_ABSOULUTE_PATH(restaurantNumber));
+        navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(restaurantNumber));
     }
 
     //                  Render                  //

@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css'
 import { TourAttractionsListItem } from 'src/types';
 import { useCookies } from 'react-cookie';
-import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOULUTE_PATH } from 'src/constant';
+import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from 'src/constant';
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from 'src/apis/tour_attraction/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
@@ -19,7 +19,7 @@ export function TourListItems ({tourAttractionsNumber, tourAttractionsImageUrl, 
     }
 
     const onTourAttrctionListClickHandler = () => {
-        navigator(TOURATTRACTIONS_DETAIL_ABSOULUTE_PATH(tourAttractionsNumber));
+        navigator(TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH(tourAttractionsNumber));
     }
 
     //                  Render                  //
