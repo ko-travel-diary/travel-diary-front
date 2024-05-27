@@ -1,9 +1,9 @@
-import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useMemo, useState } from 'react'
 import './style.css';
 import SelectBox from 'src/components/Selectbox';
 import { useNavigate } from 'react-router';
 import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, RESTAURANT_ABSOULUTE_PATH, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_ABSOULUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from 'src/constant';
-import { RestaurantListItem, TourAttractionsListItem } from 'src/types';
+import { ListItem, RestaurantListItem, TourAttractionsListItem } from 'src/types';
 import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from 'src/apis/tour_attraction';
 import ResponseDto from 'src/apis/response.dto';
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from 'src/apis/tour_attraction/dto/response';
@@ -34,8 +34,8 @@ function Tourlist (
         <div className="travel-list-table" onClick={onClickHandler}>
                 <div className='travel-list-table-th'>
                     {tourAttractionsImageUrl === null ?
-                    <div className='travel-list-picture'><img width='200px' height='133px' src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
-                    <div className='travel-list-picture'><img width='200px' src={`${tourAttractionsImageUrl}`} /></div>
+                    <div className='travel-list-picture'><img title='travel' width='200px' height='133px' src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
+                    <div className='travel-list-picture'><img title='travel' width='200px' src={`${tourAttractionsImageUrl}`} /></div>
                     }
                     <div>
                         <div className='travel-list-table-title'>
@@ -147,6 +147,9 @@ export default function SearchTravelList() {
     const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
     const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>([]);
     const [restViewList, setRestViewList] = useState<RestaurantListItem[]>([]);
+
+    const [viewList, setViewList] = useState<ListItem[]>([]);
+
     const [totalLength, setTotalLength] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -156,7 +159,7 @@ export default function SearchTravelList() {
 
     const [searchWord, setSearchWord] = useState<string>('');
     const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
-    const [selectOption, setSelectOption] = useState<string>('');
+    const [selectOption, setSelectOption] = useState<string>('tourAttractions');
 
     //                     function                     //
     const navigator = useNavigate();
@@ -177,6 +180,16 @@ export default function SearchTravelList() {
         if(endIndex > totalLength - 1) endIndex = totalLength;
         const tourViewList = tourAttractionsListItem.slice(startIndex, endIndex);
         setTourViewList(tourViewList);
+
+        //TODO: 나중에 state 하나로 변경하기
+        // const viewList: ListItem[] = tourViewList.map((v) => ({
+        //     id: v.tourAttractionsNumber,
+        //     imageUrl: v.tourAttractionsImageUrl,
+        //     hours: v.tourAttractionsHours,
+        //     location: v.tourAttractionsLocation,
+        //     mainMenu: v.
+        // }))
+        // setViewList(viewList)
     };
 
     const changeTourList = (tourAttractionsListItem: TourAttractionsListItem[]) => {
@@ -262,6 +275,7 @@ export default function SearchTravelList() {
         }
 
         const { restaurantListItem } = result as GetRestaurantListResponseDto;
+
         changeRestList(restaurantListItem);
 
         setCurrentPage(!restaurantListItem.length ? 0 : 1);
@@ -281,7 +295,18 @@ export default function SearchTravelList() {
         }
 
         const { tourAttractionsListItem } = result as GetSearchTourAttractionsListResponseDto;
-        changeTourList(tourAttractionsListItem);
+
+        let tourViewList = [];
+
+        if(selectLocal !== 'all') {
+            tourViewList = tourAttractionsListItem.filter((value) => {
+                return value.tourAttractionsLocation.startsWith(selectLocal)
+            });
+        } else {
+            tourViewList = tourAttractionsListItem;
+        }
+
+        changeTourList(tourViewList);
 
         setCurrentPage(!tourAttractionsListItem.length ? 0 : 1);
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
@@ -300,7 +325,16 @@ export default function SearchTravelList() {
         }
 
         const { restaurantListItem } = result as GetRestaurantListResponseDto;
-        changeRestList(restaurantListItem);
+
+        let restViewList = [];
+
+        if(selectLocal !== 'all') {
+            restViewList = restaurantListItem.filter((value) => value.restaurantLocation.startsWith(selectLocal));
+        } else {
+            restViewList = restaurantListItem;
+        }
+
+        changeRestList(restViewList);
 
         setCurrentPage(!restaurantListItem.length ? 0 : 1);
         setCurrentSection(!restaurantListItem.length ? 0 : 1);
@@ -402,8 +436,9 @@ export default function SearchTravelList() {
                     </div>
                 </div>
             </div>
-            {tourViewList.map(item => <Tourlist {...item} />)}
-            {restViewList.map(item => <Restlist {...item} />)}
+            
+            {selectOption === 'tourAttractions' && tourViewList.map(item => <Tourlist {...item} />)}
+            {selectOption === 'restaurant' && restViewList.map(item => <Restlist {...item} />)}
 
             <div className="travel-list-bottom">
             <div className='travel-list-pagenation'>

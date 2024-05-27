@@ -52,6 +52,18 @@ export interface RestaurantListItem{
     restaurantServiceMenu: string;
 }
 
+export interface ListItem {
+    id: number;
+    imageUrl: string;
+    name: string;
+    location: string;
+    telNumber: string;
+    hours: string;
+    outline: string;
+    mainMenu: string;
+    serviceMenu: string;
+}
+
 export interface reviewCommentList{
     commentContent: string;
     reviewCommentNumber: number;
