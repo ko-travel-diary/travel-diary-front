@@ -10,20 +10,43 @@ import ResponseDto from 'src/apis/response.dto';
 import { useCookies } from 'react-cookie';
 import { useStore } from 'zustand';
 import { useUserStore } from 'src/stores';
+import { GetUserInfoResponseDto } from 'src/apis/user/dto/response';
+import { getUserInfoRequest } from 'src/apis/user';
 
 //                    Component : 로그인 화면 컴포넌트                     //
 function SignIn () { 
 
     //                    state                     //
     const[cookies, setCookies] = useCookies();
-    // description: 아이디 상태 //
+
     const [userId, setUserId] = useState<string>('');
-    // description: 비밀번호 상태 //
+    const [userRole, setUserRole] = useState<string>('')
     const [userPassword, setUserPassword] = useState<string>('');
+
+    const [message, setMessage] = useState<string>('');
+    const {setLoginUserId, setLoginUserRole} = useUserStore();
     
     //                     function                     //
-    // description: 네비게이터 함수 //
     const navigator = useNavigate();
+
+    const getSignInUserResponse = (result: GetUserInfoResponseDto | ResponseDto | null) => {
+
+        const message = 
+            !result ? '서버에 문제가 있습니다.' : 
+            result.code === 'VF' ? '아이디와 비밀번호를 모두 입력하세요.' :
+            result.code === 'SF' ? '로그인 정보가 일치하지 않습니다.' :
+            result.code === 'TF' ? '서버에 문제가 있습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if( !result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const { userId, userRole } = result as GetUserInfoResponseDto;
+        setLoginUserId(userId);
+        setLoginUserRole(userRole);
+    }
 
     const signInResponse = (result: SignInResponseDto | ResponseDto | null) => {
 
@@ -42,28 +65,33 @@ function SignIn () {
         const {accessToken, expires} = result as SignInResponseDto; 
         const expiration = new Date(Date.now() + (expires * 1000));
         setCookies('accessToken', accessToken, { path: '/' , expires: expiration});
+        getUserInfoRequest(accessToken).then(getSignInUserResponse);
 
-        navigator(MAIN_ABSOLUTE_PATH);
-        alert('로그인 성공');
     };
 
     //                     event handler                     //
-    // description: 아이디 변경 이벤트 처리 함수 //
     const onUserIdChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserId(value);
-    }
-    // description: 비밀번호 변경 이벤트 처리 함수 //
+    };
+    
     const onUserPasswordChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserPassword(value);
-    }
-    // description: 로그인 버튼 클릭 이벤트 처리 함수 //
+    };
     const onSignInButtonClickHandler = () => {
+
+        if (!userId || !userPassword) {
+            setMessage('아이디와 비밀번호를 모두 입력해주세요.')
+            return;
+        }
+
         const requestBody: SignInRequestDto = {userId, userPassword};
         signInRequest(requestBody).then(signInResponse);
-    }
-    // description: 회원가입 버튼 클릭 이벤트 처리 함수 //
+
+        navigator(MAIN_ABSOLUTE_PATH);
+    };
+
     const onSignUpButtonClickHandler = () => navigator(SIGN_UP_ABSOLUTE_PATH);
 
     //                    render : 로그인 화면 컴포넌트                     //
@@ -84,7 +112,7 @@ function SignIn () {
                     </div>
                 </div>
             </div>
-            <Social />
+            <Social title='sns 로그인' />
             <div className='sign-in-button-box'>
                 <div className='primary-button full-width' onClick={onSignInButtonClickHandler}>로그인</div>
                 <div className='primary-button full-width' onClick={onSignUpButtonClickHandler}>회원가입</div>

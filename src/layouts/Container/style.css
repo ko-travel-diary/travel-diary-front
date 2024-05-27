@@ -67,3 +67,67 @@
 
     text-shadow: 0px 0px 5px rgba(7, 65, 115, 0.3);
 }
+.loginUser-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    width: 142px;
+
+    cursor: pointer;
+}
+.user-profile.default {
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+
+    background-image: url(../../assets/image/userProfileDefault.png);
+    background-size: 100%;
+    background-position: center;
+
+    position: relative;
+}
+.user-profile.image {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    position: relative;
+}
+.user-profile-set{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    
+    object-position: 50% 50%;
+    object-fit: cover;
+}
+.top-navigation-right-drop-down {
+    display: flex;
+    justify-content: center;
+
+    position: absolute;
+    top: 65px;
+    right: 0;
+    z-index: 2;
+
+    width: 200px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+
+    cursor: default;
+}
+.navigation-box{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navigation-move-page{
+    cursor: pointer;
+}
+.sign-out-button{
+    cursor: pointer;
+}

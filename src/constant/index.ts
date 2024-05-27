@@ -26,8 +26,8 @@ export const SCHEDULE_WRITE_PATH = 'write';
 export const SCHEDULE_DETAIL_PATH = ':scheduleNumber';
 export const SCHEDULE_UPDATE_PATH = 'update/:scheduleNumber';
 
-export const TOUR_DETAIL_PATH = ':tourAttractionsNumber';
-export const REST_DETAIL_PATH = ':restaurant_number';
+export const TOUR_DETAIL_PATH = 'tourlist/:tourAttractionsNumber';
+export const REST_DETAIL_PATH = 'restlist/:restaurant_number';
 
 // USER
 export const PROFILE_UPDATE_PATH = 'profileUpdate';
@@ -35,9 +35,13 @@ export const MY_REVIEWLIST_PATH = 'reviewList';
 
 // ADMIN
 export const TOUR_LIST_PATH = 'tourList';
-export const REST_LIST_PATH = 'restList';
 export const TOUR_ADD_PATH = 'addTour';
+export const TOUR_CONTORL_PATH = 'control/:tourAttractionsNumber';
+
+export const REST_LIST_PATH = 'restList';
 export const REST_ADD_PATH = 'addRest';
+export const REST_CONTROL_PATH = 'control/:scheduleNumber';
+
 export const USER_LIST_PATH = 'userList';
 
 // description : Navigation 절대 URL PATH
@@ -51,7 +55,9 @@ export const QNA_ABSOLUTE_PATH = `${SERVICE_PATH}/${QNA_PATH}`;
 export const REVIEW_ABSOULUTE_PATH = `${SERVICE_PATH}/${REVIEW_PATH}`;
 export const MYPAGE_ABSOULUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}`;
 export const ADMINPAGE_ABSOULUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}`;
-export const TOURATTRACTIONS_ABSOULUTE_PATH = `${SERVICE_PATH}/${TOUR_PATH}`;
+export const TRAVEL_ABSOLUTE_PATH = `${SERVICE_PATH}/${TOUR_PATH}`;
+export const TOURATTRACTIONS_ABSOULUTE_PATH = `${SERVICE_PATH}/${TOUR_LIST_PATH}/${TOUR_PATH}`;
+export const RESTAURANT_ABSOULUTE_PATH = `${SERVICE_PATH}/${TOUR_LIST_PATH}/${TOUR_PATH}`;
 
 export const QNA_WRITE_ABSOLUTE_PATH = `${SERVICE_PATH}/${QNA_PATH}/${QNA_WRITE_PATH}`;
 export const QNA_DETAIL_ABSOLUTE_PATH = (receptionNumber: string | number) => `${SERVICE_PATH}/${QNA_PATH}/${receptionNumber}`;
@@ -73,8 +79,11 @@ export const ADMINPAGE_REST_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PA
 export const ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${TOUR_ADD_PATH}`;
 export const ADMINPAGE_REST_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${REST_ADD_PATH}`;
 
-export const TOURATTRACTIONS_DETAIL_ABSOULUTE_PATH = (tourAttractionsNumber : string | number) => `${SERVICE_PATH}/tourlist/${tourAttractionsNumber}`;
-export const RESTAURANT_DETAIL_ABSOULUTE_PATH = (restaurantNumber : string | number) => `${SERVICE_PATH}/restlist/${restaurantNumber}`;
+export const ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH = (tourAttractionsNumber: string | number) => `${SERVICE_PATH}/${ADMINPAGE_PATH}/control/${tourAttractionsNumber}`;
+export const ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH = (restaurantNumber: string | number) => `${SERVICE_PATH}/${ADMINPAGE_PATH}/control/${restaurantNumber}`;
+
+export const TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH = (tourAttractionsNumber : string | number) => `${SERVICE_PATH}/${TOUR_PATH}/tourlist/${tourAttractionsNumber}`;
+export const RESTAURANT_DETAIL_ABSOLUTE_PATH = (restaurantNumber : string | number) => `${SERVICE_PATH}/${TOUR_PATH}/restlist/${restaurantNumber}`;
 
 // description : API URL PATH
 export const SERVER_DOMAIN_URL = 'http://localhost:4000';
@@ -91,6 +100,7 @@ export const NICKNAME_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/nickname-ch
 export const EMAIL_AUTH_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/email-auth`;
 export const EMAIL_AUTH_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/email-auth-check`;
 export const SIGN_UP_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/sign-up`;
+export const SIGN_OUT_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/sign-out`
 
 export const SERVER_QNA_MODULE_URL = `${SERVER_API_URL}/qna`;
 export const POST_QNA_REQUEST_URL = `${SERVER_QNA_MODULE_URL}/`;

@@ -47,11 +47,11 @@ import QnaUpdate from "./views/service/Qna/QnaUpdate";
 import QnaWrite from "./views/service/Qna/QnaWrite";
 import AdminContainer from "./layouts/AdminContainer";
 import UserList from "./views/service/admin/userList";
-import TourAdd from "./views/service/admin/tourList/tourAdd";
-import RestAdd from "./views/service/admin/restList/restAdd";
+import TourAdd from "./views/service/admin/tourAdd";
+import RestAdd from "./views/service/admin/restAdd";
 import TourList from "./views/service/admin/tourList";
 import RestList from "./views/service/admin/restList";
-import SearchTourList from "./views/service/SearchTravel/SearchTravelList";
+import SearchTravelList from "./views/service/SearchTravel/SearchTravelList";
 import TourDetail from "./views/service/SearchTravel/SearchTravelDetail/TourDetail";
 import RestDetail from "./views/service/SearchTravel/SearchTravelDetail/RestDetail";
 
@@ -114,7 +114,7 @@ function App() {
 
 
           <Route path={TOUR_PATH}>
-            <Route index element={<SearchTourList />} />
+            <Route index element={<SearchTravelList />} />
             <Route path={TOUR_DETAIL_PATH} element={<TourDetail />} />
             <Route path={REST_DETAIL_PATH} element={<RestDetail />} />
           </Route>

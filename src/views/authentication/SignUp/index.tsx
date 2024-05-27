@@ -1,6 +1,11 @@
 import { ChangeEvent, useState } from 'react';
 import Social from 'src/components/Social';
 import './style.css'
+import { useNavigate } from 'react-router';
+import ResponseDto from 'src/apis/response.dto';
+import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, NickNameCheckRequestDto, SignUpRequestDto } from 'src/apis/auth/dto/request';
+import { emailAuthCheckRequest, emailAuthRequest, idCheckRequest, nickNameCheckRequest, signInRequest, singUpRequest } from 'src/apis/auth';
 
 //                    interface : 회원가입 인풋 박스 프로퍼티즈                     //
 interface InputBoxProps {
@@ -25,7 +30,11 @@ function InputBox ({ title, value, onChnage, placeholder, type, messageError, me
             <div className='sign-up-input-main'>
                 <div className='sign-up-input-title'>{title}</div>
                 <div  className='sign-up-outline'>
-                    <input  className='sign-up-input' type={type} placeholder={placeholder} value={value} onChange={onChnage}  />
+                    <input  className='sign-up-input' 
+                    type={type} 
+                    placeholder={placeholder} 
+                    value={value} 
+                    onChange={onChnage}  />
                     <div className={messageClass}>{message}</div>
                 </div>
                 {onButtonClick && <div className='primary-button' onClick={onButtonClick}>{buttonTitle}</div>}
@@ -39,105 +48,262 @@ function InputBox ({ title, value, onChnage, placeholder, type, messageError, me
 function SignUp () { 
 
     //                    state                     //
-    // description: 아이디 상태 //
+    const navigator = useNavigate();
+
     const [userId, setUserId] = useState<string>('');
-    // description: 비밀번호 상태 //
     const [userPassword, setUserPassword] = useState<string>('');
-    // description: 비밀번호 확인 상태 //
     const [userPasswordCheck, setUserPasswordCheck] = useState<string>('');
-    // description: 닉네임 상태 //
     const [nickName, setNickName] = useState<string>('');
-    // description: 이메일 상태 //
     const [userEmail, setUserEmail] = useState<string>('');
-    // description: 인증번호 상태 //
-    const [authNumber, setAuthNumber] = useState<string>('');
-    // description: 아이디 메세지  상태 //
-    const [userIdMessage, setUserIdMessage] = useState<string>('이미 사용중인 아이디입니다.');
-    // description: 비밀번호 메세지 상태 //
+    const [authNumber, setAuthNumber] = useState<string>('');    
+
+    const [idButtonStatus, setIdButtonStatus] = useState<boolean>(false);
+    const [nickNameButtonStatus, setNicknameButtonStatus] = useState<boolean>(false);
+    const [emailButtonStatus, setEmailButtonStauts] = useState<boolean>(false);
+    const [authNumberButtonStatus, setAuthNumberButtonStatus] = useState<boolean>(false);
+
+    const [idCheck, setIdCheck] = useState<boolean>(false);
+    const [passwordPattern, setPasswordPattern] = useState<boolean>(false);
+    const [passwordCheck, setPasswordCheck] = useState<boolean>(false);
+    const [nickNameCheck, setNickNameCheck] = useState<boolean>(false);
+    const [emailCheck, setEmailCheck] = useState<boolean>(false);
+    const [authNumberCheck, setAuthNumberCheck] = useState<boolean>(false);
+
+    const signUpCondition = idCheck && passwordPattern && passwordCheck && nickNameCheck && emailCheck && authNumberCheck;
+
+    const [userIdMessage, setUserIdMessage] = useState<string>('');
     const [userPasswordMessage, setUserPasswordMessage] = useState<string>('');
-    // description: 비밀번호 확인 메세지 상태 //
     const [userPasswordCheckMessage, setUserPasswordCheckMessage] = useState<string>('');
-    // description: 닉네임 메세지 상태 //
     const [nickNameMessage, setNickNameMessage] = useState<string>('');
-    // description: 이메일 메세지 상태 //
     const [userEmailMessage, setUserEmailMessage] = useState<string>('');
-    // description: 인증번호 메세지 상태 //
     const [authNumberMessage, setAuthNumberMessage] = useState<string>('');
-    // description: 아이디 메세지 에러  상태 //
+    
     const [userIdMessageError, setUserIdMessageError] = useState<boolean>(false);
-    // description: 비밀번호 메세지 에러 상태 //
     const [userPasswordMessageError, setUserPasswordMessageError] = useState<boolean>(false);
-    // description: 비밀번호 확인 메세지 에러 상태 //
     const [userPasswordCheckMessageError, setUserPasswordCheckMessageError] = useState<boolean>(false);
-    // description: 닉네임 메세지 에러 상태 //
-    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
-    // description: 이메일 메세지 에러 상태 //
+    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);   
     const [userEmailMessageError, setUserEmailMessageError] = useState<boolean>(false);
-    // description: 인증번호 메세지 에러 상태 //
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
 
+    const signUpButtonActive = signUpCondition ? 'primary-button' : 'disable-button';
+
+    //                  Function                    //
+    const idCheckResponse = (result: ResponseDto | null) => {
+
+        const idMessage = 
+            !result ? '서버에 문제가 있습니다.' : 
+            result.code === 'VF' ? '아이디는 빈값 혹은 공백으로만 이루어질 수 없습니다.' :
+            result.code === 'DI' ? '이미 사용중인 아이디 입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            result.code === 'SU' ? '사용 가능한 아이디 입니다.' : '';
+
+        const idError = !(result && result.code === 'SU');
+        const idCheck = !idError;
+
+        setUserIdMessage(idMessage);
+        setUserIdMessageError(idError);
+        setIdCheck(idCheck);
+    };
+
+    const nickNameCheckResponse = (result: ResponseDto | null) => {
+
+        const nickNameMessage = 
+            !result ? '서버에 문제가 있습니다.' : 
+            result.code === 'VF' ? '닉네임은 빈값 혹은 공백으로만 이루어질 수 없습니다.' :
+            result.code === 'DI' ? '이미 사용중인 닉네임 입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+            result.code === 'SU' ? '사용 가능한 닉네임 입니다.' : '';
+
+        const nickNameError = !(result && result.code === 'SU');
+        const nickNameCheck = !nickNameError;
+
+        setNickNameMessage(nickNameMessage);
+        setNickNameMessageError(nickNameMessageError);
+        setNickNameCheck(nickNameCheck);
+    }
+
+    const emailAuthResponse = (result: ResponseDto | null) => {
+
+        const emailMessage = 
+        !result ? '서버에 문제가 있습니다.' : 
+        result.code === 'VF' ? '이메일 형식이 아닙니다.' :
+        result.code === 'DI' ? '중복된 이메일 입니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+        result.code === 'SU' ? '인증번호가 전송되었습니다.' : '';
+
+        const emailError = !(result && result.code === 'SU');
+        const emailCheck = !emailError;
+
+        setUserEmailMessage(emailMessage);
+        setUserEmailMessageError(emailError);
+        setEmailCheck(emailCheck);
+    };
+
+    const emailAuthCheckResponse = (result: ResponseDto | null) => {
+
+        const authNumberMessage = 
+        !result ? '서버에 문제가 있습니다.' : 
+        result.code === 'VF' ? '인증번호를 입력해주세요.' :
+        result.code === 'DI' ? '인증번호가 일치하지 않습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+        result.code === 'SU' ? '인증번호가 확인되었습니다.' : '';
+
+        const authNumberError = !(result && result.code === 'SU');
+        const authNumberCheck = !authNumberError;
+
+        setAuthNumberMessage(authNumberMessage);
+        setAuthNumberMessageError(authNumberError);
+        setAuthNumberCheck(authNumberCheck);
+    };
+
+    const signUpResponse = (result: ResponseDto | null) => {
+        
+        const message = 
+        !result ? '서버에 문제가 있습니다' :
+        result.code === 'VF' ? '입력형식이 맞지 않습니다.' :
+        result.code === 'DI' ? '이미 사용중인 아이디 입니다.' :
+        result.code === 'DN' ? '이미 사용중인 닉네임 입니다.' :
+        result.code === 'DE' ? '중복된 이메일 입니다.' :
+        result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : ''
+
+        if( !result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const success = result === null || result.code === 'SU';
+        if (!success) {
+            alert(message);
+            return;
+        }
+
+        navigator(SIGN_IN_ABSOLUTE_PATH);
+    }
+
     //                    event handler                     //
-    // description: 아이디 변경 처리 이벤트 //
     const onUserIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserId(value);
+        setIdButtonStatus(value !== '');
+        setIdCheck(false);
+        setUserIdMessage('');
     };
-    // description: 비밀번호 변경 처리 이벤트 //
     const onUserPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserPassword(value);
+        const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$/;
+        const isPasswordPattern = passwordPattern.test(value);
+        setPasswordPattern(isPasswordPattern);
+        const passwordMessage = isPasswordPattern ? '' : value ? '영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요' : '';
+        setUserPasswordMessage(passwordMessage);
     };
-    // description: 비밀번호 확인 변경 처리 이벤트 //
     const onUserPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserPasswordCheck(value);
+        const isEqualPassword = userPassword === value;
+
+        setPasswordCheck(isEqualPassword);
+        const passwordCheckMessage = isEqualPassword ? '' : value ? '비밀번호가 일치하지 않습니다.' : '';
+        setUserPasswordCheckMessage(passwordCheckMessage);
     };
-    // description: 닉네임 변경 처리 이벤트 //
     const onNickNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setNickName(value);
+        setNicknameButtonStatus(value !== '');
+        setNickNameCheck(false);
+        setNickNameMessage('');
     };
-    // description: 이메일 변경 처리 이벤트 //
     const onUserEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserEmail(value);
+        setEmailButtonStauts(value !== '');
+        setEmailCheck(false);
+        setAuthNumberCheck(false);
+        setUserEmailMessage('');
     };
-    // description: 인증번호 변경 처리 이벤트 //
     const onAuthNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setAuthNumber(value);
+        setAuthNumberButtonStatus(value !== '');
+        setAuthNumberCheck(false);
+        setAuthNumberMessage('');
     };
-    // description: 아이디 버튼 클릭 처리 이벤트 //
-    const onUserIdButtonClickHandler = () => {
 
+    const onUserIdButtonClickHandler = () => {
+        if (!idButtonStatus) return;
+        if (!userId || !userId.trim()) return;
+
+        const requestBody: IdCheckRequestDto = {userId};
+
+        idCheckRequest(requestBody).then(idCheckResponse);
     };
-    // description: 닉네임 버튼 클릭 처리 이벤트 //
     const onNickNameButtonClickHandler = () => {
-        
+        if (!nickNameButtonStatus) return;
+        if (!nickName || !nickName.trim()) return;
+
+        const requestBody: NickNameCheckRequestDto = {nickName}
+
+        nickNameCheckRequest(requestBody).then(nickNameCheckResponse);
     };
-    // description: 이메일 버튼 클릭 처리 이벤트 //
     const onUserEmailButtonClickHandler = () => {
-        
+        if (!emailButtonStatus) return;
+
+        const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,3}$/;
+        const isEmailPattern = emailPattern.test(userEmail);
+        if (!isEmailPattern) {
+            setUserEmailMessage('이메일 형식이 아닙니다.');
+            setUserEmailMessageError(true);
+            setEmailCheck(false);
+        }
+
+        const requestBody: EmailAuthRequestDto = {userEmail}
+        emailAuthRequest(requestBody).then(emailAuthResponse);
     };
-    // description: 인증번호 버튼 클릭 처리 이벤트 //
     const onAuthNumberButtonClickHandler = () => {
+        if (!authNumberButtonStatus) return;
+        if (!authNumber) return;
         
+        const requestBody: EmailAuthCheckRequestDto = {userEmail, authNumber}
+        emailAuthCheckRequest(requestBody).then(emailAuthCheckResponse)
     };
+    const onSignUpButtonClickHandler = () => {
+        if(!signUpCondition) return;
+        if (!userId || !userPassword || !nickName || !userEmail || !authNumber) {
+            alert('모든 내용을 입력해주세요.');
+            return;
+        }
+
+        const requestBody: SignUpRequestDto = {userId, userPassword, nickName, userEmail, authNumber}
+        singUpRequest(requestBody).then(signUpResponse);
+    }
 
     //                    render : 회원가입 화면 컴포넌트                     //
     return (
         <div id='sign-up-wrapper'>
             <div className='sign-up-title'>회원가입</div>
             <div className='sign-up-input-container'>
-                <InputBox title='아이디' value={userId} onChnage={onUserIdChangeHandler} placeholder='' type='text' messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler}  />
-                <InputBox title='비밀번호' value={userPassword} onChnage={onUserPasswordChangeHandler} placeholder='' type='password' messageError={userPasswordMessageError} message={userPasswordMessage}  />
-                <InputBox title='비밀번호 확인' value={userPasswordCheck} onChnage={onUserPasswordCheckChangeHandler} placeholder='' type='password' messageError={userPasswordCheckMessageError} message={userPasswordCheckMessage} />
-                <InputBox title='닉네임' value={nickName} onChnage={onNickNameChangeHandler} placeholder='' type='text' messageError={nickNameMessageError} message={nickNameMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler}  />
-                <InputBox title='이메일' value={userEmail} onChnage={onUserEmailChangeHandler} placeholder='' type='text' messageError={userEmailMessageError} message={userEmailMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler}  />
-                <InputBox title='인증번호' value={authNumber} onChnage={onAuthNumberChangeHandler} placeholder='' type='text' messageError={authNumberMessageError} message={authNumberMessage} buttonTitle='인증 확인' onButtonClick={onUserIdButtonClickHandler}  />
+                <InputBox title='아이디' value={userId} onChnage={onUserIdChangeHandler} placeholder='' type='text' 
+                messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler}  />
+
+                <InputBox title='비밀번호' value={userPassword} onChnage={onUserPasswordChangeHandler} placeholder='' type='password' 
+                messageError={userPasswordMessageError} message={userPasswordMessage} />
+
+                <InputBox title='비밀번호 확인' value={userPasswordCheck} onChnage={onUserPasswordCheckChangeHandler} placeholder='' type='password' 
+                messageError={userPasswordCheckMessageError} message={userPasswordCheckMessage} />
+
+                <InputBox title='닉네임' value={nickName} onChnage={onNickNameChangeHandler} placeholder='' type='text' messageError={nickNameMessageError} 
+                message={nickNameMessage} buttonTitle='중복 확인' onButtonClick={onNickNameButtonClickHandler} />
+
+                <InputBox title='이메일' value={userEmail} onChnage={onUserEmailChangeHandler} placeholder='' type='text' messageError={userEmailMessageError} 
+                message={userEmailMessage} buttonTitle='중복 확인' onButtonClick={onUserEmailButtonClickHandler}  />
+
+                <InputBox title='인증번호' value={authNumber} onChnage={onAuthNumberChangeHandler} placeholder='' type='text' messageError={authNumberMessageError} 
+                message={authNumberMessage} buttonTitle='인증 확인' onButtonClick={onAuthNumberButtonClickHandler}  />
+
             </div>
-            <Social />
-            <div className='primary-button full-width'>회원가입</div>
+            <Social title='sns 로그인'/>
+            <div className='primary-button full-width' onClick={onSignUpButtonClickHandler}>회원가입</div>
         </div>
     );
 }

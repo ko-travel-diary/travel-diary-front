@@ -8,6 +8,7 @@ export interface GetUserListResponseDto extends ResponseDto {
 export interface GetUserInfoResponseDto extends ResponseDto {
     profileImage: string;
     userId: string;
+    nickName: string;
     userEmail: string;
     userRole: string;
 }

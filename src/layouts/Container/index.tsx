@@ -1,19 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.css';
 import { Outlet, useNavigate } from 'react-router';
 import SignIn from 'src/views/authentication/SignIn';
-import { MAIN_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, TOURATTRACTIONS_ABSOULUTE_PATH } from 'src/constant';
+import { ADMINPAGE_ABSOULUTE_PAGE, AUTH_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MYPAGE_ABSOULUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_OUT_REQUEST_URL, TRAVEL_ABSOLUTE_PATH } from 'src/constant';
 import { useUserStore } from 'src/stores';
 import { useCookies } from 'react-cookie';
 import { getUserInfoRequest } from 'src/apis/user';
 import { GetUserInfoResponseDto } from 'src/apis/user/dto/response';
 import ResponseDto from 'src/apis/response.dto';
+import axios from 'axios';
+import { bearerAuthorization } from 'src/apis';
 
+//                  Component                    //
 function TopNavigation () {
 
     //                                       state                                        //
-    const { setLoginUserId, setLoginUserRole } = useUserStore();
-    const [cookies] = useCookies();
+    const { loginUserId, setLoginUserId, loginUserRole, setLoginUserRole } = useUserStore();
+    const [cookies, setCookies] = useCookies();
+
+    const [userProfile, setUserProfile] = useState<string>('');
+    const [nickName, setNickName] = useState<string>('');
+
+    const [buttonStatus, setButtonStatus] = useState<boolean>(false);
     
 
     //                  function                   //
@@ -32,7 +40,9 @@ function TopNavigation () {
             return;
         }
 
-        const { userId, userRole } = result as GetUserInfoResponseDto;
+        const { profileImage, userId, nickName, userRole } = result as GetUserInfoResponseDto;
+        setUserProfile(profileImage);
+        setNickName(nickName);
         setLoginUserId(userId);
         setLoginUserRole(userRole);
     };
@@ -40,9 +50,23 @@ function TopNavigation () {
     //                  event handler                   //
     const onSignInButtonClickHandler = () => navigator(SIGN_IN_ABSOLUTE_PATH);
     const onMainPageButtonClickHandler = () => navigator(MAIN_ABSOLUTE_PATH);
-    const onTourButtonClickHandler = () => navigator(TOURATTRACTIONS_ABSOULUTE_PATH);
+    const onTourButtonClickHandler = () => navigator(TRAVEL_ABSOLUTE_PATH);
     const onReivewButtonClickHandler = () => navigator(REVIEW_ABSOULUTE_PATH);
     const onQnaButtonClickHandler = () => navigator(QNA_ABSOLUTE_PATH);
+
+    const onButtonClickHandler =() => setButtonStatus(!buttonStatus);
+    const onMovePageButtonClickHandler = () => {
+        const page = loginUserRole === 'ROLE_USER' ? MYPAGE_ABSOULUTE_PATH : ADMINPAGE_ABSOULUTE_PAGE;
+        navigator(page);
+    }
+
+    const onSignOutButtonClickHandler = async () => {
+
+        const expiration = new Date(Date.now());
+        setLoginUserId('');
+        setLoginUserId('');
+        setCookies('accessToken', '', { path: '/' , expires: expiration})
+    }
 
     //                  effect                    //
     useEffect(() => {
@@ -58,6 +82,7 @@ function TopNavigation () {
 
 
     //                  Render                  //
+    const movePage = loginUserRole === "ROLE_ADMIN" ? <div className='navigation-move-page' onClick={onMovePageButtonClickHandler}>관리자페이지</div> : <div className='navigation-move-page' onClick={onMovePageButtonClickHandler}>마이페이지</div>;
     return (
         <div id='top-navigation'>
             <div className='top-navigation-left'>
@@ -74,28 +99,57 @@ function TopNavigation () {
                 <div className='top-navigation-item' onClick={onQnaButtonClickHandler}>Q&A</div>
             </div>
             <div className='top-navigation-right'>
-                <div className='primary-button' onClick={onSignInButtonClickHandler}>로그인</div>
-                {/* <div className='profile-icon'></div>
-                <div className='top-navigation-right-drop-down'>
-                    <div className='profile-icon'></div>
-                    <div className='top-navigation-right-drop-down-box'>
-                        <div className='top-navigation-right-drop-down-nickname'>{'닉네임'}</div>
-                        <div className='top-navigation-right-drop-down-link'>
-                            <div>마이페이지</div>
-                            <div>로그아웃</div>
-                        </div>
+                {!cookies.accessToken ? 
+                    <div className='primary-button' onClick={onSignInButtonClickHandler}>로그인</div> :
+                    <div className='loginUser-form' onClick={onButtonClickHandler}>
+
+                        {userProfile === null ?
+                            <>
+                                <div className='user-profile default'>
+                                    {buttonStatus &&
+                                        <div className='top-navigation-right-drop-down'>
+                                            <div className='navigation-box'>
+                                                {movePage}
+                                                <div className='sign-out-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div> 
+                                <div>{nickName}</div>
+                            </>
+                            :
+                            <>
+                                <div className='user-profile.image' style={{backgroundImage: `url(${userProfile})`, 
+                                    width:'50px', height: '50px',
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    borderRadius: '25px',
+                                    backgroundRepeat: 'no-repeat'}}>
+                                    {buttonStatus &&
+                                        <div className='top-navigation-right-drop-down'>
+                                            <div className='navigation-box'>
+                                                {movePage}
+                                                <div className='sign-out-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div>{nickName}</div>
+                            </>
+                        }
+
                     </div>
-                </div> */}
+                }
             </div>
         </div>
     );
 }
 
 export default function Container() {
-  return (
-    <div>
-        <TopNavigation />
-        <Outlet />
-    </div>
-  )
+    return (
+        <div>
+            <TopNavigation />
+            <Outlet />
+        </div>
+    )
 }
