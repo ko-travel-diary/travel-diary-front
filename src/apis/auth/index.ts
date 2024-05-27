@@ -1,6 +1,6 @@
 import axios from "axios";
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, SignInRequestDto, SignUpRequestDto } from "./dto/request";
-import { EMAIL_AUTH_CHECK_REQUEST_URL, EMAIL_AUTH_REQUEST_URL, ID_CHECK_REQUEST_URL, SIGN_IN_REQUEST_URL, SIGN_UP_REQUEST_URL } from "src/constant";
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, NickNameCheckRequestDto, SignInRequestDto, SignUpRequestDto } from "./dto/request";
+import { EMAIL_AUTH_CHECK_REQUEST_URL, EMAIL_AUTH_REQUEST_URL, ID_CHECK_REQUEST_URL, NICKNAME_CHECK_REQUEST_URL, SIGN_IN_REQUEST_URL, SIGN_UP_REQUEST_URL } from "src/constant";
 import { SignInResponseDto } from "./dto/response";
 import { requestErrorHandler, requestHandler } from "..";
 import ResponseDto from "../response.dto";
@@ -22,6 +22,15 @@ export const idCheckRequest = async (requestBody: IdCheckRequestDto) => {
 
     return result;
 };
+
+//      function: 닉네임 중복 검사 API 함수       //
+export const nickNameCheckRequest = async (requestBody: NickNameCheckRequestDto) => {
+    const result = await axios.post(NICKNAME_CHECK_REQUEST_URL, requestBody)
+        .then(requestHandler<ResponseDto>)
+        .catch(requestErrorHandler);
+
+    return result;
+}
 
 //      function: 이메일 인증 API 함수       //
 export const emailAuthRequest = async (requestBody: EmailAuthRequestDto) => {

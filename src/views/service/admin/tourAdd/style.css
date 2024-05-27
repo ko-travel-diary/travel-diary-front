@@ -1,4 +1,4 @@
-#rest-register-wrapper {
+#tour-register-wrapper {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -9,13 +9,13 @@
     border-radius: 5px;
 }
 
-.rest-register-top {
+.tour-register-top {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
 }
-.rest-register-top-element-box{
+.tour-register-top-element-box{
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -24,7 +24,7 @@
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(238, 238, 238, 1);
 }
-.rest-register-element {
+.tour-register-element {
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -38,7 +38,7 @@
     background-color: rgba(255, 255, 255, 1);
 }
 
-.rest-register-input-element {
+.tour-register-input-element {
     border: none;
     outline: none;
     background: none;
@@ -52,7 +52,7 @@
 
     color: rgba(64, 64, 64, 1);
 }
-.rest-register-outline-textarea {
+.tour-register-outline-textarea {
     border: none;
     outline: none;
     background: none;
@@ -69,12 +69,12 @@
     color: rgba(64, 64, 64, 1);
 }
 
-.rest-register-bottom{
+.tour-register-bottom{
     display: flex;
     justify-content: center;
 }
 
 
-.rest-register-image-input .rest-register{
+.tour-register-image-input .tour-register{
     
 }

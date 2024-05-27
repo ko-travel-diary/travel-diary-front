@@ -2,26 +2,39 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css'
 import { TourAttractionsListItem } from 'src/types';
 import { useCookies } from 'react-cookie';
-import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from 'src/constant';
+import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOULUTE_PATH } from 'src/constant';
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from 'src/apis/tour_attraction/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
 import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from 'src/apis/tour_attraction';
 
 //                  Component                   //
-export function TourListItems ({tourAttractionsImageUrl, tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours}: TourAttractionsListItem) {
-    
+export function TourListItems ({tourAttractionsNumber, tourAttractionsImageUrl, tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours}: TourAttractionsListItem) {
+    //                  Function                    //
+    const navigator = useNavigate();
+
+    //                  Event Handler`                  //
+    const onControlButton = () => {
+        navigator(ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH(tourAttractionsNumber));
+    }
+
+    const onTourAttrctionListClickHandler = () => {
+        navigator(TOURATTRACTIONS_DETAIL_ABSOULUTE_PATH(tourAttractionsNumber));
+    }
+
     //                  Render                  //
     return (
         <div className='tour-list-table-box'>
+            <div className='tour-list-table-number'>{tourAttractionsNumber}</div>
             {tourAttractionsImageUrl === null ?
                 <div className='tour-list-table-image'><img width='75px' height='50px' src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
                 <div className='tour-list-table-image'><img width='75px' height='50px' src={`${tourAttractionsImageUrl}`} /></div>
             }
-            <div className='tour-list-table-name long-text'>{tourAttractionsName}</div>
+            <div className='tour-list-table-name long-text' onClick={onTourAttrctionListClickHandler}>{tourAttractionsName}</div>
             <div className='tour-list-table-locate long-text'>{tourAttractionsLocation}</div>
             <div className='tour-list-table-tel long-text'>{tourAttractionsTelNumber}</div>
             <div className='tour-list-table-hours long-text'>{tourAttractionsHours}</div>
+            <div className='control-button' onClick={onControlButton}>관리</div>
         </div>
     )
 }
@@ -189,11 +202,13 @@ export default function TourList() {
         
             <div className='tour-list-table'>
                 <div className='tour-list-table-top'>
+                    <div className='tour-list-table-number'>번호</div>
                     <div className='tour-list-table-image'>사진</div>
                     <div className='tour-list-table-name'>이름</div>
                     <div className='tour-list-table-locate'>장소</div>
                     <div className='tour-list-table-tel'>연락처</div>
                     <div className='tour-list-table-hours'>시간</div>
+                    <div className='tour-list-table-button'>관리</div>
                 </div>
                 <div className='tour-list-table-line'></div>
                 {viewList.map(item => <TourListItems {...item}/>)}
