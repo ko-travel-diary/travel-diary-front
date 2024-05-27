@@ -1,0 +1,92 @@
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+#travel-detail-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 200px;
+}
+
+.travel-detail-image-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 50px;
+}
+
+.travel-detail-image-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+    gap: 20px;
+}
+
+.travel-lmage-list {
+    display: flex;
+}
+
+.travel-image-list-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+    
+    background-image: url(../../../../../assets/image/page-left.png);
+    background-size: 100% 100%;
+    
+}
+
+.travel-image-list-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+    
+    background-image: url(../../../../../assets/image/page-right.png);
+    background-size: 100% 100%;
+}
+
+.travel-detail-table{
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
+
+    gap: 20px;
+    padding: 20px;
+}
+
+.travel-main-menu {
+    display: flex;
+    gap: 10px;
+
+    width: 450px;
+    text-align: start;
+}
+
+.travel-service-menu {
+    display: flex;
+    gap: 10px;
+
+    width: 450px;
+    text-align: start;
+}
+
+

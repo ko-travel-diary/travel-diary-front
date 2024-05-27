@@ -11,8 +11,6 @@ export default function SelectBox({ value, onChange }: Prop) {
 
     const listItem = [
         { name: '전국' , value: 'NATIONWIDE' },
-        { name: '수도권' , value: 'CAPITAL_AREA' },
-        { name: '지방' , value: 'LOCAL_AREA' },
         { name: '서울' , value: 'SEOUL' },
         { name: '부산' , value: 'BUSAN' },
         { name: '대구' , value: 'DAEGU' },
@@ -20,8 +18,7 @@ export default function SelectBox({ value, onChange }: Prop) {
         { name: '광주' , value: 'GWANGJU' },
         { name: '대전' , value: 'DAEJEON' },
         { name: '울산' , value: 'ULSAN' },
-        { name: '세종' , value: 'SAEJONG' },
-        { name: '경기' , value: 'GYEONGGI' },
+        { name: '경기도' , value: 'GYEONGGIDO' },
     ];
 
     //                    state                    //

@@ -23,8 +23,8 @@ export const getSearchTourAttractionsListRequest = async (searchWord: string) =>
 };
 
 //      function: 관광지 상세 정보 불러오기 API 함수       //
-export const getTourAttractionsRequest = async (tourattractionsNumber: number | string) => {
-    const result = await axios.get(GET_TOURATTRACTIONS_REQUEST_URL(tourattractionsNumber))
+export const getTourAttractionsRequest = async (tourAttractionsNumber: number | string) => {
+    const result = await axios.get(GET_TOURATTRACTIONS_REQUEST_URL(tourAttractionsNumber))
         .then(requestHandler<GetTourAttractionsResponseDto>)
         .catch(requestErrorHandler);
     return result;
