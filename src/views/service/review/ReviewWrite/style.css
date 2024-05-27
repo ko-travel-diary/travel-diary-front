@@ -95,9 +95,69 @@ html::-webkit-scrollbar {
     gap: 10px;
 }
 
-.schedule-wrapper{
+.my-travel-diary-content:hover {
+    cursor: pointer;
+}
+
+#schedule-wrapper{
     display: flex;
     flex-direction: row;
 
     gap: 10px;
+}
+
+#schedule-list-item-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    
+    padding: 16px 24px;
+    gap: 10px;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+}
+
+.schedule-list-box{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    border-bottom: 1px solid rgba(7, 65, 115, 0.2);
+}
+
+.schedule-item{
+    display: flex;
+    flex-direction: row;
+
+    gap: 8px;
+}
+
+#expenditure-list-item-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    
+    padding: 16px 24px;
+    gap: 10px;
+    border: 1px solid rgba(7, 65, 115, 0.2);
+}
+
+.total-people-money-box {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.expenditure-item{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    border-bottom: 1px solid rgba(7, 65, 115, 0.2);
+}
+
+.balance-duchPay{
+    display: flex;
+    flex-direction: row;
+
+    gap: 16px;
 }

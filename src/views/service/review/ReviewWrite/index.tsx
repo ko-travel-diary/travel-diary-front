@@ -27,9 +27,7 @@ function ScheduleList(
     const [cookies] = useCookies();
     const {
         setTravelSchedulePeople,
-        setTravelScheduleTotalMoney,
-        setExpenditureListItem,
-        setScheduleListItem
+        setTravelScheduleTotalMoney
     } = useScheduleStore();
     const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
     const {setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
@@ -53,8 +51,6 @@ function ScheduleList(
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
         setExpenditureViewList(expendList);
         setScheduleListItemViewList(scheduleList);
-        console.log(expendList);
-        console.log(scheduleList);
     };
 
     
@@ -85,12 +81,15 @@ function ScheduleListItems (
         scheduleEndTime
     }: scheduleList
 ){
+    //                    render                     //
     return(
-        <div>
+        <div className='schedule-list-box'>
             <div>{scheduleDate}</div>
-            <div>{scheduleContent}</div>
-            <div>{scheduleStartTime}</div>
-            <div>{scheduleEndTime}</div>
+            <div className='schedule-item'>
+                <div>{scheduleContent}</div>
+                <div>{scheduleStartTime}</div>
+                <div>{scheduleEndTime}</div>
+            </div>
         </div>
     )
 }
@@ -102,8 +101,9 @@ function ExpenditureListItems (
     travelScheduleExpenditure
     }: expendList
 ){
+    //                    render                     //
     return(
-        <div>
+        <div className='expenditure-item'>
             <div>{travelScheduleExpenditureDetail}</div>
             <div>{travelScheduleExpenditure}</div>
         </div>
@@ -130,6 +130,9 @@ export default function ReviewWrite () {
     const {travelSchedulePeople,
         travelScheduleTotalMoney
     } = useScheduleStore();
+
+    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
+    const duchPay = balnace / travelSchedulePeople;
 
     //                    function                     //
     const navigator = useNavigate();
@@ -239,17 +242,22 @@ export default function ReviewWrite () {
                         {scheduleListItemViewList && scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}
                     </div>
                     <div id='expenditure-list-item-wrapper'>
-                        <div className='expenditure-list-item-box'>
-                            <div> 가계부</div>
-                            <div className='total-people-money-box'>
-                                <div>인원수</div>
-                                <div>|</div>
-                                <div className='total-people'>{travelSchedulePeople}</div>
-                                <div>총 금액</div>
-                                <div>|</div>
-                                <div className='total-money'>{travelScheduleTotalMoney}</div>
-                            </div>
-                            {expenditureViewList && expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
+                        <div> 가계부</div>
+                        <div className='total-people-money-box'>
+                            <div>인원수</div>
+                            <div>|</div>
+                            <div className='total-people'>{travelSchedulePeople}</div>
+                            <div>총 금액</div>
+                            <div>|</div>
+                            <div className='total-money'>{travelScheduleTotalMoney}</div>
+                        </div>
+                        {expenditureViewList && expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
+                        <div className='balance-duchPay'>
+                            <div>잔액</div>
+                            <div>{balnace}</div>
+                            <div>|</div>
+                            <div>더치페이</div>
+                            <div>{duchPay}</div>
                         </div>
                     </div>
                 </div>
