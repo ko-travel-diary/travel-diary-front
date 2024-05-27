@@ -10,15 +10,15 @@ interface Prop {
 export default function SelectBox({ value, onChange }: Prop) {
 
     const listItem = [
-        { name: '전국' , value: 'NATIONWIDE' },
-        { name: '서울' , value: 'SEOUL' },
-        { name: '부산' , value: 'BUSAN' },
-        { name: '대구' , value: 'DAEGU' },
-        { name: '인천' , value: 'INCHEON' },
-        { name: '광주' , value: 'GWANGJU' },
-        { name: '대전' , value: 'DAEJEON' },
-        { name: '울산' , value: 'ULSAN' },
-        { name: '경기도' , value: 'GYEONGGIDO' },
+        { name: '전국' , value: 'all' },
+        { name: '서울' , value: '서울' },
+        { name: '부산' , value: '부산' },
+        { name: '대구' , value: '대구' },
+        { name: '인천' , value: '인천' },
+        { name: '광주' , value: '광주' },
+        { name: '대전' , value: '대전' },
+        { name: '울산' , value: '울산' },
+        { name: '경기도' , value: '경기도' },
     ];
 
     //                    state                    //
