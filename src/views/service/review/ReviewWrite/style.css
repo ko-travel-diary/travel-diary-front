@@ -77,11 +77,7 @@ html::-webkit-scrollbar {
     justify-content: flex-end;
 }
 
-.my-travel-diary-load-butoon{
-    position: relative;
-}
-
-.my-travel-diaty-list-box{
+.my-travel-diary-list-box{
     position: absolute;
     top: 0%;
     right:100%;
@@ -90,4 +86,18 @@ html::-webkit-scrollbar {
     height: 600px;
     background-color: white;
     border: 1px solid rgba(7, 65, 115, 0.2);
+}
+
+.my-travel-diary-content{
+    display: flex;
+    flex-direction: row;
+    
+    gap: 10px;
+}
+
+.schedule-wrapper{
+    display: flex;
+    flex-direction: row;
+
+    gap: 10px;
 }
