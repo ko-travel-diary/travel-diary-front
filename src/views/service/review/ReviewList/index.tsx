@@ -2,11 +2,13 @@ import Container from "src/layouts/Container";
 import './style.css'
 import { useNavigate } from "react-router";
 import { ReviewBoardListItem } from "src/types";
-import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
+import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { ChangeEvent, useEffect, useState } from "react";
 import { getTravelReviewBoardRequest, getTravelReviewTitleAndContentSearchRequest, getTravelReviewWriteDateSearchRequest, getTravelReviewWriterSearchRequest } from "src/apis/review";
 import { GetReviewTitleAndContentSearchRequestDto, GetReviewWriteDateSearchRequestDto, GetReviewWriterSearchRequestDto, GetTravelReviewBoardResponseDto } from "src/apis/review/dto/response";
 import ResponseDto from "src/apis/response.dto";
+import { useCookies } from "react-cookie";
+import { useUserStore } from "src/stores";
 
 //                    component                    //
 function ListItem ({ 
@@ -42,6 +44,8 @@ function ListItem ({
 export default function ReviewList () {
 
     //                    state                    //
+    const [cookies] = useCookies();
+    const { loginUserRole } = useUserStore();
     const [boardList, setBoardList] = useState<ReviewBoardListItem[]>([]);
     const [viewList, setViewList] = useState<ReviewBoardListItem[]>([]);
     const [totalLenght, setTotalLength] = useState<number>(0);
@@ -198,6 +202,16 @@ export default function ReviewList () {
     };
 
     const onWriteButtonClickHandler = () => {
+        if(!cookies.accessToken) {
+            alert('로그인 후 이용해 주세요');
+            navigator(REVIEW_ABSOULUTE_PATH);
+            return;
+        }
+        if (loginUserRole !== 'ROLE_USER') {
+            alert('사용자가 아닙니다.');
+            navigator(REVIEW_ABSOULUTE_PATH);
+            return;
+        }
         navigator(REVIEW_WRITE_ABSOLUTE_PATH);
     };
 

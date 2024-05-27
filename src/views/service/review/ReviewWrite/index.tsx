@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import './style.css'
 import { useCookies } from 'react-cookie';
 import { PostTravelReviewRequestDto } from 'src/apis/review/dto/request';
@@ -9,8 +9,108 @@ import { useNavigate } from 'react-router';
 import { PostTravelReviewResponseDto } from 'src/apis/review/dto/response';
 import axios from 'axios';
 import { getScheduleDetailRequest, getScheduleListRequest } from 'src/apis/schedule';
-import { GetScheduleListResponseDto } from 'src/apis/schedule/dto/response';
+import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from 'src/apis/schedule/dto/response';
+import { useScheduleStore } from 'src/stores/useScheduleStores';
+import { useScheduleButtonStore } from 'src/stores/useScheduleButtonStores';
+import useViewListStore from 'src/stores/useViewListStores/viewList.store';
+import { expendList, scheduleList, scheduleListViewItems } from 'src/types';
 
+
+//                    component: 스케쥴 리스트 컴포넌트                     //
+function ScheduleList(
+    {
+        travelScheduleNumber,
+        travelScheduleName
+    }: scheduleListViewItems
+){
+    //                    state                     //
+    const [cookies] = useCookies();
+    const {
+        setTravelSchedulePeople,
+        setTravelScheduleTotalMoney,
+        setExpenditureListItem,
+        setScheduleListItem
+    } = useScheduleStore();
+    const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
+    const {setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
+
+
+    //                    function                     //
+    const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
+        const message =
+        !result ? '서버에 문제가 있습니다.' :
+        result.code === 'VF' ? '제목과 내용을 모두 입력해주세요.' :
+        result.code === 'AF' ? '권한이 없습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : "";
+
+        if(!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const { travelSchedulePeople, travelScheduleTotalMoney, expendList, scheduleList } = result as GetScheduleDetailResponseDto;
+        setTravelSchedulePeople(travelSchedulePeople);
+        setTravelScheduleTotalMoney(travelScheduleTotalMoney);
+        setExpenditureViewList(expendList);
+        setScheduleListItemViewList(scheduleList);
+        console.log(expendList);
+        console.log(scheduleList);
+    };
+
+    
+    //                    event handler                     //
+    const onTravelScheduleNameButtonClickHandler = () => {
+        if(!cookies.accessToken){
+            alert("로그인 후 이용해주세요.")
+            return;
+        }
+        getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
+        setScheduleButtonStatus(!scheduleButtonStatus);
+        setScheduleRenderStatus(!scheduleRenderStatus);
+
+    };
+
+    //                    render                     //
+    return(
+        <div className='my-travel-diary-content' style={{color: 'black'}} onClick={onTravelScheduleNameButtonClickHandler}>{travelScheduleName}</div>
+    )
+}
+
+//                    component: 스케쥴 일정 리스트 컴포넌트                     //
+function ScheduleListItems (
+    {
+        scheduleDate,
+        scheduleContent,
+        scheduleStartTime,
+        scheduleEndTime
+    }: scheduleList
+){
+    return(
+        <div>
+            <div>{scheduleDate}</div>
+            <div>{scheduleContent}</div>
+            <div>{scheduleStartTime}</div>
+            <div>{scheduleEndTime}</div>
+        </div>
+    )
+}
+
+//                    component: 스케쥴 금액 리스트 컴포넌트                     //
+function ExpenditureListItems (
+    {
+    travelScheduleExpenditureDetail,
+    travelScheduleExpenditure
+    }: expendList
+){
+    return(
+        <div>
+            <div>{travelScheduleExpenditureDetail}</div>
+            <div>{travelScheduleExpenditure}</div>
+        </div>
+    )
+}
+
+//                    component: 리뷰 작성 컴포넌트                     //
 export default function ReviewWrite () {
 
     //                    state                     //
@@ -21,8 +121,15 @@ export default function ReviewWrite () {
     const [reviewTitle, setReviewTitle] = useState<string> ('');
     const [travelReviewImage, setTravelReviewImage] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const [travelScheduleName, setTravelScheduleName] = useState<string[]>([]);
     const photoInput = useRef<HTMLInputElement | null>(null);
+    const [viewList, setViewList] = useState<scheduleListViewItems[]>([]);
+    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
+    const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus} = useScheduleButtonStore();
+    const {expenditureViewList, scheduleListItemViewList} = useViewListStore();
+
+    const {travelSchedulePeople,
+        travelScheduleTotalMoney
+    } = useScheduleStore();
 
     //                    function                     //
     const navigator = useNavigate();
@@ -56,8 +163,9 @@ export default function ReviewWrite () {
             return;
         }
 
-        const { travelScheduleName } = result as GetScheduleListResponseDto;
-        setTravelScheduleName([...travelScheduleName]);
+        const { scheduleListViewItems } = result as GetScheduleListResponseDto;
+
+        setViewList(scheduleListViewItems);
     };
 
     //                     event handler                     //
@@ -95,7 +203,6 @@ export default function ReviewWrite () {
             data.append('file', image);
             const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } }).then(response => response.data as string).catch(error => null);
             if (!url) continue;
-            console.log(url);
             travelReviewImageUrl.push(url);
         }
 
@@ -113,23 +220,40 @@ export default function ReviewWrite () {
             alert("로그인 후 이용해주세요.")
             return;
         }
-        getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+        setScheduleButtonStatus(!scheduleButtonStatus);
         setMyTravelDiaryLoadButtonStatus(!myTravelDiaryLoadButtonStatus);
     };
 
-    const onTravelScheduleNameButtonClickHandler = () => {
-        if(!cookies.accessToken){
-            alert("로그인 후 이용해주세요.")
-            return;
-        }
-        // getScheduleDetailRequest
-    };
+    useEffect(() => {
+        if(myTravelDiaryLoadButtonStatus) getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+    }, [myTravelDiaryLoadButtonStatus])
 
     //                    render : review 작성 화면 컴포넌트                     //
-    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
     return(
         <div id='review-write-wrapper'>
             <div className='null-box'></div>
+            {
+            scheduleRenderStatus &&
+                <div id='schedule-wrapper'>
+                    <div id='schedule-list-item-wrapper'>
+                        {scheduleListItemViewList && scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}
+                    </div>
+                    <div id='expenditure-list-item-wrapper'>
+                        <div className='expenditure-list-item-box'>
+                            <div> 가계부</div>
+                            <div className='total-people-money-box'>
+                                <div>인원수</div>
+                                <div>|</div>
+                                <div className='total-people'>{travelSchedulePeople}</div>
+                                <div>총 금액</div>
+                                <div>|</div>
+                                <div className='total-money'>{travelScheduleTotalMoney}</div>
+                            </div>
+                            {expenditureViewList && expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
+                        </div>
+                    </div>
+                </div>
+            }
             <div className='write-button-wrapper'>
                 <input
                 type="file"
@@ -140,14 +264,15 @@ export default function ReviewWrite () {
                 style={{ display: 'none' }}
                 />
                 <div className='update-image-button primary-button' onClick={onImageUploadButtonClickHandler}>사진 추가</div>
-                {myTravelDiaryLoadButtonStatus? 
-                <div className='my-travel-diary-load-butoon primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기
-                    <div className='my-travel-diaty-list-box'>{travelScheduleName.map(travelScheduleName => (
-                        <div style={{color: 'black'}} onClick={onTravelScheduleNameButtonClickHandler}>{travelScheduleName}</div>
-                    ))}</div>
+                {scheduleButtonStatus? 
+                <div style={{ position: 'relative' }}>
+                <div className='primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
+                <div className='my-travel-diary-list-box'>
+                    {viewList.map(item => <ScheduleList {...item}/>)}
+                </div>
                 </div>
                 :
-                <div className='my-travel-diary-load-butoon primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
+                <div className='primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
                 }
             </div>
             <div className='write-contents-box'>
