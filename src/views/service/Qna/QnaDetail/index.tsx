@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 import { GetQnaResponseDto } from 'src/apis/qna/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, QNA_UPDATE_ABSOLUTE_PATH } from 'src/constant';
-import { deleteQnaCommentRequest, deleteQnaRequest, getQnaRequest, patchQnaCommentRequest, postQnaCommentRequest, postQnaRequest } from 'src/apis/qna';
+import { deleteQnaCommentRequest, deleteQnaRequest, getQnaRequest, patchQnaCommentRequest, postQnaCommentRequest } from 'src/apis/qna';
 import { PatchQnaCommentRequestDto, PostQnaCommentRequestDto } from 'src/apis/qna/dto/request';
 
 //                    Component : Qna 화면 컴포넌트                     //

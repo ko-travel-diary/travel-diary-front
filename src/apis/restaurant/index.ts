@@ -23,8 +23,8 @@ export const getSearchRestaurantListRequest = async (searchWord: string) => {
 };
 
 //      function: 음식점 상세 정보 불러오기 API 함수       //
-export const getRestaurantRequest = async (RestaurantNumber: number | string) => {
-    const result = await axios.get(GET_RESTAURANT_REQUEST_URL(RestaurantNumber))
+export const getRestaurantRequest = async (restaurantNumber: number | string) => {
+    const result = await axios.get(GET_RESTAURANT_REQUEST_URL(restaurantNumber))
         .then(requestHandler<GetRestaurantResponseDto>)
         .catch(requestErrorHandler);
     return result;
