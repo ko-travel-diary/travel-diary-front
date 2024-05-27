@@ -11,9 +11,12 @@ import { PostUserNickNameRequestDto } from 'src/apis/user/dto/request';
 import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from 'src/constant';
 import { useUserStore } from 'src/stores';
 import axios from 'axios';
-import { scheduleListViewItems } from 'src/types';
-import { getScheduleListRequest } from 'src/apis/schedule';
-import { GetScheduleListResponseDto } from 'src/apis/schedule/dto/response';
+import { expendList, scheduleList, scheduleListViewItems } from 'src/types';
+import { getScheduleDetailRequest, getScheduleListRequest } from 'src/apis/schedule';
+import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from 'src/apis/schedule/dto/response';
+import { useScheduleStore } from 'src/stores/useScheduleStores';
+import { useScheduleButtonStore } from 'src/stores/useScheduleButtonStores';
+import useViewListStore from 'src/stores/useViewListStores/viewList.store';
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleList(
@@ -24,31 +27,84 @@ function ScheduleList(
 ){
     //                    state                     //
     const [cookies] = useCookies();
-    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
+    const {
+        setTravelSchedulePeople,
+        setTravelScheduleTotalMoney
+    } = useScheduleStore();
+    const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
+    const {setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
+    //                    function                     //
+    const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
+        const message =
+        !result ? '서버에 문제가 있습니다.' :
+        result.code === 'VF' ? '제목과 내용을 모두 입력해주세요.' :
+        result.code === 'AF' ? '권한이 없습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : "";
+
+        if(!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
+
+        const { travelSchedulePeople, travelScheduleTotalMoney, expendList, scheduleList } = result as GetScheduleDetailResponseDto;
+        setTravelSchedulePeople(travelSchedulePeople);
+        setTravelScheduleTotalMoney(travelScheduleTotalMoney);
+        setExpenditureViewList(expendList);
+        setScheduleListItemViewList(scheduleList);
+    };
+
 
     
     //                    event handler                     //
-    const onMyTravelDiaryLoadButtonClickHandler = () => {
-        if(!cookies.accessToken){
-            alert("로그인 후 이용해주세요.")
-            return;
-        }
-        setMyTravelDiaryLoadButtonStatus(!myTravelDiaryLoadButtonStatus);
-    };
-
     const onTravelScheduleNameButtonClickHandler = () => {
         if(!cookies.accessToken){
             alert("로그인 후 이용해주세요.")
             return;
         }
-        // getScheduleDetailRequest
+        getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
+        setScheduleButtonStatus(!scheduleButtonStatus);
+        setScheduleRenderStatus(!scheduleRenderStatus);
+
     };
 
+    //                    render                     //
     return(
-        <div className='my-travel-diary-load-butoon primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기
-            <div className='my-travel-diaty-list-box'>
-                <div style={{color: 'black'}} onClick={onTravelScheduleNameButtonClickHandler}>{travelScheduleName}</div>
+        <div className='my-travel-diary-content' style={{color: 'black'}} onClick={onTravelScheduleNameButtonClickHandler}>{travelScheduleName}</div>
+    )
+}
+//                    component: 스케쥴 일정 리스트 컴포넌트                     //
+function ScheduleListItems (
+    {
+        scheduleDate,
+        scheduleContent,
+        scheduleStartTime,
+        scheduleEndTime
+    }: scheduleList
+){
+    //                    render                     //
+    return(
+        <div className='schedule-list-box'>
+            <div>{scheduleDate}</div>
+            <div className='schedule-item'>
+                <div>{scheduleContent}</div>
+                <div>{scheduleStartTime}</div>
+                <div>{scheduleEndTime}</div>
             </div>
+        </div>
+    )
+}
+//                    component: 스케쥴 금액 리스트 컴포넌트                     //
+function ExpenditureListItems (
+    {
+    travelScheduleExpenditureDetail,
+    travelScheduleExpenditure
+    }: expendList
+){
+    //                    render                     //
+    return(
+        <div className='expenditure-item'>
+            <div>{travelScheduleExpenditureDetail}</div>
+            <div>{travelScheduleExpenditure}</div>
         </div>
     )
 }
@@ -58,17 +114,27 @@ export default function ReviewUpdate () {
     //                    state                     //
     const { updateReviewNumber } = useReviewNumberStore();
     const { loginUserId } = useUserStore();
+    const [cookies] = useCookies();
 
     const contentsRef = useRef<HTMLTextAreaElement | null>(null);
-    const [cookies] = useCookies();
+    const [reviewWriterId, setReviewWriterId] = useState<string>('');
 
     const [reviewContent, setReivewContent] = useState<string> ('');
     const [reviewTitle, setReviewTitle] = useState<string> ('');
     const [travelReviewImage, setTravelReviewImage] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const photoInput = useRef<HTMLInputElement | null>(null);
-    const [reviewWriterId, setReviewWriterId] = useState<string>('');
     const [viewList, setViewList] = useState<scheduleListViewItems[]>([]);
+    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
+    const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus} = useScheduleButtonStore();
+    const {expenditureViewList, scheduleListItemViewList} = useViewListStore();
+
+    const {travelSchedulePeople,
+        travelScheduleTotalMoney
+    } = useScheduleStore();
+
+    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
+    const duchPay = balnace / travelSchedulePeople;
     
     //                    function                    //
     const navigator = useNavigate();
@@ -130,7 +196,6 @@ export default function ReviewUpdate () {
     };
 
     //                     event handler                     //
-
     const onReviewContentChangeHandler = (event:ChangeEvent<HTMLTextAreaElement>) => {
         const reivewContent = event.target.value;
         setReivewContent(reivewContent);
@@ -184,6 +249,7 @@ export default function ReviewUpdate () {
             return;
         }
         setMyTravelDiaryLoadButtonStatus(!myTravelDiaryLoadButtonStatus);
+        setScheduleButtonStatus(!scheduleButtonStatus);
         getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
     };
 
@@ -193,12 +259,42 @@ export default function ReviewUpdate () {
 
         getTravelReviewDetailRequest(updateReviewNumber).then(getTravelReviewDetailResponse);
     }, [])
+    
+    useEffect(() => {
+        if(myTravelDiaryLoadButtonStatus) getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+    }, [myTravelDiaryLoadButtonStatus])
 
    //                    render : review 수정 화면 컴포넌트                     //
-    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
    return(
     <div id='review-write-wrapper'>
         <div className='null-box'></div>
+        {
+            scheduleRenderStatus &&
+                <div id='schedule-wrapper'>
+                    <div id='schedule-list-item-wrapper'>
+                        {scheduleListItemViewList && scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}
+                    </div>
+                    <div id='expenditure-list-item-wrapper'>
+                        <div> 가계부</div>
+                        <div className='total-people-money-box'>
+                            <div>인원수</div>
+                            <div>|</div>
+                            <div className='total-people'>{travelSchedulePeople}</div>
+                            <div>총 금액</div>
+                            <div>|</div>
+                            <div className='total-money'>{travelScheduleTotalMoney}</div>
+                        </div>
+                        {expenditureViewList && expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
+                        <div className='balance-duchPay'>
+                            <div>잔액</div>
+                            <div>{balnace}</div>
+                            <div>|</div>
+                            <div>더치페이</div>
+                            <div>{duchPay}</div>
+                        </div>
+                    </div>
+                </div>
+            }
         <div className='write-button-wrapper'>
                 <input
                 type="file"
@@ -209,12 +305,15 @@ export default function ReviewUpdate () {
                 style={{ display: 'none' }}
                 />
                 <div className='update-image-button primary-button' onClick={onImageUploadButtonClickHandler}>사진 추가</div>
-                {myTravelDiaryLoadButtonStatus? 
-                <>
+                {scheduleButtonStatus? 
+                <div style={{ position: 'relative' }}>
+                <div className='primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
+                <div className='my-travel-diary-list-box'>
                     {viewList.map(item => <ScheduleList {...item}/>)}
-                </>
+                </div>
+                </div>
                 :
-                <div className='my-travel-diary-load-butoon primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
+                <div className='primary-button' onClick={onMyTravelDiaryLoadButtonClickHandler}>나의 여행일정 불러오기</div>
                 }
             </div>
         <div className='write-contents-box'>

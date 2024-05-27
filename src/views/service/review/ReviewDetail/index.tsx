@@ -10,9 +10,47 @@ import { postUserNickNameRequest } from 'src/apis/user';
 import { PostUserNickNameRequestDto } from 'src/apis/user/dto/request';
 import { deleteTravelReviewReqeust, favoriteCountRequest, getTravelReviewCommentListRequest, getTravelReviewDetailRequest, getTravelReviewFavoriteStatusRequest, increaseViewCountRequest, postTravelReviewCommentRequest } from 'src/apis/review';
 import { PostUserNickNameResponseDto } from 'src/apis/user/dto/response';
-import { reviewCommentList } from 'src/types';
+import { expendList, reviewCommentList, scheduleList } from 'src/types';
 import { PostTravelReviewCommentRequestDto } from 'src/apis/review/dto/request';
 import { useReviewNumberStore } from 'src/stores/useReviewNumberStores';
+
+//                    component: 스케쥴 일정 리스트 컴포넌트                     //
+function ScheduleListItems (
+    {
+        scheduleDate,
+        scheduleContent,
+        scheduleStartTime,
+        scheduleEndTime
+    }: scheduleList
+){
+    //                    render                     //
+    return(
+        <div className='schedule-list-box'>
+            <div>{scheduleDate}</div>
+            <div className='schedule-item'>
+                <div>{scheduleContent}</div>
+                <div>{scheduleStartTime}</div>
+                <div>{scheduleEndTime}</div>
+            </div>
+        </div>
+    )
+}
+
+//                    component: 스케쥴 금액 리스트 컴포넌트                     //
+function ExpenditureListItems (
+    {
+    travelScheduleExpenditureDetail,
+    travelScheduleExpenditure
+    }: expendList
+){
+    //                    render                     //
+    return(
+        <div className='expenditure-item'>
+            <div>{travelScheduleExpenditureDetail}</div>
+            <div>{travelScheduleExpenditure}</div>
+        </div>
+    )
+}
 
 //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
 function ReviewCommentLists ({
@@ -107,8 +145,8 @@ export default function ReviewDetail () {
     const [reviewContents, setReviewContents] = useState<string>('');
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const [commentContent, setCommentContent] = useState<string>('');
-    
     const [commentList, setCommentList] = useState<reviewCommentList[]>([]);
+
 
     //                    function                    //
     const navigator = useNavigate();
