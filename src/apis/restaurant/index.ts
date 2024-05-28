@@ -6,8 +6,9 @@ import { PostRestaurantRequestDto } from "./dto/request";
 import ResponseDto from "../response.dto";
 
 //      function: 음식점 리스트 불러오기 API 함수       //
-export const getRestaurantListRequest = async () => {
-    const result = await axios.get(GET_RESTAURANT_LIST_REQUEST_URL)
+export const getRestaurantListRequest = async (lat?: number, lng?: number) => {
+    const header = (lat && lng) ? {params: { lat, lng }} : {};
+    const result = await axios.get(GET_RESTAURANT_LIST_REQUEST_URL, header)
         .then(requestHandler<GetRestaurantListResponseDto>)
         .catch(requestErrorHandler);
     return result;

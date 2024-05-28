@@ -13,6 +13,12 @@ import { PostUserNickNameResponseDto } from 'src/apis/user/dto/response';
 import { expendList, reviewCommentList, scheduleList } from 'src/types';
 import { PostTravelReviewCommentRequestDto } from 'src/apis/review/dto/request';
 import { useReviewNumberStore } from 'src/stores/useReviewNumberStores';
+import { getScheduleDetailRequest } from 'src/apis/schedule';
+import { GetScheduleDetailResponseDto } from 'src/apis/schedule/dto/response';
+import useViewListStore from 'src/stores/useViewListStores/viewList.store';
+import { useScheduleStore } from 'src/stores/useScheduleStores';
+import { useScheduleButtonStore } from 'src/stores/useScheduleButtonStores';
+import { useScheduleNumberStore } from 'src/stores/useScheduleNumberStores';
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems (
@@ -147,6 +153,13 @@ export default function ReviewDetail () {
     const [commentContent, setCommentContent] = useState<string>('');
     const [commentList, setCommentList] = useState<reviewCommentList[]>([]);
 
+    const {scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
+    const {scheduleListItemViewList, expenditureViewList, setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
+    const {travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney} = useScheduleStore();
+    const {setTravelScheduleNumber} = useScheduleNumberStore();
+
+    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
+    const duchPay = balnace / travelSchedulePeople;
 
     //                    function                    //
     const navigator = useNavigate();
@@ -203,7 +216,7 @@ export default function ReviewDetail () {
             return;
         }
 
-        const { reviewTitle, reviewContent, writerId, reviewDatetime, travelReviewImageUrl, reviewViewCount, reviewFavoriteCount, commentContent} = result as GetTravelReviewDetailResponseDto;
+        const { reviewTitle, reviewContent, writerId, reviewDatetime, travelReviewImageUrl, reviewViewCount, reviewFavoriteCount, commentContent, travelScheduleNumber} = result as GetTravelReviewDetailResponseDto;
 
         const requestBody: PostUserNickNameRequestDto = {writerId};
         postUserNickNameRequest(requestBody).then(postUserNickNameResponse);
@@ -215,6 +228,30 @@ export default function ReviewDetail () {
         setTravelReviewImageUrl(travelReviewImageUrl);
         setReviewViewCount(reviewViewCount);
         setReviewFavoriteCount(reviewFavoriteCount);
+        setTravelScheduleNumber(travelScheduleNumber);
+        if(!travelScheduleNumber) return;
+        getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
+    };
+
+    const getScheduleDetailResponse = ( result: ResponseDto | GetScheduleDetailResponseDto | null) => {
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '잘못된 게시글번호입니다.' :
+            result.code === 'AF' ? '인증에 실패했습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        
+        if(!result || result.code !== 'SU'){
+            alert(message);
+            navigator(REVIEW_ABSOULUTE_PATH);
+            return;
+        }
+
+        const { expendList,scheduleList,travelSchedulePeople,travelScheduleTotalMoney } = result as GetScheduleDetailResponseDto;
+        setExpenditureViewList(expendList);
+        setScheduleListItemViewList(scheduleList);
+        setTravelSchedulePeople(travelSchedulePeople);
+        setTravelScheduleTotalMoney(travelScheduleTotalMoney);
+        setScheduleRenderStatus(!scheduleRenderStatus);
     };
 
     const deleteTravelReviewResponse = (result: ResponseDto | null) => {
@@ -374,6 +411,7 @@ export default function ReviewDetail () {
         increaseViewCountRequest(reviewNumber).then(increaseViewCountResponse);
         getTravelReviewCommentListRequest(reviewNumber).then(getTravelReviewCommentListResponse);
         getTravelReviewFavoriteStatusRequest(reviewNumber, cookies.accessToken).then(getTravelReviewFavoriteStatusResponse);
+
     }, []);
 
     //                    render                    //
@@ -405,6 +443,34 @@ export default function ReviewDetail () {
                 <div>추천수</div>
                 <div>{reviewFavoriteCount}</div>
             </div>
+
+            {
+            scheduleRenderStatus &&
+                <div id='schedule-wrapper'>
+                    <div id='schedule-list-item-wrapper'>
+                        {scheduleListItemViewList && scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}
+                    </div>
+                    <div id='expenditure-list-item-wrapper'>
+                        <div> 가계부</div>
+                        <div className='total-people-money-box'>
+                            <div>인원수</div>
+                            <div>|</div>
+                            <div className='total-people'>{travelSchedulePeople}</div>
+                            <div>총 금액</div>
+                            <div>|</div>
+                            <div className='total-money'>{travelScheduleTotalMoney}</div>
+                        </div>
+                        {expenditureViewList && expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
+                        <div className='balance-duchPay'>
+                            <div>잔액</div>
+                            <div>{balnace}</div>
+                            <div>|</div>
+                            <div>더치페이</div>
+                            <div>{duchPay}</div>
+                        </div>
+                    </div>
+                </div>
+            }
 
             <div className='review-detail-content-wrapper'>
                 <div className='review-detail-title-box'>

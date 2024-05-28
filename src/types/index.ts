@@ -38,6 +38,8 @@ export interface TourAttractionsListItem{
     tourAttractionsTelNumber: string;
     tourAttractionsHours: string;
     tourAttractionsOutline: string;
+    tourAttractionsLat:	number;
+    tourAttractionsLng:	number;
 }
 
 export interface RestaurantListItem{
@@ -50,18 +52,8 @@ export interface RestaurantListItem{
     restaurantOutline: string;
     restaurantMainMenu: string;
     restaurantServiceMenu: string;
-}
-
-export interface ListItem {
-    id: number;
-    imageUrl: string;
-    name: string;
-    location: string;
-    telNumber: string;
-    hours: string;
-    outline: string;
-    mainMenu: string;
-    serviceMenu: string;
+    restaurantLat:	number;
+    restaurantLng:	number;
 }
 
 export interface reviewCommentList{
@@ -69,6 +61,17 @@ export interface reviewCommentList{
     reviewCommentNumber: number;
     reviewCommentWriterId: string;
     commentParentsNumber: number;
+}
+
+export interface travelReviewMyList{
+    reviewNumber: number;
+    reviewTitle: string;
+    reviewContent: string;
+    writerId: string;
+    reviewDatetime: string;
+    travelReviewImageUrl: string;
+    reviewViewCount: number;
+    reviewFavoriteCount: number;
 }
 
 export interface ReviewBoardListItem{

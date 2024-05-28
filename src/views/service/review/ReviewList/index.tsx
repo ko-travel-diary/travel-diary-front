@@ -9,6 +9,7 @@ import { GetReviewTitleAndContentSearchRequestDto, GetReviewWriteDateSearchReque
 import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
 import { useUserStore } from "src/stores";
+import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component                    //
 function ListItem ({ 
