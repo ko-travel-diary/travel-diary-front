@@ -32,6 +32,7 @@ export const REST_DETAIL_PATH = 'restlist/:restaurantNumber';
 // USER
 export const PROFILE_UPDATE_PATH = 'profileUpdate';
 export const MY_REVIEWLIST_PATH = 'reviewList';
+export const DELETE_USER_PATH = 'cancle-account';
 
 // ADMIN
 export const TOUR_LIST_PATH = 'tourList';
@@ -67,7 +68,11 @@ export const REVIEW_WRITE_ABSOLUTE_PATH = `${SERVICE_PATH}/${REVIEW_PATH}/${REVI
 export const REVIEW_DETAIL_ABSOLUTE_PATH = (reviewNumber: string | number) => `${SERVICE_PATH}/${REVIEW_PATH}/${reviewNumber}`;
 export const REVIEW_UPDATE_ABSOLUTE_PATH = (reviewNumber: string | number) => `${SERVICE_PATH}/${REVIEW_PATH}/update/${reviewNumber}`;
 
-export const MYPAGE_ABSOULUTE_PAGE = `${SERVICE_PATH}/${MYPAGE_PATH}`;
+export const MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE = `${SERVICE_PATH}/${MYPAGE_PATH}/${PROFILE_UPDATE_PATH}`;
+export const SCHEDULE_ABSOLUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}`;
+export const MY_REVIEWLIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}/${MY_REVIEWLIST_PATH}`;
+export const DELETE_USER_ABSOLUTE_PAGE = `${SERVICE_PATH}/${MYPAGE_PATH}/${DELETE_USER_PATH}`;
+
 export const SCHEDULE_WRITE_ABSOLUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${SCHEDULE_WRITE_PATH}`;
 export const SCHEDULE_DETAIL_ABSOLUTE_PATH = (scheduleNumber: string | number) => `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${scheduleNumber}`;
 export const SCHEDULE_UPDATE_ABSOLUTE_PATH = (scheduleNumber: string | number) => `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/update/${scheduleNumber}`;

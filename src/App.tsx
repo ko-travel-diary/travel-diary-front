@@ -6,6 +6,7 @@ import Main from "./views/Main";
 import {
   ADMINPAGE_PATH,
   AUTH_PATH,
+  DELETE_USER_PATH,
   MAIN_PATH,
   MYPAGE_PATH,
   MY_REVIEWLIST_PATH,
@@ -54,6 +55,16 @@ import RestList from "./views/service/admin/restList";
 import SearchTravelList from "./views/service/SearchTravel/SearchTravelList";
 import TourDetail from "./views/service/SearchTravel/SearchTravelDetail/TourDetail";
 import RestDetail from "./views/service/SearchTravel/SearchTravelDetail/RestDetail";
+import UserContainer from "./layouts/UserContainer";
+import ProfileUpdate from "./views/service/user/ProfileUpdate";
+import ScheduleList from "./views/service/user/schedule/ScheduleList";
+import MyReviewList from "./views/service/user/MyReviewList";
+import ScheduleDetail from "./views/service/user/schedule/ScheduleDetail";
+import ScheduleUpdate from "./views/service/user/schedule/ScheduleUpdate";
+import ScheduleWrite from "./views/service/user/schedule/ScheduleWrite";
+import DeleteUser from "./views/service/user/DeleteUser";
+import TourControl from "./views/service/admin/tourControl";
+import RestControl from "./views/service/admin/restControl";
 
 //                    Component : 인증화면 index 컴포넌트                     //
 function AuthIndex() {
@@ -92,22 +103,25 @@ function App() {
           </Route>
 
 
-          <Route path={MYPAGE_PATH} element={<></>}>
-            <Route index element={<></>} />
-            <Route path={PROFILE_UPDATE_PATH} element={<></>} />
-            <Route path={SCHEDULE_PATH} element={<></>}>
-              <Route index element={<></>} />
-              <Route path={SCHEDULE_DETAIL_PATH} element={<></>} />
-              <Route path={SCHEDULE_UPDATE_PATH} element={<></>} />
-              <Route path={SCHEDULE_WRITE_PATH} element={<></>} />
+          <Route path={MYPAGE_PATH} element={<UserContainer />}>
+            <Route path={PROFILE_UPDATE_PATH} element={<ProfileUpdate />} />
+            <Route path={SCHEDULE_PATH}>
+              <Route index element={<ScheduleList />} />
+              <Route path={SCHEDULE_DETAIL_PATH} element={<ScheduleDetail />} />
+              <Route path={SCHEDULE_UPDATE_PATH} element={<ScheduleUpdate />} />
+              <Route path={SCHEDULE_WRITE_PATH} element={<ScheduleWrite />} />
             </Route>
-            <Route path={MY_REVIEWLIST_PATH} element={<></>} />
+            <Route path={MY_REVIEWLIST_PATH} element={<MyReviewList />} />
+            <Route path={DELETE_USER_PATH} element={<DeleteUser />} />
           </Route>
 
           <Route path={ADMINPAGE_PATH} element={<AdminContainer />}>
+            <Route index element={<UserList />} />
             <Route path={USER_LIST_PATH} element={<UserList />} />
+            <Route path={TOUR_CONTROL_PATH} element={<TourControl />} />
             <Route path={TOUR_LIST_PATH} element={<TourList />} />
             <Route path={TOUR_ADD_PATH} element={<TourAdd />} />
+            <Route path={REST_CONTROL_PATH} element={<RestControl />} />
             <Route path={REST_LIST_PATH} element={<RestList />} />
             <Route path={REST_ADD_PATH} element={<RestAdd />} />
           </Route>

@@ -10,6 +10,7 @@ export interface GetTourAttractionsListResponseDto extends ResponseDto {
 }
 
 export interface GetTourAttractionsResponseDto extends ResponseDto {
+    tourAttractionsNumber: number;
     tourAttractionsImageUrl: string[];
     tourAttractionsName: string;
     tourAttractionsLocation: string;

@@ -59,7 +59,7 @@ export default function QnaList() {
   const [currentSection, setCurrentSection] = useState<number>(1);
   const [isToggleOn, setToggleOn] = useState<boolean>(false);
 
-  const[searchWord, setSearchWord] = useState<string>('');
+  const [searchWord, setSearchWord] = useState<string>('');
 
   //                     function                     //
   const navigator = useNavigate();
@@ -109,14 +109,14 @@ export default function QnaList() {
       if(!result || result.code !== 'SU') {
         alert(message);
         if(result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
-        return;
+        return result;
     }
 
     const { qnaList } = result as GetQnaListResponseDto;
     changeQnaList(qnaList);
 
-    setCurrentPage(1);
-    setCurrentSection(1);
+    setCurrentPage(!qnaList.length ? 0 : 1);
+    setCurrentSection(!qnaList.length ? 0 : 1);
 
   };
 
@@ -230,7 +230,7 @@ export default function QnaList() {
           <div className='qna-list-writer-id'>작성자</div>
           <div className='qna-list-write-date'>작성일</div>
         </div>
-        {viewList.map(item => <ListItem key={item.receptionNumber} {...item} />)}
+        {viewList.map(item => <ListItem {...item} />)}
       </div>
 
       <div className='qna-list-bottom'>

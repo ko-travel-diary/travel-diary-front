@@ -108,7 +108,7 @@ export default function TourDetail() {
         <div id='travel-detail-wrapper'>
             <div className='travel-detail-image-table'>
                 <div>
-                    <img width='300px' src={`${tourAttractionsImageUrl[0]}`}/>
+                    <img title='travel' width='300px' src={`${tourAttractionsImageUrl[0]}`}/>
                 </div>
                 <div className='travel-detail-image-list'>
                     <div className='travel-image-list-left' onClick={onPreImageClickHandler}></div>
