@@ -37,12 +37,13 @@ export interface GetTravelReviewDetailResponseDto extends ResponseDto {
     reviewViewCount : number;
     reviewFavoriteCount : number;
     commentContent : string;
+    travelScheduleNumber : number;
 }
 
 
 // description : 내가 쓴 리뷰 게시물 불러오기 Response Body DTO
 export interface GetTravelReviewMyListResponseDto extends ResponseDto {
-    reviewBoardList : ReviewBoardListItem[];
+    travelReviewMyList : ReviewBoardListItem[];
 }
 
 // description : 해당 게시물에 내가 좋아요 누른 상태 불러오기 Response Body DTO

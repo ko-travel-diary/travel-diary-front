@@ -6,8 +6,9 @@ import ResponseDto from "../response.dto";
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto, GetTourAttractionsResponseDto } from "./dto/response";
 
 //      function: 관광지 리스트 불러오기 API 함수       //
-export const getTourAttractionsListRequest = async () => {
-    const result = await axios.get(GET_TOURATTRACTIONS_LIST_REQUEST_URL)
+export const getTourAttractionsListRequest = async (lat?: number, lng?: number) => {
+    const header = (lat && lng) ? {params: { lat, lng }} : {};
+    const result = await axios.get(GET_TOURATTRACTIONS_LIST_REQUEST_URL, header)
         .then(requestHandler<GetTourAttractionsListResponseDto>)
         .catch(requestErrorHandler);
     return result;

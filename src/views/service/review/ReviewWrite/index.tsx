@@ -14,6 +14,7 @@ import { useScheduleStore } from 'src/stores/useScheduleStores';
 import { useScheduleButtonStore } from 'src/stores/useScheduleButtonStores';
 import useViewListStore from 'src/stores/useViewListStores/viewList.store';
 import { expendList, scheduleList, scheduleListViewItems } from 'src/types';
+import { useScheduleNumberStore } from 'src/stores/useScheduleNumberStores';
 
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
@@ -31,7 +32,7 @@ function ScheduleList(
     } = useScheduleStore();
     const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
     const {setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
-
+    const {setTravelScheduleNumber} = useScheduleNumberStore();
 
     //                    function                     //
     const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
@@ -51,6 +52,7 @@ function ScheduleList(
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
         setExpenditureViewList(expendList);
         setScheduleListItemViewList(scheduleList);
+        setTravelScheduleNumber(travelScheduleNumber);
     };
 
     
@@ -126,6 +128,7 @@ export default function ReviewWrite () {
     const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
     const {scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus} = useScheduleButtonStore();
     const {expenditureViewList, scheduleListItemViewList} = useViewListStore();
+    const {travelScheduleNumber} = useScheduleNumberStore();
 
     const {travelSchedulePeople,
         travelScheduleTotalMoney
@@ -209,7 +212,7 @@ export default function ReviewWrite () {
             travelReviewImageUrl.push(url);
         }
 
-        const requestBody: PostTravelReviewRequestDto = {reviewTitle, reviewContent, travelReviewImageUrl }; 
+        const requestBody: PostTravelReviewRequestDto = {reviewTitle, reviewContent, travelReviewImageUrl, travelScheduleNumber}; 
         postTravelReviewRequest(requestBody, cookies.accessToken).then(postTravelReviewResponse);
     };
 
