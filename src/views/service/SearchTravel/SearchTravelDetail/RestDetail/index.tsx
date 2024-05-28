@@ -11,7 +11,7 @@ export default function RestDetail() {
 
     //                    State : Qna 화면 컴포넌트                     //
     const { restaurantNumber } = useParams();
-    
+
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
     const [restaurantName, setRestaurantName] = useState<string>('');
     const [restaurantLocation, setRestaurantLocation] = useState<string>('');
@@ -61,7 +61,7 @@ export default function RestDetail() {
         <div id='travel-detail-wrapper'>
             <div className='travel-detail-image-table'>
             <div>
-                    <img width='300px' src={`${restaurantImageUrl[0]}`}/>
+                    <img title='travel' width='300px' src={`${restaurantImageUrl[0]}`}/>
                 </div>
                 <div className='travel-detail-image-list'>
                     <div className='travel-image-list-left'></div>

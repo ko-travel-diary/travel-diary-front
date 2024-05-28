@@ -1,0 +1,95 @@
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+#delete-user-wrapper {
+    max-width: 1400px;
+    display: flex;
+
+    justify-content: center;
+
+    gap: 16px;
+}
+
+.delete-user-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 500px;
+    height: 200px;
+
+    padding-top: 30px;
+
+    border: 2px solid rgba(238,238,238,1);
+    border-radius: 8px;
+
+    background-color: rgba(255,255,255,1);
+}
+
+.delete-user-box-top {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+
+    width: 300px;
+
+    border-bottom: 2px solid rgb(73, 75, 196);
+}
+
+.delete-user-box-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 20px;
+    padding: 10px;
+
+    width: 100px;
+
+    border-bottom: 2px solid rgb(73, 75, 196);
+    
+    color: rgb(190, 187, 187);
+}
+
+.delete-user-box-bottom {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 50px;
+
+    width: 400px;
+
+    gap: 40px;
+}
+
+.box-buttom-yes {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    width: 250px;
+
+    border: 2px solid black;
+}
+
+.box-buttom-no {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    width: 250px;
+
+
+    border: 2px solid black;
+}
