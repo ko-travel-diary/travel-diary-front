@@ -1,14 +1,13 @@
 import Social from 'src/components/Social';
 import './style.css';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { MAIN_ABSOLUTE_PATH, SIGN_UP_ABSOLUTE_PATH } from 'src/constant';
+import { MAIN_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_UP_ABSOLUTE_PATH } from 'src/constant';
 import { signInRequest } from 'src/apis/auth';
 import { SignInRequestDto } from 'src/apis/auth/dto/request';
 import { SignInResponseDto } from 'src/apis/auth/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { useCookies } from 'react-cookie';
-import { useStore } from 'zustand';
 import { useUserStore } from 'src/stores';
 import { GetUserInfoResponseDto } from 'src/apis/user/dto/response';
 import { getUserInfoRequest } from 'src/apis/user';
@@ -59,6 +58,7 @@ function SignIn () {
 
         if( !result || result.code !== 'SU') {
             alert(message);
+            navigator(SIGN_IN_ABSOLUTE_PATH);
             return;
         }
 
@@ -79,10 +79,18 @@ function SignIn () {
         const { value } = event.target;
         setUserPassword(value);
     };
+
+
+    const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            return onSignInButtonClickHandler();
+        }
+    }
+
     const onSignInButtonClickHandler = () => {
 
         if (!userId || !userPassword) {
-            setMessage('아이디와 비밀번호를 모두 입력해주세요.')
+            alert('아이디와 비밀번호를 모두 입력해주세요.')
             return;
         }
 
@@ -102,13 +110,13 @@ function SignIn () {
                 <div className='sign-in-input-box'>
                     <div className='sign-in-input-title'>아이디</div>
                     <div className='sign-in-input-border'>
-                        <input className='sign-in-input' value={userId} onChange={onUserIdChangeEventHandler} />
+                        <input className='sign-in-input' value={userId} onChange={onUserIdChangeEventHandler} onKeyDown={onEnterKeyDownHandler}/>
                     </div>
                 </div>
                 <div className='sign-in-input-box'>
                     <div className='sign-in-input-title'>비밀번호</div>
                     <div className='sign-in-input-border'>
-                        <input className='sign-in-input' type='password' value={userPassword} onChange={onUserPasswordChangeEventHandler} />
+                        <input className='sign-in-input' type='password' value={userPassword} onChange={onUserPasswordChangeEventHandler} onKeyDown={onEnterKeyDownHandler}/>
                     </div>
                 </div>
             </div>

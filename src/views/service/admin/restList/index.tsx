@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import './style.css'
 import { RestaurantListItem } from 'src/types'
 import { useCookies } from 'react-cookie';
@@ -178,6 +178,12 @@ export default function RestList() {
         navigator(ADMINPAGE_REST_ADD_ABSOLUTE_PATH);
     }
 
+    const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            return onSearchButtonClickHandler();
+        }
+    }
+
     //                  Effect                  //
     useEffect(() => {
         getRestaurantListRequest().then(getRestaurantListResponse)
@@ -235,7 +241,7 @@ export default function RestList() {
                 <div className='rest-list-bottom-right'>
                     <div className='rest-list-search-box'>
                         <div className='rest-list-search-input-box'>
-                        <input className='rest-list-search-input' placeholder='음식점명으로 검색' value={searchWord} onChange={onSearchWordChangeHandler}/>
+                        <input className='rest-list-search-input' placeholder='음식점명으로 검색' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
                         </div>
                         <div className='primary-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>
