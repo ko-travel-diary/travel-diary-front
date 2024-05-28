@@ -20,7 +20,10 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
     }
 
     const onRestaurantListClickHandler = () => {
-        navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(restaurantNumber));
+        if(restaurantNumber){
+        navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(restaurantNumber));       
+        }
+     
     }
 
     //                  Render                  //

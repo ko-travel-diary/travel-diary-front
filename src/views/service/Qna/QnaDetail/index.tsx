@@ -42,7 +42,7 @@ export default function QnaDetail() {
             alert(message);
             if(result?.code === 'AF') {
                 navigator(AUTH_ABSOLUTE_PATH);
-                return;
+                return result;
             }
             navigator(QNA_ABSOLUTE_PATH);
             return;
@@ -68,7 +68,7 @@ export default function QnaDetail() {
 
         if(!result || result.code !== 'SU') {
             alert(message);
-            return;
+            return result;
         };
 
         alert('댓글 입력이 완료되었습니다.');
@@ -87,7 +87,7 @@ export default function QnaDetail() {
 
         if(!result || result.code !== 'SU') {
             alert(message);
-            return;
+            return result;
         };
 
         alert('수정이 완료되었습니다.');
@@ -105,7 +105,7 @@ export default function QnaDetail() {
 
         if(!result || result.code !== 'SU') {
             alert(message);
-            return;
+            return result;
         }
         
         alert('게시물 삭제가 완료되었습니다.');
@@ -123,7 +123,7 @@ export default function QnaDetail() {
 
       if(!result || result.code !== 'SU') {
         alert(message);
-        return;
+        return result;
       }
 
       alert('댓글 삭제가 완료되었습니다.');
