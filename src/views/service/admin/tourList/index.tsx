@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import './style.css'
 import { TourAttractionsListItem } from 'src/types';
 import { useCookies } from 'react-cookie';
@@ -177,6 +177,12 @@ export default function TourList() {
         navigator(ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH);
     }
 
+    const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            return onSearchButtonClickHandler();
+        }
+    }
+
     //                  effect                  //
     useEffect(() => {
         getTourAttractionsListRequest().then(getTourAttractionsListResponse)
@@ -232,7 +238,7 @@ export default function TourList() {
                 <div className='tour-list-bottom-right'>
                     <div className='tour-list-search-box'>
                         <div className='tour-list-search-input-box'>
-                        <input className='tour-list-search-input' placeholder='관광명소명으로 검색' value={searchWord} onChange={onSearchWordChangeHandler}/>
+                        <input className='tour-list-search-input' placeholder='관광명소명으로 검색' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
                         </div>
                         <div className='primary-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>

@@ -1,27 +1,32 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css'
-import { useNavigate } from 'react-router';
-import { ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { useCookies } from 'react-cookie'
+import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
-import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router';
+import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
 import axios from 'axios';
-import { PostTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
-import { postTourAttractionsRequest } from 'src/apis/tour_attraction';
+import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
 import { useUserStore } from 'src/stores';
+import { GetTourAttractionsResponseDto } from 'src/apis/tour_attraction/dto/response';
+import { PatchTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
+import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest } from 'src/apis/tour_attraction';
 
 //                  Component                   //
-export default function TourAdd() {
+export default function TourControl() {
 
-    
     //                  State                   //
-    const { loginUserRole } = useUserStore();
+    const {tourAttractionNumber} = useParams();
+    const {loginUserRole} = useUserStore();
+
     const [cookies] = useCookies();
 
     const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
     const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
 
     const [tourAttractionsName, setTourAttractionsName] = useState<string>('');
-    const [tourAttractionsLocation, settourAtrractionLocation] = useState<string>('');
+    const [tourAttractionsLocation, setTourAtrractionLocation] = useState<string>('');
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>('');
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
@@ -31,7 +36,7 @@ export default function TourAdd() {
     //                  Function                    //
     const navigator = useNavigate();
 
-    const postTourAttractionResponse = (result: ResponseDto | null ) => {
+    const getTourAttractionResponse = (result: GetTourAttractionsResponseDto | ResponseDto | null) => {
         const message =
             !result ? "서버에 문제가 있습니다." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
@@ -39,7 +44,43 @@ export default function TourAdd() {
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         if (!result || result.code !== 'SU') {
-            alert(message)
+            alert(message);
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return
+        }
+
+        const { tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline } = result as GetTourAttractionsResponseDto;
+        setTourAttractionsName(tourAttractionsName);
+        setTourAtrractionLocation(tourAttractionsLocation);
+        setTourAttractionsTelNumber(tourAttractionsTelNumber);
+        setTourAttractionsHours(tourAttractionsHours);
+        setTourAttractionsOutline(tourAttractionsOutline);
+    }
+
+    const patchTourAttractionResponse = (result: ResponseDto | null ) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return;
+        }
+
+    }
+
+    const deleteTourAttractionResponse = (result: ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
@@ -53,7 +94,7 @@ export default function TourAdd() {
 
     const onTourAtrracntionLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const location = event.target.value;        
-        settourAtrractionLocation(location);
+        setTourAtrractionLocation(location);
     }
 
     const onTourAtrracntionTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,19 +112,19 @@ export default function TourAdd() {
         setTourAttractionsOutline(outLine);
     }
 
-    const onTourAttractionImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAtrracntionImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
         setTourAtrracntionImage([...tourAttractionsImage, file]);
-        const url = URL.createObjectURL(file);
-        setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
+        // const url = URL.createObjectURL(file);
+        // setTourAttractionsImageUrl([...restaurantImageUrl, url]);
     }
 
-    const onRegisterButtonClickHandler = async () =>{
-        if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsHours.trim() || !tourAttractionsTelNumber.trim() || 
+    const onPatchButtonClickHandler = async () => {
+        if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsTelNumber.trim() || !tourAttractionsHours.trim() || 
         !tourAttractionsOutline.trim()) return;
 
-        if (!cookies.accessToken) return;
+        if (!tourAttractionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
         for (const image of tourAttractionsImage) {
             const data = new FormData();
@@ -97,26 +138,28 @@ export default function TourAdd() {
             tourAttractionsImageUrl.push(url);
         }
 
-
-        const requestBody: PostTourAttractionsRequestDto = {
+        const requestBody: PatchTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
             tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
         }
 
-        postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
+        patchTourAttractionsRequest(requestBody, tourAttractionNumber, cookies.accessToken).then(patchTourAttractionResponse);
 
-        navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
+        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
+    }
+
+    const onDeleteButtonClickHandler = () => {
+        if (!tourAttractionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        deleteTourAttractionsRequest(tourAttractionNumber, cookies.accessToken).then(deleteTourAttractionResponse)
     }
 
     //                  Effect                  //
     useEffect(() => {
-        if (loginUserRole === 'ROLE_USER') {
-            navigator(AUTH_ABSOLUTE_PATH);
-            return;
-        }
-        
-        setTourAttractionsLat("1");
-        setTourAttractionsLng("1");
+        if (!tourAttractionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        getTourAttractionsRequest(tourAttractionNumber).then(getTourAttractionResponse);
+
+        setTourAttractionsLat('1');
+        setTourAttractionsLng('1');
     }, [])
 
     //                  Render                   //
@@ -126,42 +169,43 @@ export default function TourAdd() {
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-name'>▣  이름</div>
                     <div className='tour-register-name-box tour-register-element'>
-                        <input className='tour-register-name-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionNameChangeHandler}/>
+                        <input className='tour-register-name-input tour-register-input-element' value={tourAttractionsName} onChange={onTourAtrracntionNameChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-address'>▣ 관광지 주소</div>
                     <div className='tour-register-address-box tour-register-element'>
-                        <input className='tour-register-address-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionLocationChangeHandler}/>
+                        <input className='tour-register-address-input tour-register-input-element' value={tourAttractionsLocation} onChange={onTourAtrracntionLocationChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-tel'>▣ 관광지 연락처</div>
                     <div className='tour-register-tel-box tour-register-element'>
-                        <input className='tour-register-tel-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionTelNumberChangeHandler}/>
+                        <input className='tour-register-tel-input tour-register-input-element' value={tourAttractionsTelNumber} onChange={onTourAtrracntionTelNumberChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-hour'>▣ 관광지 영업시간</div>
                     <div className='tour-register-hour-box tour-register-element'>
-                        <input className='tour-register-hour-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionHoursChangeHandler}/>
+                        <input className='tour-register-hour-input tour-register-input-element' value={tourAttractionsHours} onChange={onTourAtrracntionHoursChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-outline'>▣ 관광지 개요</div>
                     <div className='tour-register-name-box tour-register-element'>
-                        <textarea className='tour-register-outline-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} onChange={onTourAtrracntionOutlineChangeHandler}/>
+                        <textarea className='tour-register-outline-textarea' value={tourAttractionsOutline} maxLength={1000} onChange={onTourAtrracntionOutlineChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-image'>▣ 관광지 사진</div>
                     <div className='tour-register-image-box tour-register-element'>
-                        <input className='tour-register-image-input tour-register-input-element' type='file' multiple placeholder='제목을 입력해주세요.' onChange={onTourAttractionImgFileChangeHandler}/>
+                        <input className='tour-register-image-input tour-register-input-element' type='file' multiple value={tourAttractionsImageUrl} onChange={onTourAtrracntionImgFileChangeHandler}/>
                     </div>
                 </div>
             </div>
-            <div className='tour-register-bottom'>
-                <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
+            <div className='tour-control-bottom'>
+                <div className='primary-button' onClick={onPatchButtonClickHandler}>수정</div>
+                <div className='error-button' onClick={onDeleteButtonClickHandler}>삭제</div>
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
-import { GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL, GET_TOURATTRACTIONS_LIST_REQUEST_URL, GET_TOURATTRACTIONS_REQUEST_URL, POST_TOURATTRACTIONS_REQUEST_URL } from "src/constant";
-import { PostTourAttractionsRequestDto } from "./dto/request";
+import { DELETE_TOURATTRACTIONS_REQUEST_URL, GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL, GET_TOURATTRACTIONS_LIST_REQUEST_URL, GET_TOURATTRACTIONS_REQUEST_URL, PATCH_TOURATTRACTIONS_REQUEST_URL, POST_TOURATTRACTIONS_REQUEST_URL } from "src/constant";
+import { PatchTourAttractionsRequestDto, PostTourAttractionsRequestDto } from "./dto/request";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
 import axios from "axios";
 import ResponseDto from "../response.dto";
@@ -38,4 +38,20 @@ export const postTourAttractionsRequest = async (requestBody: PostTourAttraction
         .catch(requestErrorHandler);
     return result;
 };
+
+//      function: 관광지 정보 수정 API 함수       //
+export const patchTourAttractionsRequest = async (requestBody: PatchTourAttractionsRequestDto, restaurantNumber: number | string, accessToken: string) => {
+    const result = await axios.patch(PATCH_TOURATTRACTIONS_REQUEST_URL(restaurantNumber), requestBody, bearerAuthorization(accessToken))
+        .then(requestHandler<ResponseDto>)
+        .catch(requestErrorHandler);
+    return result
+}
+
+//      function: 관광지 삭제 API 함수       //
+export const deleteTourAttractionsRequest = async (restaurantNumber: number | string, accessToken: string) => {
+    const result = await axios.delete(DELETE_TOURATTRACTIONS_REQUEST_URL(restaurantNumber), bearerAuthorization(accessToken))
+        .then(requestHandler<ResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+}
 

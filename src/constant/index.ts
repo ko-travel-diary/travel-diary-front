@@ -27,7 +27,7 @@ export const SCHEDULE_DETAIL_PATH = ':scheduleNumber';
 export const SCHEDULE_UPDATE_PATH = 'update/:scheduleNumber';
 
 export const TOUR_DETAIL_PATH = 'tourlist/:tourAttractionsNumber';
-export const REST_DETAIL_PATH = 'restlist/:restaurant_number';
+export const REST_DETAIL_PATH = 'restlist/:restaurantNumber';
 
 // USER
 export const PROFILE_UPDATE_PATH = 'profileUpdate';
@@ -36,11 +36,11 @@ export const MY_REVIEWLIST_PATH = 'reviewList';
 // ADMIN
 export const TOUR_LIST_PATH = 'tourList';
 export const TOUR_ADD_PATH = 'addTour';
-export const TOUR_CONTORL_PATH = 'control/:tourAttractionsNumber';
+export const TOUR_CONTROL_PATH = 'tourcontrol/:tourAttractionsNumber';
 
 export const REST_LIST_PATH = 'restList';
 export const REST_ADD_PATH = 'addRest';
-export const REST_CONTROL_PATH = 'control/:scheduleNumber';
+export const REST_CONTROL_PATH = 'restcontrol/:restaurantNumber';
 
 export const USER_LIST_PATH = 'userList';
 
@@ -79,8 +79,8 @@ export const ADMINPAGE_REST_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PA
 export const ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${TOUR_ADD_PATH}`;
 export const ADMINPAGE_REST_ADD_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${REST_ADD_PATH}`;
 
-export const ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH = (tourAttractionsNumber: string | number) => `${SERVICE_PATH}/${ADMINPAGE_PATH}/control/${tourAttractionsNumber}`;
-export const ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH = (restaurantNumber: string | number) => `${SERVICE_PATH}/${ADMINPAGE_PATH}/control/${restaurantNumber}`;
+export const ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH = (tourAttractionsNumber: string | number) => `${SERVICE_PATH}/${ADMINPAGE_PATH}/tourcontrol/${tourAttractionsNumber}`;
+export const ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH = (restaurantNumber: string | number) => `${SERVICE_PATH}/${ADMINPAGE_PATH}/restcontrol/${restaurantNumber}`;
 
 export const TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH = (tourAttractionsNumber : string | number) => `${SERVICE_PATH}/${TOUR_PATH}/tourlist/${tourAttractionsNumber}`;
 export const RESTAURANT_DETAIL_ABSOLUTE_PATH = (restaurantNumber : string | number) => `${SERVICE_PATH}/${TOUR_PATH}/restlist/${restaurantNumber}`;
@@ -156,12 +156,16 @@ export const GET_TOURATTRACTIONS_LIST_REQUEST_URL = `${SERVER_TOURATTRACTIONS_MO
 export const GET_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | string) => `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/${tourAttractionsNumber}`;
 export const GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL = `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/search`;
 export const POST_TOURATTRACTIONS_REQUEST_URL = `${SERVER_TOURATTRACTIONS_MODULE_URL}/addTourAttractions`;
+export const PATCH_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | string) => `${SERVER_TOURATTRACTIONS_MODULE_URL}/${tourAttractionsNumber}`;
+export const DELETE_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | string) => `${SERVER_TOURATTRACTIONS_MODULE_URL}/${tourAttractionsNumber}`;
 
 export const SERVER_RESTAURANT_MODULE_URL = `${SERVER_API_URL}/restaurant`;
 export const GET_RESTAURANT_LIST_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/restlist`
 export const GET_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
 export const GET_SEARCH_RESTAURANT_LIST_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/restlist/search`;
 export const POST_RESTAURANT_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/addRestaurant`;
+export const PATCH_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
+export const DELETE_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
 
 // description : Board Const.
 export const COUNT_PER_PAGE = 10;

@@ -10,3 +10,17 @@ export interface PostRestaurantRequestDto {
     restaurantLat: string;
     restaurantLng: string;
 }
+
+export interface PatchRestaurantRequestDto {
+    restaurantName: string;
+    restaurantLocation: string;
+    restaurantTelNumber: string;
+    restaurantHours: string;
+    restaurantOutline: string;
+    restaurantImageUrl: string[];
+    restaurantMainMenu: string;
+    restaurantServiceMenu: string;
+    restaurantLat: string;
+    restaurantLng: string;
+}
+
