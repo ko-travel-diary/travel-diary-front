@@ -1,0 +1,114 @@
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+#profile-update-wrapper {
+    max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 16px;
+}
+
+.profile-update-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 1350px;
+    height: 600px;
+
+    padding-top: 30px;
+    gap: 200px;
+
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.profile-update-image-box {
+    display: flex;
+}
+
+.profile-image {
+    display: flex;
+
+    position: relative;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 150px;
+
+    background-size: 100%;
+}
+
+.profile-add-image {
+    display: flex;
+    position: absolute;
+
+    top: 75%;
+    left: 75%;
+
+    width: 60px;
+    height: 60px;
+
+    background-image: url(../../../../assets/image/add-icon.png);
+    background-size: 100%;
+}
+.profile-add-image:hover {
+    cursor: pointer;
+}
+
+.profile-update-write-box {
+    display: flex;
+    flex-direction: column;
+
+    gap: 50px;
+}
+
+.profile-update-nickname {
+    display: flex;
+
+    gap: 20px;
+}
+
+.profile-update-password {
+    display: flex;
+
+    gap: 20px;
+}
+
+.profile-update-email {
+    display: flex;
+
+    gap: 20px;
+}
+
+.profile-update-bottom {
+    display: flex;
+    justify-content: space-between;
+
+    width: 1350px;
+}
+
+.profile-name {
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+
+    border-radius: 8px;
+    padding: 12px 20px;
+
+    font-size: 20px;
+    font-weight: 400;
+}

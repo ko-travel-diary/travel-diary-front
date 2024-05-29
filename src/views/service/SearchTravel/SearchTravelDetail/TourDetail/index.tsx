@@ -11,18 +11,12 @@ export default function TourDetail() {
     //                    State : Qna 화면 컴포넌트                     //
     const { tourAttractionsNumber } = useParams();
 
-    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<
-        string[]
-    >([]);
+    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
     const [tourAttractionsName, setTourAttractionsName] = useState<string>("");
-    const [tourAttractionsLocation, setTourAttractionsLocation] =
-        useState<string>("");
-    const [tourAttractionsTelNumber, setTourAttractionsTelNumber] =
-        useState<string>("");
-    const [tourAttractionsHours, setTourAttractionsHours] =
-        useState<string>("");
-    const [tourAttractionsOutline, setTourAttractionsOutline] =
-        useState<string>("");
+    const [tourAttractionsLocation, setTourAttractionsLocation] = useState<string>("");
+    const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>("");
+    const [tourAttractionsHours, setTourAttractionsHours] = useState<string>("");
+    const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
 
     const [imageList, setImageList] = useState<string[]>([]);
     const [viewList, setViewList] = useState<string[]>([]);
@@ -37,9 +31,7 @@ export default function TourDetail() {
     const navigator = useNavigate();
 
     //                    Event Handler : Qna 화면 컴포넌트                     //
-    const getTourAttractionsResponse = (
-        result: GetTourAttractionsResponseDto | ResponseDto | null
-    ) => {
+    const getTourAttractionsResponse = (result: GetTourAttractionsResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "ND"
@@ -81,8 +73,7 @@ export default function TourDetail() {
 
     const changeImageSection = (totalPage: number) => {
         if (!currentSection) return;
-        const startPage =
-            currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
+        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
         let endPage = currentSection * COUNT_PER_SECTION;
         if (endPage > totalPage) endPage = totalPage;
         const pageList: number[] = [];
@@ -118,9 +109,7 @@ export default function TourDetail() {
     //                    Effect : Qna 화면 컴포넌트                     //
     useEffect(() => {
         if (!tourAttractionsNumber) return;
-        getTourAttractionsRequest(tourAttractionsNumber).then(
-            getTourAttractionsResponse
-        );
+        getTourAttractionsRequest(tourAttractionsNumber).then(getTourAttractionsResponse);
     }, [tourAttractionsNumber]);
 
     //                    Render : Qna 화면 컴포넌트                     //
@@ -128,17 +117,10 @@ export default function TourDetail() {
         <div id="travel-detail-wrapper">
             <div className="travel-detail-image-table">
                 <div>
-                    <img
-                        title="travel"
-                        width="300px"
-                        src={`${tourAttractionsImageUrl[0]}`}
-                    />
+                    <img title="travel" width="300px" src={`${tourAttractionsImageUrl[0]}`} />
                 </div>
                 <div className="travel-detail-image-list">
-                    <div
-                        className="travel-image-list-left"
-                        onClick={onPreImageClickHandler}
-                    ></div>
+                    <div className="travel-image-list-left" onClick={onPreImageClickHandler}></div>
                     {tourAttractionsImageUrl.map((url) => (
                         <div
                             className="travel-lmage-list"
@@ -152,47 +134,34 @@ export default function TourDetail() {
                             }}
                         ></div>
                     ))}
-                    <div
-                        className="travel-image-list-right"
-                        onClick={onNextImageClickHandler}
-                    ></div>
+                    <div className="travel-image-list-right" onClick={onNextImageClickHandler}></div>
                 </div>
             </div>
             <div className="travel-detail-table">
                 <div className="travel-name">
                     <div className="travel-title">이름</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {tourAttractionsName}
-                    </div>
+                    <div className="travel-detail-info">{tourAttractionsName}</div>
                 </div>
                 <div className="travel-telNumber">
                     <div className="travel-title">연락처</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {tourAttractionsTelNumber}
-                    </div>
+                    <div className="travel-detail-info">{tourAttractionsTelNumber}</div>
                 </div>
                 <div className="travel-location">
                     <div className="travel-title">지역</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {tourAttractionsLocation}
-                    </div>
+                    <div className="travel-detail-info">{tourAttractionsLocation}</div>
                 </div>
                 <div className="travel-hours">
                     <div className="travel-title">운영시간</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {tourAttractionsHours}
-                    </div>
+                    <div className="travel-detail-info">{tourAttractionsHours}</div>
                 </div>
                 <div className="travel-list-table-outline">
                     <div className="travel-outline-text">
                         <div className="travel-title">개요</div>
-                        <div className="travel-detail-info">
-                            {tourAttractionsOutline}
-                        </div>
+                        <div className="travel-detail-info">{tourAttractionsOutline}</div>
                     </div>
                 </div>
             </div>

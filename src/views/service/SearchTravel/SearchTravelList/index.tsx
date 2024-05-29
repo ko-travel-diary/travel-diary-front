@@ -10,23 +10,11 @@ import {
     TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH,
 } from "src/constant";
 import { RestaurantListItem, TourAttractionsListItem } from "src/types";
-import {
-    getSearchTourAttractionsListRequest,
-    getTourAttractionsListRequest,
-} from "src/apis/tour_attraction";
+import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
 import ResponseDto from "src/apis/response.dto";
-import {
-    GetSearchTourAttractionsListResponseDto,
-    GetTourAttractionsListResponseDto,
-} from "src/apis/tour_attraction/dto/response";
-import {
-    getRestaurantListRequest,
-    getSearchRestaurantListRequest,
-} from "src/apis/restaurant";
-import {
-    GetRestaurantListResponseDto,
-    GetSearchRestaurantListResponseDto,
-} from "src/apis/restaurant/dto/response";
+import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
+import { getRestaurantListRequest, getSearchRestaurantListRequest } from "src/apis/restaurant";
+import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
 
 //                    Component : Qna 화면 컴포넌트                     //
 function Tourlist({
@@ -44,9 +32,7 @@ function Tourlist({
     //                     event handler                     //
     const onClickHandler = () => {
         if (tourAttractionsNumber) {
-            navigator(
-                TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH(tourAttractionsNumber)
-            );
+            navigator(TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH(tourAttractionsNumber));
         }
     };
 
@@ -55,69 +41,42 @@ function Tourlist({
             <div className="travel-list-table-th">
                 {tourAttractionsImageUrl === null ? (
                     <div className="travel-list-picture">
-                        <img
-                            title="travel"
-                            width="200px"
-                            height="133px"
-                            src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`}
-                        />
+                        <img title="travel" width="200px" height="133px" src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`} />
                     </div>
                 ) : (
                     <div className="travel-list-picture">
-                        <img
-                            title="travel"
-                            width="200px"
-                            src={`${tourAttractionsImageUrl}`}
-                        />
+                        <img title="travel" width="200px" src={`${tourAttractionsImageUrl}`} />
                     </div>
                 )}
                 <div>
                     <div className="travel-list-table-title">
                         <div className="travel-name">
                             <div className="travel-title">이름</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {tourAttractionsName}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{tourAttractionsName}</div>
                         </div>
                         <div className="travel-telNumber">
                             <div className="travel-title">연락처</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {tourAttractionsTelNumber}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{tourAttractionsTelNumber}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-title">
                         <div className="travel-location">
                             <div className="travel-title">지역</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {tourAttractionsLocation}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{tourAttractionsLocation}</div>
                         </div>
                         <div className="travel-hours">
                             <div className="travel-title">운영시간</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {tourAttractionsHours}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{tourAttractionsHours}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
                             <div className="travel-title">개요</div>
-                            <div className="travel-outline">
-                                {tourAttractionsOutline}
-                            </div>
+                            <div className="travel-outline">{tourAttractionsOutline}</div>
                         </div>
                     </div>
                 </div>
@@ -151,70 +110,42 @@ function Restlist({
             <div className="travel-list-table-th">
                 {restaurantImageUrl === null ? (
                     <div className="travel-list-picture">
-                        <img
-                            title="travel"
-                            width="200px"
-                            height="135px"
-                            src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`}
-                        />
+                        <img title="travel" width="200px" height="135px" src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`} />
                     </div>
                 ) : (
                     <div className="travel-list-picture">
-                        <img
-                            title="travel"
-                            width="200px"
-                            height="135px"
-                            src={`${restaurantImageUrl}`}
-                        />
+                        <img title="travel" width="200px" height="135px" src={`${restaurantImageUrl}`} />
                     </div>
                 )}
                 <div>
                     <div className="travel-list-table-title">
                         <div className="travel-name">
                             <div className="travel-title">이름</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {restaurantName}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{restaurantName}</div>
                         </div>
                         <div className="travel-telNumber">
                             <div className="travel-title">연락처</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {restaurantTelNumber}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{restaurantTelNumber}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-title">
                         <div className="travel-location">
                             <div className="travel-title">지역</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {restaurantLocation}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{restaurantLocation}</div>
                         </div>
                         <div className="travel-hours">
                             <div className="travel-title">운영시간</div>
-                            <div className="travel-detail-info-devider">
-                                {"|"}
-                            </div>
-                            <div className="travel-detail-info">
-                                {restaurantHours}
-                            </div>
+                            <div className="travel-detail-info-devider">{"|"}</div>
+                            <div className="travel-detail-info">{restaurantHours}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
                             <div className="travel-title">개요</div>
-                            <div className="travel-outline">
-                                {restaurantOutline}
-                            </div>
+                            <div className="travel-outline">{restaurantOutline}</div>
                         </div>
                     </div>
                 </div>
@@ -227,15 +158,9 @@ function Restlist({
 export default function SearchTravelList() {
     //                    state                     //
     const [selectLocal, setSelectLocal] = useState<string>("");
-    const [tourAttractionsListItem, setTourAttractionsListItem] = useState<
-        TourAttractionsListItem[]
-    >([]);
-    const [restaurantListItem, setRestaurantListItem] = useState<
-        RestaurantListItem[]
-    >([]);
-    const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>(
-        []
-    );
+    const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
+    const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
+    const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>([]);
     const [restViewList, setRestViewList] = useState<RestaurantListItem[]>([]);
 
     const [totalLength, setTotalLength] = useState<number>(0);
@@ -246,8 +171,7 @@ export default function SearchTravelList() {
     const [currentSection, setCurrentSection] = useState<number>(1);
 
     const [searchWord, setSearchWord] = useState<string>("");
-    const [searchButtonStatus, setSearchButtonStatus] =
-        useState<boolean>(false);
+    const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
     const [selectOption, setSelectOption] = useState<string>("tourAttractions");
 
     //                     function                     //
@@ -262,24 +186,16 @@ export default function SearchTravelList() {
         setSelectOption(event.target.value);
     };
 
-    const changeTourPage = (
-        tourAttractionsListItem: TourAttractionsListItem[],
-        totalLength: number
-    ) => {
+    const changeTourPage = (tourAttractionsListItem: TourAttractionsListItem[], totalLength: number) => {
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
         if (endIndex > totalLength - 1) endIndex = totalLength;
-        const tourViewList = tourAttractionsListItem.slice(
-            startIndex,
-            endIndex
-        );
+        const tourViewList = tourAttractionsListItem.slice(startIndex, endIndex);
         setTourViewList(tourViewList);
     };
 
-    const changeTourList = (
-        tourAttractionsListItem: TourAttractionsListItem[]
-    ) => {
+    const changeTourList = (tourAttractionsListItem: TourAttractionsListItem[]) => {
         setTourAttractionsListItem(tourAttractionsListItem);
 
         const totalLength = tourAttractionsListItem.length;
@@ -288,18 +204,14 @@ export default function SearchTravelList() {
         const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
         setTotalPage(totalPage);
 
-        const totalSection =
-            Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
+        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
         setTotalSection(totalSection);
 
         changeTourPage(tourAttractionsListItem, totalLength);
         changeSection(totalPage);
     };
 
-    const changeRestPage = (
-        restaurantListItem: RestaurantListItem[],
-        totalLength: number
-    ) => {
+    const changeRestPage = (restaurantListItem: RestaurantListItem[], totalLength: number) => {
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
@@ -317,8 +229,7 @@ export default function SearchTravelList() {
         const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
         setTotalPage(totalPage);
 
-        const totalSection =
-            Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
+        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
         setTotalSection(totalSection);
 
         changeRestPage(restaurantListItem, totalLength);
@@ -327,8 +238,7 @@ export default function SearchTravelList() {
 
     const changeSection = (totalPage: number) => {
         if (!currentSection) return;
-        const startPage =
-            currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
+        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
         let endPage = currentSection * COUNT_PER_SECTION;
         if (endPage > totalPage) endPage = totalPage;
         const pageList: number[] = [];
@@ -336,9 +246,7 @@ export default function SearchTravelList() {
         setPageList(pageList);
     };
 
-    const getTourAttractionsListResponse = (
-        result: GetTourAttractionsListResponseDto | ResponseDto | null
-    ) => {
+    const getTourAttractionsListResponse = (result: GetTourAttractionsListResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "AF"
@@ -353,17 +261,14 @@ export default function SearchTravelList() {
             return result;
         }
 
-        const { tourAttractionsListItem } =
-            result as GetTourAttractionsListResponseDto;
+        const { tourAttractionsListItem } = result as GetTourAttractionsListResponseDto;
         changeTourList(tourAttractionsListItem);
 
         setCurrentPage(!tourAttractionsListItem.length ? 0 : 1);
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
     };
 
-    const getRestaurantListResponse = (
-        result: GetRestaurantListResponseDto | ResponseDto | null
-    ) => {
+    const getRestaurantListResponse = (result: GetRestaurantListResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "AF"
@@ -385,9 +290,7 @@ export default function SearchTravelList() {
         setCurrentSection(!restaurantListItem.length ? 0 : 1);
     };
 
-    const getSearchTourAttractionsListResponse = (
-        result: GetSearchTourAttractionsListResponseDto | ResponseDto | null
-    ) => {
+    const getSearchTourAttractionsListResponse = (result: GetSearchTourAttractionsListResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "AF"
@@ -402,8 +305,7 @@ export default function SearchTravelList() {
             return result;
         }
 
-        const { tourAttractionsListItem } =
-            result as GetSearchTourAttractionsListResponseDto;
+        const { tourAttractionsListItem } = result as GetSearchTourAttractionsListResponseDto;
 
         let tourViewList = [];
 
@@ -421,9 +323,7 @@ export default function SearchTravelList() {
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
     };
 
-    const getSearchRestaurantListResponse = (
-        result: GetSearchRestaurantListResponseDto | ResponseDto | null
-    ) => {
+    const getSearchRestaurantListResponse = (result: GetSearchRestaurantListResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "AF"
@@ -443,9 +343,7 @@ export default function SearchTravelList() {
         let restViewList = [];
 
         if (selectLocal !== "all") {
-            restViewList = restaurantListItem.filter((value) =>
-                value.restaurantLocation.startsWith(selectLocal)
-            );
+            restViewList = restaurantListItem.filter((value) => value.restaurantLocation.startsWith(selectLocal));
         } else {
             restViewList = restaurantListItem;
         }
@@ -456,28 +354,18 @@ export default function SearchTravelList() {
         setCurrentSection(!restaurantListItem.length ? 0 : 1);
     };
 
-    const onSearchWordChangeHandler = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchWord(searchWord);
     };
 
     const onSearchButtonClickHandler = () => {
-        if (selectOption === "tourAttractions")
-            getSearchTourAttractionsListRequest(searchWord).then(
-                getSearchTourAttractionsListResponse
-            );
+        if (selectOption === "tourAttractions") getSearchTourAttractionsListRequest(searchWord).then(getSearchTourAttractionsListResponse);
 
-        if (selectOption === "restaurant")
-            getSearchRestaurantListRequest(searchWord).then(
-                getSearchRestaurantListResponse
-            );
+        if (selectOption === "restaurant") getSearchRestaurantListRequest(searchWord).then(getSearchRestaurantListResponse);
     };
 
-    const onPasswordKeydownHandler = (
-        event: KeyboardEvent<HTMLInputElement>
-    ) => {
+    const onPasswordKeydownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") return onSearchButtonClickHandler();
     };
 
@@ -538,33 +426,17 @@ export default function SearchTravelList() {
                 <div className="travel-search-location">
                     <div>지역</div>
                     <div>{"|"}</div>
-                    <SelectBox
-                        value={selectLocal}
-                        onChange={onLocalChangeHandler}
-                    />
+                    <SelectBox value={selectLocal} onChange={onLocalChangeHandler} />
                 </div>
                 <div className="travel-search-category">
                     <div>카테고리</div>
                     <div>{"|"}</div>
                     <div className="review-search-item-travel-attraction travel-font ">
-                        <input
-                            title="travel"
-                            name="check"
-                            type="radio"
-                            onChange={onRadioChangeHandler}
-                            defaultChecked
-                            value={"tourAttractions"}
-                        />
+                        <input title="travel" name="check" type="radio" onChange={onRadioChangeHandler} defaultChecked value={"tourAttractions"} />
                         관광명소
                     </div>
                     <div className="review-search-item-restaurant travel-font ">
-                        <input
-                            title="travel"
-                            name="check"
-                            type="radio"
-                            onChange={onRadioChangeHandler}
-                            value={"restaurant"}
-                        />
+                        <input title="travel" name="check" type="radio" onChange={onRadioChangeHandler} value={"restaurant"} />
                         음식점
                     </div>
                 </div>
@@ -578,10 +450,7 @@ export default function SearchTravelList() {
                                 onChange={onSearchWordChangeHandler}
                                 onKeyDown={onPasswordKeydownHandler}
                             />
-                            <div
-                                className="travel-search-button primary-button"
-                                onClick={onSearchButtonClickHandler}
-                            >
+                            <div className="travel-search-button primary-button" onClick={onSearchButtonClickHandler}>
                                 검색
                             </div>
                         </div>
@@ -589,41 +458,26 @@ export default function SearchTravelList() {
                 </div>
             </div>
 
-            {selectOption === "tourAttractions" &&
-                tourViewList.map((item) => <Tourlist {...item} />)}
-            {selectOption === "restaurant" &&
-                restViewList.map((item) => <Restlist {...item} />)}
+            {selectOption === "tourAttractions" && tourViewList.map((item) => <Tourlist {...item} />)}
+            {selectOption === "restaurant" && restViewList.map((item) => <Restlist {...item} />)}
 
             <div className="travel-list-bottom">
                 <div className="travel-list-pagenation">
-                    <div
-                        className="travel-list-page-left"
-                        onClick={onPreSectionClickHandler}
-                    ></div>
+                    <div className="travel-list-page-left" onClick={onPreSectionClickHandler}></div>
                     <div className="travel-list-page-box">
                         {pageList.map((page) =>
                             page === currentPage ? (
-                                <div
-                                    className="travel-list-page-active"
-                                    key={page}
-                                >
+                                <div className="travel-list-page-active" key={page}>
                                     {page}
                                 </div>
                             ) : (
-                                <div
-                                    className="travel-list-page"
-                                    onClick={() => onPageClickHandler(page)}
-                                    key={page}
-                                >
+                                <div className="travel-list-page" onClick={() => onPageClickHandler(page)} key={page}>
                                     {page}
                                 </div>
                             )
                         )}
                     </div>
-                    <div
-                        className="travel-list-page-right"
-                        onClick={onNextSectionClickHandler}
-                    ></div>
+                    <div className="travel-list-page-right" onClick={onNextSectionClickHandler}></div>
                 </div>
             </div>
         </div>
