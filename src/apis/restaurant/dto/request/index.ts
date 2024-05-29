@@ -7,8 +7,8 @@ export interface PostRestaurantRequestDto {
     restaurantImageUrl: string[];
     restaurantMainMenu: string;
     restaurantServiceMenu: string;
-    restaurantLat: string;
-    restaurantLng: string;
+    restaurantLat: number;
+    restaurantLng: number;
 }
 
 export interface PatchRestaurantRequestDto {
@@ -20,7 +20,5 @@ export interface PatchRestaurantRequestDto {
     restaurantImageUrl: string[];
     restaurantMainMenu: string;
     restaurantServiceMenu: string;
-    restaurantLat: string;
-    restaurantLng: string;
 }
 
