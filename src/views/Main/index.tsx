@@ -9,11 +9,10 @@ import { AUTH_ABSOLUTE_PATH } from 'src/constant';
 import { RestaurantListItem, TourAttractionsListItem } from 'src/types';
 import { useNavigate } from 'react-router';
 import { GetRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
+import { useCheckBoxStore } from 'src/stores/useCheckBoxStores';
 
 //                    component : 사이드 리스트 컴포넌트                     //
-function SideListItem (
-
-) {
+function SideListItem (props: RestaurantListItem | TourAttractionsListItem) {
 
   //                    event handler                     //
   const onItemClickHandler = () => {
@@ -32,13 +31,39 @@ function SideListItem (
     event.stopPropagation();
   };
 
+  if ('restaurantNumber' in props) 
+  return (
+    <div className='side-list-item' onClick={onItemClickHandler}>
+      <div className='side-list-item-image' style={{ backgroundImage: `${props.restaurantImageUrl}` }}></div>
+      <div className='side-list-item-info-box'>
+        <div className='side-list-item-info-title-box'>
+          <div className='side-list-item-info-title'>{props.restaurantName}</div>
+          <div className='side-list-item-info-type'>음식점</div>
+        </div>
+        <div className='side-list-item-info-location'>내 위치로 부터 {'10.0'}km</div>
+        <div>
+          <div className='side-list-item-recommendation-box'>
+            <div className='side-list-item-recommendation'>추천수</div>
+            <div className='side-list-item-recommendation'>{'\|'}</div>
+            <div className='side-list-item-recommendation'>{props.restaurantRecommendCount}</div>
+          </div>
+        </div>
+        <div className='side-list-item-button-box'>
+          <div className='side-list-item-button start' onClick={onStartButtonClickHandler}>출발</div>
+          <div className='side-list-item-button stopover' onClick={onStopoverButtonClickHandler}>경유</div>
+          <div className='side-list-item-button end' onClick={onEndButtonClickHandler}>도착</div>
+        </div>
+      </div>
+    </div>
+  )
+
   //                    render : 사이드 컴포넌트                     //
   return (
     <div className='side-list-item' onClick={onItemClickHandler}>
-      <div className='side-list-item-image' style={{ backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Seoul_City_Hall_01.jpg/290px-Seoul_City_Hall_01.jpg)` }}></div>
+      <div className='side-list-item-image' style={{ backgroundImage: `${props.tourAttractionsImageUrl}` }}></div>
       <div className='side-list-item-info-box'>
         <div className='side-list-item-info-title-box'>
-          <div className='side-list-item-info-title'>서울 도서관</div>
+          <div className='side-list-item-info-title'>{props.tourAttractionsName}</div>
           <div className='side-list-item-info-type'>관광 명소</div>
         </div>
         <div className='side-list-item-info-location'>내 위치로 부터 {'10.0'}km</div>
@@ -46,7 +71,7 @@ function SideListItem (
           <div className='side-list-item-recommendation-box'>
             <div className='side-list-item-recommendation'>추천수</div>
             <div className='side-list-item-recommendation'>{'\|'}</div>
-            <div className='side-list-item-recommendation'>0</div>
+            <div className='side-list-item-recommendation'>{props.tourAttractionsRecommendCount}</div>
           </div>
         </div>
         <div className='side-list-item-button-box'>
@@ -62,6 +87,17 @@ function SideListItem (
 
 //                    component : 사이드 컴포넌트                     //
 function Side () {
+  //                    state                     //
+  const {restCheckStatus, tourCheckStatus, setRestCheckStatus, setTourCheckStatus} = useCheckBoxStore();
+
+  //                    function                     //
+  const onTourCheckBoxClickHandler = () => {
+    setTourCheckStatus(!tourCheckStatus);
+  };
+
+  const onRestCheckBoxClickHandler = () => {
+    setRestCheckStatus(!restCheckStatus);
+  };
 
   //                    render : 사이드 컴포넌트                     //
   return (
@@ -80,11 +116,11 @@ function Side () {
       <div className='main-side-sort'>
         <div className='main-side-check-container'>
           <div className='main-side-check-box'>
-            <input type='checkbox' />
-            <div className='main-side-check-label'>관광 명소</div>
+            <input type='checkbox' onClick={onTourCheckBoxClickHandler}/>
+            <div className='main-side-check-label' >관광 명소</div>
           </div>
           <div className='main-side-check-box'>
-            <input type='checkbox' />
+            <input type='checkbox' onClick={onRestCheckBoxClickHandler}/>
             <div className='main-side-check-label'>음식점</div>
           </div>
         </div>
@@ -95,16 +131,7 @@ function Side () {
         </div>
       </div>
       <div className='main-side-item-container'>
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
-        <SideListItem />
+        {/* <SideListItem/> */}
       </div>
       <div className='main-side-more-button'>더보기</div>
     </div>
@@ -122,11 +149,15 @@ export default function Main() {
 
   const mapRef = useRef<kakao.maps.Map | null>(null); 
   const clusterRef = useRef<kakao.maps.MarkerClusterer | null>(null); 
+  const [markeres, setMarkeres] = useState<kakao.maps.Marker[]>([]);
 
   const [mouseFlag, setMouseFlag] = useState<boolean>(false);
   
   const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
   const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
+
+  
+  const {restCheckStatus, tourCheckStatus} = useCheckBoxStore();
 
   //                     function                     //
   const navigator = useNavigate();
@@ -192,25 +223,36 @@ export default function Main() {
     setRestaurantListItem(restaurantListItem);
   };
 
+  const removeMarkers = () => {
+    // 모든 마커를 지도에서 제거
+    for (const marker of markeres) {
+      marker.setMap(null);
+    }
+  };
+
   const setMarkers = () => {
     if (!mapRef.current) return;
     // if (!tourAttractionsListItem.length) return;
     const map = mapRef.current;
 
-    const markers: kakao.maps.Marker[] = [];
+    removeMarkers();
 
     // tourAttractionsListItem은 배열이므로, 각 요소에 접근해야 합니다.
-    for (const item of tourAttractionsListItem) {
-      const lat = item.tourAttractionsLat, lng = item.tourAttractionsLng;
-      const marker = setTourMarker(lat, lng);
-      if (marker) markers.push(marker);
+    if(tourCheckStatus){
+      for (const item of tourAttractionsListItem) {
+        const lat = item.tourAttractionsLat, lng = item.tourAttractionsLng;
+        const marker = setTourMarker(lat, lng);
+      if (marker) markeres.push(marker);
+      }
     }
 
-    for (const item of restaurantListItem) {
-      const lat = item.restaurantLat;
-      const lng = item.restaurantLng;
-      const marker = setTourMarker(lat, lng);
-      if (marker) markers.push(marker);
+    if(restCheckStatus){
+      for (const item of restaurantListItem) {
+        const lat = item.restaurantLat;
+        const lng = item.restaurantLng;
+        const marker = setTourMarker(lat, lng);
+      if (marker) markeres.push(marker);
+      }
     }
 
     // const clusterer = new kakao.maps.MarkerClusterer({
