@@ -7,11 +7,13 @@ import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
 import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, NickNameCheckRequestDto, SignUpRequestDto } from 'src/apis/auth/dto/request';
 import { emailAuthCheckRequest, emailAuthRequest, idCheckRequest, nickNameCheckRequest, signInRequest, singUpRequest } from 'src/apis/auth';
 
+import DefaultProfileImage from 'src/assets/image/userProfileDefault.png';
+
 //                    interface : 회원가입 인풋 박스 프로퍼티즈                     //
 interface InputBoxProps {
     title: string;
     value: string;
-    onChnage: (event: ChangeEvent<HTMLInputElement>) => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     placeholder: string;
     type: 'text' | 'password';
     messageError: boolean;
@@ -21,7 +23,7 @@ interface InputBoxProps {
 }
 
 //                    Component : 회원가입 인풋 박스 컴포넌트                     //
-function InputBox ({ title, value, onChnage, placeholder, type, messageError, message, buttonTitle, onButtonClick }: InputBoxProps) {
+function InputBox ({ title, value, onChange, placeholder, type, messageError, message, buttonTitle, onButtonClick }: InputBoxProps) {
 
     //                    render :  회원가입 인풋 박스 컴포넌트                     //
     const messageClass = 'sign-up-message ' + (messageError ? 'error' :  'primary');
@@ -34,7 +36,7 @@ function InputBox ({ title, value, onChnage, placeholder, type, messageError, me
                     type={type} 
                     placeholder={placeholder} 
                     value={value} 
-                    onChange={onChnage}  />
+                    onChange={onChange}  />
                     <div className={messageClass}>{message}</div>
                 </div>
                 {onButtonClick && <div className='primary-button' onClick={onButtonClick}>{buttonTitle}</div>}
@@ -283,22 +285,22 @@ function SignUp () {
         <div id='sign-up-wrapper'>
             <div className='sign-up-title'>회원가입</div>
             <div className='sign-up-input-container'>
-                <InputBox title='아이디' value={userId} onChnage={onUserIdChangeHandler} placeholder='' type='text' 
+                <InputBox title='아이디' value={userId} onChange={onUserIdChangeHandler} placeholder='' type='text' 
                 messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler}  />
 
-                <InputBox title='비밀번호' value={userPassword} onChnage={onUserPasswordChangeHandler} placeholder='' type='password' 
+                <InputBox title='비밀번호' value={userPassword} onChange={onUserPasswordChangeHandler} placeholder='' type='password' 
                 messageError={userPasswordMessageError} message={userPasswordMessage} />
 
-                <InputBox title='비밀번호 확인' value={userPasswordCheck} onChnage={onUserPasswordCheckChangeHandler} placeholder='' type='password' 
+                <InputBox title='비밀번호 확인' value={userPasswordCheck} onChange={onUserPasswordCheckChangeHandler} placeholder='' type='password' 
                 messageError={userPasswordCheckMessageError} message={userPasswordCheckMessage} />
 
-                <InputBox title='닉네임' value={nickName} onChnage={onNickNameChangeHandler} placeholder='' type='text' messageError={nickNameMessageError} 
+                <InputBox title='닉네임' value={nickName} onChange={onNickNameChangeHandler} placeholder='' type='text' messageError={nickNameMessageError} 
                 message={nickNameMessage} buttonTitle='중복 확인' onButtonClick={onNickNameButtonClickHandler} />
 
-                <InputBox title='이메일' value={userEmail} onChnage={onUserEmailChangeHandler} placeholder='' type='text' messageError={userEmailMessageError} 
+                <InputBox title='이메일' value={userEmail} onChange={onUserEmailChangeHandler} placeholder='' type='text' messageError={userEmailMessageError} 
                 message={userEmailMessage} buttonTitle='중복 확인' onButtonClick={onUserEmailButtonClickHandler}  />
 
-                <InputBox title='인증번호' value={authNumber} onChnage={onAuthNumberChangeHandler} placeholder='' type='text' messageError={authNumberMessageError} 
+                <InputBox title='인증번호' value={authNumber} onChange={onAuthNumberChangeHandler} placeholder='' type='text' messageError={authNumberMessageError} 
                 message={authNumberMessage} buttonTitle='인증 확인' onButtonClick={onAuthNumberButtonClickHandler}  />
 
             </div>

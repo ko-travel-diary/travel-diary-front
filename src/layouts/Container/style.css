@@ -35,6 +35,8 @@
     font-size: 24px;
     font-weight: 700;
     color: rgba(7, 65, 115, 1);
+
+    cursor: pointer;
 }
 
 .top-navigation-main {
@@ -77,39 +79,22 @@
 
     cursor: pointer;
 }
-.user-profile.default {
-    width: 45px;
-    height: 45px;
-    border-radius: 25px;
-
-    background-image: url(../../assets/image/userProfileDefault.png);
-    background-size: 100%;
+.user-profile{
+    background-size: 100% 100% ;
     background-position: center;
 
-    position: relative;
-}
-.user-profile.image {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    position: relative;
-}
-.user-profile-set{
     width: 50px;
     height: 50px;
+
     border-radius: 25px;
-    
-    object-position: 50% 50%;
-    object-fit: cover;
 }
 .top-navigation-right-drop-down {
     display: flex;
     justify-content: center;
 
-    position: absolute;
-    top: 65px;
-    right: 0;
+    position: relative;
+    top: 120%;
+    right: 400%;
     z-index: 2;
 
     width: 200px;

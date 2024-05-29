@@ -2,13 +2,16 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    width: 1064px;
 }
 
 .rest-list-top{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
+    width: 100%;
 }
 .rest-list-count-text .emphasis {
     color: rgba(64, 64, 64, 1);
@@ -53,6 +56,7 @@
     flex-direction: column;
     align-items: center;
 
+    width: 100%;
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
     height: 750px;
@@ -61,9 +65,11 @@
 }
 .rest-list-table-top{
     display: flex;
-    gap: 44px;
+    gap: 48px;
     align-items: center;
+    justify-content: center;
 
+    width: 100%;
     padding: 15px 0;
     border-bottom: 2px solid rgba(238, 238, 238, 1);
 
@@ -181,8 +187,11 @@
 
 .rest-list-table-box{
     display: flex;
-    gap: 44px;
+    gap: 48px;
+    justify-content: center;
     text-align: center;
+
+    width: 100%;
 
     overflow: hidden;
     white-space: nowrap;
@@ -194,9 +203,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    width: 100px;
-    margin-left: 10px;
+    width: 30px;
 }
 .rest-list-table-image {
     display: flex;
@@ -210,7 +217,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    width: 150px;
+    width: 128px;
 
     cursor: pointer;
 }
@@ -219,28 +226,27 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    width: 150px;
+    width: 128px;
 }
 .rest-list-table-tel {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    width: 150px;
+    width: 128px;
 }
 .rest-list-table-hours {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    width: 150px;
+    width: 128px;
 }
 .rest-list-table-button {
-    margin-right: 10px;
-    width: 75px;
+    width: 80px;
 }
 .long-text{
-    line-height: 49px;
+    line-height: 52px;
     text-align: left;
 }
 

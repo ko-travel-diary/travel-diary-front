@@ -28,6 +28,7 @@ export interface UserListItem{
     userId: string;
     userEmail: string;
     joinDate: string;
+    nickName: string;
 }
 
 export interface TourAttractionsListItem{
@@ -40,6 +41,7 @@ export interface TourAttractionsListItem{
     tourAttractionsOutline: string;
     tourAttractionsLat:	number;
     tourAttractionsLng:	number;
+    tourAttractionsRecommendCount: number;
 }
 
 export interface RestaurantListItem{
@@ -54,6 +56,7 @@ export interface RestaurantListItem{
     restaurantServiceMenu: string;
     restaurantLat:	number;
     restaurantLng:	number;
+    restaurantRecommendCount: number;
 }
 
 export interface reviewCommentList{

@@ -50,6 +50,8 @@ export function TourListItems({
         }
     };
 
+    const hours = tourAttractionsHours.split('<br>').join('');
+
     //                  Render                  //
     return (
         <div className="tour-list-table-box">
@@ -88,7 +90,7 @@ export function TourListItems({
                 {tourAttractionsTelNumber}
             </div>
             <div className="tour-list-table-hours long-text">
-                {tourAttractionsHours}
+                {hours}
             </div>
             <div className="control-button" onClick={onControlButton}>
                 관리
@@ -320,22 +322,9 @@ export default function TourList() {
                         ></div>
                         <div className="tour-list-page-box">
                             {pageList.map((page) =>
-                                page === currentPage ? (
-                                    <div
-                                        className="tour-list-page-active"
-                                        key={page}
-                                    >
-                                        {page}
-                                    </div>
-                                ) : (
-                                    <div
-                                        className="tour-list-page"
-                                        key={page}
-                                        onClick={() => onPageClickHandler(page)}
-                                    >
-                                        {page}
-                                    </div>
-                                )
+                                page === currentPage ? 
+                                <div className="tour-list-page-active"key={page}>{page}</div> : 
+                                <div className="tour-list-page" key={page} onClick={() => onPageClickHandler(page)}>{page}</div>    
                             )}
                         </div>
                         <div

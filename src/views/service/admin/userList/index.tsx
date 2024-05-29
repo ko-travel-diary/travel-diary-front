@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import './style.css'
 import { UserListItem } from 'src/types';
 import { GetSearchUserListResponseDto, GetUserListResponseDto } from 'src/apis/user/dto/response';
@@ -10,7 +10,7 @@ import { DeleteAdminUserRequestDto } from 'src/apis/user/dto/request';
 import { useNavigate } from 'react-router';
 
 //                  Component                   //
-function UserListItems ({userId, userEmail, joinDate}: UserListItem) {
+function UserListItems ({userId, userEmail, joinDate, nickName}: UserListItem) {
 
     //                  State                   //
     const [cookies] = useCookies();
@@ -47,6 +47,7 @@ function UserListItems ({userId, userEmail, joinDate}: UserListItem) {
         <div className='user-list-table-box'>
             <div className='user-list-table-number'>{joinDate}</div>
             <div className='user-list-table-id'>{userId}</div>
+            <div className='user-list-table-nickname'>{nickName}</div>
             <div className='user-list-table-email'>{userEmail}</div>
             <div className='user-list-table-delete error-button' onClick={onDeleteClickHandler}>삭제</div>
         </div>
@@ -185,6 +186,12 @@ export default function UserList() {
         getSearchUserListRequest(searchWord, cookies.accessToken).then(getSearchUserListResponse);
     }
 
+    const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            return onSearchButtonClickHandler();
+        }
+    }
+
     //                  effect                  //
     useEffect(() => {
         if (!cookies.accessToken) return;
@@ -212,6 +219,7 @@ export default function UserList() {
                 <div className='user-list-table-top'>
                     <div className='user-list-table-number'>가입일</div>
                     <div className='user-list-table-id'>아이디</div>
+                    <div className='user-list-table-nickname'>닉네임</div>
                     <div className='user-list-table-email'>이메일</div>
                     <div className='user-list-table-delete'>삭제</div>
                 </div>
@@ -237,7 +245,7 @@ export default function UserList() {
                 <div className='user-list-bottom-right'>
                     <div className='user-list-search-box'>
                         <div className='user-list-search-input-box'>
-                        <input className='user-list-search-input' placeholder='아이디로 검색.' value={searchWord} onChange={onSearchWordChangeHandler}/>
+                        <input className='user-list-search-input' placeholder='아이디로 검색.' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
                         </div>
                         <div className='primary-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>

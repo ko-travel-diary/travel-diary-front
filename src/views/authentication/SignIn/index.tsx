@@ -33,7 +33,7 @@ function SignIn () {
         const message = 
             !result ? '서버에 문제가 있습니다.' : 
             result.code === 'VF' ? '아이디와 비밀번호를 모두 입력하세요.' :
-            result.code === 'SF' ? '로그인 정보가 일치하지 않습니다.' :
+            result.code === 'AF' ? '권한이 없습니다.' :
             result.code === 'TF' ? '서버에 문제가 있습니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
