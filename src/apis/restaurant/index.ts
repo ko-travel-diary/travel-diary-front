@@ -53,4 +53,4 @@ export const deleteRestaurantRequest = async (restaurantNumber: number | string,
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
-}
+};

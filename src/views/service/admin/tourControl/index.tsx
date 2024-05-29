@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate, useParams } from 'react-router';
-import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
 import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
 import axios from 'axios';
 import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
@@ -17,7 +17,7 @@ import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttra
 export default function TourControl() {
 
     //                  State                   //
-    const {tourAttractionNumber} = useParams();
+    const {tourAttractionsNumber} = useParams();
     const {loginUserRole} = useUserStore();
 
     const [cookies] = useCookies();
@@ -30,8 +30,6 @@ export default function TourControl() {
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>('');
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
-    const [tourAttractionsLat, setTourAttractionsLat] = useState<string>('');
-    const [tourAttractionsLng, setTourAttractionsLng] = useState<string>('');
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -121,10 +119,9 @@ export default function TourControl() {
     }
 
     const onPatchButtonClickHandler = async () => {
-        if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsTelNumber.trim() || !tourAttractionsHours.trim() || 
-        !tourAttractionsOutline.trim()) return;
+        if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsOutline.trim()) return;
 
-        if (!tourAttractionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
         for (const image of tourAttractionsImage) {
             const data = new FormData();
@@ -140,27 +137,30 @@ export default function TourControl() {
 
         const requestBody: PatchTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
-            tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
+            tourAttractionsImageUrl
         }
 
-        patchTourAttractionsRequest(requestBody, tourAttractionNumber, cookies.accessToken).then(patchTourAttractionResponse);
+        patchTourAttractionsRequest(requestBody, tourAttractionsNumber, cookies.accessToken).then(patchTourAttractionResponse);
 
         navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
     }
 
     const onDeleteButtonClickHandler = () => {
-        if (!tourAttractionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
-        deleteTourAttractionsRequest(tourAttractionNumber, cookies.accessToken).then(deleteTourAttractionResponse)
+        if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        deleteTourAttractionsRequest(tourAttractionsNumber, cookies.accessToken).then(deleteTourAttractionResponse)
+
+        const confirm = window.confirm("정말 삭제하시겠습니까?");
+        if (!confirm) return;
+
+        navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
     }
 
     //                  Effect                  //
     useEffect(() => {
-        if (!tourAttractionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
-        getTourAttractionsRequest(tourAttractionNumber).then(getTourAttractionResponse);
+        if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        getTourAttractionsRequest(tourAttractionsNumber).then(getTourAttractionResponse);
 
-        setTourAttractionsLat('1');
-        setTourAttractionsLng('1');
-    }, [])
+    }, [loginUserRole])
 
     //                  Render                   //
     return (

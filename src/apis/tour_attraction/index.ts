@@ -89,15 +89,8 @@ export const patchTourAttractionsRequest = async (
 };
 
 //      function: 관광지 삭제 API 함수       //
-export const deleteTourAttractionsRequest = async (
-    restaurantNumber: number | string,
-    accessToken: string
-) => {
-    const result = await axios
-        .delete(
-            DELETE_TOURATTRACTIONS_REQUEST_URL(restaurantNumber),
-            bearerAuthorization(accessToken)
-        )
+export const deleteTourAttractionsRequest = async (restaurantNumber: number | string,accessToken: string) => {
+    const result = await axios.delete(DELETE_TOURATTRACTIONS_REQUEST_URL(restaurantNumber),bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;

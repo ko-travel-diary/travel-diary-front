@@ -27,8 +27,8 @@ export default function RestAdd() {
     const [restaurantOutline, setRestaurantOutline] = useState<string>('');
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');
-    const [restaurantLat, setRestaurantLat] = useState<string>('');
-    const [restaurantLng, setRestaurantLng] = useState<string>('');
+    const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
+    const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
 
     const [filename, setFilename] = useState<string[]>([]);
     
@@ -133,8 +133,8 @@ export default function RestAdd() {
             return;
         }
         
-        setRestaurantLat("1");
-        setRestaurantLng("1");
+        setRestaurantLat(1.0);
+        setRestaurantLng(1.0);
     }, [])
 
     //                  Render                   //

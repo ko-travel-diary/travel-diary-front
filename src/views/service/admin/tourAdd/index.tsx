@@ -25,8 +25,8 @@ export default function TourAdd() {
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>('');
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
-    const [tourAttractionsLat, setTourAttractionsLat] = useState<string>('');
-    const [tourAttractionsLng, setTourAttractionsLng] = useState<string>('');
+    const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
+    const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -115,8 +115,8 @@ export default function TourAdd() {
             return;
         }
         
-        setTourAttractionsLat("1");
-        setTourAttractionsLng("1");
+        setTourAttractionsLat(1);
+        setTourAttractionsLng(1);
     }, [])
 
     //                  Render                   //

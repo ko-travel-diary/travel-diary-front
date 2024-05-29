@@ -4,8 +4,8 @@ export interface PostTourAttractionsRequestDto {
     tourAttractionsTelNumber: String;
     tourAttractionsHours: String;
     tourAttractionsOutline: String;
-    tourAttractionsLat: string;
-    tourAttractionsLng: string;
+    tourAttractionsLat: number;
+    tourAttractionsLng: number;
     tourAttractionsImageUrl: String[];
 }
 
@@ -15,7 +15,5 @@ export interface PatchTourAttractionsRequestDto {
     tourAttractionsTelNumber: String;
     tourAttractionsHours: String;
     tourAttractionsOutline: String;
-    tourAttractionsLat: string;
-    tourAttractionsLng: string;
     tourAttractionsImageUrl: String[];
 }

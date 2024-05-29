@@ -29,8 +29,6 @@ export default function RestControl() {
     const [restaurantOutline, setRestaurantOutline] = useState<string>('');
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');
-    const [restaurantLat, setRestaurantLat] = useState<string>('');
-    const [restaurantLng, setRestaurantLng] = useState<string>('');
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -117,8 +115,8 @@ export default function RestControl() {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
         setRestaurantImage([...restaurantImage, file]);
-        const url = URL.createObjectURL(file);
-        setRestaurantImageUrl([...restaurantImageUrl, url]);
+        // const url = URL.createObjectURL(file);
+        // setRestaurantImageUrl([...restaurantImageUrl, url]);
     }
 
     const onRestaurantMainMenuChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -132,8 +130,7 @@ export default function RestControl() {
     }
 
     const onPatchButtonClickHandler = async () => {
-        if (!restaurantName.trim() || !restaurantLocation.trim() || !restaurantTelNumber.trim() || !restaurantHours.trim() || 
-        !restaurantOutline.trim() || !restaurantMainMenu.trim() || !restaurantServiceMenu.trim()) return;
+        if (!restaurantName.trim() || !restaurantLocation.trim() || !restaurantOutline.trim() || !restaurantMainMenu.trim() ) return;
 
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
@@ -151,8 +148,7 @@ export default function RestControl() {
 
         const requestBody: PatchRestaurantRequestDto = {
             restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
-            restaurantImageUrl,
-            restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
+            restaurantImageUrl, restaurantMainMenu, restaurantServiceMenu
         }
 
         patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);
@@ -175,8 +171,6 @@ export default function RestControl() {
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         getRestaurantRequest(restaurantNumber).then(getRestaurantResponse);
 
-        setRestaurantLat('1');
-        setRestaurantLng('1');
     }, [loginUserRole])
 
     //                  Render                   //
