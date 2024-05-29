@@ -23,21 +23,23 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
         if(restaurantNumber){
         navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(restaurantNumber));       
         }
-     
+    
     }
+
+    const hours = restaurantHours.split("<br>").join("");
 
     //                  Render                  //
     return (
         <div className='rest-list-table-box'>
             <div className='rest-list-table-number'>{restaurantNumber}</div>
             {restaurantImageUrl === null ?
-                <div className='rest-list-table-image'><img width='75px' height='50px' src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
+                <div className='rest-list-table-image'><img width='75px' height='50px' style={{margin: '0 10px'}} src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
                 <div className='rest-list-table-image'><img width='75px' height='50px' src={`${restaurantImageUrl}`} /></div>
             }
             <div className='rest-list-table-name long-text' onClick={onRestaurantListClickHandler}>{restaurantName}</div>
             <div className='rest-list-table-locate long-text'>{restaurantLocation}</div>
             <div className='rest-list-table-tel long-text'>{restaurantTelNumber}</div>
-            <div className='rest-list-table-hours long-text'>{restaurantHours}</div>
+            <div className='rest-list-table-hours long-text'>{hours}</div>
             <div className='control-button' onClick={onControlButton}>관리</div>
         </div>
     );

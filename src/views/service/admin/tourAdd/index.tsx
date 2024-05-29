@@ -75,8 +75,8 @@ export default function TourAdd() {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
         setTourAtrracntionImage([...tourAttractionsImage, file]);
-        const url = URL.createObjectURL(file);
-        setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
+        // const url = URL.createObjectURL(file);
+        // setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
     }
 
     const onRegisterButtonClickHandler = async () =>{
