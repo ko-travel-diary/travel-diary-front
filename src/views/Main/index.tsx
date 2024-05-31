@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
 import './style.css';
 import { getTourAttractionsListRequest } from 'src/apis/tour_attraction';
@@ -10,6 +10,7 @@ import { RestaurantListItem, TourAttractionsListItem } from 'src/types';
 import { useNavigate } from 'react-router';
 import { GetRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
 import { useCheckBoxStore } from 'src/stores/useCheckBoxStores';
+import { useTourListStore } from 'src/stores/useTourListStore';
 
 //                    component : 사이드 리스트 컴포넌트                     //
 function SideListItem (props: RestaurantListItem | TourAttractionsListItem) {
@@ -34,7 +35,7 @@ function SideListItem (props: RestaurantListItem | TourAttractionsListItem) {
   if ('restaurantNumber' in props) 
   return (
     <div className='side-list-item' onClick={onItemClickHandler}>
-      <div className='side-list-item-image' style={{ backgroundImage: `${props.restaurantImageUrl}` }}></div>
+      <div className='side-list-item-image' style={{ backgroundImage: `url(${props.restaurantImageUrl})` }}></div>
       <div className='side-list-item-info-box'>
         <div className='side-list-item-info-title-box'>
           <div className='side-list-item-info-title'>{props.restaurantName}</div>
@@ -60,7 +61,7 @@ function SideListItem (props: RestaurantListItem | TourAttractionsListItem) {
   //                    render : 사이드 컴포넌트                     //
   return (
     <div className='side-list-item' onClick={onItemClickHandler}>
-      <div className='side-list-item-image' style={{ backgroundImage: `${props.tourAttractionsImageUrl}` }}></div>
+      <div className='side-list-item-image' style={{ backgroundImage: `url(${props.tourAttractionsImageUrl})` }}></div>
       <div className='side-list-item-info-box'>
         <div className='side-list-item-info-title-box'>
           <div className='side-list-item-info-title'>{props.tourAttractionsName}</div>
@@ -88,7 +89,12 @@ function SideListItem (props: RestaurantListItem | TourAttractionsListItem) {
 //                    component : 사이드 컴포넌트                     //
 function Side () {
   //                    state                     //
+  const [searchWord, setSearchWord] = useState<string>('');
+
   const {restCheckStatus, tourCheckStatus, setRestCheckStatus, setTourCheckStatus} = useCheckBoxStore();
+  const {tourAttractionsListItem, restaurantListItem} = useTourListStore();
+
+  // const { PlacesSearchResult, Status, Pagination } = kakao.maps;
 
   //                    function                     //
   const onTourCheckBoxClickHandler = () => {
@@ -97,6 +103,21 @@ function Side () {
 
   const onRestCheckBoxClickHandler = () => {
     setRestCheckStatus(!restCheckStatus);
+  };
+
+  // const placesSearchCB = ( result: PlacesSearchResult, status: Status, pagination: Pagination) => {
+  // };
+
+  //                    event handler                     //
+  const onSearchWordChangeHanlder = (event: ChangeEvent<HTMLInputElement>) => {
+    const searchWord = event.target.value;
+    setSearchWord(searchWord);
+  };
+
+  const onSaerchButtonClickHandler = () => {
+    // 장소 검색 객체를 생성합니다
+    const places = new kakao.maps.services.Places(); 
+    // places.keywordSearch(searchWord, placesSearchCB); 
   };
 
   //                    render : 사이드 컴포넌트                     //
@@ -109,18 +130,18 @@ function Side () {
           <div className='main-side-top-title'>길찾기</div>
         </div>
         <div className='main-side-top-search-box'>
-          <input className='main-side-top-search-input' />
-          <div className='main-side-top-search-button'></div>
+          <input className='main-side-top-search-input' value={searchWord} onChange={onSearchWordChangeHanlder}/>
+          <div className='main-side-top-search-button' onClick={onSaerchButtonClickHandler}></div>
         </div>
       </div>
       <div className='main-side-sort'>
         <div className='main-side-check-container'>
           <div className='main-side-check-box'>
-            <input type='checkbox' onClick={onTourCheckBoxClickHandler}/>
+            <input type='checkbox' onClick={onTourCheckBoxClickHandler} checked={tourCheckStatus}/>
             <div className='main-side-check-label' >관광 명소</div>
           </div>
           <div className='main-side-check-box'>
-            <input type='checkbox' onClick={onRestCheckBoxClickHandler}/>
+            <input type='checkbox' onClick={onRestCheckBoxClickHandler} checked={restCheckStatus}/>
             <div className='main-side-check-label'>음식점</div>
           </div>
         </div>
@@ -131,7 +152,8 @@ function Side () {
         </div>
       </div>
       <div className='main-side-item-container'>
-        {/* <SideListItem/> */}
+        {tourCheckStatus && tourAttractionsListItem.map(item => <SideListItem key={item.tourAttractionsNumber} {...item} />)}
+        {restCheckStatus && restaurantListItem.map(item => <SideListItem key={item.restaurantNumber} {...item} />)} 
       </div>
       <div className='main-side-more-button'>더보기</div>
     </div>
@@ -149,12 +171,11 @@ export default function Main() {
 
   const mapRef = useRef<kakao.maps.Map | null>(null); 
   const clusterRef = useRef<kakao.maps.MarkerClusterer | null>(null); 
-  const [markeres, setMarkeres] = useState<kakao.maps.Marker[]>([]);
+  const [markeres] = useState<kakao.maps.Marker[]>([]);
 
   const [mouseFlag, setMouseFlag] = useState<boolean>(false);
-  
-  const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
-  const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
+
+  const {tourAttractionsListItem, restaurantListItem, setTourAttractionsListItem, setRestaurantListItem} = useTourListStore();
 
   
   const {restCheckStatus, tourCheckStatus} = useCheckBoxStore();
@@ -162,19 +183,15 @@ export default function Main() {
   //                     function                     //
   const navigator = useNavigate();
 
-  const isRange = (lat: number, lng: number) => (lat >= (mapCenter.lat - 0.025)) && (lat <= (mapCenter.lat + 0.025)) && (lng >= (mapCenter.lng - 0.05)) && (lng <= (mapCenter.lng + 0.05));
-
   const setTourMarker = (lat: number, lng: number) => {
     
     const map = mapRef.current;
     if (!map) return;
     const latLng = new kakao.maps.LatLng(lat, lng);
     const marker = new kakao.maps.Marker({ position: latLng });
-    marker.setMap(map);
 
     // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-    const iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    const iwContent = '<div style="padding:5px;">Hello World!</div>', iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
     // 인포윈도우를 생성합니다
     const infowindow = new kakao.maps.InfoWindow({
@@ -184,10 +201,11 @@ export default function Main() {
 
     // 마커에 클릭이벤트를 등록합니다
     kakao.maps.event.addListener(marker, 'click', function() {
-      // 마커 위에 인포윈도우를 표시합니다
-      infowindow.open(map, marker);   
+      // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+        infowindow.open(map, marker);
     });
-
+    
+    marker.setMap(map);
     return marker;
   };
 
@@ -232,12 +250,10 @@ export default function Main() {
 
   const setMarkers = () => {
     if (!mapRef.current) return;
-    // if (!tourAttractionsListItem.length) return;
     const map = mapRef.current;
 
     removeMarkers();
 
-    // tourAttractionsListItem은 배열이므로, 각 요소에 접근해야 합니다.
     if(tourCheckStatus){
       for (const item of tourAttractionsListItem) {
         const lat = item.tourAttractionsLat, lng = item.tourAttractionsLng;
@@ -261,7 +277,7 @@ export default function Main() {
     //   minLevel: 4 // 클러스터 할 최소 지도 레벨 
     // });
 
-    // clusterer.addMarkers(markers);
+    // clusterer.addMarkers(markeres);
 
     
   }
@@ -282,7 +298,6 @@ export default function Main() {
     setMapCenter({ lat: newCenter.getLat(), lng: newCenter.getLng() });
     // 여기서 서버에 새로운 중심 좌표를 전송하고 필요한 작업을 수행할 수 있음
   };
-
 
   const onMapMouseDownHandler = () => {
     setMouseFlag(true);

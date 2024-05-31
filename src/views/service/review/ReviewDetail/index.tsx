@@ -156,7 +156,7 @@ export default function ReviewDetail () {
     const {scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
     const {scheduleListItemViewList, expenditureViewList, setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
     const {travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney} = useScheduleStore();
-    const {setTravelScheduleNumber} = useScheduleNumberStore();
+    const {travelScheduleNumber, setTravelScheduleNumber} = useScheduleNumberStore();
 
     const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
     const duchPay = balnace / travelSchedulePeople;
@@ -414,6 +414,11 @@ export default function ReviewDetail () {
 
     }, []);
 
+    useEffect(() => {
+        setScheduleListItemViewList([]);
+        setExpenditureViewList([]);
+    }, [])
+
     //                    render                    //
     const userStatus = (loginUserId !== reviewWriterId) ? 
         (loginUserRole !== 'ROLE_ADMIN') ? 
@@ -444,31 +449,33 @@ export default function ReviewDetail () {
                 <div>{reviewFavoriteCount}</div>
             </div>
 
-            {
-            scheduleRenderStatus &&
+            {scheduleRenderStatus &&
                 <div id='schedule-wrapper'>
-                    <div id='schedule-list-item-wrapper'>
-                        {scheduleListItemViewList && scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}
-                    </div>
-                    <div id='expenditure-list-item-wrapper'>
-                        <div> 가계부</div>
-                        <div className='total-people-money-box'>
-                            <div>인원수</div>
-                            <div>|</div>
-                            <div className='total-people'>{travelSchedulePeople}</div>
-                            <div>총 금액</div>
-                            <div>|</div>
-                            <div className='total-money'>{travelScheduleTotalMoney}</div>
-                        </div>
-                        {expenditureViewList && expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
-                        <div className='balance-duchPay'>
-                            <div>잔액</div>
-                            <div>{balnace}</div>
-                            <div>|</div>
-                            <div>더치페이</div>
-                            <div>{duchPay}</div>
-                        </div>
-                    </div>
+                    {(scheduleListItemViewList.length !== 0) && (expenditureViewList.length !== 0) &&
+                        (<>
+                            <div id='schedule-list-item-wrapper'>
+                                {scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}</div>
+                                <div id='expenditure-list-item-wrapper'>
+                                <div> 가계부</div>
+                                <div className='total-people-money-box'>
+                                    <div>인원수</div>
+                                    <div>|</div>
+                                    <div className='total-people'>{travelSchedulePeople}</div>
+                                    <div>총 금액</div>
+                                    <div>|</div>
+                                    <div className='total-money'>{travelScheduleTotalMoney}</div>
+                                </div>
+                                { expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
+                                <div className='balance-duchPay'>
+                                    <div>잔액</div>
+                                    <div>{balnace}</div>
+                                    <div>|</div>
+                                    <div>더치페이</div>
+                                    <div>{duchPay}</div>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             }
 
