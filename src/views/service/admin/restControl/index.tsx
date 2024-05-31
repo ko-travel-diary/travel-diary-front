@@ -178,51 +178,51 @@ export default function RestControl() {
         <div id='rest-control-wrapper'>
             <div className='rest-control-top'>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-name'>▣ 음식점 이름</div>
-                    <div className='rest-control-name-box rest-control-element'>
-                        <input className='rest-control-name-input rest-control-input-element' value={restaurantName} onChange={onRestaurantNameChangeHandler}/>
+                    <div className='rest-control-top-title'>▣ 음식점 이름</div>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' value={restaurantName} onChange={onRestaurantNameChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-address'>▣ 음식점 주소</div>
-                    <div className='rest-control-address-box rest-control-element'>
-                        <input className='rest-control-address-input rest-control-input-element' value={restaurantLocation} onChange={onRestaurantLocationChangeHandler}/>
+                    <div className='rest-control-top-title'>▣ 음식점 주소</div>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' value={restaurantLocation} onChange={onRestaurantLocationChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-tel'>▣ 음식점 연락처</div>
-                    <div className='rest-control-tel-box rest-control-element'>
-                        <input className='rest-control-tel-input rest-control-input-element' value={restaurantTelNumber} onChange={onRestaurantTelNumberChangeHandler}/>
+                    <div className='rest-control-top-title'>▣ 음식점 연락처</div>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' value={restaurantTelNumber} onChange={onRestaurantTelNumberChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-hour'>▣ 음식점 영업시간</div>
-                    <div className='rest-control-hour-box rest-control-element'>
-                        <input className='rest-control-hour-input rest-control-input-element' value={restaurantHours} onChange={onRestaurantHoursChangeHandler}/>
+                    <div className='rest-control-top-title'>▣ 음식점 영업시간</div>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' value={restaurantHours} onChange={onRestaurantHoursChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-main'>▣ 음식점 메인메뉴</div>
-                    <div className='rest-control-main-box rest-control-element'>
-                        <input className='rest-control-main-input rest-control-input-element' value={restaurantMainMenu} onChange={onRestaurantMainMenuChangeHandler}/>
+                    <div className='rest-control-top-title'>▣ 음식점 메인메뉴</div>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' value={restaurantMainMenu} onChange={onRestaurantMainMenuChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-service'>▣ 음식점 취급메뉴</div>
-                    <div className='rest-control-service-box rest-control-element'>
-                        <input className='rest-control-service-input rest-control-input-element' value={restaurantServiceMenu} onChange={onRestauranServiceMenuChangeHandler}/>
+                    <div className='rest-control-top-title'>▣ 음식점 취급메뉴</div>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' value={restaurantServiceMenu} onChange={onRestauranServiceMenuChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
-                    <div className='rest-control-top-outline'>▣ 음식점 개요</div>
-                    <div className='rest-control-name-box rest-control-element'>
-                        <textarea className='rest-control-outline-textarea' value={restaurantOutline} maxLength={1000} onChange={onRestaurantOutlineChangeHandler} />
+                    <div className='rest-control-top-title'>▣ 음식점 개요</div>
+                    <div className='rest-control-element'>
+                        <textarea className='rest-control-textarea-element' value={restaurantOutline} maxLength={1000} onChange={onRestaurantOutlineChangeHandler} />
                     </div>
                 </div>
                 <div className='rest-control-top-element-box'>
                     <div className='rest-control-top-image'>▣ 음식점 사진</div>
-                    <div className='rest-control-image-box rest-control-element'>
-                        <input className='rest-control-image-input rest-control-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>
+                    <div className='rest-control-element'>
+                        <input className='rest-control-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>
                     </div>
                 </div>
             </div>

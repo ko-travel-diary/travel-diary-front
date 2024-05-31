@@ -142,51 +142,51 @@ export default function RestAdd() {
         <div id='rest-register-wrapper'>
             <div className='rest-register-top'>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-name'>▣ 음식점 이름</div>
-                    <div className='rest-register-name-box rest-register-element'>
-                        <input className='rest-register-name-input rest-register-input-element' placeholder='이름을 입력해주세요.' onChange={onRestaurantNameChangeHandler}/>
+                    <div className='rest-register-top-title'>▣ 음식점 이름</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' placeholder='이름을 입력해주세요.' onChange={onRestaurantNameChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-address'>▣ 음식점 주소</div>
-                    <div className='rest-register-address-box rest-register-element'>
-                        <input className='rest-register-address-input rest-register-input-element' placeholder='주소를 입력해주세요.' onChange={onRestaurantLocationChangeHandler}/>
+                    <div className='rest-register-top-title'>▣ 음식점 주소</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' placeholder='주소를 입력해주세요.' onChange={onRestaurantLocationChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-tel'>▣ 음식점 연락처</div>
-                    <div className='rest-register-tel-box rest-register-element'>
-                        <input className='rest-register-tel-input rest-register-input-element' placeholder='연락처를 입력해주세요.' onChange={onRestaurantTelNumberChangeHandler}/>
+                    <div className='rest-register-top-title'>▣ 음식점 연락처</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' placeholder='연락처를 입력해주세요.' onChange={onRestaurantTelNumberChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-hour'>▣ 음식점 영업시간</div>
-                    <div className='rest-register-hour-box rest-register-element'>
-                        <input className='rest-register-hour-input rest-register-input-element' placeholder='영업시간 입력해주세요.' onChange={onRestaurantHoursChangeHandler}/>
+                    <div className='rest-register-top-title'>▣ 음식점 영업시간</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' placeholder='영업시간 입력해주세요.' onChange={onRestaurantHoursChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-main'>▣ 음식점 메인메뉴</div>
-                    <div className='rest-register-main-box rest-register-element'>
-                        <input className='rest-register-main-input rest-register-input-element' placeholder='메인메뉴를 입력해주세요.' onChange={onRestaurantMainMenuChangeHandler}/>
+                    <div className='rest-register-top-title'>▣ 음식점 메인메뉴</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' placeholder='메인메뉴를 입력해주세요.' onChange={onRestaurantMainMenuChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-service'>▣ 음식점 취급메뉴</div>
-                    <div className='rest-register-service-box rest-register-element'>
-                        <input className='rest-register-service-input rest-register-input-element' placeholder='제목을 입력해주세요.' onChange={onRestauranServiceMenuChangeHandler}/>
+                    <div className='rest-register-top-title'>▣ 음식점 취급메뉴</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' placeholder='제목을 입력해주세요.' onChange={onRestauranServiceMenuChangeHandler}/>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-outline'>▣ 음식점 개요</div>
-                    <div className='rest-register-name-box rest-register-element'>
-                        <textarea className='rest-register-outline-textarea' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} onChange={onRestaurantOutlineChangeHandler} />
+                    <div className='rest-register-top-title'>▣ 음식점 개요</div>
+                    <div className='rest-register-element'>
+                        <textarea className='rest-register-textarea-element' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} onChange={onRestaurantOutlineChangeHandler} />
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
-                    <div className='rest-register-top-image'>▣ 음식점 사진</div>
-                    <div className='rest-register-image-box rest-register-element'>
-                        <input className='rest-register-image-input rest-register-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>          
+                    <div className='rest-register-top-title'>▣ 음식점 사진</div>
+                    <div className='rest-register-element'>
+                        <input className='rest-register-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>          
                     </div>
                 </div>
             </div>

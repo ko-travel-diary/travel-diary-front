@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router';
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { useEffect } from 'react';
-import { AUTH_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH } from 'src/constant';
+import { MAIN_ABSOLUTE_PATH } from 'src/constant';
 
 //                  Component                   //
 export function Sns () {
@@ -16,8 +16,10 @@ export function Sns () {
 
     //                  Effect                  //
     useEffect(() => {
+        console.log('accessToken:', accessToken);
+        console.log('expires:', expires);
         if (!accessToken || !expires) return;
-        const expiration = new Date(Date.now() + (Number(expires) * 1000));
+        const expiration = new Date(Date.now() + (Number(expires)*1000));
         setCookie('accessToken', accessToken, {path: '/', expires: expiration});
 
         navigator(MAIN_ABSOLUTE_PATH);
