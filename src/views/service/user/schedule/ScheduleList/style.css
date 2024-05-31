@@ -1,0 +1,271 @@
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+#schedule-wrapper {
+    max-width: 1400px;
+    display: flex;
+
+    gap: 40px;
+}
+
+.schedule-list-table {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+
+    margin-top: 60px;
+
+    width: 280px;
+    height: 800px;
+}
+
+.schedule-add-table {
+    display: flex;
+    justify-content: space-between;
+}
+
+.schedule-add {
+    display: flex;
+
+    padding: 5px;
+
+    border: 1px solid black;
+}
+.schedule-add:hover {
+    cursor: pointer;
+}
+
+.schedule-lists-box {
+    display: flex;
+    flex-direction: column;
+
+    width: 280px;
+    height: 600px;
+
+    border: 1px solid black;
+}
+
+.schedule-list {
+    display: flex;
+    justify-content: center;
+
+    margin: 10px;
+    padding: 5px;
+
+    border: 1px solid black;
+}
+
+.schedule-list:hover {
+    cursor: pointer;
+}
+
+.schedule-text-table {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+
+    margin-top: 10px;
+
+    width: 400px;
+    height: 690px;
+
+    border: 1px solid black;
+}
+
+.schedule-title {
+    display: flex;
+    text-align: center;
+    align-items: center;
+
+    margin: 10px;
+    gap: 10px;
+}
+
+.schedule-name {
+    display: flex;
+
+    padding: 20px;
+}
+
+.schedule-add-box {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    margin: 10px;
+    padding: 10px;
+
+    border-bottom: 2px solid blue;
+}
+
+.schedule-calendar-box {
+    display: flex;
+
+    gap: 20px;
+}
+
+.schedule-date {
+    display: flex;
+
+    width: 100px;
+    margin-left: 20px;
+
+    border: 1px solid black;
+}
+
+.calendar-button {
+    display: flex;
+
+    width: 20px;
+    height: 20px;
+
+    background-image: url(../../../../../assets/image/calendar-icon.png);
+    background-size: 100%;
+}
+
+.schedule-text-box {
+    display: flex;
+
+    gap: 5px;
+
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.schedule-text {
+    width: 120px;
+    text-align: start;
+
+    border: 1px solid black;
+}
+
+.schedule-start-hour {
+    width: 80px;
+
+    border: 1px solid black;
+}
+
+.schedule-end-hour {
+    width: 80px;
+
+    border: 1px solid black;
+}
+
+.schedule-add-icon {
+    display: flex;
+
+    width: 21px;
+    height: 21px;
+
+    background-image: url(../../../../../assets/image/add-icon.png);
+    background-size: 100%;
+}
+
+.schedule-household-table {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+
+    margin-top: 10px;
+
+    width: 400px;
+    height: 690px;
+
+    border: 1px solid black;
+}
+
+.schedule-household-box {
+    margin: 20px;
+
+    border-bottom: 2px solid blue;
+}
+
+.schedule-household-text {
+    display: flex;
+
+    padding: 10px;
+
+    width: 100px;
+}
+
+.schedule-select-box {
+    display: flex;
+
+    padding: 10px;
+
+    gap: 15px;
+}
+
+.schedule-select {
+    display: flex;
+
+    gap: 10px;
+}
+
+.schedule-select-name {
+    width: 50px;
+}
+
+.select-input-box {
+    width: 80px;
+}
+
+.schedule-household-text-box {
+    display: flex;
+    flex-direction: column;
+
+    margin: 20px;
+
+    border-bottom: 2px solid blue;
+}
+
+.schedule-household-add-box {
+    display: flex;
+
+    margin-left: 10px;
+    padding: 10px;
+    gap: 20px;
+}
+
+.schedule-money {
+    width: 80px;
+
+    border: 1px solid black;
+}
+
+.schedule-spend-box {
+    display: flex;
+    gap: 40px;
+
+    margin: 20px;
+
+    border-bottom: 2px solid blue;
+}
+
+.schedule-balance {
+    display: flex;
+
+    margin: 10px;
+    width: 120px;
+
+    border: 1px solid black;
+}
+
+.schedule-dutchpay {
+    display: flex;
+
+    margin: 10px;
+    width: 120px;
+
+    border: 1px solid black;
+}
