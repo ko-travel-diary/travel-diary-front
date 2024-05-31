@@ -74,9 +74,10 @@ export const MY_REVIEWLIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}/${MY_
 export const DELETE_USER_ABSOLUTE_PAGE = `${SERVICE_PATH}/${MYPAGE_PATH}/${DELETE_USER_PATH}`;
 
 export const SCHEDULE_WRITE_ABSOLUTE_PATH = `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${SCHEDULE_WRITE_PATH}`;
-export const SCHEDULE_DETAIL_ABSOLUTE_PATH = (scheduleNumber: string | number) => `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${scheduleNumber}`;
-export const SCHEDULE_UPDATE_ABSOLUTE_PATH = (scheduleNumber: string | number) =>
-    `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/update/${scheduleNumber}`;
+export const SCHEDULE_DETAIL_ABSOLUTE_PATH = (travelScheduleNumber: string | number) =>
+    `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/${travelScheduleNumber}`;
+export const SCHEDULE_UPDATE_ABSOLUTE_PATH = (travelScheduleNumber: string | number) =>
+    `${SERVICE_PATH}/${MYPAGE_PATH}/${SCHEDULE_PATH}/update/${travelScheduleNumber}`;
 
 export const ADMINPAGE_ABSOULUTE_PAGE = `${SERVICE_PATH}/${ADMINPAGE_PATH}`;
 export const ADMINPAGE_USER_LIST_ABSOLUTE_PATH = `${SERVICE_PATH}/${ADMINPAGE_PATH}/${USER_LIST_PATH}`;

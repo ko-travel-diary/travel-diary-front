@@ -1,4 +1,4 @@
-export interface QnaListItem{
+export interface QnaListItem {
     receptionNumber: number;
     qnaStatus: string;
     qnaTitle: string;
@@ -7,31 +7,31 @@ export interface QnaListItem{
     qnaDatetime: string;
 }
 
-export interface expendList{
+export interface expendList {
     travelScheduleExpenditureDetail: string;
     travelScheduleExpenditure: number;
 }
 
-export interface scheduleList{
+export interface scheduleList {
     scheduleDate: string;
     scheduleContent: string;
     scheduleStartTime: string;
     scheduleEndTime: string;
 }
 
-export interface scheduleListViewItems{
+export interface scheduleListViewItems {
     travelScheduleName: string;
     travelScheduleNumber: number;
 }
 
-export interface UserListItem{
+export interface UserListItem {
     userId: string;
     userEmail: string;
     joinDate: string;
     nickName: string;
 }
 
-export interface TourAttractionsListItem{
+export interface TourAttractionsListItem {
     tourAttractionsNumber: number;
     tourAttractionsImageUrl: string;
     tourAttractionsName: string;
@@ -39,12 +39,12 @@ export interface TourAttractionsListItem{
     tourAttractionsTelNumber: string;
     tourAttractionsHours: string;
     tourAttractionsOutline: string;
-    tourAttractionsLat:	number;
-    tourAttractionsLng:	number;
+    tourAttractionsLat: number;
+    tourAttractionsLng: number;
     tourAttractionsRecommendCount: number;
 }
 
-export interface RestaurantListItem{
+export interface RestaurantListItem {
     restaurantNumber: number;
     restaurantImageUrl: string;
     restaurantName: string;
@@ -54,19 +54,19 @@ export interface RestaurantListItem{
     restaurantOutline: string;
     restaurantMainMenu: string;
     restaurantServiceMenu: string;
-    restaurantLat:	number;
-    restaurantLng:	number;
+    restaurantLat: number;
+    restaurantLng: number;
     restaurantRecommendCount: number;
 }
 
-export interface reviewCommentList{
+export interface reviewCommentList {
     commentContent: string;
     reviewCommentNumber: number;
     reviewCommentWriterId: string;
     commentParentsNumber: number;
 }
 
-export interface travelReviewMyList{
+export interface travelReviewMyList {
     reviewNumber: number;
     reviewTitle: string;
     reviewContent: string;
@@ -77,7 +77,7 @@ export interface travelReviewMyList{
     reviewFavoriteCount: number;
 }
 
-export interface ReviewBoardListItem{
+export interface ReviewBoardListItem {
     reviewNumber: number;
     reviewTitle: string;
     reviewContent: string;

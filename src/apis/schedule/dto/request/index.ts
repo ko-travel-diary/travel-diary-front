@@ -1,6 +1,6 @@
 import { expendList, scheduleList } from "src/types";
 
-export interface PostScheduleRequestDto{
+export interface PostScheduleRequestDto {
     travelSchedulePeople: number;
     travelScheduleTotalMoney: number;
     travelScheduleName: string;
@@ -8,7 +8,7 @@ export interface PostScheduleRequestDto{
     scheduleListItem: scheduleList[];
 }
 
-export interface PatchScheduleRequestDto{
+export interface PatchScheduleRequestDto {
     travelSchedulePeople: number;
     travelScheduleTotalMoney: number;
     travelScheduleName: string;
