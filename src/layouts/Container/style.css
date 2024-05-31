@@ -80,13 +80,13 @@
     cursor: pointer;
 }
 .user-profile{
-    background-size: 100% 100% ;
+    background-size: 50px 50px ;
     background-position: center;
 
-    width: 50px;
+    min-width: 50px;
     height: 50px;
 
-    border-radius: 25px;
+    border-radius: 50%;
 }
 .top-navigation-right-drop-down {
     display: flex;
@@ -94,7 +94,7 @@
 
     position: relative;
     top: 120%;
-    right: 400%;
+    right: 350%;
     z-index: 2;
 
     width: 200px;

@@ -31,6 +31,7 @@ import {
     SIGN_IN_ABSOLUTE_PATH,
     SIGN_IN_PATH,
     SIGN_UP_PATH,
+    SNS_PATH,
     TOUR_ADD_PATH,
     TOUR_CONTROL_PATH,
     TOUR_DETAIL_PATH,
@@ -67,6 +68,8 @@ import ScheduleWrite from "./views/service/user/schedule/ScheduleWrite";
 import DeleteUser from "./views/service/user/DeleteUser";
 import TourControl from "./views/service/admin/tourControl";
 import RestControl from "./views/service/admin/restControl";
+import { Sns } from "./components/Social";
+import NotFound from "./views/notFound";
 
 //                    Component : 인증화면 index 컴포넌트                     //
 function AuthIndex() {
@@ -135,11 +138,14 @@ function App() {
                 </Route>
             </Route>
 
+                <Route path={SNS_PATH} element={<Sns />}></Route>
             <Route path={AUTH_PATH}>
                 <Route index element={<AuthIndex />} />
                 <Route path={SIGN_IN_PATH} element={<SignIn />} />
                 <Route path={SIGN_UP_PATH} element={<SignUp />} />
             </Route>
+
+            <Route path="*" element={<NotFound />}></Route>
         </Routes>
     );
 }

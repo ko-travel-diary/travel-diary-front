@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 10px;
 
-    width: 1064px;
+    width: 1235px;
 }
 
 .tour-list-top{
@@ -65,7 +65,7 @@
 }
 .tour-list-table-top{
     display: flex;
-    gap: 48px;
+    gap: 56px;
     align-items: center;
     justify-content: center;
 
@@ -187,7 +187,7 @@
 
 .tour-list-table-box{
     display: flex;
-    gap: 48px;
+    gap: 56px;
     justify-content: center;
     text-align: center;
 
