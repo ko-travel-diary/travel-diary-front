@@ -1,100 +1,98 @@
-import { useNavigate, useParams } from 'react-router';
-import './style.css'
-import { useCookies } from 'react-cookie';
-import { useUserStore } from 'src/stores';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from 'src/constant';
-import { GetTravelReviewCommentListResponseDto, GetTravelReviewDetailResponseDto, GetTravelReviewFavoriteStatusResponseDto } from 'src/apis/review/dto/response';
-import ResponseDto from 'src/apis/response.dto';
-import { postUserNickNameRequest } from 'src/apis/user';
-import { PostUserNickNameRequestDto } from 'src/apis/user/dto/request';
-import { deleteTravelReviewReqeust, favoriteCountRequest, getTravelReviewCommentListRequest, getTravelReviewDetailRequest, getTravelReviewFavoriteStatusRequest, increaseViewCountRequest, postTravelReviewCommentRequest } from 'src/apis/review';
-import { PostUserNickNameResponseDto } from 'src/apis/user/dto/response';
-import { expendList, reviewCommentList, scheduleList } from 'src/types';
-import { PostTravelReviewCommentRequestDto } from 'src/apis/review/dto/request';
-import { useReviewNumberStore } from 'src/stores/useReviewNumberStores';
-import { getScheduleDetailRequest } from 'src/apis/schedule';
-import { GetScheduleDetailResponseDto } from 'src/apis/schedule/dto/response';
-import useViewListStore from 'src/stores/useViewListStores/viewList.store';
-import { useScheduleStore } from 'src/stores/useScheduleStores';
-import { useScheduleButtonStore } from 'src/stores/useScheduleButtonStores';
-import { useScheduleNumberStore } from 'src/stores/useScheduleNumberStores';
+import { useNavigate, useParams } from "react-router";
+import "./style.css";
+import { useCookies } from "react-cookie";
+import { useUserStore } from "src/stores";
+import { ChangeEvent, useEffect, useState } from "react";
+import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from "src/constant";
+import {
+    GetTravelReviewCommentListResponseDto,
+    GetTravelReviewDetailResponseDto,
+    GetTravelReviewFavoriteStatusResponseDto,
+} from "src/apis/review/dto/response";
+import ResponseDto from "src/apis/response.dto";
+import { postUserNickNameRequest } from "src/apis/user";
+import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
+import {
+    deleteTravelReviewReqeust,
+    favoriteCountRequest,
+    getTravelReviewCommentListRequest,
+    getTravelReviewDetailRequest,
+    getTravelReviewFavoriteStatusRequest,
+    increaseViewCountRequest,
+    postTravelReviewCommentRequest,
+} from "src/apis/review";
+import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
+import { expenditureListItem, reviewCommentList, scheduleListItem } from "src/types";
+import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
+import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
+import { getScheduleDetailRequest } from "src/apis/schedule";
+import { GetScheduleDetailResponseDto } from "src/apis/schedule/dto/response";
+import useViewListStore from "src/stores/useViewListStores/viewList.store";
+import { useScheduleStore } from "src/stores/useScheduleStores";
+import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
+import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems (
-    {
-        scheduleDate,
-        scheduleContent,
-        scheduleStartTime,
-        scheduleEndTime
-    }: scheduleList
-){
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleListItem) {
     //                    render                     //
-    return(
-        <div className='schedule-list-box'>
+    return (
+        <div className="schedule-list-box">
             <div>{scheduleDate}</div>
-            <div className='schedule-item'>
+            <div className="schedule-item">
                 <div>{scheduleContent}</div>
                 <div>{scheduleStartTime}</div>
                 <div>{scheduleEndTime}</div>
             </div>
         </div>
-    )
+    );
 }
 
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems (
-    {
-    travelScheduleExpenditureDetail,
-    travelScheduleExpenditure
-    }: expendList
-){
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureListItem) {
     //                    render                     //
-    return(
-        <div className='expenditure-item'>
+    return (
+        <div className="expenditure-item">
             <div>{travelScheduleExpenditureDetail}</div>
             <div>{travelScheduleExpenditure}</div>
         </div>
-    )
+    );
 }
 
 //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
-function ReviewCommentLists ({
-    reviewCommentNumber,
-    reviewCommentWriterId,
-    commentContent
-}: reviewCommentList) {
-
+function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent }: reviewCommentList) {
     //                    state                    //
     const { reviewNumber } = useParams();
     const [cookies] = useCookies();
-    const [recommentContent, setRecommendContent] = useState<string>('');
+    const [recommentContent, setRecommendContent] = useState<string>("");
 
-    
     //                    function                    //
     const postTravelReviewCommentResponse = (result: ResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '댓글을 입력해 주세요.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'NB' ? '존재하지 않는 댓글입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "댓글을 입력해 주세요."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 댓글입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        alert('댓글 작성에 성공하셨습니다.')
+        alert("댓글 작성에 성공하셨습니다.");
         setRecommendstate(!recommendstate);
         window.location.href = window.location.href;
     };
-    
 
     //                    event handler                    //
-    const onRecommendWriteClickHandler = () =>{
-        if(!reviewNumber || !reviewCommentNumber) return;
-        const requestBody: PostTravelReviewCommentRequestDto = {commentContent: recommentContent, commentParentsNumber: reviewCommentNumber};
+    const onRecommendWriteClickHandler = () => {
+        if (!reviewNumber || !reviewCommentNumber) return;
+        const requestBody: PostTravelReviewCommentRequestDto = { commentContent: recommentContent, commentParentsNumber: reviewCommentNumber };
         postTravelReviewCommentRequest(reviewNumber, requestBody, cookies.accessToken).then(postTravelReviewCommentResponse);
     };
 
@@ -111,52 +109,60 @@ function ReviewCommentLists ({
     const [recommendstate, setRecommendstate] = useState<boolean>(true);
     return (
         <>
-            <div className='comments-nick-name'>{reviewCommentWriterId}</div>
-                {recommendstate ? 
-                    <div className='comments-content-box'>
-                        <div className='comments-content'>{commentContent}</div>
-                        <div className='comments-button-box'></div>
-                        <div className='comments-recommend' onClick={onRecommendbuttonClickHandler}>답글달기</div>
-                        {false && <div >삭제</div>} 
+            <div className="comments-nick-name">{reviewCommentWriterId}</div>
+            {recommendstate ? (
+                <div className="comments-content-box">
+                    <div className="comments-content">{commentContent}</div>
+                    <div className="comments-button-box"></div>
+                    <div className="comments-recommend" onClick={onRecommendbuttonClickHandler}>
+                        답글달기
                     </div>
-                    :
-                    <div className='comments-content-box'>
-                        <div className='comments-content'>{commentContent}</div>
-                        <div className='comments-recommend-box'>
-                                <textarea className='recomment-textarea' placeholder='댓글을 입력해주세요.' value={recommentContent} onChange={onRecommendCotentChangeHandler}/>
-                                <div className='comments-recommend-button' onClick={onRecommendWriteClickHandler}>댓글작성</div>
+                    {false && <div>삭제</div>}
+                </div>
+            ) : (
+                <div className="comments-content-box">
+                    <div className="comments-content">{commentContent}</div>
+                    <div className="comments-recommend-box">
+                        <textarea
+                            className="recomment-textarea"
+                            placeholder="댓글을 입력해주세요."
+                            value={recommentContent}
+                            onChange={onRecommendCotentChangeHandler}
+                        />
+                        <div className="comments-recommend-button" onClick={onRecommendWriteClickHandler}>
+                            댓글작성
                         </div>
-                        {false && <div >삭제</div>} 
                     </div>
-                }
+                    {false && <div>삭제</div>}
+                </div>
+            )}
         </>
-        
     );
 }
 
 //                    Component : 리뷰 게시판 상세보기 화면 컴포넌트                     //
-export default function ReviewDetail () {
+export default function ReviewDetail() {
     //                    state                    //
     const { loginUserId, loginUserRole } = useUserStore();
     const { setUpdateReviewNumber } = useReviewNumberStore();
     const { reviewNumber } = useParams();
     const [cookies] = useCookies();
 
-    const [reviewWriterId, setReviewWriterId] = useState<string>('');
-    const [reviewWriterNickName, setReviewWriterNickName] = useState<string>('');
-    const [reviewDatetime, setReviewDatetime] = useState<string>('');
+    const [reviewWriterId, setReviewWriterId] = useState<string>("");
+    const [reviewWriterNickName, setReviewWriterNickName] = useState<string>("");
+    const [reviewDatetime, setReviewDatetime] = useState<string>("");
     const [reviewViewCount, setReviewViewCount] = useState<number>(0);
     const [reviewFavoriteCount, setReviewFavoriteCount] = useState<number>(0);
-    const [reviewTitle, setReviewTitle] = useState<string>('');
-    const [reviewContents, setReviewContents] = useState<string>('');
+    const [reviewTitle, setReviewTitle] = useState<string>("");
+    const [reviewContents, setReviewContents] = useState<string>("");
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const [commentContent, setCommentContent] = useState<string>('');
+    const [commentContent, setCommentContent] = useState<string>("");
     const [commentList, setCommentList] = useState<reviewCommentList[]>([]);
 
-    const {scheduleRenderStatus, setScheduleRenderStatus} = useScheduleButtonStore();
-    const {scheduleListItemViewList, expenditureViewList, setExpenditureViewList,setScheduleListItemViewList} = useViewListStore();
-    const {travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney} = useScheduleStore();
-    const {travelScheduleNumber, setTravelScheduleNumber} = useScheduleNumberStore();
+    const { scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
+    const { scheduleListItemViewList, expenditureViewList, setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
+    const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
+    const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
 
     const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
     const duchPay = balnace / travelSchedulePeople;
@@ -165,60 +171,80 @@ export default function ReviewDetail () {
     const navigator = useNavigate();
 
     const increaseViewCountResponse = (result: ResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        if(!reviewNumber) return;
-        
+        if (!reviewNumber) return;
+
         getTravelReviewDetailRequest(reviewNumber).then(getTravelReviewDetailResponse);
     };
 
     const postUserNickNameResponse = (result: ResponseDto | PostUserNickNameResponseDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "잘못된 게시글번호입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글번호입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
 
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '잘못된 게시글번호입니다.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글번호입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        if (!result || result.code !== "SU") {
             alert(message);
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
 
-        const {nickName} = result as PostUserNickNameResponseDto;
+        const { nickName } = result as PostUserNickNameResponseDto;
 
         setReviewWriterNickName(nickName);
-
     };
 
     const getTravelReviewDetailResponse = (result: GetTravelReviewDetailResponseDto | ResponseDto | null) => {
-        
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '잘못된 게시글번호입니다.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글번호입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "잘못된 게시글번호입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글번호입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
 
-        const { reviewTitle, reviewContent, writerId, reviewDatetime, travelReviewImageUrl, reviewViewCount, reviewFavoriteCount, commentContent, travelScheduleNumber} = result as GetTravelReviewDetailResponseDto;
+        const {
+            reviewTitle,
+            reviewContent,
+            writerId,
+            reviewDatetime,
+            travelReviewImageUrl,
+            reviewViewCount,
+            reviewFavoriteCount,
+            commentContent,
+            travelScheduleNumber,
+        } = result as GetTravelReviewDetailResponseDto;
 
-        const requestBody: PostUserNickNameRequestDto = {writerId};
+        const requestBody: PostUserNickNameRequestDto = { writerId };
         postUserNickNameRequest(requestBody).then(postUserNickNameResponse);
 
         setReviewTitle(reviewTitle);
@@ -229,108 +255,133 @@ export default function ReviewDetail () {
         setReviewViewCount(reviewViewCount);
         setReviewFavoriteCount(reviewFavoriteCount);
         setTravelScheduleNumber(travelScheduleNumber);
-        if(!travelScheduleNumber) return;
+        if (!travelScheduleNumber) return;
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
     };
 
-    const getScheduleDetailResponse = ( result: ResponseDto | GetScheduleDetailResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '잘못된 게시글번호입니다.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+    const getScheduleDetailResponse = (result: ResponseDto | GetScheduleDetailResponseDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "잘못된 게시글번호입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
 
-        const { expendList,scheduleList,travelSchedulePeople,travelScheduleTotalMoney } = result as GetScheduleDetailResponseDto;
-        setExpenditureViewList(expendList);
-        setScheduleListItemViewList(scheduleList);
+        const { expenditureListItem, scheduleListItem, travelSchedulePeople, travelScheduleTotalMoney } = result as GetScheduleDetailResponseDto;
+        setExpenditureViewList(expenditureListItem);
+        setScheduleListItemViewList(scheduleListItem);
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
         setScheduleRenderStatus(!scheduleRenderStatus);
     };
 
     const deleteTravelReviewResponse = (result: ResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '잘못된 게시글번호입니다.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글번호입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "잘못된 게시글번호입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글번호입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
 
         navigator(REVIEW_ABSOULUTE_PATH);
-    }
+    };
 
     const getTravelReviewCommentListResponse = (result: ResponseDto | GetTravelReviewCommentListResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '잘못된 게시글번호입니다.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글번호입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "잘못된 게시글번호입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글번호입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
 
-        const {reviewCommentList} = result as GetTravelReviewCommentListResponseDto;
+        const { reviewCommentList } = result as GetTravelReviewCommentListResponseDto;
         setCommentList(reviewCommentList);
-
     };
 
     const postTravelReviewCommentResponse = (result: ResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '댓글을 입력해 주세요.' :
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'NB' ? '존재하지 않는 댓글입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "댓글을 입력해 주세요."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 댓글입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        alert('댓글 작성에 성공하셨습니다.');
+        alert("댓글 작성에 성공하셨습니다.");
         window.location.href = window.location.href;
     };
 
     const favoriteCountResonse = (result: ResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        if(!reviewNumber) return;
-        
+        if (!reviewNumber) return;
+
         getTravelReviewDetailRequest(reviewNumber).then(getTravelReviewDetailResponse);
     };
 
-    const getTravelReviewFavoriteStatusResponse = (result:ResponseDto | GetTravelReviewFavoriteStatusResponseDto | null) => {
-        const message = 
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'NB' ? '존재하지 않는 게시글입니다.' :
-            result.code === 'AF' ? '로그인후 이용해주세요.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
-        if(!result || result.code !== 'SU'){
+    const getTravelReviewFavoriteStatusResponse = (result: ResponseDto | GetTravelReviewFavoriteStatusResponseDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글입니다."
+            : result.code === "AF"
+            ? "로그인후 이용해주세요."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
@@ -346,12 +397,12 @@ export default function ReviewDetail () {
     };
 
     const onUpdateButtonClickHandler = () => {
-        if(loginUserId !== reviewWriterId){
-            alert("권한이 없습니다.")
+        if (loginUserId !== reviewWriterId) {
+            alert("권한이 없습니다.");
             return;
         }
-        if(!reviewNumber){
-            alert("존재하지 않는 게시글 입니니다.")
+        if (!reviewNumber) {
+            alert("존재하지 않는 게시글 입니니다.");
             return;
         }
         setUpdateReviewNumber(reviewNumber);
@@ -359,29 +410,29 @@ export default function ReviewDetail () {
     };
 
     const onDeleteButtonClickHandler = () => {
-        if(loginUserId !== reviewWriterId && loginUserRole !== 'ROLE_ADMIN'){
-            alert("권한이 없습니다.")
+        if (loginUserId !== reviewWriterId && loginUserRole !== "ROLE_ADMIN") {
+            alert("권한이 없습니다.");
             return;
         }
-        if(!reviewNumber){
-            alert("존재하지 않는 게시글 입니니다.")
+        if (!reviewNumber) {
+            alert("존재하지 않는 게시글 입니니다.");
             return;
         }
         deleteTravelReviewReqeust(reviewNumber, cookies.accessToken).then(deleteTravelReviewResponse);
     };
 
     const onWriteCommentButtonClickHandler = () => {
-        if(!cookies.accessToken){
-            alert('로그인후 이용해주세요');
+        if (!cookies.accessToken) {
+            alert("로그인후 이용해주세요");
             return;
         }
-        if(!reviewNumber){
-            alert('존재하지 않는 게시글 입니다.')
+        if (!reviewNumber) {
+            alert("존재하지 않는 게시글 입니다.");
             return;
         }
-        const requestBody: PostTravelReviewCommentRequestDto = {commentContent, commentParentsNumber: null};
+        const requestBody: PostTravelReviewCommentRequestDto = { commentContent, commentParentsNumber: null };
         postTravelReviewCommentRequest(reviewNumber, requestBody, cookies.accessToken).then(postTravelReviewCommentResponse);
-    }
+    };
 
     const onCommentContentChageHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const commentContent = event.target.value;
@@ -389,12 +440,12 @@ export default function ReviewDetail () {
     };
 
     const onRecommendButtonClickHandler = () => {
-        if(!cookies.accessToken){
-            alert('로그인후 이용해주세요');
+        if (!cookies.accessToken) {
+            alert("로그인후 이용해주세요");
             return;
         }
-        if(!reviewNumber){
-            alert('존재하지 않는 게시글 입니다.')
+        if (!reviewNumber) {
+            alert("존재하지 않는 게시글 입니다.");
             return;
         }
         setRecommendstate(!recommendStatus);
@@ -403,39 +454,48 @@ export default function ReviewDetail () {
 
     //                    effect                    //
     useEffect(() => {
-        if(!reviewNumber) {
-            alert('서버에 문제가 있습니다.');
+        if (!reviewNumber) {
+            alert("서버에 문제가 있습니다.");
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
         increaseViewCountRequest(reviewNumber).then(increaseViewCountResponse);
         getTravelReviewCommentListRequest(reviewNumber).then(getTravelReviewCommentListResponse);
         getTravelReviewFavoriteStatusRequest(reviewNumber, cookies.accessToken).then(getTravelReviewFavoriteStatusResponse);
-
     }, []);
 
     useEffect(() => {
         setScheduleListItemViewList([]);
         setExpenditureViewList([]);
-    }, [])
+    }, []);
 
     //                    render                    //
-    const userStatus = (loginUserId !== reviewWriterId) ? 
-        (loginUserRole !== 'ROLE_ADMIN') ? 
-        <></> :
-        <div className='review-detail-user-role'> 
-            <div className='primary-button review-middle-button' onClick={onDeleteButtonClickHandler}>삭제</div>
-        </div>:
-        <div className='review-detail-user-role'> 
-            <div className='primary-button review-middle-button' onClick={onUpdateButtonClickHandler}>수정</div>    
-            <div className='primary-button review-middle-button' onClick={onDeleteButtonClickHandler}>삭제</div>    
-        </div>;
+    const userStatus =
+        loginUserId !== reviewWriterId ? (
+            loginUserRole !== "ROLE_ADMIN" ? (
+                <></>
+            ) : (
+                <div className="review-detail-user-role">
+                    <div className="primary-button review-middle-button" onClick={onDeleteButtonClickHandler}>
+                        삭제
+                    </div>
+                </div>
+            )
+        ) : (
+            <div className="review-detail-user-role">
+                <div className="primary-button review-middle-button" onClick={onUpdateButtonClickHandler}>
+                    수정
+                </div>
+                <div className="primary-button review-middle-button" onClick={onDeleteButtonClickHandler}>
+                    삭제
+                </div>
+            </div>
+        );
 
     const [recommendStatus, setRecommendstate] = useState<boolean>(false);
-    return(
-        <div id='reivew-detail-wrapper'>
-
-            <div className='review-detail-top-info'>
+    return (
+        <div id="reivew-detail-wrapper">
+            <div className="review-detail-top-info">
                 <div>작성자</div>
                 <div>{reviewWriterNickName}</div>
                 <div>|</div>
@@ -449,24 +509,29 @@ export default function ReviewDetail () {
                 <div>{reviewFavoriteCount}</div>
             </div>
 
-            {scheduleRenderStatus &&
-                <div id='schedule-wrapper'>
-                    {(scheduleListItemViewList.length !== 0) && (expenditureViewList.length !== 0) &&
-                        (<>
-                            <div id='schedule-list-item-wrapper'>
-                                {scheduleListItemViewList.map(item => <ScheduleListItems {...item} />)}</div>
-                                <div id='expenditure-list-item-wrapper'>
+            {scheduleRenderStatus && (
+                <div id="schedule-wrapper">
+                    {scheduleListItemViewList.length !== 0 && expenditureViewList.length !== 0 && (
+                        <>
+                            <div id="schedule-list-item-wrapper">
+                                {scheduleListItemViewList.map((item) => (
+                                    <ScheduleListItems {...item} />
+                                ))}
+                            </div>
+                            <div id="expenditure-list-item-wrapper">
                                 <div> 가계부</div>
-                                <div className='total-people-money-box'>
+                                <div className="total-people-money-box">
                                     <div>인원수</div>
                                     <div>|</div>
-                                    <div className='total-people'>{travelSchedulePeople}</div>
+                                    <div className="total-people">{travelSchedulePeople}</div>
                                     <div>총 금액</div>
                                     <div>|</div>
-                                    <div className='total-money'>{travelScheduleTotalMoney}</div>
+                                    <div className="total-money">{travelScheduleTotalMoney}</div>
                                 </div>
-                                { expenditureViewList.map(item => <ExpenditureListItems {...item} />)}
-                                <div className='balance-duchPay'>
+                                {expenditureViewList.map((item) => (
+                                    <ExpenditureListItems {...item} />
+                                ))}
+                                <div className="balance-duchPay">
                                     <div>잔액</div>
                                     <div>{balnace}</div>
                                     <div>|</div>
@@ -477,42 +542,58 @@ export default function ReviewDetail () {
                         </>
                     )}
                 </div>
-            }
+            )}
 
-            <div className='review-detail-content-wrapper'>
-                <div className='review-detail-title-box'>
-                    <div className='review-detail-title'>{reviewTitle}</div>
-                    {recommendStatus ? 
-                    <div className='recommend-button-clicked' onClick={onRecommendButtonClickHandler}></div>:
-                    <div className='recommend-button' onClick={onRecommendButtonClickHandler}></div>
-                    }
+            <div className="review-detail-content-wrapper">
+                <div className="review-detail-title-box">
+                    <div className="review-detail-title">{reviewTitle}</div>
+                    {recommendStatus ? (
+                        <div className="recommend-button-clicked" onClick={onRecommendButtonClickHandler}></div>
+                    ) : (
+                        <div className="recommend-button" onClick={onRecommendButtonClickHandler}></div>
+                    )}
                 </div>
-                {travelReviewImageUrl.map(url => (
-                    <div className='review-detail-content' key={url} style={{
-                        backgroundImage: `url(${url})`,
-                        width: '200px',
-                        height: '200px',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}></div>
+                {travelReviewImageUrl.map((url) => (
+                    <div
+                        className="review-detail-content"
+                        key={url}
+                        style={{
+                            backgroundImage: `url(${url})`,
+                            width: "200px",
+                            height: "200px",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                        }}
+                    ></div>
                 ))}
-                <div className='review-detail-content'>{reviewContents}</div>
+                <div className="review-detail-content">{reviewContents}</div>
             </div>
 
-            <div className='review-detail-middle'>
-                <div className='list-page-box under-line-text'>
-                    <div className='list-page-navi' onClick={onListButtonClickHandler}>목록보기</div>
+            <div className="review-detail-middle">
+                <div className="list-page-box under-line-text">
+                    <div className="list-page-navi" onClick={onListButtonClickHandler}>
+                        목록보기
+                    </div>
                 </div>
                 {userStatus}
             </div>
 
-            <div className='review-detail-bottom'>
-                <div className='review-detail-comments-box'>
-                    {commentList.map(item => <ReviewCommentLists {...item} />)}
+            <div className="review-detail-bottom">
+                <div className="review-detail-comments-box">
+                    {commentList.map((item) => (
+                        <ReviewCommentLists {...item} />
+                    ))}
                 </div>
-                <div className='review-detail-comment-textarea-box'>
-                    <textarea className='comment-textarea' placeholder='댓글을 입력해주세요.' value={commentContent} onChange={onCommentContentChageHandler}/>
-                    <div className='primary-button' onClick={onWriteCommentButtonClickHandler}>댓글달기</div>
+                <div className="review-detail-comment-textarea-box">
+                    <textarea
+                        className="comment-textarea"
+                        placeholder="댓글을 입력해주세요."
+                        value={commentContent}
+                        onChange={onCommentContentChageHandler}
+                    />
+                    <div className="primary-button" onClick={onWriteCommentButtonClickHandler}>
+                        댓글달기
+                    </div>
                 </div>
             </div>
         </div>

@@ -36,8 +36,12 @@ html::-webkit-scrollbar {
 
     padding: 5px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
+
 .schedule-add:hover {
     cursor: pointer;
 }
@@ -49,7 +53,10 @@ html::-webkit-scrollbar {
     width: 280px;
     height: 600px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-list {
@@ -59,7 +66,10 @@ html::-webkit-scrollbar {
     margin: 10px;
     padding: 5px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-list:hover {
@@ -74,10 +84,13 @@ html::-webkit-scrollbar {
 
     margin-top: 10px;
 
-    width: 400px;
+    width: 500px;
     height: 690px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-title {
@@ -115,9 +128,10 @@ html::-webkit-scrollbar {
 
 .schedule-date {
     display: flex;
+    text-align: center;
 
-    width: 100px;
-    margin-left: 20px;
+    width: 140px;
+    margin-left: 10px;
 
     border: 1px solid black;
 }
@@ -135,26 +149,34 @@ html::-webkit-scrollbar {
 .schedule-text-box {
     display: flex;
 
-    gap: 5px;
+    gap: 10px;
 
-    padding-top: 10px;
-    padding-left: 20px;
+    padding: 10px;
 }
 
 .schedule-text {
-    width: 120px;
+    width: 170px;
+    text-align: start;
+
+    border: 1px solid black;
+}
+
+.schedule-text-money {
+    width: 100px;
     text-align: start;
 
     border: 1px solid black;
 }
 
 .schedule-start-hour {
+    text-align: center;
     width: 80px;
 
     border: 1px solid black;
 }
 
 .schedule-end-hour {
+    text-align: center;
     width: 80px;
 
     border: 1px solid black;
@@ -178,10 +200,13 @@ html::-webkit-scrollbar {
 
     margin-top: 10px;
 
-    width: 400px;
+    width: 500px;
     height: 690px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-household-box {
@@ -250,6 +275,14 @@ html::-webkit-scrollbar {
     margin: 20px;
 
     border-bottom: 2px solid blue;
+}
+
+.schedule-spend-text {
+    text-align: center;
+
+    padding: 10px;
+
+    width: 100px;
 }
 
 .schedule-balance {

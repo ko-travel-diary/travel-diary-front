@@ -15,7 +15,7 @@ import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "./dto/
 export const postScheduleRequest = async (requestBody: PostScheduleRequestDto, accessToken: string) => {
     const result = await axios
         .post(POST_SCHEDULE_REQUEST_URL, requestBody, bearerAuthorization(accessToken))
-        .then(requestHandler<PostScheduleRequestDto>)
+        .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
 };
@@ -24,7 +24,7 @@ export const postScheduleRequest = async (requestBody: PostScheduleRequestDto, a
 export const patchScheduleRequest = async (requestBody: PatchScheduleRequestDto, scheduleNumber: string | number, accessToken: string) => {
     const result = await axios
         .patch(PATCH_SCHEDULE_REQUEST_URL(scheduleNumber), requestBody, bearerAuthorization(accessToken))
-        .then(requestHandler<PatchScheduleRequestDto>)
+        .then(requestHandler<ResponseDto>)
         .catch(requestHandler);
     return result;
 };

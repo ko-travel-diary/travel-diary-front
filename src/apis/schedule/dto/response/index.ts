@@ -1,13 +1,13 @@
 import ResponseDto from "src/apis/response.dto";
-import { expendList, scheduleList, scheduleListViewItems } from "src/types";
+import { expenditureListItem, scheduleListItem, scheduleListViewItem } from "src/types";
 
-export interface GetScheduleListResponseDto extends ResponseDto{
-    scheduleListViewItems: scheduleListViewItems[];
+export interface GetScheduleListResponseDto extends ResponseDto {
+    scheduleListViewItems: scheduleListViewItem[];
 }
 
-export interface GetScheduleDetailResponseDto extends ResponseDto{
+export interface GetScheduleDetailResponseDto extends ResponseDto {
     travelSchedulePeople: number;
     travelScheduleTotalMoney: number;
-    expendList: expendList[];
-    scheduleList: scheduleList[];
+    expenditureListItem: expenditureListItem[];
+    scheduleListItem: scheduleListItem[];
 }
