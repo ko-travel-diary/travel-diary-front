@@ -13,11 +13,11 @@ import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/ap
 import { useScheduleStore } from "src/stores/useScheduleStores";
 import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import useViewListStore from "src/stores/useViewListStores/viewList.store";
-import { expendList, scheduleList, scheduleListViewItems } from "src/types";
+import { expenditureListItem, scheduleListItem, scheduleListViewItem } from "src/types";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
-function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleListViewItems) {
+function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleListViewItem) {
     //                    state                     //
     const [cookies] = useCookies();
     const { setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
@@ -42,11 +42,11 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
             return;
         }
 
-        const { travelSchedulePeople, travelScheduleTotalMoney, expendList, scheduleList } = result as GetScheduleDetailResponseDto;
+        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureListItem, scheduleListItem } = result as GetScheduleDetailResponseDto;
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
-        setExpenditureViewList(expendList);
-        setScheduleListItemViewList(scheduleList);
+        setExpenditureViewList(expenditureListItem);
+        setScheduleListItemViewList(scheduleListItem);
         setTravelScheduleNumber(travelScheduleNumber);
     };
 
@@ -70,7 +70,7 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
 }
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleListItem) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
@@ -85,7 +85,7 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
 }
 
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expendList) {
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureListItem) {
     //                    render                     //
     return (
         <div className="expenditure-item">
@@ -106,7 +106,7 @@ export default function ReviewWrite() {
     const [travelReviewImage, setTravelReviewImage] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const photoInput = useRef<HTMLInputElement | null>(null);
-    const [viewList, setViewList] = useState<scheduleListViewItems[]>([]);
+    const [viewList, setViewList] = useState<scheduleListViewItem[]>([]);
     const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
     const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus } = useScheduleButtonStore();
     const { expenditureViewList, scheduleListItemViewList } = useViewListStore();

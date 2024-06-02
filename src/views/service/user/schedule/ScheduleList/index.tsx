@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { scheduleListViewItems } from "src/types";
+import { scheduleListViewItem } from "src/types";
 import { useNavigate } from "react-router";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { useCookies } from "react-cookie";
@@ -9,7 +9,7 @@ import ResponseDto from "src/apis/response.dto";
 import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 
 //                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
-function ScheduleListViewItem({ travelScheduleName, travelScheduleNumber }: scheduleListViewItems) {
+function ScheduleListViewItem({ travelScheduleName, travelScheduleNumber }: scheduleListViewItem) {
     //                     function                     //
     const navigator = useNavigate();
 
@@ -29,8 +29,8 @@ export default function ScheduleList() {
     //                     state                     //
     const [cookies] = useCookies();
 
-    const [scheduleViewList, setScheduleViewList] = useState<scheduleListViewItems[]>([]);
-    const [viewList, setViewList] = useState<scheduleListViewItems[]>([]);
+    const [scheduleViewList, setScheduleViewList] = useState<scheduleListViewItem[]>([]);
+    const [viewList, setViewList] = useState<scheduleListViewItem[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -40,7 +40,7 @@ export default function ScheduleList() {
         navigator(SCHEDULE_WRITE_ABSOLUTE_PATH);
     };
 
-    const changeScheduleList = (scheduleViewList: scheduleListViewItems[]) => {
+    const changeScheduleList = (scheduleViewList: scheduleListViewItem[]) => {
         setScheduleViewList(scheduleViewList);
     };
 
