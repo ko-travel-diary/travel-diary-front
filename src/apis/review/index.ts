@@ -29,6 +29,7 @@ import {
     GetReviewWriterSearchRequestDto,
     GetReviewWriteDateSearchRequestDto,
     GetTravelReviewFavoriteStatusResponseDto,
+    GetTravelReviewMyListSearchResponseDto,
 } from "./dto/response";
 
 // function : 리뷰 게시물 작성 API 함수
@@ -146,7 +147,7 @@ export const getTravelReviewMyListSearchRequest = async (searchWord: string, acc
     const config = { ...bearerAuthorization(accessToken), params: { searchWord } };
     const result = await axios
         .get(GET_REVIEW_MY_LIST_REQUEST_URL, config)
-        .then(requestHandler<GetReviewTitleAndContentSearchRequestDto>)
+        .then(requestHandler<GetTravelReviewMyListSearchResponseDto>)
         .catch(requestErrorHandler);
     return result;
 };
