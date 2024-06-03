@@ -67,8 +67,8 @@ export default function ScheduleDetail() {
     const { travelScheduleNumber } = useParams();
 
     const [scheduleView, setScheduleView] = useState<scheduleListViewItem[]>([]);
-    const [scheduleList, setScheduleList] = useState<scheduleListItem[]>([]);
-    const [expendList, setExpendList] = useState<expenditureListItem[]>([]);
+    const [scheduleListItem, setScheduleListItem] = useState<scheduleListItem[]>([]);
+    const [expenditureListItem, setExpenditureListItem] = useState<expenditureListItem[]>([]);
 
     const [scheduleViewList, setScheduleViewList] = useState<scheduleListViewItem[]>([]);
     const [scheduleListViewList, setScheduleListViewList] = useState<scheduleListItem[]>([]);
@@ -79,7 +79,7 @@ export default function ScheduleDetail() {
     const [scheduleTotalMoney, setScheduleTotalMoney] = useState<number>(0);
     const { travelScheduleName } = useScheduleNameStore();
 
-    const balnace = scheduleTotalMoney - expendListViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
+    const balnace = scheduleTotalMoney - expenditureListItem.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
     const duchPay = balnace / schedulePeople;
 
     //                     function                     //
@@ -92,14 +92,6 @@ export default function ScheduleDetail() {
 
     const changeScheduleViewList = (scheduleView: scheduleListViewItem[]) => {
         setScheduleViewList(scheduleView);
-    };
-
-    const changeScheduleListViewList = (scheduleList: scheduleListItem[]) => {
-        setScheduleListViewList(scheduleList);
-    };
-
-    const changeExpendListViewList = (expendList: expenditureListItem[]) => {
-        setExpendListViewList(expendList);
     };
 
     const getScheduleListResponse = (result: GetScheduleListResponseDto | ResponseDto | null) => {
@@ -146,10 +138,8 @@ export default function ScheduleDetail() {
         const { travelSchedulePeople, travelScheduleTotalMoney, expenditureListItem, scheduleListItem } = result as GetScheduleDetailResponseDto;
         setSchedulePeople(travelSchedulePeople);
         setScheduleTotalMoney(travelScheduleTotalMoney);
-        setScheduleListViewList(scheduleListItem);
-        setExpendListViewList(expenditureListItem);
-        changeScheduleListViewList(scheduleListItem);
-        changeExpendListViewList(expenditureListItem);
+        setScheduleListItem(scheduleListItem);
+        setExpenditureListItem(expenditureListItem);
     };
 
     //                     effect                     //
@@ -158,7 +148,9 @@ export default function ScheduleDetail() {
 
         if (!travelScheduleNumber) return;
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
+    }, [travelScheduleNumber]);
 
+    useEffect(() => {
         setScheduleViewList([]);
         setScheduleListViewList([]);
         setExpendListViewList([]);

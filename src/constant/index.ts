@@ -23,8 +23,8 @@ export const REVIEW_DETAIL_PATH = ":reviewNumber";
 export const REVIEW_UPDATE_PATH = "update/:reviewNumber";
 
 export const SCHEDULE_WRITE_PATH = "write";
-export const SCHEDULE_DETAIL_PATH = ":scheduleNumber";
-export const SCHEDULE_UPDATE_PATH = "update/:scheduleNumber";
+export const SCHEDULE_DETAIL_PATH = ":travelScheduleNumber";
+export const SCHEDULE_UPDATE_PATH = "update/:travelScheduleNumber";
 
 export const TOUR_DETAIL_PATH = "tourlist/:tourAttractionsNumber";
 export const REST_DETAIL_PATH = "restlist/:restaurantNumber";
@@ -151,9 +151,9 @@ export const SERVER_SCHEDULE_MODULE_URL = `${SERVER_API_URL}/schedule`;
 export const POST_SCHEDULE_REQUEST_URL = `${SERVER_SCHEDULE_MODULE_URL}/`;
 export const GET_SCHEDULE_LIST_REQUEST_URL = `${SERVER_SCHEDULE_MODULE_URL}/list`;
 export const GET_SEARCH_SCHEDULE_REQUEST_LIST_URL = `${SERVER_SCHEDULE_MODULE_URL}/list/search`;
-export const GET_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${scheduleNumber}`;
-export const PATCH_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${scheduleNumber}`;
-export const DELETE_SCHEDULE_REQUEST_URL = (scheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${scheduleNumber}`;
+export const GET_SCHEDULE_REQUEST_URL = (travelScheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${travelScheduleNumber}`;
+export const PATCH_SCHEDULE_REQUEST_URL = (travelScheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${travelScheduleNumber}`;
+export const DELETE_SCHEDULE_REQUEST_URL = (travelScheduleNumber: number | string) => `${SERVER_SCHEDULE_MODULE_URL}/${travelScheduleNumber}`;
 
 export const SERVER_USER_MODULE_URL = `${SERVER_API_URL}/user`;
 export const POST_USER_NICKNAME_REQUEST_URL = `${SERVER_USER_MODULE_URL}/nickName`;
@@ -184,6 +184,9 @@ export const POST_RESTAURANT_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/addR
 export const PATCH_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
 export const DELETE_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
 
-// description : Board Const.
+export const LOCATION_URL = `${SERVER_API_URL}/location/search`;
+export const ADDRESS_URL = `${SERVER_API_URL}/address/search`;
+
+// description : Board Const
 export const COUNT_PER_PAGE = 10;
 export const COUNT_PER_SECTION = 10;

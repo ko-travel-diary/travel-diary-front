@@ -117,7 +117,7 @@ html::-webkit-scrollbar {
     margin: 10px;
     padding: 10px;
 
-    border-bottom: 2px solid blue;
+    border-bottom: 2px solid rgb(193, 196, 241);
 }
 
 .schedule-calendar-box {
@@ -212,7 +212,7 @@ html::-webkit-scrollbar {
 .schedule-household-box {
     margin: 20px;
 
-    border-bottom: 2px solid blue;
+    border-bottom: 2px solid rgb(193, 196, 241);
 }
 
 .schedule-household-text {
@@ -251,7 +251,7 @@ html::-webkit-scrollbar {
 
     margin: 20px;
 
-    border-bottom: 2px solid blue;
+    border-bottom: 2px solid rgb(193, 196, 241);
 }
 
 .schedule-household-add-box {
@@ -274,7 +274,7 @@ html::-webkit-scrollbar {
 
     margin: 20px;
 
-    border-bottom: 2px solid blue;
+    border-bottom: 2px solid rgb(193, 196, 241);
 }
 
 .schedule-spend-text {

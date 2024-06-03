@@ -29,7 +29,7 @@ export default function ScheduleWrite() {
     const [travelScheduleExpenditureDetail, setTravelScheduleExpenditureDetail] = useState<string>("");
     const [travelScheduleExpenditure, setTravelScheduleExpenditure] = useState<number>(0);
 
-    const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
+    const { expenditureViewList } = useViewListStore();
 
     const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
     const duchPay = balnace / travelSchedulePeople;
