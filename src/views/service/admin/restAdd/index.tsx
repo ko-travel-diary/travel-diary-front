@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { PostRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
-import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
 import { postRestaurantRequest } from 'src/apis/restaurant';
 import axios from 'axios';
 import { useUserStore } from 'src/stores';
@@ -114,11 +114,24 @@ export default function RestAdd() {
             restaurantImageUrl.push(url);
         }
 
+        const query = restaurantLocation;
+        const data = await axios.get(ADDRESS_URL, {params: {query}})
+            .then(response => response.data)
+            .catch(error => null)
+
+        if (!data) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
+
+        const lat = data.documents[0].y as number;
+        const lng = data.documents[0].x as number;
+
 
         const requestBody: PostRestaurantRequestDto = {
             restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
             restaurantImageUrl,
-            restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
+            restaurantMainMenu, restaurantServiceMenu, restaurantLat: lat, restaurantLng: lng
         }
 
         postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
@@ -133,8 +146,6 @@ export default function RestAdd() {
             return;
         }
         
-        setRestaurantLat(1.0);
-        setRestaurantLng(1.0);
     }, [])
 
     //                  Render                   //

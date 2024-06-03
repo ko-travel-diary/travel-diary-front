@@ -88,7 +88,7 @@ function TopNavigation () {
     return (
         <div id='top-navigation'>
             <div className='top-navigation-left'>
-                <div className='top-navigation-logo'></div>
+                <div className='top-navigation-logo' onClick={onMainPageButtonClickHandler}></div>
                 <div className='top-navigation-title' onClick={onMainPageButtonClickHandler}>여행 일기</div>
             </div>
             <div className='top-navigation-main'>

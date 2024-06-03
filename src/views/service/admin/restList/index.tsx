@@ -208,7 +208,7 @@ export default function RestList() {
     return (
         <div id='rest-list-wrapper'>
             <div className='rest-list-top'>
-                <div className='rest-list-count-text'>전체 음식점수 | <span className='emphasis'>{restCount}명</span></div>
+                <div className='rest-list-count-text'>전체 음식점수 | <span className='emphasis'>{restCount}개</span></div>
                 <div className='rest-list-control-box'>
                     <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
                 </div>

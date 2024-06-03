@@ -28,7 +28,9 @@ export default function RestControl() {
     const [restaurantHours, setRestaurantHours] = useState<string>('');
     const [restaurantOutline, setRestaurantOutline] = useState<string>('');
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
-    const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');
+    const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');    
+    const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
+    const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -46,7 +48,7 @@ export default function RestControl() {
             return
         }
 
-        const { restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, restaurantMainMenu, restaurantServiceMenu } = result as GetRestaurantResponseDto;
+        const { restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng } = result as GetRestaurantResponseDto;
         setRestaurantName(restaurantName);
         setRestaurantLocation(restaurantLocation);
         setRestaurantTelNumber(restaurantTelNumber);
@@ -54,6 +56,8 @@ export default function RestControl() {
         setRestaurantOutline(restaurantOutline);
         setRestaurantMainMenu(restaurantMainMenu);
         setRestaurantServiceMenu(restaurantServiceMenu);
+        setRestaurantLat(restaurantLat);
+        setRestaurantLng(restaurantLng);
     }
 
     const patchRestaurantResponse = (result: ResponseDto | null ) => {
@@ -148,7 +152,7 @@ export default function RestControl() {
 
         const requestBody: PatchRestaurantRequestDto = {
             restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
-            restaurantImageUrl, restaurantMainMenu, restaurantServiceMenu
+            restaurantImageUrl, restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
         }
 
         patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);

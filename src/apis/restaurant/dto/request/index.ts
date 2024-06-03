@@ -20,5 +20,7 @@ export interface PatchRestaurantRequestDto {
     restaurantImageUrl: string[];
     restaurantMainMenu: string;
     restaurantServiceMenu: string;
+    restaurantLat: number;
+    restaurantLng: number;
 }
 

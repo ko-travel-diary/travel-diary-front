@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css'
 import { useNavigate } from 'react-router';
-import { ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { ADDRESS_URL, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
 import ResponseDto from 'src/apis/response.dto';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
@@ -27,7 +27,9 @@ export default function TourAdd() {
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
     const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
     const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
-    
+
+    const [addressData, setAddressData] = useState<string>('');
+
     //                  Function                    //
     const navigator = useNavigate();
 
@@ -97,10 +99,22 @@ export default function TourAdd() {
             tourAttractionsImageUrl.push(url);
         }
 
+        const query = tourAttractionsLocation;
+        const data = await axios.get(ADDRESS_URL, {params: {query}})
+            .then(response => response.data)
+            .catch(error => null)
+            
+        if (!data) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
+
+        const lat = data.documents[0].y as number;
+        const lng = data.documents[0].x as number;
 
         const requestBody: PostTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
-            tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
+            tourAttractionsImageUrl, tourAttractionsLat: lat, tourAttractionsLng: lng
         }
 
         postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
@@ -114,10 +128,12 @@ export default function TourAdd() {
             navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
-        
-        setTourAttractionsLat(1);
-        setTourAttractionsLng(1);
+
     }, [])
+
+    useEffect(() => {
+        
+    }, [onRegisterButtonClickHandler])
 
     //                  Render                   //
     return (

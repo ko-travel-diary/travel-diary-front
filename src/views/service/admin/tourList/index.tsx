@@ -286,12 +286,11 @@ export default function TourList() {
             <div className="tour-list-top">
                 <div className="tour-list-count-text">
                     전체 관광지수 |{" "}
-                    <span className="emphasis">{tourCount}명</span>
+                    <span className="emphasis">{tourCount}개</span>
                 </div>
                 <div
                     className="tour-list-add-button primary-button"
-                    onClick={onRegisterButtonClickHandler}
-                >
+                    onClick={onRegisterButtonClickHandler}>
                     등록
                 </div>
             </div>

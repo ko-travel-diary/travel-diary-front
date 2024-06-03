@@ -19,5 +19,6 @@ export interface GetRestaurantResponseDto extends ResponseDto {
     restaurantOutline: string;
     restaurantMainMenu: string;
     restaurantServiceMenu: string;
-
+    restaurantLat: number;
+    restaurantLng: number;
 }
