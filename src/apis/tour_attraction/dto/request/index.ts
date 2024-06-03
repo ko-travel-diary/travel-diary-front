@@ -16,4 +16,6 @@ export interface PatchTourAttractionsRequestDto {
     tourAttractionsHours: String;
     tourAttractionsOutline: String;
     tourAttractionsImageUrl: String[];
+    tourAttractionsLat: number;
+    tourAttractionsLng: number;
 }

@@ -17,4 +17,6 @@ export interface GetTourAttractionsResponseDto extends ResponseDto {
     tourAttractionsTelNumber: string;
     tourAttractionsHours: string;
     tourAttractionsOutline: string;
+    tourAttractionsLat: number;
+    tourAttractionsLng: number;
 }

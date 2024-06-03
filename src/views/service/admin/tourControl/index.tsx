@@ -30,6 +30,8 @@ export default function TourControl() {
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>('');
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
+    const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
+    const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -47,12 +49,14 @@ export default function TourControl() {
             return
         }
 
-        const { tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline } = result as GetTourAttractionsResponseDto;
+        const { tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, tourAttractionsLat, tourAttractionsLng } = result as GetTourAttractionsResponseDto;
         setTourAttractionsName(tourAttractionsName);
         setTourAtrractionLocation(tourAttractionsLocation);
         setTourAttractionsTelNumber(tourAttractionsTelNumber);
         setTourAttractionsHours(tourAttractionsHours);
         setTourAttractionsOutline(tourAttractionsOutline);
+        setTourAttractionsLat(tourAttractionsLat);
+        setTourAttractionsLng(tourAttractionsLng);
     }
 
     const patchTourAttractionResponse = (result: ResponseDto | null ) => {
@@ -137,12 +141,12 @@ export default function TourControl() {
 
         const requestBody: PatchTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
-            tourAttractionsImageUrl
+            tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
         }
 
         patchTourAttractionsRequest(requestBody, tourAttractionsNumber, cookies.accessToken).then(patchTourAttractionResponse);
 
-        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
+        navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
     }
 
     const onDeleteButtonClickHandler = () => {
