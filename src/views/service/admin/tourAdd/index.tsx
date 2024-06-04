@@ -131,10 +131,6 @@ export default function TourAdd() {
 
     }, [])
 
-    useEffect(() => {
-        
-    }, [onRegisterButtonClickHandler])
-
     //                  Render                   //
     return (
         <div id='tour-register-wrapper'>
