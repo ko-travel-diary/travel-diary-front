@@ -11,7 +11,7 @@ import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
 import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
 import { useUserStore } from "src/stores";
 import axios from "axios";
-import { expenditureListItem, scheduleListItem, scheduleListViewItem } from "src/types";
+import { expenditureList, scheduleList, scheduleListViewItem } from "src/types";
 import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 import { useScheduleStore } from "src/stores/useScheduleStores";
@@ -42,11 +42,11 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
             return;
         }
 
-        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureListItem, scheduleListItem } = result as GetScheduleDetailResponseDto;
+        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } = result as GetScheduleDetailResponseDto;
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
-        setExpenditureViewList(expenditureListItem);
-        setScheduleListItemViewList(scheduleListItem);
+        setExpenditureViewList(expenditureList);
+        setScheduleListItemViewList(scheduleList);
     };
 
     //                    event handler                     //
@@ -68,7 +68,7 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
     );
 }
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleListItem) {
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
@@ -82,7 +82,7 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
     );
 }
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureListItem) {
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureList) {
     //                    render                     //
     return (
         <div className="expenditure-item">

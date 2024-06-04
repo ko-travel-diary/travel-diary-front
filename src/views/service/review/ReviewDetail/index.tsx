@@ -22,7 +22,7 @@ import {
     postTravelReviewCommentRequest,
 } from "src/apis/review";
 import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
-import { expenditureListItem, reviewCommentList, scheduleListItem } from "src/types";
+import { expenditureList, reviewCommentList, scheduleList } from "src/types";
 import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
 import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
 import { getScheduleDetailRequest } from "src/apis/schedule";
@@ -33,7 +33,7 @@ import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleListItem) {
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
@@ -48,7 +48,7 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
 }
 
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureListItem) {
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureList) {
     //                    render                     //
     return (
         <div className="expenditure-item">
@@ -276,9 +276,9 @@ export default function ReviewDetail() {
             return;
         }
 
-        const { expenditureListItem, scheduleListItem, travelSchedulePeople, travelScheduleTotalMoney } = result as GetScheduleDetailResponseDto;
-        setExpenditureViewList(expenditureListItem);
-        setScheduleListItemViewList(scheduleListItem);
+        const { expenditureList, scheduleList, travelSchedulePeople, travelScheduleTotalMoney } = result as GetScheduleDetailResponseDto;
+        setExpenditureViewList(expenditureList);
+        setScheduleListItemViewList(scheduleList);
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
         setScheduleRenderStatus(!scheduleRenderStatus);

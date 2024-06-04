@@ -7,12 +7,12 @@ export interface QnaListItem {
     qnaDatetime: string;
 }
 
-export interface expenditureListItem {
+export interface expenditureList {
     travelScheduleExpenditureDetail: string;
     travelScheduleExpenditure: number;
 }
 
-export interface scheduleListItem {
+export interface scheduleList {
     scheduleDate: string;
     scheduleContent: string;
     scheduleStartTime: string;

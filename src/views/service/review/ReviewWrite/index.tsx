@@ -13,7 +13,7 @@ import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/ap
 import { useScheduleStore } from "src/stores/useScheduleStores";
 import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import useViewListStore from "src/stores/useViewListStores/viewList.store";
-import { expenditureListItem, scheduleListItem, scheduleListViewItem } from "src/types";
+import { expenditureList, scheduleList, scheduleListViewItem } from "src/types";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
@@ -42,11 +42,11 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
             return;
         }
 
-        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureListItem, scheduleListItem } = result as GetScheduleDetailResponseDto;
+        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } = result as GetScheduleDetailResponseDto;
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
-        setExpenditureViewList(expenditureListItem);
-        setScheduleListItemViewList(scheduleListItem);
+        setExpenditureViewList(expenditureList);
+        setScheduleListItemViewList(scheduleList);
         setTravelScheduleNumber(travelScheduleNumber);
     };
 
@@ -70,7 +70,7 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
 }
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleListItem) {
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
@@ -85,7 +85,7 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
 }
 
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureListItem) {
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureList) {
     //                    render                     //
     return (
         <div className="expenditure-item">

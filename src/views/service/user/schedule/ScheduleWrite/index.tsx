@@ -1,14 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import "./style.css";
-import { expenditureListItem, scheduleListItem } from "src/types";
+import { expenditureList, scheduleList } from "src/types";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
-import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { PostScheduleRequestDto } from "src/apis/schedule/dto/request";
 import { postScheduleRequest } from "src/apis/schedule";
 import ResponseDto from "src/apis/response.dto";
 import { SCHEDULE_ABSOLUTE_PATH } from "src/constant";
-import { GetScheduleDetailResponseDto } from "src/apis/schedule/dto/response";
 
 //                    Component : SCHEDULE LIST 화면 컴포넌트                     //
 export default function ScheduleWrite() {
@@ -18,21 +16,25 @@ export default function ScheduleWrite() {
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
-    const [scheduleListItem, setScheduleListItem] = useState<scheduleListItem[]>([]);
-    const [expenditureListItem, setExpenditureListItem] = useState<expenditureListItem[]>([]);
+
+    const [scheduleList, setScheduleList] = useState<scheduleList[]>([]);
+    const [expenditureList, setExpenditureList] = useState<expenditureList[]>([]);
 
     const [scheduleDate, setScheduleDate] = useState<string>("");
     const [scheduleContent, setScheduleContent] = useState<string>("");
     const [scheduleStartTime, setScheduleStartTime] = useState<string>("");
     const [scheduleEndTime, setScheduleEndTime] = useState<string>("");
 
+    const [schedulePeople, setSchedulePeople] = useState<number>(0);
+    const [scheduleTotalMoney, setScheduleTotalMoney] = useState<number>(0);
+
     const [travelScheduleExpenditureDetail, setTravelScheduleExpenditureDetail] = useState<string>("");
     const [travelScheduleExpenditure, setTravelScheduleExpenditure] = useState<number>(0);
 
-    const { expenditureViewList } = useViewListStore();
-
-    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
-    const duchPay = balnace / travelSchedulePeople;
+    const balnace = Array.isArray(expenditureList)
+        ? scheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
+        : 0;
+    const duchPay = schedulePeople > 0 ? balnace / schedulePeople : 0;
 
     //                     function                     //
     const navigator = useNavigate();
@@ -52,12 +54,6 @@ export default function ScheduleWrite() {
             alert(message);
             return result;
         }
-
-        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureListItem, scheduleListItem } = result as GetScheduleDetailResponseDto;
-        setTravelSchedulePeople(travelSchedulePeople);
-        setTravelScheduleTotalMoney(travelScheduleTotalMoney);
-        setExpenditureListItem(expenditureListItem);
-        setScheduleListItem(scheduleListItem);
 
         alert("작성이 완료되었습니다.");
         navigator(SCHEDULE_ABSOLUTE_PATH);
@@ -116,12 +112,18 @@ export default function ScheduleWrite() {
             travelSchedulePeople,
             travelScheduleTotalMoney,
             travelScheduleName,
-            expenditureListItem,
-            scheduleListItem,
+            expenditureList,
+            scheduleList,
         };
-
         postScheduleRequest(requestBody, cookies.accessToken).then(postScheduleResponse);
     };
+
+    useEffect(() => {
+        const expenditureList: expenditureList[] = [{ travelScheduleExpenditureDetail, travelScheduleExpenditure }];
+        const scheduleList: scheduleList[] = [{ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }];
+        setExpenditureList(expenditureList);
+        setScheduleList(scheduleList);
+    }, [travelScheduleName, scheduleContent, scheduleStartTime, scheduleEndTime, travelScheduleExpenditureDetail, travelScheduleExpenditure]);
 
     //                    render                  //
     return (
