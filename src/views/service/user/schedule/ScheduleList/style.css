@@ -8,7 +8,7 @@ html::-webkit-scrollbar {
 }
 
 #schedule-wrapper {
-    max-width: 1400px;
+    max-width: 1500px;
     display: flex;
 
     gap: 40px;
@@ -84,8 +84,10 @@ html::-webkit-scrollbar {
 
     margin-top: 10px;
 
-    width: 500px;
+    width: 700px;
     height: 690px;
+
+    overflow-y: auto;
 
     border: 2px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
@@ -121,14 +123,23 @@ html::-webkit-scrollbar {
 }
 
 .schedule-calendar-box {
+    position: relative;
     display: flex;
 
     gap: 20px;
 }
 
+.calendar-container {
+    position: absolute;
+    top: 20px;
+    left: 170px;
+}
+
 .schedule-date {
     display: flex;
     text-align: center;
+
+    height: 20px;
 
     width: 140px;
     margin-left: 10px;
@@ -148,7 +159,6 @@ html::-webkit-scrollbar {
 
 .schedule-text-box {
     display: flex;
-
     gap: 10px;
 
     padding: 10px;
@@ -166,6 +176,12 @@ html::-webkit-scrollbar {
     text-align: start;
 
     border: 1px solid black;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .schedule-start-hour {
@@ -200,7 +216,7 @@ html::-webkit-scrollbar {
 
     margin-top: 10px;
 
-    width: 500px;
+    width: 600px;
     height: 690px;
 
     border: 2px solid rgba(238, 238, 238, 1);
@@ -249,6 +265,8 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
 
+    overflow-y: auto;
+
     margin: 20px;
 
     border-bottom: 2px solid rgb(193, 196, 241);
@@ -266,6 +284,10 @@ html::-webkit-scrollbar {
     width: 80px;
 
     border: 1px solid black;
+}
+
+.schedule-spend-box-bottom {
+    margin-top: auto;
 }
 
 .schedule-spend-box {
