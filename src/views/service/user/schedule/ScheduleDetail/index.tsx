@@ -3,7 +3,7 @@ import "./style.css";
 import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
-import { expenditureListItem, scheduleListItem, scheduleListViewItem } from "src/types";
+import { expenditureList, scheduleList, scheduleListViewItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router";
@@ -30,7 +30,7 @@ function ScheduleListViewItem({ travelScheduleName, travelScheduleNumber }: sche
 }
 
 //                    Component : SCHEDULE LIST 컴포넌트                     //
-function ScheduleListItem({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleListItem) {
+function ScheduleListItem({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
     //                    render : QnA 화면 컴포넌트                     //
     return (
         <div className="schedule-add-box">
@@ -49,7 +49,7 @@ function ScheduleListItem({ scheduleDate, scheduleContent, scheduleStartTime, sc
 }
 
 //                    Component : SCHEDULE LIST 컴포넌트                     //
-function ExpendListItem({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureListItem) {
+function ExpendListItem({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureList) {
     //                    render : QnA 화면 컴포넌트                     //
     return (
         <div className="schedule-household-add-box">
@@ -66,21 +66,24 @@ export default function ScheduleDetail() {
     const [cookies] = useCookies();
     const { travelScheduleNumber } = useParams();
 
-    const [scheduleView, setScheduleView] = useState<scheduleListViewItem[]>([]);
-    const [scheduleListItem, setScheduleListItem] = useState<scheduleListItem[]>([]);
-    const [expenditureListItem, setExpenditureListItem] = useState<expenditureListItem[]>([]);
-
-    const [scheduleViewList, setScheduleViewList] = useState<scheduleListViewItem[]>([]);
-    const [scheduleListViewList, setScheduleListViewList] = useState<scheduleListItem[]>([]);
-    const [expendListViewList, setExpendListViewList] = useState<expenditureListItem[]>([]);
-
     const [scheduleName, setScheduleName] = useState<string>("");
     const [schedulePeople, setSchedulePeople] = useState<number>(0);
     const [scheduleTotalMoney, setScheduleTotalMoney] = useState<number>(0);
+
+    const [scheduleView, setScheduleView] = useState<scheduleListViewItem[]>([]);
+    const [scheduleList, setScheduleListItem] = useState<scheduleList[]>([]);
+    const [expenditureList, setExpenditureListItem] = useState<expenditureList[]>([]);
+
+    const [scheduleViewList, setScheduleViewList] = useState<scheduleListViewItem[]>([]);
+    const [scheduleListViewList, setScheduleListViewList] = useState<scheduleList[]>([]);
+    const [expendListViewList, setExpendListViewList] = useState<expenditureList[]>([]);
+
     const { travelScheduleName } = useScheduleNameStore();
 
-    const balnace = scheduleTotalMoney - expenditureListItem.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
-    const duchPay = balnace / schedulePeople;
+    const balnace = Array.isArray(expenditureList)
+        ? scheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
+        : 0;
+    const duchPay = schedulePeople > 0 ? balnace / schedulePeople : 0;
 
     //                     function                     //
     const navigator = useNavigate();
@@ -92,6 +95,14 @@ export default function ScheduleDetail() {
 
     const changeScheduleViewList = (scheduleView: scheduleListViewItem[]) => {
         setScheduleViewList(scheduleView);
+    };
+
+    const changeScheduleListViewList = (scheduleList: scheduleList[]) => {
+        setScheduleListViewList(scheduleList);
+    };
+
+    const changeExpendListViewList = (expenditureList: expenditureList[]) => {
+        setExpendListViewList(expenditureList);
     };
 
     const getScheduleListResponse = (result: GetScheduleListResponseDto | ResponseDto | null) => {
@@ -135,26 +146,23 @@ export default function ScheduleDetail() {
             navigator(SCHEDULE_ABSOLUTE_PATH);
         }
 
-        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureListItem, scheduleListItem } = result as GetScheduleDetailResponseDto;
+        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } = result as GetScheduleDetailResponseDto;
         setSchedulePeople(travelSchedulePeople);
         setScheduleTotalMoney(travelScheduleTotalMoney);
-        setScheduleListItem(scheduleListItem);
-        setExpenditureListItem(expenditureListItem);
+        setScheduleListItem(scheduleList);
+        setExpenditureListItem(expenditureList);
+        changeScheduleListViewList(scheduleList);
+        changeExpendListViewList(expenditureList);
     };
 
     //                     effect                     //
     useEffect(() => {
+        if (!cookies.accessToken) return;
         getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
 
         if (!travelScheduleNumber) return;
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
-    }, [travelScheduleNumber]);
-
-    useEffect(() => {
-        setScheduleViewList([]);
-        setScheduleListViewList([]);
-        setExpendListViewList([]);
-    }, []);
+    }, [travelScheduleNumber, ScheduleListItem, ExpendListItem]);
 
     //                    render                  //
     return (
@@ -167,8 +175,8 @@ export default function ScheduleDetail() {
                     </div>
                 </div>
                 <div className="schedule-lists-box">
-                    {scheduleViewList.map((item) => (
-                        <ScheduleListViewItem {...item} />
+                    {scheduleViewList.map((item, index) => (
+                        <ScheduleListViewItem key={index} {...item} />
                     ))}
                 </div>
             </div>
@@ -178,8 +186,8 @@ export default function ScheduleDetail() {
                     <div className="schedule-devider">{"|"}</div>
                     <div className="schedule-name">{travelScheduleName}</div>
                 </div>
-                {scheduleListViewList.map((item) => (
-                    <ScheduleListItem {...item} />
+                {scheduleListViewList.map((item, index) => (
+                    <ScheduleListItem key={index} {...item} />
                 ))}
             </div>
             <div className="schedule-household-table">
@@ -200,8 +208,8 @@ export default function ScheduleDetail() {
                 </div>
                 <div className="schedule-household-text-box">
                     <div className="schedule-household-text">지출내역</div>
-                    {expendListViewList.map((item) => (
-                        <ExpendListItem {...item} />
+                    {expendListViewList.map((item, index) => (
+                        <ExpendListItem key={index} {...item} />
                     ))}
                 </div>
                 <div className="schedule-spend-box">

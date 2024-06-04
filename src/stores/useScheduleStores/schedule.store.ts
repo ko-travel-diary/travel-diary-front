@@ -1,4 +1,4 @@
-import { expenditureListItem, scheduleListItem } from "src/types";
+import { expenditureList, scheduleList } from "src/types";
 import { create } from "zustand";
 
 interface Schedule {
@@ -6,10 +6,10 @@ interface Schedule {
     setTravelSchedulePeople: (travelSchedulePeople: number) => void;
     travelScheduleTotalMoney: number;
     setTravelScheduleTotalMoney: (travelScheduleTotalMoney: number) => void;
-    expenditureListItem: expenditureListItem[];
-    setExpenditureListItem: (expenditureListItem: expenditureListItem[]) => void;
-    scheduleListItem: scheduleListItem[];
-    setScheduleListItem: (scheduleListItem: scheduleListItem[]) => void;
+    expenditureListItem: expenditureList[];
+    setExpenditureListItem: (expenditureListItem: expenditureList[]) => void;
+    scheduleListItem: scheduleList[];
+    setScheduleListItem: (scheduleListItem: scheduleList[]) => void;
 }
 
 const useScheduleStore = create<Schedule>((set) => ({
@@ -22,9 +22,9 @@ const useScheduleStore = create<Schedule>((set) => ({
 
     setTravelScheduleTotalMoney: (travelScheduleTotalMoney: number) => set((state) => ({ ...state, travelScheduleTotalMoney })),
 
-    setExpenditureListItem: (expenditureListItem: expenditureListItem[]) => set((state) => ({ ...state, expenditureListItem })),
+    setExpenditureListItem: (expenditureListItem: expenditureList[]) => set((state) => ({ ...state, expenditureListItem })),
 
-    setScheduleListItem: (scheduleListItem: scheduleListItem[]) => set((state) => ({ ...state, scheduleListItem })),
+    setScheduleListItem: (scheduleListItem: scheduleList[]) => set((state) => ({ ...state, scheduleListItem })),
 }));
 
 export default useScheduleStore;
