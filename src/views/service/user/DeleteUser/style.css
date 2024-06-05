@@ -26,10 +26,10 @@ html::-webkit-scrollbar {
 
     padding-top: 30px;
 
-    border: 2px solid rgba(238,238,238,1);
+    border: 2px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
 
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .delete-user-box-top {
@@ -42,7 +42,7 @@ html::-webkit-scrollbar {
 
     width: 300px;
 
-    border-bottom: 2px solid rgb(73, 75, 196);
+    border-bottom: 2px solid rgb(193, 196, 241);
 }
 
 .delete-user-box-mid {
@@ -55,8 +55,8 @@ html::-webkit-scrollbar {
 
     width: 100px;
 
-    border-bottom: 2px solid rgb(73, 75, 196);
-    
+    border-bottom: 2px solid rgb(193, 196, 241);
+
     color: rgb(190, 187, 187);
 }
 
@@ -101,7 +101,6 @@ html::-webkit-scrollbar {
     justify-content: center;
 
     width: 250px;
-
 
     border: 2px solid black;
 }

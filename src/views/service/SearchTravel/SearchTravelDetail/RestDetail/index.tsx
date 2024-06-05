@@ -20,24 +20,23 @@ export default function RestDetail() {
     const [restaurantHours, setRestaurantHours] = useState<string>("");
     const [restaurantOutline, setRestaurantOutline] = useState<string>("");
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>("");
-    const [restaurantServiceMenu, setrestaurantServiceMenu] =
-        useState<string>("");
+    const [restaurantServiceMenu, setrestaurantServiceMenu] = useState<string>("");
 
-    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(
-        null
-    );
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
     const [page, setPage] = useState<{ start: number; end: number }>({
         start: 0,
         end: 7,
     });
 
+    const telNumber = restaurantTelNumber.split("<br>").join("");
+    const hours = restaurantHours.split("<br>").join("");
+    const outline = restaurantOutline.split("<br>").join("");
+
     //                    Function : Qna 화면 컴포넌트                     //
     const navigator = useNavigate();
 
     //                    Event Handler : Qna 화면 컴포넌트                     //
-    const getRestaurantResponse = (
-        result: GetRestaurantResponseDto | ResponseDto | null
-    ) => {
+    const getRestaurantResponse = (result: GetRestaurantResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "ND"
@@ -115,45 +114,29 @@ export default function RestDetail() {
         <div id="travel-detail-wrapper">
             <div className="travel-detail-image-table">
                 <div>
-                    <img
-                        title="travel"
-                        width="300px"
-                        src={
-                            selectedImageUrl
-                                ? selectedImageUrl
-                                : restaurantImageUrl[0]
-                        }
-                    />
+                    <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : restaurantImageUrl[0]} />
                 </div>
                 <div className="travel-detail-image-list">
                     {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                        <div
-                            className="travel-image-list-left"
-                            onClick={() => onClickImageButton(true)}
-                        />
+                        <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
                     ) : null}
-                    {restaurantImageUrl
-                        .slice(page.start, page.end)
-                        .map((url) => (
-                            <div
-                                className="travel-lmage-list"
-                                key={url}
-                                style={{
-                                    backgroundImage: `url(${url})`,
-                                    minWidth: "150px",
-                                    height: "100px",
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    cursor: "pointer",
-                                }}
-                                onClick={() => onUpdateImageUrl(url)}
-                            />
-                        ))}
-                    {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                    {restaurantImageUrl.slice(page.start, page.end).map((url) => (
                         <div
-                            className="travel-image-list-right"
-                            onClick={() => onClickImageButton(false)}
+                            className="travel-lmage-list"
+                            key={url}
+                            style={{
+                                backgroundImage: `url(${url})`,
+                                minWidth: "150px",
+                                height: "100px",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                cursor: "pointer",
+                            }}
+                            onClick={() => onUpdateImageUrl(url)}
                         />
+                    ))}
+                    {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                        <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
                     ) : null}
                 </div>
             </div>
@@ -166,42 +149,32 @@ export default function RestDetail() {
                 <div className="travel-telNumber">
                     <div className="travel-title">연락처</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {restaurantTelNumber}
-                    </div>
+                    <div className="travel-detail-info">{telNumber}</div>
                 </div>
                 <div className="travel-location">
                     <div className="travel-title">지역</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {restaurantLocation}
-                    </div>
+                    <div className="travel-detail-info">{restaurantLocation}</div>
                 </div>
                 <div className="travel-hours">
                     <div className="travel-title">운영시간</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{restaurantHours}</div>
+                    <div className="travel-detail-info">{hours}</div>
                 </div>
                 <div className="travel-main-menu">
                     <div className="travel-title">대표메뉴</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {restaurantMainMenu}
-                    </div>
+                    <div className="travel-detail-info">{restaurantMainMenu}</div>
                 </div>
                 <div className="travel-service-menu">
                     <div className="travel-title">취급메뉴</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">
-                        {restaurantServiceMenu}
-                    </div>
+                    <div className="travel-detail-info">{restaurantServiceMenu}</div>
                 </div>
                 <div className="travel-list-table-outline">
                     <div className="travel-outline-text">
                         <div className="travel-title">개요</div>
-                        <div className="travel-detail-info">
-                            {restaurantOutline}
-                        </div>
+                        <div className="travel-detail-info">{outline}</div>
                     </div>
                 </div>
             </div>

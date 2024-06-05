@@ -22,7 +22,7 @@ import {
     postTravelReviewCommentRequest,
 } from "src/apis/review";
 import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
-import { expenditureList, reviewCommentList, scheduleList } from "src/types";
+import { ExpenditureList, reviewCommentList, ScheduleList } from "src/types";
 import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
 import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
 import { getScheduleDetailRequest } from "src/apis/schedule";
@@ -33,7 +33,7 @@ import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
@@ -48,7 +48,7 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
 }
 
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureList) {
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: ExpenditureList) {
     //                    render                     //
     return (
         <div className="expenditure-item">

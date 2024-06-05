@@ -27,6 +27,10 @@ export default function TourDetail() {
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
 
+    const telNumber = tourAttractionsTelNumber.split("<br>").join("");
+    const hours = tourAttractionsHours.split("<br>").join("");
+    const outline = tourAttractionsOutline.split("<br>").join("");
+
     //                    Function : Qna 화면 컴포넌트                     //
     const navigator = useNavigate();
 
@@ -146,7 +150,7 @@ export default function TourDetail() {
                 <div className="travel-telNumber">
                     <div className="travel-title">연락처</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{tourAttractionsTelNumber}</div>
+                    <div className="travel-detail-info">{telNumber}</div>
                 </div>
                 <div className="travel-location">
                     <div className="travel-title">지역</div>
@@ -156,12 +160,12 @@ export default function TourDetail() {
                 <div className="travel-hours">
                     <div className="travel-title">운영시간</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{tourAttractionsHours}</div>
+                    <div className="travel-detail-info">{hours}</div>
                 </div>
                 <div className="travel-list-table-outline">
                     <div className="travel-outline-text">
                         <div className="travel-title">개요</div>
-                        <div className="travel-detail-info">{tourAttractionsOutline}</div>
+                        <div className="travel-detail-info">{outline}</div>
                     </div>
                 </div>
             </div>

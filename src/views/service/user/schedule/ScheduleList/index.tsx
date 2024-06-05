@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { scheduleListViewItem } from "src/types";
+import { ScheduleListViewItem } from "src/types";
 import { useNavigate } from "react-router";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { useCookies } from "react-cookie";
@@ -9,7 +9,7 @@ import ResponseDto from "src/apis/response.dto";
 import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 
 //                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
-function ScheduleListViewItem({ travelScheduleName, travelScheduleNumber }: scheduleListViewItem) {
+function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
     //                     function                     //
     const navigator = useNavigate();
 
@@ -29,8 +29,8 @@ export default function ScheduleList() {
     //                     state                     //
     const [cookies] = useCookies();
 
-    const [scheduleViewList, setScheduleViewList] = useState<scheduleListViewItem[]>([]);
-    const [viewList, setViewList] = useState<scheduleListViewItem[]>([]);
+    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
+    const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -40,7 +40,7 @@ export default function ScheduleList() {
         navigator(SCHEDULE_WRITE_ABSOLUTE_PATH);
     };
 
-    const changeScheduleList = (scheduleViewList: scheduleListViewItem[]) => {
+    const changeScheduleList = (scheduleViewList: ScheduleListViewItem[]) => {
         setScheduleViewList(scheduleViewList);
     };
 
@@ -85,7 +85,7 @@ export default function ScheduleList() {
                 </div>
                 <div className="schedule-lists-box">
                     {viewList.map((item) => (
-                        <ScheduleListViewItem {...item} />
+                        <ScheduleListView {...item} />
                     ))}
                 </div>
             </div>

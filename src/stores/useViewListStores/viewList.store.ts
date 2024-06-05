@@ -1,18 +1,18 @@
-import { expenditureList, scheduleList } from "src/types";
+import { ExpenditureList, ScheduleList } from "src/types";
 import { create } from "zustand";
 
 interface ViewListStore {
-    scheduleListItemViewList: scheduleList[];
-    setScheduleListItemViewList: (scheduleListItemViewList: scheduleList[]) => void;
-    expenditureViewList: expenditureList[];
-    setExpenditureViewList: (expenditureViewList: expenditureList[]) => void;
+    scheduleListItemViewList: ScheduleList[];
+    setScheduleListItemViewList: (scheduleListItemViewList: ScheduleList[]) => void;
+    expenditureViewList: ExpenditureList[];
+    setExpenditureViewList: (expenditureViewList: ExpenditureList[]) => void;
 }
 
 const useViewListStore = create<ViewListStore>((set) => ({
     scheduleListItemViewList: [],
-    setScheduleListItemViewList: (scheduleListItemViewList: scheduleList[]) => set((state) => ({ ...state, scheduleListItemViewList })),
+    setScheduleListItemViewList: (scheduleListItemViewList: ScheduleList[]) => set((state) => ({ ...state, scheduleListItemViewList })),
     expenditureViewList: [],
-    setExpenditureViewList: (expenditureViewList: expenditureList[]) => set((state) => ({ ...state, expenditureViewList })),
+    setExpenditureViewList: (expenditureViewList: ExpenditureList[]) => set((state) => ({ ...state, expenditureViewList })),
 }));
 
 export default useViewListStore;

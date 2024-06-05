@@ -7,8 +7,14 @@ html::-webkit-scrollbar {
     display: none;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 #schedule-wrapper {
-    max-width: 1500px;
+    max-width: 1600px;
     display: flex;
 
     gap: 40px;
@@ -53,10 +59,16 @@ html::-webkit-scrollbar {
     width: 280px;
     height: 600px;
 
+    overflow-y: auto;
+
     border: 2px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
 
     background-color: rgba(255, 255, 255, 1);
+}
+
+.schedule-lists-box::-webkit-scrollbar {
+    display: none;
 }
 
 .schedule-list {
@@ -95,6 +107,10 @@ html::-webkit-scrollbar {
     background-color: rgba(255, 255, 255, 1);
 }
 
+.schedule-text-table::-webkit-scrollbar {
+    display: none;
+}
+
 .schedule-title {
     display: flex;
     text-align: center;
@@ -110,14 +126,23 @@ html::-webkit-scrollbar {
     padding: 20px;
 }
 
+.schedule-name-input-box {
+    height: 20px;
+
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+
 .schedule-add-box {
     display: flex;
     flex-direction: column;
 
     justify-content: center;
 
-    margin: 10px;
-    padding: 10px;
+    margin: 5px;
+    padding: 5px;
 
     border-bottom: 2px solid rgb(193, 196, 241);
 }
@@ -131,8 +156,8 @@ html::-webkit-scrollbar {
 
 .calendar-container {
     position: absolute;
-    top: 20px;
-    left: 170px;
+    top: -30px;
+    left: 150px;
 }
 
 .schedule-date {
@@ -144,7 +169,10 @@ html::-webkit-scrollbar {
     width: 140px;
     margin-left: 10px;
 
-    border: 1px solid black;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .calendar-button {
@@ -155,6 +183,8 @@ html::-webkit-scrollbar {
 
     background-image: url(../../../../../assets/image/calendar-icon.png);
     background-size: 100%;
+
+    cursor: pointer;
 }
 
 .schedule-text-box {
@@ -168,34 +198,40 @@ html::-webkit-scrollbar {
     width: 170px;
     text-align: start;
 
-    border: 1px solid black;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-text-money {
     width: 100px;
     text-align: start;
 
-    border: 1px solid black;
-}
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-start-hour {
     text-align: center;
-    width: 80px;
+    width: 70px;
 
-    border: 1px solid black;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-end-hour {
     text-align: center;
-    width: 80px;
+    width: 70px;
 
-    border: 1px solid black;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-add-icon {
@@ -206,6 +242,20 @@ input::-webkit-inner-spin-button {
 
     background-image: url(../../../../../assets/image/add-icon.png);
     background-size: 100%;
+
+    cursor: pointer;
+}
+
+.schedule-minus-icon {
+    display: flex;
+
+    width: 21px;
+    height: 21px;
+
+    background-image: url(../../../../../assets/image/minus-icon.png);
+    background-size: 100%;
+
+    cursor: pointer;
 }
 
 .schedule-household-table {
@@ -259,6 +309,12 @@ input::-webkit-inner-spin-button {
 
 .select-input-box {
     width: 80px;
+    height: 15px;
+
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-household-text-box {
@@ -272,6 +328,10 @@ input::-webkit-inner-spin-button {
     border-bottom: 2px solid rgb(193, 196, 241);
 }
 
+.schedule-household-text-box::-webkit-scrollbar {
+    display: none;
+}
+
 .schedule-household-add-box {
     display: flex;
 
@@ -283,7 +343,10 @@ input::-webkit-inner-spin-button {
 .schedule-money {
     width: 80px;
 
-    border: 1px solid black;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-spend-box-bottom {
@@ -313,7 +376,10 @@ input::-webkit-inner-spin-button {
     margin: 10px;
     width: 120px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .schedule-dutchpay {
@@ -322,5 +388,8 @@ input::-webkit-inner-spin-button {
     margin: 10px;
     width: 120px;
 
-    border: 1px solid black;
+    border: 2px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
 }
