@@ -203,6 +203,7 @@ export default function Main() {
     kakao.maps.event.addListener(marker, 'click', function() {
       // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
         infowindow.open(map, marker);
+        console.log(22);
     });
     
     marker.setMap(map);

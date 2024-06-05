@@ -72,6 +72,28 @@ html::-webkit-scrollbar {
     font-size: 20px;
 }
 
+.review-detail-content{
+    position: relative;
+}
+
+.delete-image-button{
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    background-size: 100%;
+
+    background-image: url("../../../../assets/image/delete-icon.png");
+
+    right: 10px;
+}
+
+.delete-image-button:hover{
+    cursor: pointer;
+    opacity: 80%;
+}
+
 .write-update-button{
     display: flex;
     justify-content: flex-end;
