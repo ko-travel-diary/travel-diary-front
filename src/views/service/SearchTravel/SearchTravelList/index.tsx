@@ -29,6 +29,10 @@ function Tourlist({
     //                     function                     //
     const navigator = useNavigate();
 
+    const telNumber = tourAttractionsTelNumber.split("<br>").join("");
+    const hours = tourAttractionsHours.split("<br>").join("");
+    const outline = tourAttractionsOutline.split("<br>").join("");
+
     //                     event handler                     //
     const onClickHandler = () => {
         if (tourAttractionsNumber) {
@@ -58,7 +62,7 @@ function Tourlist({
                         <div className="travel-telNumber">
                             <div className="travel-title">연락처</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{tourAttractionsTelNumber}</div>
+                            <div className="travel-detail-info">{telNumber}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-title">
@@ -70,13 +74,13 @@ function Tourlist({
                         <div className="travel-hours">
                             <div className="travel-title">운영시간</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{tourAttractionsHours}</div>
+                            <div className="travel-detail-info">{hours}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
                             <div className="travel-title">개요</div>
-                            <div className="travel-outline">{tourAttractionsOutline}</div>
+                            <div className="travel-outline">{outline}</div>
                         </div>
                     </div>
                 </div>
@@ -97,6 +101,10 @@ function Restlist({
 }: RestaurantListItem) {
     //                     function                     //
     const navigator = useNavigate();
+
+    const telNumber = restaurantTelNumber.split("<br>").join("");
+    const hours = restaurantHours.split("<br>").join("");
+    const outline = restaurantOutline.split("<br>").join("");
 
     //                     event handler                     //
     const onClickHandler = () => {
@@ -127,7 +135,7 @@ function Restlist({
                         <div className="travel-telNumber">
                             <div className="travel-title">연락처</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{restaurantTelNumber}</div>
+                            <div className="travel-detail-info">{telNumber}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-title">
@@ -139,13 +147,13 @@ function Restlist({
                         <div className="travel-hours">
                             <div className="travel-title">운영시간</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{restaurantHours}</div>
+                            <div className="travel-detail-info">{hours}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
                             <div className="travel-title">개요</div>
-                            <div className="travel-outline">{restaurantOutline}</div>
+                            <div className="travel-outline">{outline}</div>
                         </div>
                     </div>
                 </div>

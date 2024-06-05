@@ -2,13 +2,14 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import "./style.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { expenditureList, scheduleList } from "src/types";
+import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 import { PostScheduleRequestDto } from "src/apis/schedule/dto/request";
-import { postScheduleRequest } from "src/apis/schedule";
+import { getScheduleListRequest, postScheduleRequest } from "src/apis/schedule";
 import ResponseDto from "src/apis/response.dto";
-import { SCHEDULE_ABSOLUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
+import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 
 const YYYYMMDD = (date: Date) => {
     const year = date.getFullYear();
@@ -18,19 +19,73 @@ const YYYYMMDD = (date: Date) => {
     return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
 };
 
-const emptySchedule = {
-    scheduleDate: YYYYMMDD(new Date()),
-    scheduleContent: "",
-    scheduleStartTime: "",
-    scheduleEndTime: "",
-};
+const emptySchedule = [
+    {
+        scheduleDate: YYYYMMDD(new Date()),
+        scheduleContent: "",
+        scheduleStartTime: "",
+        scheduleEndTime: "",
+    },
+];
 
 const emptyExpenditure = {
     travelScheduleExpenditureDetail: "",
     travelScheduleExpenditure: 0,
 };
 
-//                    Component : SCHEDULE LIST 화면 컴포넌트                     //
+interface ScheduleDateItemProps {
+    index: number;
+    scheduleDate: string;
+    toggleFlag: number;
+    changeDate: (date: Date | null, index: number) => void;
+    setToggleFlag: (index: number) => void;
+}
+
+function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setToggleFlag }: ScheduleDateItemProps) {
+    const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+
+    const handleDateChange = (date: Date | null, index: number) => {
+        // console.log(index);
+        changeDate(date, index);
+        setShowDatePicker(false);
+    };
+
+    const toggleDatePicker = () => {
+        setShowDatePicker(!showDatePicker);
+        setToggleFlag(index);
+    };
+
+    useEffect(() => {
+        if (toggleFlag !== index) setShowDatePicker(false);
+    }, [toggleFlag]);
+
+    return (
+        <div className="schedule-calendar-box">
+            <input
+                className="schedule-date"
+                type="text"
+                value={YYYYMMDD(new Date(scheduleDate))}
+                onClick={toggleDatePicker}
+                readOnly
+                placeholder="날짜"
+            />
+            <div className="calendar-button" onClick={toggleDatePicker} />
+            {showDatePicker ? (
+                <div className="calendar-container">
+                    <DatePicker selected={new Date(scheduleDate)} onChange={(date: Date | null) => handleDateChange(date, index)} inline />
+                </div>
+            ) : null}
+        </div>
+    );
+}
+
+//                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
+function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
+    //                    render : QnA 화면 컴포넌트                     //
+    return <div className="schedule-list">{travelScheduleName}</div>;
+}
+
+//                    Component : SCHEDULE WRITE 화면 컴포넌트                     //
 export default function ScheduleWrite() {
     //                     state                     //
     const [cookies] = useCookies();
@@ -39,18 +94,42 @@ export default function ScheduleWrite() {
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
-    const [scheduleList, setScheduleList] = useState<scheduleList[]>([emptySchedule]);
-    const [expenditureList, setExpenditureList] = useState<expenditureList[]>([emptyExpenditure]);
+    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
+    const [scheduleList, setScheduleList] = useState<ScheduleList[]>(emptySchedule);
+    const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 
-    const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+    const [toggleFlag, setToggleFlag] = useState<number>(0);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
         : 0;
-    const duchPay = travelSchedulePeople > 0 ? balnace / travelSchedulePeople : 0;
+    const duchPayMoney = travelSchedulePeople > 0 ? balnace / travelSchedulePeople : 0;
+    const duchPay = duchPayMoney.toFixed(1);
 
     //                     function                     //
     const navigator = useNavigate();
+
+    const changeScheduleViewList = (scheduleView: ScheduleListViewItem[]) => {
+        setScheduleViewList(scheduleView);
+    };
+    const getScheduleListResponse = (result: GetScheduleListResponseDto | ResponseDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
+            alert(message);
+            if (result?.code === "AF") navigator(AUTH_ABSOLUTE_PATH);
+            return result;
+        }
+
+        const { scheduleListViewItems } = result as GetScheduleListResponseDto;
+        changeScheduleViewList(scheduleListViewItems);
+    };
 
     const postScheduleResponse = (result: ResponseDto | null) => {
         const message = !result
@@ -73,14 +152,31 @@ export default function ScheduleWrite() {
     };
 
     //                     event Handler                     //
+
     const onAddScheduleList = () => {
-        const newSchedule = [...scheduleList, emptySchedule];
+        const empty = {
+            scheduleDate: YYYYMMDD(new Date()),
+            scheduleContent: "",
+            scheduleStartTime: "",
+            scheduleEndTime: "",
+        };
+        const newSchedule = [...scheduleList, empty];
         setScheduleList(newSchedule);
+    };
+
+    const onMinusScheduleList = (indexToRemove: number) => {
+        const deleteSchedule = scheduleList.filter((_, index) => index !== indexToRemove);
+        setScheduleList(deleteSchedule);
     };
 
     const onAddExpenditureList = () => {
         const newExpenditure = [...expenditureList, emptyExpenditure];
         setExpenditureList(newExpenditure);
+    };
+
+    const onMinusExpenditureList = (indexToRemove: number) => {
+        const deleteExpenditure = expenditureList.filter((_, index) => index !== indexToRemove);
+        setExpenditureList(deleteExpenditure);
     };
 
     const onScheduleNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -141,19 +237,29 @@ export default function ScheduleWrite() {
         postScheduleRequest(requestBody, cookies.accessToken).then(postScheduleResponse);
     };
 
-    const toggleDatePicker = () => {
-        setShowDatePicker(!showDatePicker);
-    };
-
-    const handleDateChange = (date: Date | null, index: number) => {
-        if (date) {
-            scheduleList[index] = { ...scheduleList[index], scheduleDate: YYYYMMDD(date) };
-            const newScheduleList = [...scheduleList];
+    const handleDateChange = (date: Date | null, selectIndex: number) => {
+        if (date !== null) {
+            console.log(scheduleList);
+            // console.log(selectIndex);
+            const newScheduleList = scheduleList.map((item, index) => {
+                if (index === selectIndex) item.scheduleDate = date.toISOString();
+                return item;
+            });
+            // console.log(newScheduleList);
+            // newScheduleList[index].scheduleDate = date.toISOString();
             setScheduleList(newScheduleList);
         }
-
-        setShowDatePicker(false); // 달력이 닫히도록 설정
     };
+
+    const onToggleFlagHandler = (index: number) => {
+        setToggleFlag(index);
+    };
+
+    //                     effect                     //
+    useEffect(() => {
+        if (!cookies.accessToken) return;
+        getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+    }, []);
 
     //                    render                  //
     return (
@@ -165,9 +271,12 @@ export default function ScheduleWrite() {
                         올리기
                     </div>
                 </div>
-                <div className="schedule-lists-box"></div>
+                <div className="schedule-lists-box">
+                    {scheduleViewList.map((item, index) => (
+                        <ScheduleListView key={index} {...item} />
+                    ))}
+                </div>
             </div>
-            <div className="schedule-list-table"></div>
             <div className="schedule-text-table">
                 <div className="schedule-title">
                     <div className="schedule-name">일정명</div>
@@ -180,18 +289,25 @@ export default function ScheduleWrite() {
                     />
                 </div>
                 {scheduleList.map((schedule, index) => (
-                    <div className="schedule-add-box">
-                        <div className="schedule-calendar-box">
+                    <div className="schedule-add-box" style={{ zIndex: index === toggleFlag ? 9999 : 0 }}>
+                        <ScheduleDateItem
+                            index={index}
+                            scheduleDate={schedule.scheduleDate}
+                            changeDate={handleDateChange}
+                            toggleFlag={toggleFlag}
+                            setToggleFlag={onToggleFlagHandler}
+                        />
+                        {/* <div className="schedule-calendar-box">
                             <input
                                 className="schedule-date"
                                 type="text"
                                 value={YYYYMMDD(new Date(schedule.scheduleDate))}
-                                onClick={toggleDatePicker}
+                                onClick={() => toggleDatePicker(index)}
                                 readOnly
                                 placeholder="날짜"
                             />
-                            <div className="calendar-button" onClick={toggleDatePicker} />
-                            {showDatePicker ? (
+                            <div className="calendar-button" onClick={() => toggleDatePicker(index)} />
+                            {showDatePicker[index] ? (
                                 <div className="calendar-container">
                                     <DatePicker
                                         selected={new Date(schedule.scheduleDate)}
@@ -200,7 +316,7 @@ export default function ScheduleWrite() {
                                     />
                                 </div>
                             ) : null}
-                        </div>
+                        </div> */}
                         <div className="schedule-text-box">
                             <input
                                 className="schedule-text"
@@ -220,7 +336,11 @@ export default function ScheduleWrite() {
                                 onChange={(e) => onScheduleEndTimeChangeHandler(e, index)}
                                 placeholder="도착 시간"
                             />
-                            {index === scheduleList.length - 1 ? <div className="schedule-add-icon" onClick={onAddScheduleList} /> : null}
+                            {index === scheduleList.length - 1 ? (
+                                <div className="schedule-add-icon" onClick={onAddScheduleList} />
+                            ) : (
+                                <div className="schedule-minus-icon" onClick={() => onMinusScheduleList(index)} />
+                            )}
                         </div>
                     </div>
                 ))}
@@ -263,7 +383,11 @@ export default function ScheduleWrite() {
                                 value={Number(expenditure.travelScheduleExpenditure).toString()}
                                 onChange={(e) => onScheduleTravelScheduleExpenditureChangeHandler(e, index)}
                             />
-                            {index === expenditureList.length - 1 ? <div className="schedule-add-icon" onClick={onAddExpenditureList} /> : null}
+                            {index === expenditureList.length - 1 ? (
+                                <div className="schedule-add-icon" onClick={onAddExpenditureList} />
+                            ) : (
+                                <div className="schedule-minus-icon" onClick={() => onMinusExpenditureList(index)} />
+                            )}
                         </div>
                     ))}
                 </div>
