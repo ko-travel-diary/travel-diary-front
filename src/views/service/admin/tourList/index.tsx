@@ -51,6 +51,7 @@ export function TourListItems({
     };
 
     const hours = tourAttractionsHours.split('<br>').join('');
+    const telNumber = tourAttractionsTelNumber.split('<br>').join('');
 
     //                  Render                  //
     return (
@@ -87,7 +88,7 @@ export function TourListItems({
                 {tourAttractionsLocation}
             </div>
             <div className="tour-list-table-tel long-text">
-                {tourAttractionsTelNumber}
+                {telNumber}
             </div>
             <div className="tour-list-table-hours long-text">
                 {hours}

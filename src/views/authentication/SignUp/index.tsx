@@ -112,7 +112,7 @@ function SignUp () {
         const nickNameMessage = 
             !result ? '서버에 문제가 있습니다.' : 
             result.code === 'VF' ? '닉네임은 빈값 혹은 공백으로만 이루어질 수 없습니다.' :
-            result.code === 'DI' ? '이미 사용중인 닉네임 입니다.' :
+            result.code === 'DN' ? '이미 사용중인 닉네임 입니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' :
             result.code === 'SU' ? '사용 가능한 닉네임 입니다.' : '';
 
@@ -129,8 +129,9 @@ function SignUp () {
         const emailMessage = 
         !result ? '서버에 문제가 있습니다.' : 
         result.code === 'VF' ? '이메일 형식이 아닙니다.' :
-        result.code === 'DI' ? '중복된 이메일 입니다.' :
+        result.code === 'DE' ? '중복된 이메일 입니다.' :
         result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+        result.code === 'MF' ? '메일 전송에 실패했습니다.' :
         result.code === 'SU' ? '인증번호가 전송되었습니다.' : '';
 
         const emailError = !(result && result.code === 'SU');
@@ -146,7 +147,7 @@ function SignUp () {
         const authNumberMessage = 
         !result ? '서버에 문제가 있습니다.' : 
         result.code === 'VF' ? '인증번호를 입력해주세요.' :
-        result.code === 'DI' ? '인증번호가 일치하지 않습니다.' :
+        result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
         result.code === 'DBE' ? '서버에 문제가 있습니다.' :
         result.code === 'SU' ? '인증번호가 확인되었습니다.' : '';
 

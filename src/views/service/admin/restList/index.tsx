@@ -27,6 +27,7 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
     }
 
     const hours = restaurantHours.split("<br>").join("");
+    const telNumber = restaurantTelNumber.split("<br>").join("");
 
     //                  Render                  //
     return (
@@ -38,7 +39,7 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
             }
             <div className='rest-list-table-name long-text' onClick={onRestaurantListClickHandler}>{restaurantName}</div>
             <div className='rest-list-table-locate long-text'>{restaurantLocation}</div>
-            <div className='rest-list-table-tel long-text'>{restaurantTelNumber}</div>
+            <div className='rest-list-table-tel long-text'>{telNumber}</div>
             <div className='rest-list-table-hours long-text'>{hours}</div>
             <div className='control-button' onClick={onControlButton}>관리</div>
         </div>

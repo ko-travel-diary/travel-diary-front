@@ -77,8 +77,8 @@ export default function TourAdd() {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
         setTourAtrracntionImage([...tourAttractionsImage, file]);
-        // const url = URL.createObjectURL(file);
-        // setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
+        const url = URL.createObjectURL(file);
+        setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
     }
 
     const onRegisterButtonClickHandler = async () =>{
@@ -89,7 +89,8 @@ export default function TourAdd() {
 
         for (const image of tourAttractionsImage) {
             const data = new FormData();
-            data.append('file', image);
+            // data.append('file', image);
+            data.append('originalFileName', image.name);
             const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
                 .then(response => response.data as string)
                 .catch(error => null);
@@ -109,12 +110,12 @@ export default function TourAdd() {
             return;
         }
 
-        const lat = data.documents[0].y as number;
-        const lng = data.documents[0].x as number;
+        const tourAttractionsLat = data.documents[0].y as number;
+        const tourAttractionsLng = data.documents[0].x as number;
 
         const requestBody: PostTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
-            tourAttractionsImageUrl, tourAttractionsLat: lat, tourAttractionsLng: lng
+            tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
         }
 
         postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
@@ -169,6 +170,23 @@ export default function TourAdd() {
                     <div className='tour-register-top-title'>▣ 관광지 사진</div>
                     <div className='tour-register-element'>
                         <input className='tour-register-image-input tour-register-input-element' type='file' multiple placeholder='제목을 입력해주세요.' onChange={onTourAttractionImgFileChangeHandler}/>
+                    </div>
+                    <div className='photo-view-element'>
+                        <div className='photo-view'>
+                            {tourAttractionsImageUrl.map((url) => (
+                            <div
+                                className="photo-view-content"
+                                key={url}
+                                style={{
+                                    backgroundImage: `url(${url})`,
+                                    width: "150px",
+                                    height: "200px",
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
+                            ></div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
