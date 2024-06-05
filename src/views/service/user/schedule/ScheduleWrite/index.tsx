@@ -195,7 +195,7 @@ export default function ScheduleWrite() {
                                 <div className="calendar-container">
                                     <DatePicker
                                         selected={new Date(schedule.scheduleDate)}
-                                        onChange={(date) => handleDateChange(date, index)}
+                                        onChange={(date: Date | null) => handleDateChange(date, index)}
                                         inline
                                     />
                                 </div>
