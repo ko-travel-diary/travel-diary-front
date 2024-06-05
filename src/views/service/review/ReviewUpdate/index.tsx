@@ -11,7 +11,7 @@ import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
 import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
 import { useUserStore } from "src/stores";
 import axios from "axios";
-import { expenditureList, scheduleList, scheduleListViewItem } from "src/types";
+import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 import { useScheduleStore } from "src/stores/useScheduleStores";
@@ -19,7 +19,7 @@ import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import useViewListStore from "src/stores/useViewListStores/viewList.store";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
-function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleListViewItem) {
+function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
     //                    state                     //
     const [cookies] = useCookies();
     const { setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
@@ -68,7 +68,7 @@ function ScheduleList({ travelScheduleNumber, travelScheduleName }: scheduleList
     );
 }
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
-function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: scheduleList) {
+function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
@@ -82,7 +82,7 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
     );
 }
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
-function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: expenditureList) {
+function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: ExpenditureList) {
     //                    render                     //
     return (
         <div className="expenditure-item">
@@ -100,14 +100,14 @@ export default function ReviewUpdate() {
     const [cookies] = useCookies();
 
     const contentsRef = useRef<HTMLTextAreaElement | null>(null);
-    const [reviewWriterId, setReviewWriterId] = useState<string>("");
+    const photoInput = useRef<HTMLInputElement | null>(null);
 
+    const [reviewWriterId, setReviewWriterId] = useState<string>("");
     const [reviewContent, setReivewContent] = useState<string>("");
     const [reviewTitle, setReviewTitle] = useState<string>("");
-    const [travelReviewImage, setTravelReviewImage] = useState<File[]>([]);
+    const [travelReviewImages, setTravelReviewImages] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const photoInput = useRef<HTMLInputElement | null>(null);
-    const [viewList, setViewList] = useState<scheduleListViewItem[]>([]);
+    const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
     const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
     const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus } = useScheduleButtonStore();
     const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
@@ -159,12 +159,13 @@ export default function ReviewUpdate() {
             return;
         }
 
-        const { reviewTitle, reviewContent, writerId } = result as GetTravelReviewDetailResponseDto;
+        const { reviewTitle, reviewContent, writerId, travelReviewImageUrl } = result as GetTravelReviewDetailResponseDto;
 
         setReviewTitle(reviewTitle);
         setReivewContent(reviewContent);
         setReviewWriterId(writerId);
         setTravelReviewImageUrl(travelReviewImageUrl);
+        console.log(travelReviewImageUrl);
     };
 
     const patchTravelReviewResponseDto = (result: ResponseDto | null) => {
@@ -205,7 +206,7 @@ export default function ReviewUpdate() {
     const imageInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setTravelReviewImage([...travelReviewImage, file]);
+        setTravelReviewImages([...travelReviewImages, file]);
         const url = URL.createObjectURL(file);
         setTravelReviewImageUrl([...travelReviewImageUrl, url]);
     };
@@ -217,7 +218,7 @@ export default function ReviewUpdate() {
         const travelReviewImageUrl: string[] = [];
 
         // travelReviewImage upload 반복작업
-        for (const image of travelReviewImage) {
+        for (const image of travelReviewImages) {
             const data = new FormData();
             data.append("file", image);
             const url = await axios
@@ -247,6 +248,17 @@ export default function ReviewUpdate() {
         setScheduleButtonStatus(!scheduleButtonStatus);
         getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
     };
+
+    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
+        if(!photoInput.current) return;
+        photoInput.current.value = '';
+
+        const newTravelReviewImageUrls = travelReviewImageUrl.filter((url, index) => index !== deleteIndex);
+        setTravelReviewImageUrl(newTravelReviewImageUrls);
+
+        const newTravelReviewImages = travelReviewImages.filter((file, index) => index !== deleteIndex);
+        setTravelReviewImages(newTravelReviewImages);
+    }
 
     //                     effect                     //
     useEffect(() => {
@@ -308,7 +320,7 @@ export default function ReviewUpdate() {
                         </div>
                         <div className="my-travel-diary-list-box">
                             {viewList.map((item) => (
-                                <ScheduleList {...item} />
+                                <ScheduleListView {...item} />
                             ))}
                         </div>
                     </div>
@@ -328,7 +340,7 @@ export default function ReviewUpdate() {
                     />
                 </div>
                 <div className="write-content-box">
-                    {travelReviewImageUrl.map((url) => (
+                {travelReviewImageUrl.map((url, index) => (
                         <div
                             className="review-detail-content"
                             key={url}
@@ -339,7 +351,9 @@ export default function ReviewUpdate() {
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
-                        ></div>
+                        >
+                        <div className="delete-image-button" onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                        </div>
                     ))}
                     <textarea
                         ref={contentsRef}
