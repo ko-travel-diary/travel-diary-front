@@ -464,11 +464,6 @@ export default function ReviewDetail() {
         getTravelReviewFavoriteStatusRequest(reviewNumber, cookies.accessToken).then(getTravelReviewFavoriteStatusResponse);
     }, []);
 
-    useEffect(() => {
-        setScheduleListItemViewList([]);
-        setExpenditureViewList([]);
-    }, []);
-
     //                    render                    //
     const userStatus =
         loginUserId !== reviewWriterId ? (
