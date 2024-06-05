@@ -81,7 +81,7 @@ export default function RestAdd() {
         const file = event.target.files[0];
         setRestaurantImage([...restaurantImage, file]);
         const url = URL.createObjectURL(file);
-        // setRestaurantImageUrl([...restaurantImageUrl, url]);
+        setRestaurantImageUrl([...restaurantImageUrl, url]);
 
     }
 
@@ -103,7 +103,7 @@ export default function RestAdd() {
         
         for (const image of restaurantImage) {
             const data = new FormData();
-            data.append('file', image);
+            // data.append('file', image);
             data.append('originalFileName', image.name);
             const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
                 .then(response => response.data as string)
@@ -124,14 +124,14 @@ export default function RestAdd() {
             return;
         }
 
-        const lat = data.documents[0].y as number;
-        const lng = data.documents[0].x as number;
+        const restaurantLat = data.documents[0].y as number;
+        const restaurantLng = data.documents[0].x as number;
 
 
         const requestBody: PostRestaurantRequestDto = {
             restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
             restaurantImageUrl,
-            restaurantMainMenu, restaurantServiceMenu, restaurantLat: lat, restaurantLng: lng
+            restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
         }
 
         postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
@@ -198,6 +198,23 @@ export default function RestAdd() {
                     <div className='rest-register-top-title'>▣ 음식점 사진</div>
                     <div className='rest-register-element'>
                         <input className='rest-register-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>          
+                    </div>
+                    <div className='photo-view-element'>
+                        <div className='photo-view'>
+                            {restaurantImageUrl.map((url) => (
+                            <div
+                                className="photo-view-content"
+                                key={url}
+                                style={{
+                                    backgroundImage: `url(${url})`,
+                                    width: "150px",
+                                    height: "200px",
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
+                            ></div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

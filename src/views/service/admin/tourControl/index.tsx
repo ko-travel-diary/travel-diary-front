@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate, useParams } from 'react-router';
-import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
 import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
 import axios from 'axios';
 import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
@@ -138,6 +138,19 @@ export default function TourControl() {
             console.log(url);
             tourAttractionsImageUrl.push(url);
         }
+
+        const query = tourAttractionsLocation;
+        const data = await axios.get(ADDRESS_URL, {params: {query}})
+            .then(response => response.data)
+            .catch(error => null)
+            
+        if (!data) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
+
+        const tourAttractionsLat = data.documents[0].y as number;
+        const tourAttractionsLng = data.documents[0].x as number;
 
         const requestBody: PatchTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
