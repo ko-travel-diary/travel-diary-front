@@ -25,7 +25,7 @@ export const patchScheduleRequest = async (requestBody: PatchScheduleRequestDto,
     const result = await axios
         .patch(PATCH_SCHEDULE_REQUEST_URL(travelScheduleNumber), requestBody, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
-        .catch(requestHandler);
+        .catch(requestErrorHandler);
     return result;
 };
 

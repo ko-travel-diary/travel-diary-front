@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./style.css";
 import { useNavigate, useParams } from "react-router";
 import { GetTourAttractionsResponseDto } from "src/apis/tour_attraction/dto/response";
 import { getTourAttractionsRequest } from "src/apis/tour_attraction";
 import ResponseDto from "src/apis/response.dto";
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_SECTION } from "src/constant";
+import { AUTH_ABSOLUTE_PATH } from "src/constant";
 
-//                    Component : Qna 화면 컴포넌트                     //
+const SHOW_IMAGE_BUTTON_LIMIT = 7;
+
+//                    Component : TourAttractions Detail 화면 컴포넌트                     //
 export default function TourDetail() {
-    //                    State : Qna 화면 컴포넌트                     //
+    //                    State                     //
     const { tourAttractionsNumber } = useParams();
 
     const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
@@ -18,23 +20,20 @@ export default function TourDetail() {
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>("");
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
 
-    const [imageList, setImageList] = useState<string[]>([]);
-    const [viewList, setViewList] = useState<string[]>([]);
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [pageList, setPageList] = useState<number[]>([1]);
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+    const [page, setPage] = useState<{ start: number; end: number }>({
+        start: 0,
+        end: 7,
+    });
 
     const telNumber = tourAttractionsTelNumber.split("<br>").join("");
     const hours = tourAttractionsHours.split("<br>").join("");
     const outline = tourAttractionsOutline.split("<br>").join("");
 
-    //                    Function : Qna 화면 컴포넌트                     //
+    //                    Function                     //
     const navigator = useNavigate();
 
-    //                    Event Handler : Qna 화면 컴포넌트                     //
+    //                    Event Handler                     //
     const getTourAttractionsResponse = (result: GetTourAttractionsResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -66,68 +65,55 @@ export default function TourDetail() {
         setTourAttractionsOutline(tourAttractionsOutline);
     };
 
-    const changeImagePage = (imageList: string[], totalLength: number) => {
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * 1;
-        let endIndex = currentPage * 1;
-        if (endIndex > totalLength - 1) endIndex = totalLength;
-        const viewList = imageList.slice(startIndex, endIndex);
-        setViewList(viewList);
-    };
-
-    const changeImageSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
-    };
-
-    const changeImageList = (imageList: string[]) => {
-        setImageList(imageList);
-
-        const totalLength = imageList.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / 1) + 1;
-        setTotalPage(totalPage);
-
-        changeImagePage(imageList, totalLength);
-        changeImageSection(totalPage);
-    };
-
-    const onPreImageClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextImageClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
-    };
-
-    //                    Effect : Qna 화면 컴포넌트                     //
+    //                    Effect                     //
     useEffect(() => {
         if (!tourAttractionsNumber) return;
         getTourAttractionsRequest(tourAttractionsNumber).then(getTourAttractionsResponse);
     }, [tourAttractionsNumber]);
 
-    //                    Render : Qna 화면 컴포넌트                     //
+    useEffect(() => {
+        setSelectedImageUrl(tourAttractionsImageUrl[0]);
+    }, []);
+
+    const onUpdateImageUrl = useCallback((selectedUrl: string) => {
+        setSelectedImageUrl(selectedUrl);
+    }, []);
+
+    const onClickImageButton = useCallback((isLeft: boolean) => {
+        setPage((prev) => {
+            if (isLeft) {
+                if (prev.start === 0) {
+                    return { start: 0, end: 7 };
+                } else {
+                    return { start: prev.start + 1, end: prev.end + 1 };
+                }
+            } else {
+                if (prev.end === tourAttractionsImageUrl.length) {
+                    return {
+                        start: tourAttractionsImageUrl.length - 7,
+                        end: tourAttractionsImageUrl.length,
+                    };
+                } else {
+                    return { start: prev.start - 1, end: prev.end - 1 };
+                }
+            }
+        });
+    }, []);
+
+    //                    Render                     //
     return (
         <div id="travel-detail-wrapper">
             <div className="travel-detail-image-table">
                 <div>
-                    <img title="travel" width="300px" src={`${tourAttractionsImageUrl[0]}`} />
+                    <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : tourAttractionsImageUrl[0]} />
                 </div>
                 <div className="travel-detail-image-list">
-                    <div className="travel-image-list-left" onClick={onPreImageClickHandler}></div>
-                    {tourAttractionsImageUrl.map((url) => (
+                    {tourAttractionsImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                        <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
+                    ) : null}
+                    {tourAttractionsImageUrl.slice(page.start, page.end).map((url) => (
                         <div
-                            className="travel-lmage-list"
+                            className="travel-image-list"
                             key={url}
                             style={{
                                 backgroundImage: `url(${url})`,
@@ -136,9 +122,12 @@ export default function TourDetail() {
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
-                        ></div>
+                            onClick={() => onUpdateImageUrl(url)}
+                        />
                     ))}
-                    <div className="travel-image-list-right" onClick={onNextImageClickHandler}></div>
+                    {tourAttractionsImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                        <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
+                    ) : null}
                 </div>
             </div>
             <div className="travel-detail-table">

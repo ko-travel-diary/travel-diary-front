@@ -2,7 +2,7 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import "./style.css";
 import { useUserStore } from "src/stores";
 import { useCookies } from "react-cookie";
-import { travelReviewMyList } from "src/types";
+import { TravelReviewMyList } from "src/types";
 import { useNavigate } from "react-router";
 import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 import ResponseDto from "src/apis/response.dto";
@@ -10,7 +10,7 @@ import { GetTravelReviewMyListResponseDto, GetTravelReviewMyListSearchResponseDt
 import { getTravelReviewMyListRequest, getTravelReviewMyListSearchRequest } from "src/apis/review";
 
 //                    Component : MY REVIEW LIST 화면 컴포넌트                     //
-function ListItem({ reviewNumber, reviewTitle, reviewDatetime, reviewViewCount }: travelReviewMyList) {
+function ListItem({ reviewNumber, reviewTitle, reviewDatetime, reviewViewCount }: TravelReviewMyList) {
     //                    state                     //
 
     //                     function                     //
@@ -40,8 +40,8 @@ export default function MyReviewList() {
 
     const [cookies] = useCookies();
 
-    const [reviewList, setReviewList] = useState<travelReviewMyList[]>([]);
-    const [viewList, setViewList] = useState<travelReviewMyList[]>([]);
+    const [reviewList, setReviewList] = useState<TravelReviewMyList[]>([]);
+    const [viewList, setViewList] = useState<TravelReviewMyList[]>([]);
     const [totalLength, setTotalLength] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -54,7 +54,7 @@ export default function MyReviewList() {
     //                     function                     //
     const navigator = useNavigate();
 
-    const changePage = (reviewList: travelReviewMyList[], totalLength: number) => {
+    const changePage = (reviewList: TravelReviewMyList[], totalLength: number) => {
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
@@ -73,9 +73,10 @@ export default function MyReviewList() {
         setPageList(pageList);
     };
 
-    const changeReivewList = (reviewList: travelReviewMyList[]) => {
+    const changeReivewList = (reviewList: TravelReviewMyList[]) => {
         setReviewList(reviewList);
 
+        console.log(reviewList);
         const totalLength = reviewList.length;
         setTotalLength(totalLength);
 
@@ -86,7 +87,6 @@ export default function MyReviewList() {
         setTotalSection(totalSection);
 
         changePage(reviewList, totalLength);
-
         changeSection(totalPage);
     };
 
@@ -127,11 +127,11 @@ export default function MyReviewList() {
             return result;
         }
 
-        const { travelReviewMyList } = result as GetTravelReviewMyListSearchResponseDto;
-        changeReivewList(travelReviewMyList);
+        const { reviewSearchList } = result as GetTravelReviewMyListSearchResponseDto;
+        changeReivewList(reviewSearchList);
 
-        setCurrentPage(!travelReviewMyList.length ? 0 : 1);
-        setCurrentSection(!travelReviewMyList.length ? 0 : 1);
+        setCurrentPage(!reviewSearchList.length ? 0 : 1);
+        setCurrentSection(!reviewSearchList.length ? 0 : 1);
     };
 
     //                     event handler                     //

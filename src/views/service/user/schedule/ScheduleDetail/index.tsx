@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
+import { deleteScheduleRequest, getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
+import {
+    AUTH_ABSOLUTE_PATH,
+    SCHEDULE_ABSOLUTE_PATH,
+    SCHEDULE_DETAIL_ABSOLUTE_PATH,
+    SCHEDULE_UPDATE_ABSOLUTE_PATH,
+    SCHEDULE_WRITE_ABSOLUTE_PATH,
+} from "src/constant";
 import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
@@ -15,6 +21,10 @@ const YYYYMMDD = (date: Date) => {
     const day = date.getDate();
     //check zero padding
     return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
+};
+
+const numberCommas = (number: Number) => {
+    return number.toLocaleString();
 };
 
 //                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
@@ -43,11 +53,16 @@ function ScheduleListItem({ scheduleDate, scheduleContent, scheduleStartTime, sc
     return (
         <div className="schedule-add-box">
             <div className="schedule-calendar-box">
+                <div className="schedule-select-name">날짜</div>
+                <div className="schedule-devider">{"|"}</div>
                 <div className="schedule-date">{YYYYMMDD(new Date(scheduleDate))}</div>
             </div>
             <div className="schedule-text-box">
+                <div className="schedule-select-name">내용</div>
+                <div className="schedule-devider">{"|"}</div>
                 <div className="schedule-text">{scheduleContent}</div>
                 <div className="schedule-start-hour">{scheduleStartTime}</div>
+                <div className="schedule-devider">{"~"}</div>
                 <div className="schedule-end-hour">{scheduleEndTime}</div>
             </div>
         </div>
@@ -60,7 +75,8 @@ function ExpendListItem({ travelScheduleExpenditureDetail, travelScheduleExpendi
     return (
         <div className="schedule-household-add-box">
             <div className="schedule-text">{travelScheduleExpenditureDetail}</div>
-            <div className="schedule-text-money">{travelScheduleExpenditure}</div>
+            <div className="schedule-text-money">{numberCommas(Number(travelScheduleExpenditure))}</div>
+            <div className="schedule-select-devider-name">원</div>
         </div>
     );
 }
@@ -71,7 +87,6 @@ export default function ScheduleDetail() {
     const [cookies] = useCookies();
     const { travelScheduleNumber } = useParams();
 
-    const [scheduleName, setScheduleName] = useState<string>("");
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
     const [scheduleView, setScheduleView] = useState<ScheduleListViewItem[]>([]);
@@ -87,28 +102,10 @@ export default function ScheduleDetail() {
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
         : 0;
-    const duchPayMoney = travelSchedulePeople > 0 ? balnace / travelSchedulePeople : 0;
-    const duchPay = duchPayMoney.toFixed(0);
+    const duchPay = travelSchedulePeople > 0 ? Math.floor(balnace / travelSchedulePeople) : 0;
 
     //                     function                     //
     const navigator = useNavigate();
-
-    //                     event Handler                     //
-    const onScheduleAddClickHandler = () => {
-        navigator(SCHEDULE_WRITE_ABSOLUTE_PATH);
-    };
-
-    const changeScheduleViewList = (scheduleView: ScheduleListViewItem[]) => {
-        setScheduleViewList(scheduleView);
-    };
-
-    const changeScheduleListViewList = (scheduleList: ScheduleList[]) => {
-        setScheduleListViewList(scheduleList);
-    };
-
-    const changeExpendListViewList = (expenditureList: ExpenditureList[]) => {
-        setExpendListViewList(expenditureList);
-    };
 
     const getScheduleListResponse = (result: GetScheduleListResponseDto | ResponseDto | null) => {
         const message = !result
@@ -160,6 +157,58 @@ export default function ScheduleDetail() {
         changeExpendListViewList(expenditureList);
     };
 
+    const deleteScheduleResponse = (result: ResponseDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "잘못된 게시글번호입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 게시글번호입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
+            alert(message);
+            navigator(SCHEDULE_ABSOLUTE_PATH);
+            return;
+        }
+
+        navigator(SCHEDULE_ABSOLUTE_PATH);
+    };
+
+    //                     event Handler                     //
+    const changeScheduleViewList = (scheduleView: ScheduleListViewItem[]) => {
+        setScheduleViewList(scheduleView);
+    };
+
+    const changeScheduleListViewList = (scheduleList: ScheduleList[]) => {
+        setScheduleListViewList(scheduleList);
+    };
+
+    const changeExpendListViewList = (expenditureList: ExpenditureList[]) => {
+        setExpendListViewList(expenditureList);
+    };
+
+    const onScheduleAddClickHandler = () => {
+        navigator(SCHEDULE_WRITE_ABSOLUTE_PATH);
+    };
+
+    const onScheduleUpdateClickHandler = () => {
+        if (!travelScheduleNumber) return;
+        navigator(SCHEDULE_UPDATE_ABSOLUTE_PATH(travelScheduleNumber));
+    };
+
+    const onScheduleDeleteClickHandler = () => {
+        if (!travelScheduleNumber || !cookies.accessToken) return;
+        const isScheduleConfirm = window.confirm("정말로 삭제하시겠습니까?");
+        if (!isScheduleConfirm) return;
+
+        deleteScheduleRequest(travelScheduleNumber, cookies.accessToken).then(deleteScheduleResponse);
+    };
+
     //                     effect                     //
     useEffect(() => {
         if (!cookies.accessToken) return;
@@ -176,7 +225,7 @@ export default function ScheduleDetail() {
                 <div className="schedule-add-table">
                     <div style={{ width: "10px" }}></div>
                     <div className="schedule-add" onClick={onScheduleAddClickHandler}>
-                        일정 추가
+                        새 일정
                     </div>
                 </div>
                 <div className="schedule-lists-box">
@@ -202,12 +251,14 @@ export default function ScheduleDetail() {
                         <div className="schedule-select">
                             <div className="schedule-select-name">인원수</div>
                             <div className="schedule-devider">{"|"}</div>
-                            <div className="select-input-box">{travelSchedulePeople}</div>
+                            <div className="select-people-input-box">{numberCommas(Number(travelSchedulePeople))}</div>
+                            <div className="schedule-select-devider-name">명</div>
                         </div>
                         <div className="schedule-select">
                             <div className="schedule-select-name">총금액</div>
                             <div className="schedule-devider">{"|"}</div>
-                            <div className="select-input-box">{travelScheduleTotalMoney}</div>
+                            <div className="select-money-input-box">{numberCommas(Number(travelScheduleTotalMoney))}</div>
+                            <div className="schedule-select-devider-name">원</div>
                         </div>
                     </div>
                 </div>
@@ -217,13 +268,28 @@ export default function ScheduleDetail() {
                         <ExpendListItem key={index} {...item} />
                     ))}
                 </div>
-                <div className="schedule-spend-box">
-                    <div className="schedule-spend-text">잔액</div>
-                    <div className="schedule-balance">{balnace}</div>
-                </div>
-                <div className="schedule-spend-box">
-                    <div className="schedule-spend-text">더치페이</div>
-                    <div className="schedule-dutchpay">{duchPay}</div>
+                <div className="schedule-spend-box-bottom">
+                    <div className="schedule-spend-box">
+                        <div className="schedule-spend-text">잔액</div>
+                        <div className="schedule-balance">{numberCommas(Number(balnace))}</div>
+                        <div className="schedule-select-devider-name">원</div>
+                    </div>
+                    <div className="schedule-spend-box">
+                        <div className="schedule-spend-text">더치페이</div>
+                        <div className="schedule-dutchpay">{numberCommas(Number(duchPay))}</div>
+                        <div className="schedule-select-devider-name">원</div>
+                    </div>
+                    <div className="schedule-write-table">
+                        <div style={{ width: "10px" }}></div>
+                        <div className="schedule-bottom-right-box">
+                            <div className="schedule-add error" onClick={onScheduleDeleteClickHandler}>
+                                삭제
+                            </div>
+                            <div className="schedule-add primary" onClick={onScheduleUpdateClickHandler}>
+                                수정
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
