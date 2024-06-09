@@ -15,7 +15,6 @@ const YYYYMMDD = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    //check zero padding
     return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
 };
 
@@ -41,11 +40,13 @@ interface ScheduleDateItemProps {
     setToggleFlag: (index: number) => void;
 }
 
+//                    Component : SCHEDULE Date 컴포넌트                     //
 function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setToggleFlag }: ScheduleDateItemProps) {
+    //                    state                     //
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
+    //                    event handler                     //
     const handleDateChange = (date: Date | null, index: number) => {
-        // console.log(index);
         changeDate(date, index);
         setShowDatePicker(false);
     };
@@ -55,12 +56,16 @@ function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setTogg
         setToggleFlag(index);
     };
 
+    //                    effect                     //
     useEffect(() => {
         if (toggleFlag !== index) setShowDatePicker(false);
     }, [toggleFlag]);
 
+    //                    render                     //
     return (
         <div className="schedule-calendar-box">
+            <div className="schedule-select-name">날짜</div>
+            <div className="schedule-devider">{"|"}</div>
             <input
                 className="schedule-date"
                 type="text"
@@ -103,8 +108,7 @@ export default function ScheduleWrite() {
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
         : 0;
-    const duchPayMoney = travelSchedulePeople > 0 ? balnace / travelSchedulePeople : 0;
-    const duchPay = duchPayMoney.toFixed(1);
+    const duchPay = travelSchedulePeople > 0 ? Math.floor(balnace / travelSchedulePeople) : 0;
 
     //                     function                     //
     const navigator = useNavigate();
@@ -152,7 +156,6 @@ export default function ScheduleWrite() {
     };
 
     //                     event Handler                     //
-
     const onAddScheduleList = () => {
         const empty = {
             scheduleDate: YYYYMMDD(new Date()),
@@ -240,13 +243,10 @@ export default function ScheduleWrite() {
     const handleDateChange = (date: Date | null, selectIndex: number) => {
         if (date !== null) {
             console.log(scheduleList);
-            // console.log(selectIndex);
             const newScheduleList = scheduleList.map((item, index) => {
                 if (index === selectIndex) item.scheduleDate = date.toISOString();
                 return item;
             });
-            // console.log(newScheduleList);
-            // newScheduleList[index].scheduleDate = date.toISOString();
             setScheduleList(newScheduleList);
         }
     };
@@ -265,12 +265,6 @@ export default function ScheduleWrite() {
     return (
         <div id="schedule-wrapper">
             <div className="schedule-list-table">
-                <div className="schedule-add-table">
-                    <div style={{ width: "10px" }}></div>
-                    <div className="schedule-add" onClick={onScheduleButtonClickHandler}>
-                        올리기
-                    </div>
-                </div>
                 <div className="schedule-lists-box">
                     {scheduleViewList.map((item, index) => (
                         <ScheduleListView key={index} {...item} />
@@ -297,27 +291,10 @@ export default function ScheduleWrite() {
                             toggleFlag={toggleFlag}
                             setToggleFlag={onToggleFlagHandler}
                         />
-                        {/* <div className="schedule-calendar-box">
-                            <input
-                                className="schedule-date"
-                                type="text"
-                                value={YYYYMMDD(new Date(schedule.scheduleDate))}
-                                onClick={() => toggleDatePicker(index)}
-                                readOnly
-                                placeholder="날짜"
-                            />
-                            <div className="calendar-button" onClick={() => toggleDatePicker(index)} />
-                            {showDatePicker[index] ? (
-                                <div className="calendar-container">
-                                    <DatePicker
-                                        selected={new Date(schedule.scheduleDate)}
-                                        onChange={(date: Date | null) => handleDateChange(date, index)}
-                                        inline
-                                    />
-                                </div>
-                            ) : null}
-                        </div> */}
+
                         <div className="schedule-text-box">
+                            <div className="schedule-select-name">내용</div>
+                            <div className="schedule-devider">{"|"}</div>
                             <input
                                 className="schedule-text"
                                 value={schedule.scheduleContent}
@@ -330,6 +307,7 @@ export default function ScheduleWrite() {
                                 onChange={(e) => onScheduleStartTimeChangeHandler(e, index)}
                                 placeholder="출발 시간"
                             />
+                            <div className="schedule-devider">{"~"}</div>
                             <input
                                 className="schedule-end-hour"
                                 value={schedule.scheduleEndTime}
@@ -352,17 +330,24 @@ export default function ScheduleWrite() {
                         <div className="schedule-select">
                             <div className="schedule-select-name">인원수</div>
                             <div className="schedule-devider">{"|"}</div>
-                            <input className="select-input-box" type="number" value={travelSchedulePeople} onChange={onSchedulePeopleChangeHandler} />
+                            <input
+                                className="select-people-input-box"
+                                type="number"
+                                value={travelSchedulePeople}
+                                onChange={onSchedulePeopleChangeHandler}
+                            />
+                            <div className="schedule-select-devider-name">명</div>
                         </div>
                         <div className="schedule-select">
                             <div className="schedule-select-name">총금액</div>
                             <div className="schedule-devider">{"|"}</div>
                             <input
-                                className="select-input-box"
+                                className="select-money-input-box"
                                 type="number"
                                 value={travelScheduleTotalMoney}
                                 onChange={onScheduleTotalMoneyChangeHandler}
                             />
+                            <div className="schedule-select-devider-name">원</div>
                         </div>
                     </div>
                 </div>
@@ -383,6 +368,7 @@ export default function ScheduleWrite() {
                                 value={Number(expenditure.travelScheduleExpenditure).toString()}
                                 onChange={(e) => onScheduleTravelScheduleExpenditureChangeHandler(e, index)}
                             />
+                            <div className="schedule-select-devider-name">원</div>
                             {index === expenditureList.length - 1 ? (
                                 <div className="schedule-add-icon" onClick={onAddExpenditureList} />
                             ) : (
@@ -395,10 +381,18 @@ export default function ScheduleWrite() {
                     <div className="schedule-spend-box">
                         <div className="schedule-spend-text">잔액</div>
                         <div className="schedule-balance">{balnace}</div>
+                        <div className="schedule-select-devider-name">원</div>
                     </div>
                     <div className="schedule-spend-box">
                         <div className="schedule-spend-text">더치페이</div>
                         <div className="schedule-dutchpay">{duchPay}</div>
+                        <div className="schedule-select-devider-name">원</div>
+                    </div>
+                    <div className="schedule-write-table">
+                        <div style={{ width: "10px" }}></div>
+                        <div className="schedule-add" onClick={onScheduleButtonClickHandler}>
+                            올리기
+                        </div>
                     </div>
                 </div>
             </div>

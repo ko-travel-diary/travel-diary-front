@@ -7,6 +7,7 @@ import {
     GET_REVIEW_FAVORITE_STATUS_REQUEST_URL,
     GET_REVIEW_LIST_REQUEST_URL,
     GET_REVIEW_MY_LIST_REQUEST_URL,
+    GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL,
     GET_REVIEW_REQUEST_URL,
     GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL,
     GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL,
@@ -144,9 +145,9 @@ export const getTravelReviewMyListRequest = async (accessToken: string) => {
 
 // function : 내가 쓴 리뷰 게시물 제목 검색 목록 불러오기 API 함수
 export const getTravelReviewMyListSearchRequest = async (searchWord: string, accessToken: string) => {
-    const config = { ...bearerAuthorization(accessToken), params: { searchWord } };
+    const config = { params: { searchWord }, ...bearerAuthorization(accessToken) };
     const result = await axios
-        .get(GET_REVIEW_MY_LIST_REQUEST_URL, config)
+        .get(GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL, config)
         .then(requestHandler<GetTravelReviewMyListSearchResponseDto>)
         .catch(requestErrorHandler);
     return result;

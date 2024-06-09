@@ -22,7 +22,7 @@ import {
     postTravelReviewCommentRequest,
 } from "src/apis/review";
 import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
-import { ExpenditureList, reviewCommentList, ScheduleList } from "src/types";
+import { ExpenditureList, ReviewCommentList, ScheduleList } from "src/types";
 import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
 import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
 import { getScheduleDetailRequest } from "src/apis/schedule";
@@ -59,7 +59,7 @@ function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleE
 }
 
 //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
-function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent }: reviewCommentList) {
+function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent }: ReviewCommentList) {
     //                    state                    //
     const { reviewNumber } = useParams();
     const [cookies] = useCookies();
@@ -157,7 +157,7 @@ export default function ReviewDetail() {
     const [reviewContents, setReviewContents] = useState<string>("");
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const [commentContent, setCommentContent] = useState<string>("");
-    const [commentList, setCommentList] = useState<reviewCommentList[]>([]);
+    const [commentList, setCommentList] = useState<ReviewCommentList[]>([]);
 
     const { scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { scheduleListItemViewList, expenditureViewList, setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();

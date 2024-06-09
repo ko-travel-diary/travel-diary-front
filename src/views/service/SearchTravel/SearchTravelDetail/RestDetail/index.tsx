@@ -8,9 +8,9 @@ import { AUTH_ABSOLUTE_PATH } from "src/constant";
 
 const SHOW_IMAGE_BUTTON_LIMIT = 7;
 
-//                    Component : Qna 화면 컴포넌트                     //
+//                    Component : Restaurant Detail 화면 컴포넌트                     //
 export default function RestDetail() {
-    //                    State : Qna 화면 컴포넌트                     //
+    //                    State                     //
     const { restaurantNumber } = useParams();
 
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
@@ -32,10 +32,10 @@ export default function RestDetail() {
     const hours = restaurantHours.split("<br>").join("");
     const outline = restaurantOutline.split("<br>").join("");
 
-    //                    Function : Qna 화면 컴포넌트                     //
+    //                    Function                     //
     const navigator = useNavigate();
 
-    //                    Event Handler : Qna 화면 컴포넌트                     //
+    //                    Event Handler                     //
     const getRestaurantResponse = (result: GetRestaurantResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -71,7 +71,7 @@ export default function RestDetail() {
         setrestaurantServiceMenu(restaurantServiceMenu);
     };
 
-    //                    Effect : Qna 화면 컴포넌트                     //
+    //                    Effect                     //
     useEffect(() => {
         if (!restaurantNumber) return;
         getRestaurantRequest(restaurantNumber).then(getRestaurantResponse);
@@ -87,29 +87,29 @@ export default function RestDetail() {
 
     const onClickImageButton = useCallback((isLeft: boolean) => {
         //TODO: 이미지 버튼 페이지 로직 만들기
-        // if (isLeft) {
-        //     setPage((prev) => {
-        //         if (prev.start === 0) {
-        //             return { start: 0, end: 7 };
-        //         } else {
-        //             return { start: prev.start + 1, end: prev.end + 1 };
-        //         }
-        //     });
-        // } else {
-        //     setPage((prev) => {
-        //         if (prev.end === restaurantImageUrl.length) {
-        //             return {
-        //                 start: restaurantImageUrl.length - 7,
-        //                 end: restaurantImageUrl.length,
-        //             };
-        //         } else {
-        //             return { start: prev.start - 1, end: prev.end - 1 };
-        //         }
-        //     });
-        // }
+        if (isLeft) {
+            setPage((prev) => {
+                if (prev.start === 0) {
+                    return { start: 0, end: 7 };
+                } else {
+                    return { start: prev.start + 1, end: prev.end + 1 };
+                }
+            });
+        } else {
+            setPage((prev) => {
+                if (prev.end === restaurantImageUrl.length) {
+                    return {
+                        start: restaurantImageUrl.length - 7,
+                        end: restaurantImageUrl.length,
+                    };
+                } else {
+                    return { start: prev.start - 1, end: prev.end - 1 };
+                }
+            });
+        }
     }, []);
 
-    //                    Render : Qna 화면 컴포넌트                     //
+    //                    Render                     //
     return (
         <div id="travel-detail-wrapper">
             <div className="travel-detail-image-table">

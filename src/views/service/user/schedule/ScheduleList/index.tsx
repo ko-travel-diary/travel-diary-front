@@ -80,7 +80,7 @@ export default function ScheduleList() {
                 <div className="schedule-add-table">
                     <div style={{ width: "10px" }}></div>
                     <div className="schedule-add" onClick={onScheduleAddClickHandler}>
-                        일정 추가
+                        새 일정
                     </div>
                 </div>
                 <div className="schedule-lists-box">

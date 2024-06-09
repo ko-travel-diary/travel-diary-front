@@ -59,14 +59,14 @@ export interface RestaurantListItem {
     restaurantRecommendCount: number;
 }
 
-export interface reviewCommentList {
+export interface ReviewCommentList {
     commentContent: string;
     reviewCommentNumber: number;
     reviewCommentWriterId: string;
     commentParentsNumber: number;
 }
 
-export interface travelReviewMyList {
+export interface TravelReviewMyList {
     reviewNumber: number;
     reviewTitle: string;
     reviewContent: string;
