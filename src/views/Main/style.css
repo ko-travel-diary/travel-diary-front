@@ -209,6 +209,7 @@
     border-radius: 4px;
     font-family: Inter;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .side-list-item-button:hover {
@@ -248,4 +249,182 @@
 
 .main-side-button:hover {
     background-color: rgb(152, 171, 238);
+}
+
+.info-box {
+    position: absolute;
+    left: -235px;
+    bottom: -24px;
+    width: 600px;
+    border: 1px solid rgba(64, 64, 64, 0.8);
+
+    padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background-color:  rgba(255, 255, 255, 1);
+}
+
+.info-box-toolbar {
+    display: flex;
+    justify-content: end;
+    margin-bottom: -16px;
+}
+
+.info-box-exit-button {
+    width: 20px;
+    height: 20px;
+    background-image: url('../../assets/image/exit-icon.png');
+    background-size: 100% 100%;
+}
+
+.info-box-exit-button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.info-box-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-box-image {
+    border-radius: 16px;
+    width: 100px;
+    height: 100px;
+
+    background-size: 100% 100%;
+    background-color: rgba(64, 64, 64, 0.4);
+}
+
+.info-box-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 14px;
+    font-family: Inter;
+}
+
+.info-box-main-title-box {
+    display: flex;
+    gap: 4px;
+    align-items: end;
+}
+
+.info-box-main-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.info-box-main-type {
+    width: 80px;
+    color: rgba(64, 64, 64, 0.8);
+}
+
+.info-box-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.favorite-icon-button {
+    width: 36px;
+    height: 36px;
+
+    background-image: url('../../assets/image/favorite-icon.png');
+    background-size: 100% 100%;
+}
+
+.favorite-icon-button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.info-box-bottom-right {
+    display: flex;
+    gap: 8px;
+}
+
+.main-waypoints {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    padding-top: 12px;
+    height: 100%;
+}
+
+.main-waypoints-item {
+    position: relative;
+    width: 240px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    border: 1px solid rgba(64, 64, 64, 1);
+    padding: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.main-waypoints-origin-icon {
+    width: 32px;
+    height: 32px;
+    background-image: url('../../assets/image/start-icon.png');
+    background-size: 100% 100%;
+}
+
+.main-waypoints-destination-icon {
+    width: 32px;
+    height: 32px;
+    background-image: url('../../assets/image/finish-icon.png');
+    background-size: 100% 100%;
+}
+
+.main-waypoints-waypoint-icon {
+    width: 32px;
+    height: 32px;
+    background-image: url('../../assets/image/waypoint-icon.png');
+    background-size: 100% 100%;
+}
+
+.main-waypoints-name {
+    font-family: Inter;
+    width: 170px;
+    font-weight: 600;
+}
+
+.main-waypoints-search-button {
+    width: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid rgba(64, 64, 64, 1);
+    padding: 8px;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.main-waypoints-search-button:hover {
+    cursor: pointer;
+    background-color: rgba(247, 247, 247, 1);
+}
+
+.main-waypoints-cancle-button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 16px;
+    height: 16px;
+    background-image: url('../../assets/image/exit-icon.png');
+    background-size: 100% 100%;
+}
+
+.main-waypoints-cancle-button:hover {
+    cursor: pointer;
+    opacity: 0.85;
 }
