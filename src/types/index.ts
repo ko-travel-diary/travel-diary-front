@@ -87,3 +87,19 @@ export interface ReviewBoardListItem {
     reviewViewCount: number;
     reviewFavoriteCount: number;
 }
+
+export interface Position {
+    lat: number; 
+    lng: number;
+}
+
+export interface MarkerOpen {
+    type: string;
+    typeNumber: number;
+}
+
+export interface Destination {
+    name: string;
+    lat: number; 
+    lng: number;
+}
