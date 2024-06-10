@@ -26,9 +26,9 @@ export default function TourDetail() {
         end: 7,
     });
 
-    const telNumber = tourAttractionsTelNumber.split("<br>").join("");
-    const hours = tourAttractionsHours.split("<br>").join("");
-    const outline = tourAttractionsOutline.split("<br>").join("");
+    const telNumber = tourAttractionsTelNumber ? tourAttractionsTelNumber.split("<br>").join("") : '';
+    const hours = tourAttractionsHours ? tourAttractionsHours.split("<br>").join("") : '';
+    const outline = tourAttractionsOutline ? tourAttractionsOutline.split("<br>").join("") : '';
 
     //                    Function                     //
     const navigator = useNavigate();

@@ -8,7 +8,7 @@
     height: 100%;
     top: 0px;
     display: flex;
-    align-items: center;
+    align-items: start;
     z-index: 9999;
 }
 
@@ -231,6 +231,13 @@
     color: rgba(255, 255, 255, 1);
 }
 
+.main-side-button-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 .main-side-button {
     display: flex;
     align-items: center;
@@ -349,12 +356,14 @@
 }
 
 .main-waypoints {
+    position: absolute;
+    top: 0px;
+    left: 12px;
     display: flex;
     flex-direction: column;
     gap: 4px;
 
     padding-top: 12px;
-    height: 100%;
 }
 
 .main-waypoints-item {

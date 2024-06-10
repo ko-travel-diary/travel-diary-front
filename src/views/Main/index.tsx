@@ -571,8 +571,8 @@ export default function Main() {
   const [sideOpen, setSideOpen] = useState<boolean>(false);
   // description: 맵 중심 상태 //
   const [mapCenter, setMapCenter] = useState<Position>({
-    lat: 37.5664056,
-    lng: 126.9778222,
+    lat: 35.179665,
+    lng: 129.0747635,
   });
 
   // description: 알림 창 오픈 여부 리스트 상태 //
@@ -748,7 +748,7 @@ export default function Main() {
         ref={mapRef}
         center={mapCenter}
         maxLevel={2}
-        minLevel={8}
+        minLevel={6}
         style={{ width: "100%", height: "calc(100vh - 64px)" }}
         onCenterChanged={onCenterChanged}
         onMouseDown={onMapMouseDownHandler}
@@ -808,10 +808,12 @@ export default function Main() {
       </Map>
       <div className="main-side">
         {sideOpen && <Side />}
-        <div className="main-side-button" onClick={onSideButtonClickHandler}>
-          {sideOpen ? "◀" : "▶"}
+        <div className="main-side-button-box">
+          <div className="main-side-button" onClick={onSideButtonClickHandler}>
+            {sideOpen ? "◀" : "▶"}
+          </div>
+          <Waypoints />
         </div>
-        <Waypoints />
       </div>
     </div>
   );

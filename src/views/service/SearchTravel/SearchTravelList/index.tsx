@@ -29,9 +29,9 @@ function Tourlist({
     //                     function                     //
     const navigator = useNavigate();
 
-    const telNumber = tourAttractionsTelNumber.split("<br>").join("");
-    const hours = tourAttractionsHours.split("<br>").join("");
-    const outline = tourAttractionsOutline.split("<br>").join("");
+    const telNumber = tourAttractionsTelNumber ? tourAttractionsTelNumber.split("<br>").join("") : '';
+    const hours = tourAttractionsHours ? tourAttractionsHours.split("<br>").join("") : '';
+    const outline = tourAttractionsOutline ? tourAttractionsOutline.split("<br>").join("") : '';
 
     //                     event handler                     //
     const onClickHandler = () => {
@@ -102,9 +102,9 @@ function Restlist({
     //                     function                     //
     const navigator = useNavigate();
 
-    const telNumber = restaurantTelNumber.split("<br>").join("");
-    const hours = restaurantHours.split("<br>").join("");
-    const outline = restaurantOutline.split("<br>").join("");
+    const telNumber = restaurantTelNumber ? restaurantTelNumber.split("<br>").join("") : '';
+    const hours = restaurantHours ? restaurantHours.split("<br>").join("") : '';
+    const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : '';
 
     //                     event handler                     //
     const onClickHandler = () => {
