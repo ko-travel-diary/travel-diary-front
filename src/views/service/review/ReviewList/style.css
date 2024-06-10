@@ -24,6 +24,8 @@ html::-webkit-scrollbar {
 
     gap: 20px;
     padding: 30px 10px 5px 10px;
+
+    min-width: 1522px;
 }
 
 .review-search-item {
@@ -83,7 +85,7 @@ html::-webkit-scrollbar {
     border-radius: 8px;
 
     background-color: rgba(255, 255, 255, 1);
-    width: 1542px;
+    min-width: 1542px;
 }
 
 .review-list-table-th{

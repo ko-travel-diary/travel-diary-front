@@ -58,7 +58,8 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
         }
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
         setScheduleButtonStatus(!scheduleButtonStatus);
-        setScheduleRenderStatus(!scheduleRenderStatus);
+        const renderStatus = scheduleRenderStatus ? !scheduleRenderStatus : scheduleRenderStatus;
+        setScheduleRenderStatus(!renderStatus);
     };
 
     //                    render                     //
@@ -107,10 +108,9 @@ export default function ReviewWrite() {
     const [travelReviewImages, setTravelReviewImages] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
-    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
-    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus } = useScheduleButtonStore();
+    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
-    const { travelScheduleNumber } = useScheduleNumberStore();
+    const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
 
     const { travelSchedulePeople, travelScheduleTotalMoney } = useScheduleStore();
 
@@ -185,7 +185,10 @@ export default function ReviewWrite() {
     };
 
     const onPostReviewButtonClickHandler = async () => {
-        if (!reviewTitle.trim() || !reviewContent.trim()) return;
+        if (!reviewTitle.trim() || !reviewContent.trim()){
+            alert("제목과 내용을 모두 입력해 주세요.")
+            return;
+        }
         if (!cookies.accessToken) return;
 
         const travelReviewImageUrl: string[] = [];
@@ -227,7 +230,6 @@ export default function ReviewWrite() {
             return;
         }
         setScheduleButtonStatus(!scheduleButtonStatus);
-        setMyTravelDiaryLoadButtonStatus(!myTravelDiaryLoadButtonStatus);
     };
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
@@ -239,17 +241,32 @@ export default function ReviewWrite() {
 
         const newTravelReviewImages = travelReviewImages.filter((file, index) => index !== deleteIndex);
         setTravelReviewImages(newTravelReviewImages);
+    };
+
+    const onScheduleRenderDeleteButton = () => {
+        setScheduleRenderStatus(!scheduleRenderStatus);
     }
 
     //                    effect                    //
     useEffect(() => {
-        if (myTravelDiaryLoadButtonStatus) getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
-    }, [myTravelDiaryLoadButtonStatus]);
+        if (scheduleButtonStatus) getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+    }, [scheduleButtonStatus]);
+
+    useEffect(() => {
+        setScheduleRenderStatus(false);
+        setTravelScheduleNumber(0);
+    }, []);
 
     //                    render : review 작성 화면 컴포넌트                     //
     return (
         <div id="review-write-wrapper">
-            <div className="null-box"></div>
+            {scheduleRenderStatus ? 
+                <div className="schedule-delete-button-box">
+                    <div className="schedule-delete-button" onClick={onScheduleRenderDeleteButton}></div>
+                </div>
+                :
+                <></>
+            }
             {scheduleRenderStatus && (
                 <div id="schedule-wrapper">
                     <div id="schedule-list-item-wrapper">

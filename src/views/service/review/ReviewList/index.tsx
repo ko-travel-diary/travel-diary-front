@@ -31,7 +31,15 @@ function ListItem ({
     //                    render                    //
     return (
         <div className='review-list-table-tr' onClick={onClickHandler}>
-            <div className='review-list-table-review-image'><img width='200px' src={`${travelReviewImageUrl}`} /></div>
+            {travelReviewImageUrl === null ? (
+                <div className="travel-list-picture">
+                    <img title="travel" width="200px" height="135px" src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`} />
+                </div>
+            ) : (
+                <div className="travel-list-picture">
+                    <img title="travel" width="200px" height="135px" src={`${travelReviewImageUrl}`} />
+                </div>
+            )}
             <div className='review-list-table-title'>{reviewTitle}</div>
             <div className='review-list-table-writer'>{writerId}</div>
             <div className='review-list-table-write-date'>{reviewDatetime}</div>

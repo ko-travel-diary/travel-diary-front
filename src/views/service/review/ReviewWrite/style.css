@@ -14,8 +14,20 @@ html::-webkit-scrollbar {
     margin: 20px 200px;
 }
 
-.null-box {
-    height: 50px;
+.schedule-delete-button-box {
+    display: flex;
+    justify-content: end;
+}
+
+.schedule-delete-button {
+    background-image: url("../../../../assets/image/exit-icon.png");
+    background-size: 100%;
+    width: 24px;
+    height: 24px;
+}
+
+.schedule-delete-button:hover {
+    cursor: pointer;
 }
 
 .write-button-wrapper{
@@ -132,6 +144,8 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     flex: 1;
+
+    min-width: 670px;
     
     padding: 16px 24px;
     gap: 10px;
@@ -157,7 +171,7 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     flex: 1;
-    
+    min-width: 710px;
     padding: 16px 24px;
     gap: 10px;
     border: 1px solid rgba(7, 65, 115, 0.2);
