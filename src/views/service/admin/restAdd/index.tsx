@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import { useCookies } from 'react-cookie'
 import { PostRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
@@ -16,6 +16,7 @@ export default function RestAdd() {
     //                  State                   //
     const { loginUserRole } = useUserStore();
     const [cookies] = useCookies();
+    const imageSeq = useRef<HTMLInputElement | null>(null);
 
     const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
@@ -29,8 +30,6 @@ export default function RestAdd() {
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');
     const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
     const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
-
-    const [filename, setFilename] = useState<string[]>([]);
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -101,16 +100,15 @@ export default function RestAdd() {
 
         if (!cookies.accessToken) return;
         
+        const restaurantImageUrl = [];
         for (const image of restaurantImage) {
             const data = new FormData();
-            // data.append('file', image);
-            data.append('originalFileName', image.name);
+            data.append('file', image);
             const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
                 .then(response => response.data as string)
                 .catch(error => null);
             
             if (!url) continue;
-            console.log(url);
             restaurantImageUrl.push(url);
         }
 
@@ -119,8 +117,8 @@ export default function RestAdd() {
             .then(response => response.data)
             .catch(error => null)
 
-        if (!data) {
-            alert("주소를 정확히 입력해주세요.");
+        if (!(data.documents[0])) {
+            alert("주소를 정확히 입력해주세요.")
             return;
         }
 
@@ -137,6 +135,14 @@ export default function RestAdd() {
         postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
 
         navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
+    }
+
+    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
+        const newTourAttractionsImages = restaurantImage.filter((image, index) => index !== deleteIndex);
+        setRestaurantImage(newTourAttractionsImages);
+
+        const newTourAttractionsImageUrls = restaurantImageUrl.filter((imageUrl, index) => index !== deleteIndex);
+        setRestaurantImageUrl(newTourAttractionsImageUrls);
     }
 
     //                  Effect                  //
@@ -197,12 +203,14 @@ export default function RestAdd() {
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-title'>▣ 음식점 사진</div>
                     <div className='rest-register-element'>
-                        <input className='rest-register-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>          
+                        <input className='rest-register-input-element' type='file' multiple ref={imageSeq}
+                        accept=".png, .jpg, .jpeg" onChange={onRestaurantImgFileChangeHandler}/>       
                     </div>
                     <div className='photo-view-element'>
                         <div className='photo-view'>
-                            {restaurantImageUrl.map((url) => (
-                            <div
+                            {restaurantImageUrl.map((url, index) => (
+                            <>
+                                <div
                                 className="photo-view-content"
                                 key={url}
                                 style={{
@@ -213,6 +221,8 @@ export default function RestAdd() {
                                     backgroundPosition: "center",
                                 }}
                             ></div>
+                            <div className='delete-image-button' onClick={() => {onImageDeleteButtonClickHandler(index)}}></div>   
+                            </>
                             ))}
                         </div>
                     </div>

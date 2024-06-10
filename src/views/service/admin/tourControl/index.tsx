@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import { useCookies } from 'react-cookie'
 import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
@@ -11,7 +11,7 @@ import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
 import { useUserStore } from 'src/stores';
 import { GetTourAttractionsResponseDto } from 'src/apis/tour_attraction/dto/response';
 import { PatchTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
-import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest } from 'src/apis/tour_attraction';
+import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest, putTourAttractionsRequest } from 'src/apis/tour_attraction';
 
 //                  Component                   //
 export default function TourControl() {
@@ -19,10 +19,11 @@ export default function TourControl() {
     //                  State                   //
     const {tourAttractionsNumber} = useParams();
     const {loginUserRole} = useUserStore();
+    const imageSeq = useRef<HTMLInputElement | null>(null);
 
     const [cookies] = useCookies();
 
-    const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
+    const [tourAttractionsImage, setTourAtrractionImage] = useState<File[]>([]);
     const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
 
     const [tourAttractionsName, setTourAttractionsName] = useState<string>('');
@@ -49,7 +50,8 @@ export default function TourControl() {
             return
         }
 
-        const { tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, tourAttractionsLat, tourAttractionsLng } = result as GetTourAttractionsResponseDto;
+        const { tourAttractionsImageUrl, tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, tourAttractionsLat, tourAttractionsLng } = result as GetTourAttractionsResponseDto;
+        setTourAttractionsImageUrl(tourAttractionsImageUrl);
         setTourAttractionsName(tourAttractionsName);
         setTourAtrractionLocation(tourAttractionsLocation);
         setTourAttractionsTelNumber(tourAttractionsTelNumber);
@@ -75,6 +77,20 @@ export default function TourControl() {
     }
 
     const deleteTourAttractionResponse = (result: ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return;
+        }
+    }
+
+    const putTourAttractionResponse = (result: ResponseDto | null) => {
         const message =
             !result ? "서버에 문제가 있습니다." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
@@ -117,16 +133,20 @@ export default function TourControl() {
     const onTourAtrracntionImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setTourAtrracntionImage([...tourAttractionsImage, file]);
-        // const url = URL.createObjectURL(file);
-        // setTourAttractionsImageUrl([...restaurantImageUrl, url]);
+        setTourAtrractionImage([...tourAttractionsImage, file]);
+        const url = URL.createObjectURL(file);
+        setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
     }
 
     const onPatchButtonClickHandler = async () => {
+        
         if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsOutline.trim()) return;
 
         if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
+        putTourAttractionsRequest(tourAttractionsNumber, cookies.accessToken).then(putTourAttractionResponse);
+
+        const tourAttractionsImageUrl = [];
         for (const image of tourAttractionsImage) {
             const data = new FormData();
             data.append('file', image);
@@ -135,9 +155,11 @@ export default function TourControl() {
                 .catch(error => null);
             
             if (!url) continue;
-            console.log(url);
             tourAttractionsImageUrl.push(url);
         }
+
+        console.log("a" + tourAttractionsImage);
+        console.log("b" + tourAttractionsImageUrl);
 
         const query = tourAttractionsLocation;
         const data = await axios.get(ADDRESS_URL, {params: {query}})
@@ -171,6 +193,16 @@ export default function TourControl() {
 
         navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
     }
+
+    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
+        
+        const newTourAttractionsImages = tourAttractionsImage.filter((image, index) => index !== deleteIndex);
+        setTourAtrractionImage(newTourAttractionsImages);
+
+        const newTourAttractionsImageUrls = tourAttractionsImageUrl.filter((imageUrl, index) => index !== deleteIndex);
+        setTourAttractionsImageUrl(newTourAttractionsImageUrls);
+
+    };
 
     //                  Effect                  //
     useEffect(() => {
@@ -216,10 +248,30 @@ export default function TourControl() {
                 <div className='tour-control-top-element-box'>
                     <div className='tour-control-top-image'>▣ 관광지 사진</div>
                     <div className='tour-control-element'>
-                        <input className='tour-control-input-element' type='file' multiple value={tourAttractionsImageUrl} onChange={onTourAtrracntionImgFileChangeHandler}/>
+                        <input className='tour-control-input-element' type='file' multiple onChange={onTourAtrracntionImgFileChangeHandler}/>
+                    </div>
+                    <div className='photo-view-element'>
+                        <div className='photo-view'>
+                            {tourAttractionsImageUrl.map((url, index) => (
+                            <>
+                                <div
+                                    className="photo-view-content"
+                                    key={url}
+                                    style={{
+                                        backgroundImage: `url(${url})`,
+                                        width: "150px",
+                                        height: "200px",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                    }}
+                                ></div>
+                                <div className='delete-image-button' onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                            </>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
+                </div>
             <div className='tour-control-bottom'>
                 <div className='primary-button' onClick={onPatchButtonClickHandler}>수정</div>
                 <div className='error-button' onClick={onDeleteButtonClickHandler}>삭제</div>

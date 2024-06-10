@@ -76,3 +76,12 @@
     display: flex;
     justify-content: center;
 }
+.photo-view{
+    position: absolute;
+}
+.delete-image-button{
+    position: relative;
+
+    top: 5px;
+    right: 35px;
+}

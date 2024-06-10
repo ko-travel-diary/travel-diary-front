@@ -144,7 +144,7 @@ export const PATCH_REVIEW_COMMENT_REQUEST_URL = (commentNumber: number | string)
 export const PATCH_INCREASE_VIEW_COUNT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/view-count`;
 export const PATCH_FAVORITE_COUNT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/favorite`;
 export const DELETE_REVIEW_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/delete/${reviewNumber}`;
-export const DELETE_REVIEW_COMMENT_REQUEST_URL = (commentNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/comment/${commentNumber}`;
+export const DELETE_REVIEW_COMMENT_REQUEST_URL = (reviewNumber: number | string, commentNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment/${commentNumber}`;
 
 export const SERVER_MYPAGE_MODULE_URL = `${SERVER_API_URL}/mypage`;
 export const SERVER_SCHEDULE_MODULE_URL = `${SERVER_API_URL}/schedule`;
@@ -172,9 +172,11 @@ export const GET_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | 
 export const GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL = `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/search`;
 export const POST_TOURATTRACTIONS_REQUEST_URL = `${SERVER_TOURATTRACTIONS_MODULE_URL}/addTourAttractions`;
 export const PATCH_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | string) =>
-    `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/${tourAttractionsNumber}`;
+    `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/control/${tourAttractionsNumber}`;
 export const DELETE_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | string) =>
-    `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/${tourAttractionsNumber}`;
+    `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/control/${tourAttractionsNumber}`;
+export const PUT_TOURATTRACTIONS_REQUEST_URL = (tourAttractionsNumber: number | string) =>
+    `${SERVER_TOURATTRACTIONS_MODULE_URL}/tourlist/control/${tourAttractionsNumber}`;
 
 export const SERVER_RESTAURANT_MODULE_URL = `${SERVER_API_URL}/restaurant`;
 export const GET_RESTAURANT_LIST_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/restlist`;
