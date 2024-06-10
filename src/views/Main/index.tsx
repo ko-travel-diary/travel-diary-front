@@ -12,8 +12,8 @@ import {
   Polyline,
 } from "react-kakao-maps-sdk";
 import "./style.css";
-import { getTourAttractionsListRequest } from "src/apis/tour_attraction";
-import { getRestaurantListRequest } from "src/apis/restaurant";
+import { getTourAttractionRecommendStatusRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
+import { getRestaurantListRequest, getRestaurantRecommendStatusRequest } from "src/apis/restaurant";
 import { GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
 import ResponseDto from "src/apis/response.dto";
 import { AUTH_ABSOLUTE_PATH } from "src/constant";
@@ -131,6 +131,11 @@ function InfoItem(
   const { waypoints, setOrigin, setDestination, setWaypoints } =
     useDestinationStore();
 
+  const [restaurantNumber, setRestaurantNumber] = useState<number>(0);
+  const [tourAttractionsNumber, setTourAttractionsNumber] = useState<number>(0);
+
+  const [restRecommendStatus, setRestRecommendStatus] = useState<boolean>(false);
+
   //                    event handler                     //
   const onClose = () => {
     if ("restaurantNumber" in props) props.onClose(props.restaurantNumber);
@@ -196,6 +201,13 @@ function InfoItem(
   const onFavoriteButtonClickHandler = () => {
     
   };
+  // props.tourAttractionsName
+  // useEffect(() => {
+  //   getTourAttractionRecommendStatusRequest(tourAttractionsNumber as props.tourAttractionsNumber)
+  //   getRestaurantRecommendStatusRequest(restaurantNumber)
+  // }, []);
+
+  //               render               //
 
   if ("restaurantNumber" in props)
     return (
@@ -229,7 +241,11 @@ function InfoItem(
           </div>
           <div className="info-box-bottom">
             <div className="info-box-bottom-left">
-              <div className="favorite-icon-button" onClick={onFavoriteButtonClickHandler}></div>
+              {restRecommendStatus ?
+                <div className="favorite-icon-button-clicked" onClick={onFavoriteButtonClickHandler}> ♥ </div>
+                :
+                <div className="favorite-icon-button" onClick={onFavoriteButtonClickHandler}></div>
+              }
             </div>
             <div className="info-box-bottom-right">
               <div
@@ -255,6 +271,8 @@ function InfoItem(
         </div>
       </div>
     );
+
+  //                 render                   //
 
   return (
     <div style={{ position: "relative" }}>

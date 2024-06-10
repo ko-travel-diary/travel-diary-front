@@ -1,6 +1,6 @@
 import axios from "axios";
-import { DELETE_RESTAURANT_REQUEST_URL, GET_RESTAURANT_LIST_REQUEST_URL, GET_RESTAURANT_REQUEST_URL, GET_SEARCH_RESTAURANT_LIST_REQUEST_URL, PATCH_RESTAURANT_REQUEST_URL, POST_RESTAURANT_REQUEST_URL } from "src/constant";
-import { GetRestaurantListResponseDto, GetRestaurantResponseDto, GetSearchRestaurantListResponseDto } from "./dto/response";
+import { DELETE_RESTAURANT_REQUEST_URL, GET_RESTAURANT_LIST_REQUEST_URL, GET_RESTAURANT_RECOMMEND_URL, GET_RESTAURANT_REQUEST_URL, GET_SEARCH_RESTAURANT_LIST_REQUEST_URL, PATCH_RESTAURANT_RECOMMEND_URL, PATCH_RESTAURANT_REQUEST_URL, POST_RESTAURANT_REQUEST_URL } from "src/constant";
+import { GetRestaurantListResponseDto, GetRestaurantRecommendStatusResponseDto, GetRestaurantResponseDto, GetSearchRestaurantListResponseDto } from "./dto/response";
 import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
 import { PatchRestaurantRequestDto, PostRestaurantRequestDto } from "./dto/request";
 import ResponseDto from "../response.dto";
@@ -50,6 +50,23 @@ export const patchRestaurantRequest = async (requestBody: PatchRestaurantRequest
 //      function: 음식점 삭제 API 함수       //
 export const deleteRestaurantRequest = async (restaurantNumber: number | string, accessToken: string) => {
     const result = await axios.delete(DELETE_RESTAURANT_REQUEST_URL(restaurantNumber), bearerAuthorization(accessToken))
+        .then(requestHandler<ResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+// function : 해당 음식점에 유저가 좋아요 눌렀는지 상태 불러오기 API 함수     //
+export const getRestaurantRecommendStatusRequest =  async (restaurantNumber: number | string, accessToken: string) => {
+    const result = await axios.get(GET_RESTAURANT_RECOMMEND_URL(restaurantNumber), bearerAuthorization(accessToken))
+        .then(requestHandler<GetRestaurantRecommendStatusResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+}
+
+// function : 음식점 좋아요 API 함수
+export const restRecommendCountRequest = async (restaurantNumber: number | string, accessToken: string) => {
+    const result = await axios
+        .patch(PATCH_RESTAURANT_RECOMMEND_URL(restaurantNumber), {}, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
