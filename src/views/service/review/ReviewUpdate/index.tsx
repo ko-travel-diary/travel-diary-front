@@ -17,6 +17,7 @@ import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/ap
 import { useScheduleStore } from "src/stores/useScheduleStores";
 import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import useViewListStore from "src/stores/useViewListStores/viewList.store";
+import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
@@ -57,7 +58,8 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
         }
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
         setScheduleButtonStatus(!scheduleButtonStatus);
-        setScheduleRenderStatus(!scheduleRenderStatus);
+        const renderStatus = scheduleRenderStatus ? !scheduleRenderStatus : scheduleRenderStatus;
+        setScheduleRenderStatus(!renderStatus);
     };
 
     //                    render                     //
@@ -108,11 +110,12 @@ export default function ReviewUpdate() {
     const [travelReviewImages, setTravelReviewImages] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
-    const [myTravelDiaryLoadButtonStatus, setMyTravelDiaryLoadButtonStatus] = useState<boolean>(false);
-    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus } = useScheduleButtonStore();
+    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
 
-    const { travelSchedulePeople, travelScheduleTotalMoney } = useScheduleStore();
+    const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney} = useScheduleStore();
+    const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
+    const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
 
     const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
     const duchPay = balnace / travelSchedulePeople;
@@ -129,8 +132,6 @@ export default function ReviewUpdate() {
             ? "서버에 문제가 있습니다."
             : "";
 
-        console.log(result);
-
         if (!result || result.code !== "SU") {
             alert(message);
             return;
@@ -138,6 +139,30 @@ export default function ReviewUpdate() {
 
         const { scheduleListViewItems } = result as GetScheduleListResponseDto;
         setViewList(scheduleListViewItems);
+    };
+
+    const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "제목과 내용을 모두 입력해주세요."
+            : result.code === "AF"
+            ? "권한이 없습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
+            alert(message);
+            return;
+        }
+
+        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } = result as GetScheduleDetailResponseDto;
+        setTravelSchedulePeople(travelSchedulePeople);
+        setTravelScheduleTotalMoney(travelScheduleTotalMoney);
+        setExpenditureViewList(expenditureList);
+        setScheduleListItemViewList(scheduleList);
+        setTravelScheduleNumber(travelScheduleNumber);
     };
 
     const getTravelReviewDetailResponse = (result: GetTravelReviewDetailResponseDto | ResponseDto | null) => {
@@ -159,13 +184,15 @@ export default function ReviewUpdate() {
             return;
         }
 
-        const { reviewTitle, reviewContent, writerId, travelReviewImageUrl } = result as GetTravelReviewDetailResponseDto;
+        const { reviewTitle, reviewContent, writerId, travelReviewImageUrl,travelScheduleNumber } = result as GetTravelReviewDetailResponseDto;
 
         setReviewTitle(reviewTitle);
         setReivewContent(reviewContent);
         setReviewWriterId(writerId);
         setTravelReviewImageUrl(travelReviewImageUrl);
-        console.log(travelReviewImageUrl);
+        setTravelScheduleNumber(travelScheduleNumber);
+        if(travelScheduleNumber === 0) return;
+        getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
     };
 
     const patchTravelReviewResponseDto = (result: ResponseDto | null) => {
@@ -244,7 +271,6 @@ export default function ReviewUpdate() {
             alert("로그인 후 이용해주세요.");
             return;
         }
-        setMyTravelDiaryLoadButtonStatus(!myTravelDiaryLoadButtonStatus);
         setScheduleButtonStatus(!scheduleButtonStatus);
         getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
     };
@@ -258,23 +284,32 @@ export default function ReviewUpdate() {
 
         const newTravelReviewImages = travelReviewImages.filter((file, index) => index !== deleteIndex);
         setTravelReviewImages(newTravelReviewImages);
-    }
+    };
+
+    const onScheduleRenderDeleteButton = () => {
+        setScheduleRenderStatus(!scheduleRenderStatus);
+    };
 
     //                     effect                     //
     useEffect(() => {
         if (!cookies.accessToken) return;
-
         getTravelReviewDetailRequest(updateReviewNumber).then(getTravelReviewDetailResponse);
     }, []);
 
     useEffect(() => {
-        if (myTravelDiaryLoadButtonStatus) getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
-    }, [myTravelDiaryLoadButtonStatus]);
+        if (scheduleButtonStatus) getScheduleListRequest(cookies.accessToken).then(getScheduleListResponse);
+    }, [scheduleButtonStatus]);
 
     //                    render : review 수정 화면 컴포넌트                     //
     return (
         <div id="review-write-wrapper">
-            <div className="null-box"></div>
+            {scheduleRenderStatus ? 
+                <div className="schedule-delete-button-box">
+                    <div className="schedule-delete-button" onClick={onScheduleRenderDeleteButton}></div>
+                </div>
+                :
+                <></>
+            }
             {scheduleRenderStatus && (
                 <div id="schedule-wrapper">
                     <div id="schedule-list-item-wrapper">

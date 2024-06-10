@@ -190,9 +190,9 @@ export const deleteTravelReviewReqeust = async (reviewNumber: number | string, a
 };
 
 // function : 리뷰 게시물의 댓글 & 답글 삭제 API 함수
-export const deleteTravelReviewCommentRequest = async (commentNumber: number | string, accessToken: string) => {
+export const deleteTravelReviewCommentRequest = async (commentNumber: number | string, reviewNumber: number | string, accessToken: string) => {
     const result = await axios
-        .delete(DELETE_REVIEW_COMMENT_REQUEST_URL(commentNumber), bearerAuthorization(accessToken))
+        .delete(DELETE_REVIEW_COMMENT_REQUEST_URL(reviewNumber, commentNumber), bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;

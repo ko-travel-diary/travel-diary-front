@@ -7,13 +7,15 @@
     border-bottom: 1px solid rgba(238, 238, 238, 1);
     height: 64px;
 
+    min-width: 1888px;
+
     background-color: rgba(255, 255, 255, 1);
 
     /* text 드래그 방지 */
     -webkit-user-select:none;
     -moz-user-select:none;
     -ms-user-select:none;
-    user-select:none
+    user-select:none;
 }
 
 .top-navigation-left {
