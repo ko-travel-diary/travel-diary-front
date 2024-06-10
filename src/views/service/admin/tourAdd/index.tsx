@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import { useNavigate } from 'react-router';
 import { ADDRESS_URL, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
@@ -15,6 +15,7 @@ export default function TourAdd() {
     
     //                  State                   //
     const { loginUserRole } = useUserStore();
+    const imageSeq = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
 
     const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
@@ -27,8 +28,6 @@ export default function TourAdd() {
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
     const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
     const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
-
-    const [addressData, setAddressData] = useState<string>('');
 
     //                  Function                    //
     const navigator = useNavigate();
@@ -89,24 +88,23 @@ export default function TourAdd() {
 
         for (const image of tourAttractionsImage) {
             const data = new FormData();
-            // data.append('file', image);
-            data.append('originalFileName', image.name);
+            data.append('file', image);
             const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
                 .then(response => response.data as string)
                 .catch(error => null);
             
             if (!url) continue;
-            console.log(url);
             tourAttractionsImageUrl.push(url);
+            
         }
 
         const query = tourAttractionsLocation;
         const data = await axios.get(ADDRESS_URL, {params: {query}})
             .then(response => response.data)
-            .catch(error => null)
+            .catch(error => null);
             
-        if (!data) {
-            alert("주소를 정확히 입력해주세요.");
+        if (!(data.documents[0])) {
+            alert("주소를 정확히 입력해주세요.")
             return;
         }
 
@@ -122,6 +120,15 @@ export default function TourAdd() {
 
         navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
     }
+
+    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
+        
+        const newTourAttractionsImages = tourAttractionsImage.filter((image, index) => index !== deleteIndex);
+        setTourAtrracntionImage(newTourAttractionsImages);
+
+        const newTourAttractionsImageUrls = tourAttractionsImageUrl.filter((imageUrl, index) => index !== deleteIndex);
+        setTourAttractionsImageUrl(newTourAttractionsImageUrls);
+    };
 
     //                  Effect                  //
     useEffect(() => {
@@ -169,22 +176,26 @@ export default function TourAdd() {
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 사진</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-image-input tour-register-input-element' type='file' multiple placeholder='제목을 입력해주세요.' onChange={onTourAttractionImgFileChangeHandler}/>
+                        <input className='tour-register-image-input tour-register-input-element' type='file' multiple ref={imageSeq} 
+                        accept=".png, .jpg, .jpeg" onChange={onTourAttractionImgFileChangeHandler}/>
                     </div>
                     <div className='photo-view-element'>
                         <div className='photo-view'>
-                            {tourAttractionsImageUrl.map((url) => (
-                            <div
-                                className="photo-view-content"
-                                key={url}
-                                style={{
-                                    backgroundImage: `url(${url})`,
-                                    width: "150px",
-                                    height: "200px",
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                }}
-                            ></div>
+                            {tourAttractionsImageUrl.map((url, index) => (
+                            <>
+                                <div
+                                    className="photo-view-content"
+                                    key={url}
+                                    style={{
+                                        backgroundImage: `url(${url})`,
+                                        width: "150px",
+                                        height: "200px",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                    }}
+                                ></div>
+                                <div className='delete-image-button' onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                            </>
                             ))}
                         </div>
                     </div>

@@ -48,7 +48,8 @@ export default function RestControl() {
             return
         }
 
-        const { restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng } = result as GetRestaurantResponseDto;
+        const { restaurantImageUrl, restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng } = result as GetRestaurantResponseDto;
+        setRestaurantImageUrl(restaurantImageUrl);
         setRestaurantName(restaurantName);
         setRestaurantLocation(restaurantLocation);
         setRestaurantTelNumber(restaurantTelNumber);
@@ -119,8 +120,8 @@ export default function RestControl() {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
         setRestaurantImage([...restaurantImage, file]);
-        // const url = URL.createObjectURL(file);
-        // setRestaurantImageUrl([...restaurantImageUrl, url]);
+        const url = URL.createObjectURL(file);
+        setRestaurantImageUrl([...restaurantImageUrl, url]);
     }
 
     const onRestaurantMainMenuChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +139,7 @@ export default function RestControl() {
 
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
+        const restaurantImageUrl = [];
         for (const image of restaurantImage) {
             const data = new FormData();
             data.append('file', image);
@@ -146,7 +148,6 @@ export default function RestControl() {
                 .catch(error => null);
             
             if (!url) continue;
-            console.log(url);
             restaurantImageUrl.push(url);
         }
 
@@ -181,6 +182,14 @@ export default function RestControl() {
         if (!confirm) return;
 
         navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
+    }
+
+    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
+        const newTourAttractionsImages = restaurantImage.filter((image, index) => index !== deleteIndex);
+        setRestaurantImage(newTourAttractionsImages);
+
+        const newTourAttractionsImageUrls = restaurantImageUrl.filter((imageUrl, index) => index !== deleteIndex);
+        setRestaurantImageUrl(newTourAttractionsImageUrls);
     }
 
     //                  Effect                  //
@@ -240,6 +249,26 @@ export default function RestControl() {
                     <div className='rest-control-top-image'>▣ 음식점 사진</div>
                     <div className='rest-control-element'>
                         <input className='rest-control-input-element' type='file' multiple onChange={onRestaurantImgFileChangeHandler}/>
+                    </div>
+                    <div className='photo-view-element'>
+                        <div className='photo-view'>
+                            {restaurantImageUrl.map((url, index) => (
+                            <>
+                                <div
+                                    className="photo-view-content"
+                                    key={url}
+                                    style={{
+                                        backgroundImage: `url(${url})`,
+                                        width: "150px",
+                                        height: "200px",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                    }}
+                                ></div>
+                                <div className='delete-image-button' onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                            </>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
