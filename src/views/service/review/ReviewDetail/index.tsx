@@ -60,126 +60,9 @@ function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleE
     );
 }
 
-//                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
-function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent, commentParentsNumber }: ReviewCommentList) {
-    //                    state                    //
-    const { reviewNumber } = useParams();
-    const [cookies] = useCookies();
-    const [recommentContent, setRecommendContent] = useState<string>("");
-
-    const { loginUserId } = useUserStore();
-
-    //                    function                    //
-    const postTravelReviewCommentResponse = (result: ResponseDto | null) => {
-        const message = !result
-            ? "서버에 문제가 있습니다."
-            : result.code === "VF"
-            ? "댓글을 입력해 주세요."
-            : result.code === "AF"
-            ? "인증에 실패했습니다."
-            : result.code === "NB"
-            ? "존재하지 않는 댓글입니다."
-            : result.code === "DBE"
-            ? "서버에 문제가 있습니다."
-            : "";
-
-        if (!result || result.code !== "SU") {
-            alert(message);
-            return;
-        }
-
-        alert("댓글 작성에 성공하셨습니다.");
-        setRecommendstate(!recommendstate);
-        window.location.href = window.location.href;
-    };
-
-    const deleteTravelReviewCommentResponse = (result:ResponseDto | null) => {
-        const message = !result
-        ? "서버에 문제가 있습니다."
-        : result.code === "VF"
-        ? "존재하지 않는 댓글입니다."
-        : result.code === "AF"
-        ? "인증에 실패했습니다."
-        : result.code === "NB"
-        ? "존재하지 않는 댓글입니다."
-        : result.code === "DBE"
-        ? "서버에 문제가 있습니다."
-        : "";
-
-    if (!result || result.code !== "SU") {
-        alert(message);
-        return;
-    }
-
-    alert("댓글 삭제에 성공하셨습니다.");
-    setRecommendstate(!recommendstate);
-    window.location.href = window.location.href;
-    };
-
-    //                    event handler                    //
-    const onRecommendWriteClickHandler = () => {
-        if (!reviewNumber || !reviewCommentNumber) return;
-        const requestBody: PostTravelReviewCommentRequestDto = { commentContent: recommentContent, commentParentsNumber: reviewCommentNumber };
-        postTravelReviewCommentRequest(reviewNumber, requestBody, cookies.accessToken).then(postTravelReviewCommentResponse);
-    };
-
-    const onRecommendButtonClickHandler = () => {
-        setRecommendstate(!recommendstate);
-    };
-
-    const onRecommendCotentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        const recommentContent = event.target.value;
-        setRecommendContent(recommentContent);
-    };
-
-    const onCommentDeleteButtonClickHandler = () => {
-        if (!reviewNumber || !reviewCommentNumber) return;
-        deleteTravelReviewCommentRequest(reviewCommentNumber, reviewNumber,cookies.accessToken).then(deleteTravelReviewCommentResponse);
-    }
-
-    //                    render                    //
-    const [recommendstate, setRecommendstate] = useState<boolean>(true);
-    return (
-        <>
-            <div className="comments-nick-name">{reviewCommentWriterId}</div>
-            {recommendstate ? (
-                <div className="comments-content-box">
-                    <div className="comments-content">{commentContent}</div>
-                    <div className="comments-button-box"></div>
-                    <div className="comments-recommend" onClick={onRecommendButtonClickHandler}>
-                        답글달기
-                    </div>
-                    {loginUserId === reviewCommentWriterId  && 
-                    <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>삭제</div>}
-                </div>
-            ) : (
-                <div className="comments-content-box">
-                    <div className="comments-content">{commentContent}
-                        <div className="comments-recommend-box">
-                            <textarea
-                                className="recomment-textarea"
-                                placeholder="댓글을 입력해주세요."
-                                value={recommentContent}
-                                onChange={onRecommendCotentChangeHandler}
-                            />
-                            <div className="comments-recommend-button" onClick={onRecommendWriteClickHandler}>
-                                댓글작성
-                            </div>
-                        </div>
-                    </div>
-                    {loginUserId === reviewCommentWriterId  && 
-                    <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>삭제</div>}
-                </div>
-            )}
-        </>
-    );
-}
-
 //                    Component : 리뷰 게시판 상세보기 화면 컴포넌트                     //
 export default function ReviewDetail() {
     //                    state                    //
-    const { loginUserId, loginUserRole } = useUserStore();
-    const { setUpdateReviewNumber } = useReviewNumberStore();
     const { reviewNumber } = useParams();
     const [cookies] = useCookies();
 
@@ -199,6 +82,8 @@ export default function ReviewDetail() {
     const { scheduleListItemViewList, expenditureViewList, setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
     const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
     const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
+    const { loginUserId, loginUserRole } = useUserStore();
+    const { setUpdateReviewNumber } = useReviewNumberStore();
 
     const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
     const duchPay = balnace / travelSchedulePeople;
@@ -286,7 +171,8 @@ export default function ReviewDetail() {
         setReviewTitle(reviewTitle);
         setReviewContents(reviewContent);
         setReviewWriterId(writerId);
-        setReviewDatetime(reviewDatetime);
+        const datetime = reviewDatetime.slice(0,9);
+        setReviewDatetime(datetime);
         setTravelReviewImageUrl(travelReviewImageUrl);
         setReviewViewCount(reviewViewCount);
         setReviewFavoriteCount(reviewFavoriteCount);
@@ -493,6 +379,161 @@ export default function ReviewDetail() {
         favoriteCountRequest(reviewNumber, cookies.accessToken).then(favoriteCountResonse);
     };
 
+    
+    //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
+    function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent, commentParentsNumber }: ReviewCommentList) {
+        //                    state                    //
+        const { reviewNumber } = useParams();
+        const [cookies] = useCookies();
+        const [recommentContent, setRecommendContent] = useState<string>("");
+        const [childList, setChildList] = useState<ReviewCommentList[]>([]);
+        const [commentWriterNickName, setCommentWriterNickName] = useState<string>("");
+
+        const { loginUserId } = useUserStore();
+
+        //                    function                    //
+        const postTravelReviewCommentResponse = (result: ResponseDto | null) => {
+            const message = !result
+                ? "서버에 문제가 있습니다."
+                : result.code === "VF"
+                ? "댓글을 입력해 주세요."
+                : result.code === "AF"
+                ? "인증에 실패했습니다."
+                : result.code === "NB"
+                ? "존재하지 않는 댓글입니다."
+                : result.code === "DBE"
+                ? "서버에 문제가 있습니다."
+                : "";
+
+            if (!result || result.code !== "SU") {
+                alert(message);
+                return;
+            }
+
+            alert("댓글 작성에 성공하셨습니다.");
+            setRecommendstate(!recommendstate);
+            window.location.href = window.location.href;
+        };
+
+        const postCommentUserNickNameResponse = (result: ResponseDto | PostUserNickNameResponseDto | null) => {
+            const message = !result
+                ? "서버에 문제가 있습니다."
+                : result.code === "VF"
+                ? "잘못된 게시글번호입니다."
+                : result.code === "AF"
+                ? "인증에 실패했습니다."
+                : result.code === "NB"
+                ? "존재하지 않는 게시글번호입니다."
+                : result.code === "DBE"
+                ? "서버에 문제가 있습니다."
+                : "";
+    
+            if (!result || result.code !== "SU") {
+                alert(message);
+                navigator(REVIEW_ABSOULUTE_PATH);
+                return;
+            }
+    
+            const { nickName } = result as PostUserNickNameResponseDto;
+    
+            setCommentWriterNickName(nickName);
+        };
+
+        const requestBody: PostUserNickNameRequestDto = { writerId: reviewCommentWriterId };
+        postUserNickNameRequest(requestBody).then(postCommentUserNickNameResponse);
+
+
+        const deleteTravelReviewCommentResponse = (result:ResponseDto | null) => {
+            const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "존재하지 않는 댓글입니다."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "NB"
+            ? "존재하지 않는 댓글입니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
+            alert(message);
+            return;
+        }
+
+        alert("댓글 삭제에 성공하셨습니다.");
+        setRecommendstate(!recommendstate);
+        window.location.href = window.location.href;
+        };
+
+        //                    event handler                    //
+        const onRecommendWriteClickHandler = () => {
+            if (!reviewNumber || !reviewCommentNumber) return;
+            const requestBody: PostTravelReviewCommentRequestDto = { commentContent: recommentContent, commentParentsNumber: reviewCommentNumber };
+            postTravelReviewCommentRequest(reviewNumber, requestBody, cookies.accessToken).then(postTravelReviewCommentResponse);
+        };
+
+        const onRecommendButtonClickHandler = () => {
+            setRecommendstate(!recommendstate);
+        };
+
+        const onRecommendCotentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+            const recommentContent = event.target.value;
+            setRecommendContent(recommentContent);
+        };
+
+        const onCommentDeleteButtonClickHandler = () => {
+            if (!reviewNumber || !reviewCommentNumber) return;
+            deleteTravelReviewCommentRequest(reviewCommentNumber, reviewNumber,cookies.accessToken).then(deleteTravelReviewCommentResponse);
+        }
+
+        //                    effect                    //
+        useEffect(() => {
+            const childList = commentList.filter(item => item.commentParentsNumber === reviewCommentNumber);
+            setChildList(childList);
+        }, [reviewCommentNumber]);
+
+        //                    render                    //
+        const [recommendstate, setRecommendstate] = useState<boolean>(true);
+        return (
+            <div>
+                <div className="comments-nick-name">{commentWriterNickName}</div>
+                {recommendstate ? (
+                    <div className="comments-content-box">
+                        <div className="comments-content">{commentContent}</div>
+                        <div className="comments-button-box"></div>
+                        <div className="comments-recommend" onClick={onRecommendButtonClickHandler}>
+                            답글달기
+                        </div>
+                        {loginUserId === reviewCommentWriterId  && 
+                        <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>삭제</div>}
+                    </div>
+                ) : (
+                    <div className="comments-content-box">
+                        <div className="comments-content">{commentContent}
+                            <div className="comments-recommend-box">
+                                <textarea
+                                    className="recomment-textarea"
+                                    placeholder="댓글을 입력해주세요."
+                                    value={recommentContent}
+                                    onChange={onRecommendCotentChangeHandler}
+                                />
+                                <div className="comments-recommend-button" onClick={onRecommendWriteClickHandler}>
+                                    댓글작성
+                                </div>
+                            </div>
+                        </div>
+                        {loginUserId === reviewCommentWriterId  && 
+                        <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>삭제</div>}
+                    </div>
+                )}
+                <div style={{ paddingLeft: '40px' }}>
+                {childList.map(item => <ReviewCommentLists {...item} />)}
+                </div>
+            </div>
+        );
+    }
+
     //                    effect                    //
     useEffect(() => {
         if (!reviewNumber) {
@@ -626,9 +667,6 @@ export default function ReviewDetail() {
                     {commentList.filter(item => !item.commentParentsNumber).map((item) => (
                         <>
                         <ReviewCommentLists {...item} />
-                            {commentList.filter(child => child.commentParentsNumber === item.reviewCommentNumber).map(child => 
-                            <div style={{ paddingLeft: '40px' }}><ReviewCommentLists {...child} /></div>
-                            )}
                         </>
                     ))}
                 </div>

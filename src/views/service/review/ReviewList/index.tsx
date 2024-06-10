@@ -25,6 +25,9 @@ function ListItem ({
     //                    function                    //
     const navigator = useNavigate();
 
+    
+    const datetime = reviewDatetime.slice(0,10);
+
     //                    event handler                    //
     const onClickHandler = () => navigator(REVIEW_DETAIL_ABSOLUTE_PATH(reviewNumber));
 
@@ -42,7 +45,7 @@ function ListItem ({
             )}
             <div className='review-list-table-title'>{reviewTitle}</div>
             <div className='review-list-table-writer'>{writerId}</div>
-            <div className='review-list-table-write-date'>{reviewDatetime}</div>
+            <div className='review-list-table-write-date'>{datetime}</div>
             <div className='review-list-table-view-count'>{reviewViewCount}</div>
             <div className='review-list-table-favorite-count'>{reviewFavoriteCount}</div>
         </div>

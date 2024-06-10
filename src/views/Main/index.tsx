@@ -193,6 +193,10 @@ function InfoItem(
     setDestination(destination);
   };
 
+  const onFavoriteButtonClickHandler = () => {
+    
+  };
+
   if ("restaurantNumber" in props)
     return (
       <div style={{ position: "relative" }}>
@@ -225,7 +229,7 @@ function InfoItem(
           </div>
           <div className="info-box-bottom">
             <div className="info-box-bottom-left">
-              <div className="favorite-icon-button"></div>
+              <div className="favorite-icon-button" onClick={onFavoriteButtonClickHandler}></div>
             </div>
             <div className="info-box-bottom-right">
               <div
@@ -376,9 +380,6 @@ function SideListItem(props: RestaurantListItem | TourAttractionsListItem) {
               {props.restaurantName}
             </div>
             <div className="side-list-item-info-type">음식점</div>
-          </div>
-          <div className="side-list-item-info-location">
-            내 위치로 부터 {"10.0"}km
           </div>
           <div>
             <div className="side-list-item-recommendation-box">
@@ -542,11 +543,6 @@ function Side() {
             />
             <div className="main-side-check-label">음식점</div>
           </div>
-        </div>
-        <div className="main-side-sort-container">
-          <div className="main-side-sort-link active">거리순</div>
-          <div className="main-side-sort-divider">{"|"}</div>
-          <div className="main-side-sort-link">추천순</div>
         </div>
       </div>
       <div className="main-side-item-container">
