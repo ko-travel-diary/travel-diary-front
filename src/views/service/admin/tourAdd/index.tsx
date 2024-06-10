@@ -86,6 +86,7 @@ export default function TourAdd() {
 
         if (!cookies.accessToken) return;
 
+        const tourAttractionsImageUrl = [];
         for (const image of tourAttractionsImage) {
             const data = new FormData();
             data.append('file', image);
@@ -95,7 +96,6 @@ export default function TourAdd() {
             
             if (!url) continue;
             tourAttractionsImageUrl.push(url);
-            
         }
 
         const query = tourAttractionsLocation;

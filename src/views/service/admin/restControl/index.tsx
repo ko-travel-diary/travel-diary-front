@@ -116,12 +116,16 @@ export default function RestControl() {
         setRestaurantOutline(outLine);
     }
 
-    const onRestaurantImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onRestaurantImgFileChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setRestaurantImage([...restaurantImage, file]);
-        const url = URL.createObjectURL(file);
-        setRestaurantImageUrl([...restaurantImageUrl, url]);
+        const data = new FormData();
+        data.append('file', file);
+        const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
+            .then(response => response.data as string)
+            .catch(error => null);
+
+        if (url) setRestaurantImageUrl([...restaurantImageUrl, url]);
     }
 
     const onRestaurantMainMenuChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -138,18 +142,6 @@ export default function RestControl() {
         if (!restaurantName.trim() || !restaurantLocation.trim() || !restaurantOutline.trim() || !restaurantMainMenu.trim() ) return;
 
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
-
-        const restaurantImageUrl = [];
-        for (const image of restaurantImage) {
-            const data = new FormData();
-            data.append('file', image);
-            const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
-                .then(response => response.data as string)
-                .catch(error => null);
-            
-            if (!url) continue;
-            restaurantImageUrl.push(url);
-        }
 
         const query = restaurantLocation;
         const data = await axios.get(ADDRESS_URL, {params: {query}})

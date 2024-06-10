@@ -5,7 +5,6 @@ import {
     GET_TOURATTRACTIONS_REQUEST_URL,
     PATCH_TOURATTRACTIONS_REQUEST_URL,
     POST_TOURATTRACTIONS_REQUEST_URL,
-    PUT_TOURATTRACTIONS_REQUEST_URL,
 } from "src/constant";
 import {
     PatchTourAttractionsRequestDto,
@@ -96,12 +95,4 @@ export const deleteTourAttractionsRequest = async (restaurantNumber: number | st
         .catch(requestErrorHandler);
     return result;
 };
-
-//      function: 관광지 사진 삭제 API 함수       //
-export const putTourAttractionsRequest = async (restaurantNumber: number | string, accessToken: string) => {
-    const result = await axios.put(PUT_TOURATTRACTIONS_REQUEST_URL(restaurantNumber), bearerAuthorization(accessToken))
-        .then(requestHandler<ResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-}
 
