@@ -350,6 +350,19 @@
     opacity: 0.9;
 }
 
+.favorite-icon-button-clicked {
+    width: 36px;
+    height: 36px;
+
+    /* background-image: url('../../assets/image/favorite-icon.png');
+    background-size: 100% 100%; */
+}
+
+.favorite-icon-button-clicked:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
 .info-box-bottom-right {
     display: flex;
     gap: 8px;

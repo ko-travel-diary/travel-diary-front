@@ -2,7 +2,9 @@ import {
     DELETE_TOURATTRACTIONS_REQUEST_URL,
     GET_SEARCH_TOURATTRACTIONS_LIST_REQUEST_URL,
     GET_TOURATTRACTIONS_LIST_REQUEST_URL,
+    GET_TOURATTRACTIONS_RECOMMEND_URL,
     GET_TOURATTRACTIONS_REQUEST_URL,
+    PATCH_TOURATTRACTIONS_RECOMMEND_URL,
     PATCH_TOURATTRACTIONS_REQUEST_URL,
     POST_TOURATTRACTIONS_REQUEST_URL,
 } from "src/constant";
@@ -16,6 +18,7 @@ import ResponseDto from "../response.dto";
 import {
     GetSearchTourAttractionsListResponseDto,
     GetTourAttractionsListResponseDto,
+    GetTourAttractionsRecommendResponseDto,
     GetTourAttractionsResponseDto,
 } from "./dto/response";
 
@@ -74,12 +77,12 @@ export const postTourAttractionsRequest = async (
 //      function: 관광지 정보 수정 API 함수       //
 export const patchTourAttractionsRequest = async (
     requestBody: PatchTourAttractionsRequestDto,
-    restaurantNumber: number | string,
+    tourAttractionsNumber: number | string,
     accessToken: string
 ) => {
     const result = await axios
         .patch(
-            PATCH_TOURATTRACTIONS_REQUEST_URL(restaurantNumber),
+            PATCH_TOURATTRACTIONS_REQUEST_URL(tourAttractionsNumber),
             requestBody,
             bearerAuthorization(accessToken)
         )
@@ -89,10 +92,26 @@ export const patchTourAttractionsRequest = async (
 };
 
 //      function: 관광지 삭제 API 함수       //
-export const deleteTourAttractionsRequest = async (restaurantNumber: number | string, accessToken: string) => {
-    const result = await axios.delete(DELETE_TOURATTRACTIONS_REQUEST_URL(restaurantNumber), bearerAuthorization(accessToken))
+export const deleteTourAttractionsRequest = async (tourAttractionsNumber: number | string, accessToken: string) => {
+    const result = await axios.delete(DELETE_TOURATTRACTIONS_REQUEST_URL(tourAttractionsNumber), bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
 };
 
+// function : 해당 음식점에 유저가 좋아요 눌렀는지 상태 불러오기 API 함수     //
+export const getTourAttractionRecommendStatusRequest =  async (tourAttractionsNumber: number | string, accessToken: string) => {
+    const result = await axios.get(GET_TOURATTRACTIONS_RECOMMEND_URL(tourAttractionsNumber), bearerAuthorization(accessToken))
+        .then(requestHandler<GetTourAttractionsRecommendResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+}
+
+// function : 음식점 좋아요 API 함수
+export const tourRecommendCountRequest = async (tourAttractionsNumber: number | string, accessToken: string) => {
+    const result = await axios
+        .patch(PATCH_TOURATTRACTIONS_RECOMMEND_URL(tourAttractionsNumber), {}, bearerAuthorization(accessToken))
+        .then(requestHandler<ResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};

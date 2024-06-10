@@ -20,3 +20,7 @@ export interface GetTourAttractionsResponseDto extends ResponseDto {
     tourAttractionsLat: number;
     tourAttractionsLng: number;
 }
+
+export interface GetTourAttractionsRecommendResponseDto extends ResponseDto {
+    tourRecommendStatus: boolean;
+}
