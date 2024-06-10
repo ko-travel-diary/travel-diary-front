@@ -28,9 +28,9 @@ export default function RestDetail() {
         end: 7,
     });
 
-    const telNumber = restaurantTelNumber.split("<br>").join("");
-    const hours = restaurantHours.split("<br>").join("");
-    const outline = restaurantOutline.split("<br>").join("");
+    const telNumber = restaurantTelNumber ? restaurantTelNumber.split("<br>").join("") : '';
+    const hours = restaurantHours ? restaurantHours.split("<br>").join("") : '';
+    const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : '';
 
     //                    Function                     //
     const navigator = useNavigate();
