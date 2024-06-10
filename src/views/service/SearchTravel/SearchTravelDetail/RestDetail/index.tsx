@@ -28,9 +28,9 @@ export default function RestDetail() {
         end: 7,
     });
 
-    const telNumber = restaurantTelNumber ? restaurantTelNumber.split("<br>").join("") : '';
-    const hours = restaurantHours ? restaurantHours.split("<br>").join("") : '';
-    const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : '';
+    const telNumber = restaurantTelNumber ? restaurantTelNumber.split("<br>").join("") : "";
+    const hours = restaurantHours ? restaurantHours.split("<br>").join("") : "";
+    const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : "";
 
     //                    Function                     //
     const navigator = useNavigate();
@@ -85,60 +85,57 @@ export default function RestDetail() {
         setSelectedImageUrl(selectedUrl);
     }, []);
 
-    const onClickImageButton = useCallback((isLeft: boolean) => {
-        //TODO: 이미지 버튼 페이지 로직 만들기
+    const onClickImageButton = (isLeft: boolean) => {
         if (isLeft) {
-            setPage((prev) => {
-                if (prev.start === 0) {
-                    return { start: 0, end: 7 };
-                } else {
-                    return { start: prev.start + 1, end: prev.end + 1 };
-                }
-            });
+            if (page.start === 0) return;
+            const newPage = { start: page.start - 7, end: page.start };
+            setPage(newPage);
         } else {
-            setPage((prev) => {
-                if (prev.end === restaurantImageUrl.length) {
-                    return {
-                        start: restaurantImageUrl.length - 7,
-                        end: restaurantImageUrl.length,
-                    };
-                } else {
-                    return { start: prev.start - 1, end: prev.end - 1 };
-                }
-            });
+            if (page.end === restaurantImageUrl.length) return;
+            const end = restaurantImageUrl.length > page.end + 7 ? page.end + 7 : restaurantImageUrl.length;
+            const newPage = { start: page.start + 7, end };
+            setPage(newPage);
         }
-    }, []);
+    };
 
     //                    Render                     //
+    const emptyImage = "https://cdn-icons-png.flaticon.com/128/11423/11423562.png";
+
     return (
         <div id="travel-detail-wrapper">
             <div className="travel-detail-image-table">
                 <div>
                     <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : restaurantImageUrl[0]} />
                 </div>
-                <div className="travel-detail-image-list">
-                    {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                        <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
-                    ) : null}
-                    {restaurantImageUrl.slice(page.start, page.end).map((url) => (
-                        <div
-                            className="travel-lmage-list"
-                            key={url}
-                            style={{
-                                backgroundImage: `url(${url})`,
-                                minWidth: "150px",
-                                height: "100px",
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                cursor: "pointer",
-                            }}
-                            onClick={() => onUpdateImageUrl(url)}
-                        />
-                    ))}
-                    {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                        <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
-                    ) : null}
-                </div>
+                {restaurantImageUrl === null || restaurantImageUrl.length < 1 ? (
+                    <>
+                        <div className="travel-detail-image-list">
+                            {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                                <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
+                            ) : null}
+                            {restaurantImageUrl.slice(page.start, page.end).map((url) => (
+                                <div
+                                    className="travel-lmage-list"
+                                    key={url}
+                                    style={{
+                                        backgroundImage: `url(${url})`,
+                                        minWidth: "150px",
+                                        height: "100px",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => onUpdateImageUrl(url)}
+                                />
+                            ))}
+                            {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                                <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
+                            ) : null}
+                        </div>
+                    </>
+                ) : (
+                    emptyImage
+                )}
             </div>
             <div className="travel-detail-table">
                 <div className="travel-name">

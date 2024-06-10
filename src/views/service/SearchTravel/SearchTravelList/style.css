@@ -12,6 +12,8 @@ html::-webkit-scrollbar {
     flex-direction: column;
     gap: 15px;
     margin: 20px 200px;
+
+    width: 1512px;
 }
 
 .travel-search-list {
@@ -26,6 +28,8 @@ html::-webkit-scrollbar {
 
     gap: 20px;
     padding: 20px;
+
+    min-width: 1470px;
 }
 
 .travel-search-location {
@@ -50,7 +54,7 @@ html::-webkit-scrollbar {
     font-size: 20px;
 }
 
-.travel-font{
+.travel-font {
     font-style: WavvePADO;
     font-size: 20px;
     font-weight: 700;
@@ -67,9 +71,9 @@ html::-webkit-scrollbar {
     gap: 20px;
 }
 
-.travel-search-input{    
+.travel-search-input {
     width: 700px;
-    
+
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
     border-radius: 8px;
@@ -78,37 +82,56 @@ html::-webkit-scrollbar {
     font-weight: 700;
 }
 
+.travel-list-table {
+    display: flex;
+
+    min-width: 1515px;
+}
+
 .travel-list-table-th {
     display: flex;
+    flex-grow: 1;
     align-items: center;
     padding: 15px 24px;
 
     border: 1px solid rgba(7, 65, 115, 0.2);
     border-radius: 8px;
 
-    gap: 95px;
-    
+    gap: 90px;
+
     font-size: 16px;
     font-weight: 700;
     text-align: center;
-    
-    color: rgba(64,64,64,1);
+
+    color: rgba(64, 64, 64, 1);
+
+    min-width: 1504px;
+}
+
+.travel-list-table-show {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+
+    width: 1100px;
 }
 
 .travel-list-table:hover {
     cursor: pointer;
-    color: rgba(238,238,238,0.8);
+    color: rgba(238, 238, 238, 0.8);
 }
 
 .travel-list-table-title {
     display: flex;
 
-    gap: 100px;
+    gap: 20px;
 
     padding-bottom: 20px;
 }
 
 .travel-title {
+    text-align: center;
+    width: 59px;
     color: lightslategrey;
 }
 
@@ -123,6 +146,7 @@ html::-webkit-scrollbar {
 .travel-telNumber {
     display: flex;
     gap: 10px;
+    flex-grow: 1;
 
     width: 450px;
     text-align: start;
@@ -138,16 +162,17 @@ html::-webkit-scrollbar {
 
 .travel-hours {
     display: flex;
+    flex-grow: 1;
     gap: 10px;
 
-    width: 450px;
+    width: 500px;
     text-align: start;
 }
 
 .travel-list-table-outline {
     display: flex;
     flex-direction: column;
-    
+
     gap: 10px;
 }
 
@@ -163,8 +188,10 @@ html::-webkit-scrollbar {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    
-    width: 1050px;
+
+    padding-left: 15px;
+
+    width: 1214px;
 }
 
 .travel-list-picture {
@@ -181,7 +208,7 @@ html::-webkit-scrollbar {
     display: flex;
     align-items: center;
 
-    gap: 24px; 
+    gap: 24px;
 }
 
 .travel-list-page-left {
@@ -214,7 +241,7 @@ html::-webkit-scrollbar {
     font-weight: 400;
     line-height: 20px;
 
-    color: rgba(148,146,166,1);
+    color: rgba(148, 146, 166, 1);
 
     cursor: pointer;
 }
@@ -224,7 +251,7 @@ html::-webkit-scrollbar {
     font-weight: 400;
     line-height: 20px;
 
-    color: rgba(64,64,64,1);
+    color: rgba(64, 64, 64, 1);
 
     cursor: default;
 }
