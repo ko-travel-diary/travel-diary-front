@@ -145,7 +145,8 @@ html::-webkit-scrollbar {
 }
 
 .recomment-textarea {
-    width: 1200px;
+    display: flex;
+    flex-grow: 1;
     height: 20px;
     
     resize: none;
@@ -174,6 +175,7 @@ html::-webkit-scrollbar {
 .comments-recommend-button{
     display: flex;
     justify-content: center;
+    min-width: 60px;
 }
 
 .comments-recommend-button:hover {
