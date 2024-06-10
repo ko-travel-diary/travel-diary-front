@@ -11,7 +11,8 @@ import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
 import { useUserStore } from 'src/stores';
 import { GetTourAttractionsResponseDto } from 'src/apis/tour_attraction/dto/response';
 import { PatchTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
-import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest, putTourAttractionsRequest } from 'src/apis/tour_attraction';
+import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest } from 'src/apis/tour_attraction';
+import { convertUrlsToFiles } from 'src/utils';
 
 //                  Component                   //
 export default function TourControl() {
@@ -37,7 +38,7 @@ export default function TourControl() {
     //                  Function                    //
     const navigator = useNavigate();
 
-    const getTourAttractionResponse = (result: GetTourAttractionsResponseDto | ResponseDto | null) => {
+    const getTourAttractionResponse = async (result: GetTourAttractionsResponseDto | ResponseDto | null) => {
         const message =
             !result ? "서버에 문제가 있습니다." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
@@ -59,6 +60,7 @@ export default function TourControl() {
         setTourAttractionsOutline(tourAttractionsOutline);
         setTourAttractionsLat(tourAttractionsLat);
         setTourAttractionsLng(tourAttractionsLng);
+
     }
 
     const patchTourAttractionResponse = (result: ResponseDto | null ) => {
@@ -77,20 +79,6 @@ export default function TourControl() {
     }
 
     const deleteTourAttractionResponse = (result: ResponseDto | null) => {
-        const message =
-            !result ? "서버에 문제가 있습니다." : 
-            result.code === 'VF' ? '데이터 유효성 에러.' : 
-            result.code === 'AF' ? '권한이 없습니다.' : 
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-
-        if (!result || result.code !== 'SU') {
-            alert(message);
-            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
-            return;
-        }
-    }
-
-    const putTourAttractionResponse = (result: ResponseDto | null) => {
         const message =
             !result ? "서버에 문제가 있습니다." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
@@ -130,12 +118,16 @@ export default function TourControl() {
         setTourAttractionsOutline(outLine);
     }
 
-    const onTourAtrracntionImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAtrracntionImgFileChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setTourAtrractionImage([...tourAttractionsImage, file]);
-        const url = URL.createObjectURL(file);
-        setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
+        const data = new FormData();
+        data.append('file', file);
+        const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
+            .then(response => response.data as string)
+            .catch(error => null);
+
+        if (url) setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
     }
 
     const onPatchButtonClickHandler = async () => {
@@ -143,23 +135,6 @@ export default function TourControl() {
         if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsOutline.trim()) return;
 
         if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
-
-        putTourAttractionsRequest(tourAttractionsNumber, cookies.accessToken).then(putTourAttractionResponse);
-
-        const tourAttractionsImageUrl = [];
-        for (const image of tourAttractionsImage) {
-            const data = new FormData();
-            data.append('file', image);
-            const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
-                .then(response => response.data as string)
-                .catch(error => null);
-            
-            if (!url) continue;
-            tourAttractionsImageUrl.push(url);
-        }
-
-        console.log("a" + tourAttractionsImage);
-        console.log("b" + tourAttractionsImageUrl);
 
         const query = tourAttractionsLocation;
         const data = await axios.get(ADDRESS_URL, {params: {query}})
@@ -169,7 +144,7 @@ export default function TourControl() {
         if (!data) {
             alert("주소를 정확히 입력해주세요.");
             return;
-        }
+        };
 
         const tourAttractionsLat = data.documents[0].y as number;
         const tourAttractionsLng = data.documents[0].x as number;
