@@ -2,24 +2,12 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import "./style.css";
 import { TourAttractionsListItem } from "src/types";
 import { useCookies } from "react-cookie";
-import {
-    ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH,
-    ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH,
-    AUTH_ABSOLUTE_PATH,
-    COUNT_PER_PAGE,
-    COUNT_PER_SECTION,
-    TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH,
-} from "src/constant";
-import {
-    GetSearchTourAttractionsListResponseDto,
-    GetTourAttractionsListResponseDto,
-} from "src/apis/tour_attraction/dto/response";
+import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
+import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
 import ResponseDto from "src/apis/response.dto";
 import { useNavigate } from "react-router";
-import {
-    getSearchTourAttractionsListRequest,
-    getTourAttractionsListRequest,
-} from "src/apis/tour_attraction";
+import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
+import { changeText } from "src/utils";
 
 //                  Component                   //
 export function TourListItems({
@@ -50,52 +38,23 @@ export function TourListItems({
         }
     };
 
-    const hours = tourAttractionsHours.split('<br>').join('');
-    const telNumber = tourAttractionsTelNumber.split('<br>').join('');
-
     //                  Render                  //
     return (
         <div className="tour-list-table-box">
-            <div className="tour-list-table-number">
-                {tourAttractionsNumber}
-            </div>
-            {tourAttractionsImageUrl === null ? (
+            <div className="tour-list-table-number">{tourAttractionsNumber}</div>
+            {tourAttractionsImageUrl === null ? 
                 <div className="tour-list-table-image">
-                    <img
-                        title="travel"
-                        width="75px"
-                        height="50px"
-                        src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`}
-                    />
-                </div>
-            ) : (
+                    <img title="travel" width="75px" height="50px" src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`} />
+                </div> : 
                 <div className="tour-list-table-image">
-                    <img
-                        title="travel"
-                        width="75px"
-                        height="50px"
-                        src={`${tourAttractionsImageUrl}`}
-                    />
+                    <img title="travel" width="75px" height="50px" src={`${tourAttractionsImageUrl}`} />
                 </div>
-            )}
-            <div
-                className="tour-list-table-name long-text"
-                onClick={onTourAttrctionListClickHandler}
-            >
-                {tourAttractionsName}
-            </div>
-            <div className="tour-list-table-locate long-text">
-                {tourAttractionsLocation}
-            </div>
-            <div className="tour-list-table-tel long-text">
-                {telNumber}
-            </div>
-            <div className="tour-list-table-hours long-text">
-                {hours}
-            </div>
-            <div className="control-button" onClick={onControlButton}>
-                관리
-            </div>
+            }
+            <div className="tour-list-table-name long-text" onClick={onTourAttrctionListClickHandler}>{tourAttractionsName}</div>
+            <div className="tour-list-table-locate long-text">{tourAttractionsLocation}</div>
+            <div className="tour-list-table-tel long-text">{changeText(tourAttractionsTelNumber)}</div>
+            <div className="tour-list-table-hours long-text">{changeText(tourAttractionsHours)}</div>
+            <div className="control-button" onClick={onControlButton}>관리</div>
         </div>
     );
 }
@@ -238,9 +197,7 @@ export default function TourList() {
         setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
     };
 
-    const onSearchWordChangeHandler = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchWord(searchWord);
     };
@@ -249,9 +206,7 @@ export default function TourList() {
         if (!searchWord) return;
         if (!cookies.accessToken) return;
 
-        getSearchTourAttractionsListRequest(searchWord).then(
-            getSearchTourListResponse
-        );
+        getSearchTourAttractionsListRequest(searchWord).then(getSearchTourListResponse);
     };
 
     const onRegisterButtonClickHandler = () => {
@@ -286,13 +241,10 @@ export default function TourList() {
         <div id="tour-list-wrapper">
             <div className="tour-list-top">
                 <div className="tour-list-count-text">
-                    전체 관광지수 |{" "}
-                    <span className="emphasis">{tourCount}개</span>
+                    전체 관광지수 | <span className="emphasis">{tourCount}개</span>
                 </div>
-                <div
-                    className="tour-list-add-button primary-button"
-                    onClick={onRegisterButtonClickHandler}>
-                    등록
+                <div className="tour-list-control-box">
+                    <div className="tour-list-add-button primary-button"onClick={onRegisterButtonClickHandler}>등록</div>
                 </div>
             </div>
 
@@ -307,19 +259,14 @@ export default function TourList() {
                     <div className="tour-list-table-button">관리</div>
                 </div>
                 <div className="tour-list-table-line"></div>
-                {viewList.map((item) => (
-                    <TourListItems {...item} />
-                ))}
+                {viewList.map((item) => (<TourListItems {...item} />))}
             </div>
 
             <div className="tour-list-bottom">
                 <div className="tour-list-bottom-left"></div>
                 <div className="tour-list-bottom-middle">
                     <div className="tour-list-pagenation">
-                        <div
-                            className="tour-list-page-left"
-                            onClick={onPreSectionClickHandler}
-                        ></div>
+                        <div className="tour-list-page-left" onClick={onPreSectionClickHandler}></div>
                         <div className="tour-list-page-box">
                             {pageList.map((page) =>
                                 page === currentPage ? 
@@ -327,29 +274,15 @@ export default function TourList() {
                                 <div className="tour-list-page" key={page} onClick={() => onPageClickHandler(page)}>{page}</div>    
                             )}
                         </div>
-                        <div
-                            className="tour-list-page-right"
-                            onClick={onNextSectionClickHandler}
-                        ></div>
+                        <div className="tour-list-page-right" onClick={onNextSectionClickHandler}></div>
                     </div>
                 </div>
                 <div className="tour-list-bottom-right">
                     <div className="tour-list-search-box">
                         <div className="tour-list-search-input-box">
-                            <input
-                                className="tour-list-search-input"
-                                placeholder="관광명소명으로 검색"
-                                value={searchWord}
-                                onChange={onSearchWordChangeHandler}
-                                onKeyDown={onEnterKeyDownHandler}
-                            />
+                            <input className="tour-list-search-input" placeholder="관광명소명으로 검색" value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
                         </div>
-                        <div
-                            className="primary-button"
-                            onClick={onSearchButtonClickHandler}
-                        >
-                            검색
-                        </div>
+                        <div className="primary-button" onClick={onSearchButtonClickHandler}>검색</div>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-#wrapper{
+/* #wrapper{
     display: grid;
     grid-template: 
         "sidenav main" minmax(864px, auto)
@@ -23,4 +23,4 @@
 }
 .side-container-link:hover{
     cursor: pointer;
-}
+} */

@@ -1,18 +1,14 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import { useCookies } from 'react-cookie'
-import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate, useParams } from 'react-router';
-import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
-import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
+import { ADDRESS_URL, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
 import axios from 'axios';
-import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
 import { useUserStore } from 'src/stores';
 import { GetTourAttractionsResponseDto } from 'src/apis/tour_attraction/dto/response';
 import { PatchTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
 import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest } from 'src/apis/tour_attraction';
-import { convertUrlsToFiles } from 'src/utils';
 
 //                  Component                   //
 export default function TourControl() {
@@ -20,7 +16,6 @@ export default function TourControl() {
     //                  State                   //
     const {tourAttractionsNumber} = useParams();
     const {loginUserRole} = useUserStore();
-    const imageSeq = useRef<HTMLInputElement | null>(null);
 
     const [cookies] = useCookies();
 
@@ -191,7 +186,7 @@ export default function TourControl() {
         <div id='tour-register-wrapper'>
             <div className='tour-control-top'>
                 <div className='tour-control-top-element-box'>
-                    <div className='tour-control-top-name'>▣  이름</div>
+                    <div className='tour-control-top-name'>▣ 관광지 이름</div>
                     <div className='tour-control-element'>
                         <input className='tour-control-input-element' value={tourAttractionsName} onChange={onTourAtrracntionNameChangeHandler}/>
                     </div>
@@ -237,7 +232,7 @@ export default function TourControl() {
                                         width: "150px",
                                         height: "200px",
                                         backgroundSize: "cover",
-                                        backgroundPosition: "center",
+                                        backgroundPosition: "center"
                                     }}
                                 ></div>
                                 <div className='delete-image-button' onClick={() => onImageDeleteButtonClickHandler(index)}></div>

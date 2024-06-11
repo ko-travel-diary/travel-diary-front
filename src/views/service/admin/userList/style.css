@@ -1,3 +1,49 @@
+.user-list-table-box{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+
+    width: 100%;
+    
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
+}
+.user-list-table-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 200px;
+}
+.user-list-table-id {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+}
+.user-list-table-nickname {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+}
+.user-list-table-email {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+}
+.user-list-table-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+}
+
 #user-list-wrapper{
     display: flex;
     flex-direction: column;
@@ -61,10 +107,6 @@
     display: flex;
     gap: 8px;
 }
-.user-list-bottom-right{
-    width: 300px;
-}
-
 .user-list-page-left {
     width: 40px;
     height: 40px;
@@ -79,6 +121,7 @@
     gap: 16px;
     align-items: center;
 }
+
 .user-list-page{
     font-size: 14px;
     font-weight: 400;
@@ -106,6 +149,9 @@
 
     cursor: pointer;
 }
+.user-list-bottom-right{
+    width: 300px;
+}
 
 .user-list-search-box {
     display: flex;
@@ -130,70 +176,4 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 175%;
-}
-
-
-.primary-button {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 8px 24px;
-
-    background-color: rgba(28, 87, 232, 1);
-    border-radius: 6px;
-
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 175%;
-
-    color: rgba(255, 255, 255, 1);
-}
-
-.user-list-table-box{
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-
-    width: 100%;
-    
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(238, 238, 238, 1);
-}
-.user-list-table-number {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    width: 200px;
-}
-.user-list-table-id {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100px;
-}
-.user-list-table-nickname {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100px;
-}
-.user-list-table-email {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100px;
-}
-.user-list-table-delete {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100px;
 }

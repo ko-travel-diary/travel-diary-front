@@ -9,8 +9,6 @@
 
     min-width: 1888px;
 
-    background-color: rgba(255, 255, 255, 1);
-
     /* text 드래그 방지 */
     -webkit-user-select:none;
     -moz-user-select:none;
@@ -50,7 +48,6 @@
 }
 
 .top-navigation-item {
-    font-style: WavvePADO;
     font-size: 16px;
     font-weight: 400;
     color: rgba(7, 65, 115, 0.8);
@@ -73,6 +70,7 @@
 
     text-shadow: 0px 0px 5px rgba(7, 65, 115, 0.3);
 }
+
 .loginUser-form {
     display: flex;
     justify-content: center;
@@ -80,6 +78,7 @@
     gap: 20px;
 
     width: 142px;
+    margin: 0 10px;
 
     cursor: pointer;
 }
@@ -104,8 +103,9 @@
 
     width: 200px;
     height: 50px;
-    background-color: white;
     border: 1px solid rgba(7, 65, 115, 0.2);
+
+    background-color: white;
 
     cursor: default;
 }
@@ -114,7 +114,6 @@
     align-items: center;
     gap: 10px;
 }
-
 .navigation-move-page{
     cursor: pointer;
 }

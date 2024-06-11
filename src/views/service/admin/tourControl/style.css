@@ -70,6 +70,21 @@
 
     color: rgba(64, 64, 64, 1);
 }
+.photo-view-element{
+    display: flex;
+    gap: 10px;
+    width: 1003px;
+    height: 210px;
+    padding: 10px 15px;
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 6px;
+
+    position: relative;
+
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
 .tour-control-bottom{
     display: flex;
     justify-content: center;

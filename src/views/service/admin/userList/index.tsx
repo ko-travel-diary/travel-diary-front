@@ -212,7 +212,9 @@ export default function UserList() {
     return (
         <div id='user-list-wrapper'>
             <div className='user-list-top'>
-                <div className='user-list-count-text'>전체유저 | <span className='emphasis'>{userCount}명</span></div>
+                <div className='user-list-count-text'>
+                    전체유저 | <span className='emphasis'>{userCount}명</span>
+                </div>
             </div>
         
             <div className='user-list-table'>
@@ -245,7 +247,7 @@ export default function UserList() {
                 <div className='user-list-bottom-right'>
                     <div className='user-list-search-box'>
                         <div className='user-list-search-input-box'>
-                        <input className='user-list-search-input' placeholder='아이디로 검색.' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
+                            <input className='user-list-search-input' placeholder='아이디로 검색.' value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
                         </div>
                         <div className='primary-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>

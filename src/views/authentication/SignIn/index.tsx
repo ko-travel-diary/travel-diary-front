@@ -1,6 +1,6 @@
 import Social from 'src/components/Social';
 import './style.css';
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { MAIN_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_UP_ABSOLUTE_PATH } from 'src/constant';
 import { signInRequest } from 'src/apis/auth';
@@ -19,11 +19,11 @@ function SignIn () {
     const[cookies, setCookies] = useCookies();
 
     const [userId, setUserId] = useState<string>('');
-    const [userRole, setUserRole] = useState<string>('')
     const [userPassword, setUserPassword] = useState<string>('');
 
-    const [message, setMessage] = useState<string>('');
     const {setLoginUserId, setLoginUserRole} = useUserStore();
+
+    const focusRef = useRef<HTMLInputElement | null>(null);
     
     //                     function                     //
     const navigator = useNavigate();
@@ -102,6 +102,11 @@ function SignIn () {
 
     const onSignUpButtonClickHandler = () => navigator(SIGN_UP_ABSOLUTE_PATH);
 
+    //                  Effect                  //
+    useEffect(() => {
+        if (focusRef.current) focusRef.current.focus();
+    }, [])
+
     //                    render : 로그인 화면 컴포넌트                     //
     return (
         <div id='sign-in-wrapper'>
@@ -110,7 +115,7 @@ function SignIn () {
                 <div className='sign-in-input-box'>
                     <div className='sign-in-input-title'>아이디</div>
                     <div className='sign-in-input-border'>
-                        <input className='sign-in-input' value={userId} onChange={onUserIdChangeEventHandler} onKeyDown={onEnterKeyDownHandler}/>
+                        <input className='sign-in-input' value={userId} onChange={onUserIdChangeEventHandler} onKeyDown={onEnterKeyDownHandler} ref={focusRef}/>
                     </div>
                 </div>
                 <div className='sign-in-input-box'>

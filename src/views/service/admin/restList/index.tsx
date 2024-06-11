@@ -7,6 +7,7 @@ import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
 import { getRestaurantListRequest, getSearchRestaurantListRequest } from 'src/apis/restaurant';
+import { changeText } from 'src/utils';
 
 //                  Component                    //
 export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours}: RestaurantListItem) {
@@ -14,7 +15,7 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
     //                  Function                    //
     const navigator = useNavigate();
 
-    //                  Event Handler`                  //
+    //                  Event Handler                  //
     const onControlButton = () => {
         navigator(ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH(restaurantNumber));
     }
@@ -23,24 +24,24 @@ export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurant
         if(restaurantNumber){
         navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(restaurantNumber));       
         }
-    
     }
-
-    const hours = restaurantHours.split("<br>").join("");
-    const telNumber = restaurantTelNumber.split("<br>").join("");
 
     //                  Render                  //
     return (
-        <div className='rest-list-table-box'>
+        <div id='rest-list-table-box'>
             <div className='rest-list-table-number'>{restaurantNumber}</div>
             {restaurantImageUrl === null ?
-                <div className='rest-list-table-image'><img width='75px' height='50px' style={{margin: '0 10px'}} src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} /></div> :
-                <div className='rest-list-table-image'><img width='75px' height='50px' src={`${restaurantImageUrl}`} /></div>
+                <div className='rest-list-table-image'>
+                    <img width='75px' height='50px' style={{margin: '0 10px'}} src={`${'https://cdn-icons-png.flaticon.com/128/11423/11423562.png'}`} />
+                </div> :
+                <div className='rest-list-table-image'>
+                    <img width='75px' height='50px' src={`${restaurantImageUrl}`} />
+                </div>
             }
             <div className='rest-list-table-name long-text' onClick={onRestaurantListClickHandler}>{restaurantName}</div>
             <div className='rest-list-table-locate long-text'>{restaurantLocation}</div>
-            <div className='rest-list-table-tel long-text'>{telNumber}</div>
-            <div className='rest-list-table-hours long-text'>{hours}</div>
+            <div className='rest-list-table-tel long-text'>{changeText(restaurantTelNumber)}</div>
+            <div className='rest-list-table-hours long-text'>{changeText(restaurantHours)}</div>
             <div className='control-button' onClick={onControlButton}>관리</div>
         </div>
     );
@@ -209,7 +210,9 @@ export default function RestList() {
     return (
         <div id='rest-list-wrapper'>
             <div className='rest-list-top'>
-                <div className='rest-list-count-text'>전체 음식점수 | <span className='emphasis'>{restCount}개</span></div>
+                <div className='rest-list-count-text'>
+                    전체 음식점수 | <span className='emphasis'>{restCount}개</span>
+                </div>
                 <div className='rest-list-control-box'>
                     <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
                 </div>
