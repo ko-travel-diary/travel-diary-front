@@ -32,10 +32,7 @@ import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { useScheduleStore } from "src/stores/useScheduleStores";
 import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
-
-const numberCommas = (number: Number) => {
-    return number.toLocaleString();
-};
+import { numberCommas } from "src/utils";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
@@ -54,7 +51,6 @@ function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, s
 
 //                    component: 스케쥴 금액 리스트 컴포넌트                     //
 function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: ExpenditureList) {
-    
     //                    render                     //
     return (
         <div className="expenditure-item">
@@ -175,7 +171,7 @@ export default function ReviewDetail() {
         setReviewTitle(reviewTitle);
         setReviewContents(reviewContent);
         setReviewWriterId(writerId);
-        const datetime = reviewDatetime.slice(0,10);
+        const datetime = reviewDatetime.slice(0, 10);
         setReviewDatetime(datetime);
         setTravelReviewImageUrl(travelReviewImageUrl);
         setReviewViewCount(reviewViewCount);
@@ -383,7 +379,6 @@ export default function ReviewDetail() {
         patchFavoriteRequest(reviewNumber, cookies.accessToken).then(patchFavoriteResponse);
     };
 
-    
     //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
     function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent, commentParentsNumber }: ReviewCommentList) {
         //                    state                    //
@@ -431,43 +426,42 @@ export default function ReviewDetail() {
                 : result.code === "DBE"
                 ? "서버에 문제가 있습니다."
                 : "";
-    
+
             if (!result || result.code !== "SU") {
                 alert(message);
                 navigator(REVIEW_ABSOULUTE_PATH);
                 return;
             }
-    
+
             const { nickName } = result as PostUserNickNameResponseDto;
-    
+
             setCommentWriterNickName(nickName);
         };
 
         const requestBody: PostUserNickNameRequestDto = { writerId: reviewCommentWriterId };
         postUserNickNameRequest(requestBody).then(postCommentUserNickNameResponse);
 
-
-        const deleteTravelReviewCommentResponse = (result:ResponseDto | null) => {
+        const deleteTravelReviewCommentResponse = (result: ResponseDto | null) => {
             const message = !result
-            ? "서버에 문제가 있습니다."
-            : result.code === "VF"
-            ? "존재하지 않는 댓글입니다."
-            : result.code === "AF"
-            ? "인증에 실패했습니다."
-            : result.code === "NB"
-            ? "존재하지 않는 댓글입니다."
-            : result.code === "DBE"
-            ? "서버에 문제가 있습니다."
-            : "";
+                ? "서버에 문제가 있습니다."
+                : result.code === "VF"
+                ? "존재하지 않는 댓글입니다."
+                : result.code === "AF"
+                ? "인증에 실패했습니다."
+                : result.code === "NB"
+                ? "존재하지 않는 댓글입니다."
+                : result.code === "DBE"
+                ? "서버에 문제가 있습니다."
+                : "";
 
-        if (!result || result.code !== "SU") {
-            alert(message);
-            return;
-        }
+            if (!result || result.code !== "SU") {
+                alert(message);
+                return;
+            }
 
-        alert("댓글 삭제에 성공하셨습니다.");
-        setRecommendstate(!recommendstate);
-        window.location.href = window.location.href;
+            alert("댓글 삭제에 성공하셨습니다.");
+            setRecommendstate(!recommendstate);
+            window.location.href = window.location.href;
         };
 
         //                    event handler                    //
@@ -488,12 +482,12 @@ export default function ReviewDetail() {
 
         const onCommentDeleteButtonClickHandler = () => {
             if (!reviewNumber || !reviewCommentNumber) return;
-            deleteTravelReviewCommentRequest(reviewCommentNumber, reviewNumber,cookies.accessToken).then(deleteTravelReviewCommentResponse);
-        }
+            deleteTravelReviewCommentRequest(reviewCommentNumber, reviewNumber, cookies.accessToken).then(deleteTravelReviewCommentResponse);
+        };
 
         //                    effect                    //
         useEffect(() => {
-            const childList = commentList.filter(item => item.commentParentsNumber === reviewCommentNumber);
+            const childList = commentList.filter((item) => item.commentParentsNumber === reviewCommentNumber);
             setChildList(childList);
         }, [reviewCommentNumber]);
 
@@ -509,12 +503,16 @@ export default function ReviewDetail() {
                         <div className="comments-recommend" onClick={onRecommendButtonClickHandler}>
                             답글달기
                         </div>
-                        {loginUserId === reviewCommentWriterId  && 
-                        <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>삭제</div>}
+                        {loginUserId === reviewCommentWriterId && (
+                            <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>
+                                삭제
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className="comments-content-box">
-                        <div className="comments-content">{commentContent}
+                        <div className="comments-content">
+                            {commentContent}
                             <div className="comments-recommend-box">
                                 <textarea
                                     className="recomment-textarea"
@@ -527,12 +525,17 @@ export default function ReviewDetail() {
                                 </div>
                             </div>
                         </div>
-                        {loginUserId === reviewCommentWriterId  && 
-                        <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>삭제</div>}
+                        {loginUserId === reviewCommentWriterId && (
+                            <div className="comment-delete-button" onClick={onCommentDeleteButtonClickHandler}>
+                                삭제
+                            </div>
+                        )}
                     </div>
                 )}
-                <div style={{ paddingLeft: '40px' }}>
-                {childList.map(item => <ReviewCommentLists {...item} />)}
+                <div style={{ paddingLeft: "40px" }}>
+                    {childList.map((item) => (
+                        <ReviewCommentLists {...item} />
+                    ))}
                 </div>
             </div>
         );
@@ -664,16 +667,18 @@ export default function ReviewDetail() {
             </div>
 
             <div className="review-detail-bottom">
-                {commentList === null || commentList.length === 0 ? 
+                {commentList === null || commentList.length === 0 ? (
                     <></>
-                :(
-                <div className="review-detail-comments-box">
-                    {commentList.filter(item => !item.commentParentsNumber).map((item) => (
-                        <>
-                        <ReviewCommentLists {...item} />
-                        </>
-                    ))}
-                </div>
+                ) : (
+                    <div className="review-detail-comments-box">
+                        {commentList
+                            .filter((item) => !item.commentParentsNumber)
+                            .map((item) => (
+                                <>
+                                    <ReviewCommentLists {...item} />
+                                </>
+                            ))}
+                    </div>
                 )}
                 <div className="review-detail-comment-textarea-box">
                     <textarea

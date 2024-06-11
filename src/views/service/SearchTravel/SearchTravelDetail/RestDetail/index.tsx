@@ -4,9 +4,8 @@ import { getRestaurantRequest } from "src/apis/restaurant";
 import ResponseDto from "src/apis/response.dto";
 import { GetRestaurantResponseDto } from "src/apis/restaurant/dto/response";
 import { useNavigate, useParams } from "react-router";
-import { AUTH_ABSOLUTE_PATH } from "src/constant";
-
-const SHOW_IMAGE_BUTTON_LIMIT = 7;
+import { AUTH_ABSOLUTE_PATH, SHOW_IMAGE_BUTTON_LIMIT } from "src/constant";
+import { changeText } from "src/utils";
 
 //                    component : Restaurant Detail 화면 컴포넌트                     //
 export default function RestDetail() {
@@ -27,11 +26,6 @@ export default function RestDetail() {
         start: 0,
         end: 7,
     });
-
-    const telNumber = restaurantTelNumber ? restaurantTelNumber.split("<br>").join("") : "";
-    const hours = restaurantHours ? restaurantHours.split("<br>").join("") : "";
-    const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : "";
-
     //                    function                     //
     const navigator = useNavigate();
 
@@ -146,7 +140,7 @@ export default function RestDetail() {
                 <div className="travel-telNumber">
                     <div className="travel-title">연락처</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{telNumber}</div>
+                    <div className="travel-detail-info">{changeText(restaurantTelNumber)}</div>
                 </div>
                 <div className="travel-location">
                     <div className="travel-title">지역</div>
@@ -156,7 +150,7 @@ export default function RestDetail() {
                 <div className="travel-hours">
                     <div className="travel-title">운영시간</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{hours}</div>
+                    <div className="travel-detail-info">{changeText(restaurantHours)}</div>
                 </div>
                 <div className="travel-main-menu">
                     <div className="travel-title">대표메뉴</div>
@@ -171,7 +165,7 @@ export default function RestDetail() {
                 <div className="travel-list-table-outline">
                     <div className="travel-outline-text">
                         <div className="travel-title">개요</div>
-                        <div className="travel-detail-info">{outline}</div>
+                        <div className="travel-detail-info">{changeText(restaurantOutline)}</div>
                     </div>
                 </div>
             </div>

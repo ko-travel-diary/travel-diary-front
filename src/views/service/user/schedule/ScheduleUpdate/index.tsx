@@ -10,32 +10,9 @@ import { getScheduleDetailRequest, getScheduleListRequest, patchScheduleRequest 
 import ResponseDto from "src/apis/response.dto";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import { YYYYMMDD, emptyExpenditure, emptySchedule, numberCommas } from "src/utils";
 
-const YYYYMMDD = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
-};
-
-const numberCommas = (number: Number) => {
-    return number.toLocaleString();
-};
-
-const emptySchedule = [
-    {
-        scheduleDate: YYYYMMDD(new Date()),
-        scheduleContent: "",
-        scheduleStartTime: "",
-        scheduleEndTime: "",
-    },
-];
-
-const emptyExpenditure = {
-    travelScheduleExpenditureDetail: "",
-    travelScheduleExpenditure: 0,
-};
-
+//                    interface : Schedule Update Input Box Props                     //
 interface ScheduleDateItemProps {
     index: number;
     scheduleDate: string;
@@ -148,7 +125,7 @@ export default function ScheduleWrite() {
             : result.code === "AF"
             ? "인증에 실패했습니다."
             : result.code === "NB"
-            ? "존재하지 않는 게시글번호입니다."
+            ? "존재하지 않는 게시물입니다."
             : result.code === "DBE"
             ? "서버에 문제가 있습니다."
             : "";

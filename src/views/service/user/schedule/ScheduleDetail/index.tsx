@@ -13,17 +13,7 @@ import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router";
-
-const YYYYMMDD = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
-};
-
-const numberCommas = (number: Number) => {
-    return number.toLocaleString();
-};
+import { YYYYMMDD, numberCommas } from "src/utils";
 
 //                    component : Schedule ListItem View 컴포넌트                     //
 function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
