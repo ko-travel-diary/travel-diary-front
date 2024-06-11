@@ -107,8 +107,8 @@ export const getTourAttractionRecommendStatusRequest =  async (tourAttractionsNu
     return result;
 }
 
-// function : 음식점 좋아요 API 함수
-export const tourRecommendCountRequest = async (tourAttractionsNumber: number | string, accessToken: string) => {
+// function : 관광지 좋아요 API 함수
+export const patchTourRecommendRequest = async (tourAttractionsNumber: number | string, accessToken: string) => {
     const result = await axios
         .patch(PATCH_TOURATTRACTIONS_RECOMMEND_URL(tourAttractionsNumber), {}, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)

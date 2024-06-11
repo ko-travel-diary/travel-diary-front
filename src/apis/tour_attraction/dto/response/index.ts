@@ -19,6 +19,7 @@ export interface GetTourAttractionsResponseDto extends ResponseDto {
     tourAttractionsOutline: string;
     tourAttractionsLat: number;
     tourAttractionsLng: number;
+    tourAttractionsRecommendCount: number;
 }
 
 export interface GetTourAttractionsRecommendResponseDto extends ResponseDto {

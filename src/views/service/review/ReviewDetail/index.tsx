@@ -15,7 +15,7 @@ import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
 import {
     deleteTravelReviewCommentRequest,
     deleteTravelReviewReqeust,
-    favoriteCountRequest,
+    patchFavoriteRequest,
     getTravelReviewCommentListRequest,
     getTravelReviewDetailRequest,
     getTravelReviewFavoriteStatusRequest,
@@ -32,7 +32,6 @@ import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { useScheduleStore } from "src/stores/useScheduleStores";
 import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
-import { access } from "fs";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
@@ -171,7 +170,7 @@ export default function ReviewDetail() {
         setReviewTitle(reviewTitle);
         setReviewContents(reviewContent);
         setReviewWriterId(writerId);
-        const datetime = reviewDatetime.slice(0,9);
+        const datetime = reviewDatetime.slice(0,10);
         setReviewDatetime(datetime);
         setTravelReviewImageUrl(travelReviewImageUrl);
         setReviewViewCount(reviewViewCount);
@@ -276,7 +275,7 @@ export default function ReviewDetail() {
         window.location.href = window.location.href;
     };
 
-    const favoriteCountResonse = (result: ResponseDto | null) => {
+    const patchFavoriteResponse = (result: ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "NB"
@@ -376,7 +375,7 @@ export default function ReviewDetail() {
             return;
         }
         setRecommendstate(!recommendStatus);
-        favoriteCountRequest(reviewNumber, cookies.accessToken).then(favoriteCountResonse);
+        patchFavoriteRequest(reviewNumber, cookies.accessToken).then(patchFavoriteResponse);
     };
 
     
