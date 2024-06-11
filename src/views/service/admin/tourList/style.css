@@ -18,9 +18,6 @@
 }
 .tour-list-control-box{
     display: flex;
-    gap: 10px;
-
-    margin-right: 10px;
 }
 .control-button {
     box-sizing: border-box;
@@ -36,7 +33,7 @@
 
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 200;
     line-height: 175%;
 
     color: black;

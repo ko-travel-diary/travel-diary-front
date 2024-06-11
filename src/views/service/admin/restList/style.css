@@ -1,3 +1,48 @@
+#rest-list-table-box{
+    display: flex;
+    gap: 56px;
+    justify-content: center;
+    text-align: center;
+
+    width: 100%;
+
+    overflow: hidden;
+    white-space: nowrap;
+    
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(238, 238, 238, 1);
+}
+
+.long-text{
+    line-height: 52px;
+    text-align: left;
+}
+.control-button {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 24px;
+
+    background-color: rgba(255,255,255,1);
+    border: 1px solid rgba(64, 64, 64, 1);
+    border-radius: 6px;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 175%;
+
+    color: black;
+
+    cursor: pointer;
+}
+.controll-button:hover {
+    background-color: rgba(238, 238, 238, 1);
+}
+
+
 #rest-list-wrapper{
     display: flex;
     flex-direction: column;
@@ -17,7 +62,6 @@
 }
 .rest-list-control-box{
     display: flex;
-    gap: 10px;
 
     margin-right: 10px;
 }
@@ -98,30 +142,6 @@
 .rest-list-table-button {
     width: 80px;
 }
-.control-button {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 8px 24px;
-
-    background-color: rgba(255,255,255,1);
-    border: 1px solid rgba(64, 64, 64, 1);
-    border-radius: 6px;
-
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 175%;
-
-    color: black;
-
-    cursor: pointer;
-}
-.controll-button:hover {
-    background-color: rgba(238, 238, 238, 1);
-}
 .rest-list-bottom{
     display: flex;
     justify-content: space-between;
@@ -144,9 +164,6 @@
     background-size: 100% 100%;
 
     cursor: pointer;
-}
-.rest-list-bottom-right{
-    width: 300px;
 }
 .rest-list-page-box {
     display: flex;
@@ -180,7 +197,9 @@
 
     cursor: pointer;
 }
-
+.rest-list-bottom-right{
+    width: 300px;
+}
 .rest-list-search-box {
     display: flex;
     align-items: center;
@@ -206,25 +225,5 @@
     line-height: 175%;
 }
 
-
-.rest-list-table-box{
-    display: flex;
-    gap: 56px;
-    justify-content: center;
-    text-align: center;
-
-    width: 100%;
-
-    overflow: hidden;
-    white-space: nowrap;
-    
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(238, 238, 238, 1);
-}
-
-.long-text{
-    line-height: 52px;
-    text-align: left;
-}
 
 

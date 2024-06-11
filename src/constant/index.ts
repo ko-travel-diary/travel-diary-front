@@ -188,7 +188,6 @@ export const POST_RESTAURANT_REQUEST_URL = `${SERVER_RESTAURANT_MODULE_URL}/addR
 export const PATCH_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
 export const DELETE_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/restlist/${restaurantNumber}`;
 
-export const LOCATION_URL = `${SERVER_API_URL}/location/search`;
 export const ADDRESS_URL = `${SERVER_API_URL}/address/search`;
 
 // description : Board Const

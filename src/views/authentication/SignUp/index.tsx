@@ -1,13 +1,11 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, forwardRef, useEffect, useRef, useState } from 'react';
 import Social from 'src/components/Social';
 import './style.css'
 import { useNavigate } from 'react-router';
 import ResponseDto from 'src/apis/response.dto';
 import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
 import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, NickNameCheckRequestDto, SignUpRequestDto } from 'src/apis/auth/dto/request';
-import { emailAuthCheckRequest, emailAuthRequest, idCheckRequest, nickNameCheckRequest, signInRequest, singUpRequest } from 'src/apis/auth';
-
-import DefaultProfileImage from 'src/assets/image/userProfileDefault.png';
+import { emailAuthCheckRequest, emailAuthRequest, idCheckRequest, nickNameCheckRequest, singUpRequest } from 'src/apis/auth';
 
 //                    interface : 회원가입 인풋 박스 프로퍼티즈                     //
 interface InputBoxProps {
@@ -20,37 +18,42 @@ interface InputBoxProps {
     message: string;
     buttonTitle?: string;
     onButtonClick?: () => void;
+    ref?: React.RefObject<HTMLInputElement>
 }
 
 //                    Component : 회원가입 인풋 박스 컴포넌트                     //
-function InputBox ({ title, value, onChange, placeholder, type, messageError, message, buttonTitle, onButtonClick }: InputBoxProps) {
+const InputBox = forwardRef<HTMLInputElement, InputBoxProps>((props, ref) => {
+    const { title, value, onChange, placeholder, type, messageError, message, buttonTitle, onButtonClick } = props;
 
-    //                    render :  회원가입 인풋 박스 컴포넌트                     //
     const messageClass = 'sign-up-message ' + (messageError ? 'error' :  'primary');
+    
     return (
         <div className='sign-up-input-box'>
             <div className='sign-up-input-main'>
                 <div className='sign-up-input-title'>{title}</div>
-                <div  className='sign-up-outline'>
-                    <input  className='sign-up-input' 
-                    type={type} 
-                    placeholder={placeholder} 
-                    value={value} 
-                    onChange={onChange}  />
+                <div className='sign-up-outline'>
+                    <input
+                        className='sign-up-input'
+                        type={type}
+                        placeholder={placeholder}
+                        value={value}
+                        onChange={onChange}
+                        ref={ref}
+                    />
                     <div className={messageClass}>{message}</div>
                 </div>
                 {onButtonClick && <div className='primary-button' onClick={onButtonClick}>{buttonTitle}</div>}
             </div>
         </div>
     );
-
-}
+});
 
 //                    Component : 회원가입 화면 컴포넌트                     //
 function SignUp () { 
 
     //                    state                     //
     const navigator = useNavigate();
+    const focusRef = useRef<HTMLInputElement | null>(null);
 
     const [userId, setUserId] = useState<string>('');
     const [userPassword, setUserPassword] = useState<string>('');
@@ -280,14 +283,19 @@ function SignUp () {
         const requestBody: SignUpRequestDto = {userId, userPassword, nickName, userEmail, authNumber}
         singUpRequest(requestBody).then(signUpResponse);
     }
+    
+    //                  Effect                  //
+    useEffect(() => {
+        if(focusRef.current) focusRef.current.focus();
+    }, [focusRef])
 
     //                    render : 회원가입 화면 컴포넌트                     //
     return (
         <div id='sign-up-wrapper'>
             <div className='sign-up-title'>회원가입</div>
-            <div className='sign-up-input-container'>
+            <div className='sign-up-input-container' >
                 <InputBox title='아이디' value={userId} onChange={onUserIdChangeHandler} placeholder='' type='text' 
-                messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler}  />
+                messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler} ref={focusRef}/>
 
                 <InputBox title='비밀번호' value={userPassword} onChange={onUserPasswordChangeHandler} placeholder='' type='password' 
                 messageError={userPasswordMessageError} message={userPasswordMessage} />

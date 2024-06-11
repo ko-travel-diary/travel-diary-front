@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import './style.css';
 import { Outlet, useLocation, useNavigate } from 'react-router';
-import SignIn from 'src/views/authentication/SignIn';
-import { ADMINPAGE_ABSOULUTE_PAGE, AUTH_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MYPAGE_ABSOULUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_OUT_REQUEST_URL, TRAVEL_ABSOLUTE_PATH } from 'src/constant';
+import { ADMINPAGE_ABSOULUTE_PAGE, MAIN_ABSOLUTE_PATH, MYPAGE_ABSOULUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH,  TRAVEL_ABSOLUTE_PATH } from 'src/constant';
 import { useUserStore } from 'src/stores';
 import { useCookies } from 'react-cookie';
 import { getUserInfoRequest } from 'src/apis/user';
 import { GetUserInfoResponseDto } from 'src/apis/user/dto/response';
 import ResponseDto from 'src/apis/response.dto';
-import axios from 'axios';
-import { bearerAuthorization } from 'src/apis';
-import { url } from 'inspector';
 
 import DefaultProfileImage from "src/assets/image/userProfileDefault.png";
 
 //                  Component                    //
 function TopNavigation () {
 
-    // eslint-disable-next-line no-restricted-globals
-    const currentPath = location.pathname.split('/')[2];
-
     //                                       state                                        //
     const { loginUserId, setLoginUserId, loginUserRole, setLoginUserRole } = useUserStore();
     const [cookies, setCookies] = useCookies();
+
     const [userProfile, setUserProfile] = useState<string>('');
     const [nickName, setNickName] = useState<string>('');
 
     const [buttonStatus, setButtonStatus] = useState<boolean>(false);
+
+    const currentLocation = useLocation();
     
     //                  function                   //
     const navigator = useNavigate();
@@ -84,34 +80,28 @@ function TopNavigation () {
     }, [cookies.accessToken]);
 
     //                  Render                  //
-    const movePage = loginUserRole === "ROLE_ADMIN" ? <div className='navigation-move-page' onClick={onMovePageButtonClickHandler}>관리자페이지</div> : <div className='navigation-move-page' onClick={onMovePageButtonClickHandler}>마이페이지</div>;
+    const pageRole = loginUserRole === "ROLE_ADMIN" ? '관리자페이지' : '마이페이지';
+    const mainPage = currentLocation.pathname === MAIN_ABSOLUTE_PATH ? 'top-navigation-item-active' : 'top-navigation-item';
+    const searchPage = currentLocation.pathname === TRAVEL_ABSOLUTE_PATH ? 'top-navigation-item-active' : 'top-navigation-item';
+    const reviewPage = currentLocation.pathname === REVIEW_ABSOULUTE_PATH ? 'top-navigation-item-active' : 'top-navigation-item';
+    const qnaPage = currentLocation.pathname === QNA_ABSOLUTE_PATH ? 'top-navigation-item-active' : 'top-navigation-item';
     return (
         <div id='top-navigation'>
             <div className='top-navigation-left'>
                 <div className='top-navigation-logo' onClick={onMainPageButtonClickHandler}></div>
                 <div className='top-navigation-title' onClick={onMainPageButtonClickHandler}>여행 일기</div>
             </div>
+
             <div className='top-navigation-main'>
-                { currentPath === undefined ?
-                    <div className='top-navigation-item-active' onClick={onMainPageButtonClickHandler}>메인 페이지</div> :
-                    <div className='top-navigation-item' onClick={onMainPageButtonClickHandler}>메인 페이지</div>
-                }
+                    <div className={mainPage} onClick={onMainPageButtonClickHandler}>메인 페이지</div>
                 <div className='vertical-divider'></div>
-                { currentPath === 'search' ?
-                    <div className='top-navigation-item-active' onClick={onTourButtonClickHandler}>관광명소 & 음식점 조회</div> :
-                    <div className='top-navigation-item' onClick={onTourButtonClickHandler}>관광명소 & 음식점 조회</div>
-                }
+                    <div className={searchPage} onClick={onTourButtonClickHandler}>관광명소 & 음식점 조회</div>
                 <div className='vertical-divider'></div>
-                { currentPath === 'review' ?
-                    <div className='top-navigation-item-active' onClick={onReivewButtonClickHandler}>여행 후기 게시글</div> :
-                    <div className='top-navigation-item' onClick={onReivewButtonClickHandler}>여행 후기 게시글</div>
-                }
+                    <div className={reviewPage} onClick={onReivewButtonClickHandler}>여행 후기 게시글</div>
                 <div className='vertical-divider'></div>
-                { currentPath === 'qna' ?
-                    <div className='top-navigation-item-active' onClick={onQnaButtonClickHandler}>Q&A</div> :
-                    <div className='top-navigation-item' onClick={onQnaButtonClickHandler}>Q&A</div>
-                }
+                    <div className={qnaPage} onClick={onQnaButtonClickHandler}>Q&A</div>
             </div>
+
             <div className='top-navigation-right'>
                 {!cookies.accessToken ? 
                     <div className='primary-button' onClick={onSignInButtonClickHandler}>로그인</div> :
@@ -120,7 +110,7 @@ function TopNavigation () {
                             {buttonStatus &&
                                 <div className='top-navigation-right-drop-down'>
                                     <div className='navigation-box'>
-                                        {movePage}
+                                        <div className='navigation-move-page' onClick={onMovePageButtonClickHandler}>{pageRole}</div>
                                         <div className='sign-out-button' onClick={onSignOutButtonClickHandler}>로그아웃</div>
                                     </div>
                                 </div>

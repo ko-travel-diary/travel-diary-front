@@ -26,8 +26,6 @@ export default function TourAdd() {
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>('');
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
-    const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
-    const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
 
     //                  Function                    //
     const navigator = useNavigate();
@@ -47,22 +45,22 @@ export default function TourAdd() {
     }
 
     //                  Event Handler                   //
-    const onTourAtrracntionNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAtrractionNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const name = event.target.value;
         setTourAttractionsName(name);
     }
 
-    const onTourAtrracntionLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAtrractionLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const location = event.target.value;        
         settourAtrractionLocation(location);
     }
 
-    const onTourAtrracntionTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAtrractionTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const telNumber = event.target.value;
         setTourAttractionsTelNumber(telNumber);
     }
 
-    const onTourAtrracntionHoursChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAtrractionHoursChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const hours = event.target.value;
         setTourAttractionsHours(hours);
     }
@@ -144,27 +142,27 @@ export default function TourAdd() {
         <div id='tour-register-wrapper'>
             <div className='tour-register-top'>
                 <div className='tour-register-top-element-box'>
-                    <div className='tour-register-top-title'>▣  이름</div>
+                    <div className='tour-register-top-title'>▣ 관광지 이름</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-name-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionNameChangeHandler}/>
+                        <input className='tour-register-name-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionNameChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 주소</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-address-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionLocationChangeHandler}/>
+                        <input className='tour-register-address-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionLocationChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 연락처</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-tel-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionTelNumberChangeHandler}/>
+                        <input className='tour-register-tel-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionTelNumberChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 영업시간</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-hour-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrracntionHoursChangeHandler}/>
+                        <input className='tour-register-hour-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionHoursChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>

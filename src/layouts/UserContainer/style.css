@@ -1,0 +1,26 @@
+/* #wrapper{
+    display: grid;
+    grid-template: 
+        "sidenav main" minmax(864px, auto)
+        / 257px minmax(1182px, 1fr);
+    margin: 20px 200px;
+    gap: 20px;
+}
+.side-navigator-container{
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 5px;
+}
+.side-container-element{
+    margin-top: 30px;
+    padding: 20px;
+
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 175%;
+}
+.side-container-link:hover{
+    cursor: pointer;
+} */

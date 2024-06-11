@@ -16,3 +16,7 @@ export const convertUrlToFile = async (url: string) => {
 
     return new File([data], fileName as string, meta);    
 };
+
+export const changeText = (text: string) => {
+    return text.replace(/<br\s*\/?>/g, " ").replace(/\n/g, "");
+}
