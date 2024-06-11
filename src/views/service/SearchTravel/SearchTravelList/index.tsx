@@ -15,6 +15,7 @@ import ResponseDto from "src/apis/response.dto";
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
 import { getRestaurantListRequest, getSearchRestaurantListRequest } from "src/apis/restaurant";
 import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
+import { changeText } from "src/utils";
 
 //                    component : Tour Search View List 화면 컴포넌트                     //
 function Tourlist({
@@ -28,10 +29,6 @@ function Tourlist({
 }: TourAttractionsListItem) {
     //                     function                     //
     const navigator = useNavigate();
-
-    const telNumber = tourAttractionsTelNumber ? tourAttractionsTelNumber.split("<br>").join("") : "";
-    const hours = tourAttractionsHours ? tourAttractionsHours.split("<br>").join("") : "";
-    const outline = tourAttractionsOutline ? tourAttractionsOutline.split("<br>").join("") : "";
 
     //                     event handler                     //
     const onClickHandler = () => {
@@ -62,7 +59,7 @@ function Tourlist({
                         <div className="travel-telNumber">
                             <div className="travel-title">연락처</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{telNumber}</div>
+                            <div className="travel-detail-info">{changeText(tourAttractionsTelNumber)}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-title">
@@ -74,13 +71,13 @@ function Tourlist({
                         <div className="travel-hours">
                             <div className="travel-title">운영시간</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{hours}</div>
+                            <div className="travel-detail-info">{changeText(tourAttractionsHours)}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
                             <div className="travel-title">개요</div>
-                            <div className="travel-outline">{outline}</div>
+                            <div className="travel-outline">{changeText(tourAttractionsOutline)}</div>
                         </div>
                     </div>
                 </div>
@@ -101,10 +98,6 @@ function Restlist({
 }: RestaurantListItem) {
     //                     function                     //
     const navigator = useNavigate();
-
-    const telNumber = restaurantTelNumber ? restaurantTelNumber.split("<br>").join("") : "";
-    const hours = restaurantHours ? restaurantHours.split("<br>").join("") : "";
-    const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : "";
 
     //                     event handler                     //
     const onClickHandler = () => {
@@ -135,7 +128,7 @@ function Restlist({
                         <div className="travel-telNumber">
                             <div className="travel-title">연락처</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{telNumber}</div>
+                            <div className="travel-detail-info">{changeText(restaurantTelNumber)}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-title">
@@ -147,13 +140,13 @@ function Restlist({
                         <div className="travel-hours">
                             <div className="travel-title">운영시간</div>
                             <div className="travel-detail-info-devider">{"|"}</div>
-                            <div className="travel-detail-info">{hours}</div>
+                            <div className="travel-detail-info">{changeText(restaurantHours)}</div>
                         </div>
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
                             <div className="travel-title">개요</div>
-                            <div className="travel-outline">{outline}</div>
+                            <div className="travel-outline">{changeText(restaurantOutline)}</div>
                         </div>
                     </div>
                 </div>

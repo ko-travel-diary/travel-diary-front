@@ -10,28 +10,9 @@ import { getScheduleListRequest, postScheduleRequest } from "src/apis/schedule";
 import ResponseDto from "src/apis/response.dto";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
 import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import { YYYYMMDD, emptyExpenditure, emptySchedule } from "src/utils";
 
-const YYYYMMDD = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
-};
-
-const emptySchedule = [
-    {
-        scheduleDate: YYYYMMDD(new Date()),
-        scheduleContent: "",
-        scheduleStartTime: "",
-        scheduleEndTime: "",
-    },
-];
-
-const emptyExpenditure = {
-    travelScheduleExpenditureDetail: "",
-    travelScheduleExpenditure: 0,
-};
-
+//                    interface : Schedule Write Input Box Props                     //
 interface ScheduleDateItemProps {
     index: number;
     scheduleDate: string;

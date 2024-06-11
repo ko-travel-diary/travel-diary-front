@@ -7,7 +7,6 @@ import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
 import { GetTravelReviewDetailResponseDto } from "src/apis/review/dto/response";
 import ResponseDto from "src/apis/response.dto";
 import { useNavigate } from "react-router";
-import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
 import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
 import { useUserStore } from "src/stores";
 import axios from "axios";
@@ -18,10 +17,7 @@ import { useScheduleStore } from "src/stores/useScheduleStores";
 import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
-
-const numberCommas = (number: Number) => {
-    return number.toLocaleString();
-};
+import { numberCommas } from "src/utils";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
@@ -30,6 +26,7 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
     const { setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
     const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
+
     //                    function                     //
     const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
         const message = !result
@@ -117,7 +114,7 @@ export default function ReviewUpdate() {
     const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
 
-    const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney} = useScheduleStore();
+    const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
     const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
     const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
 
@@ -188,14 +185,14 @@ export default function ReviewUpdate() {
             return;
         }
 
-        const { reviewTitle, reviewContent, writerId, travelReviewImageUrl,travelScheduleNumber } = result as GetTravelReviewDetailResponseDto;
+        const { reviewTitle, reviewContent, writerId, travelReviewImageUrl, travelScheduleNumber } = result as GetTravelReviewDetailResponseDto;
 
         setReviewTitle(reviewTitle);
         setReivewContent(reviewContent);
         setReviewWriterId(writerId);
         setTravelReviewImageUrl(travelReviewImageUrl);
         setTravelScheduleNumber(travelScheduleNumber);
-        if(travelScheduleNumber === 0) return;
+        if (travelScheduleNumber === 0) return;
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
     };
 
@@ -280,8 +277,8 @@ export default function ReviewUpdate() {
     };
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
-        if(!photoInput.current) return;
-        photoInput.current.value = '';
+        if (!photoInput.current) return;
+        photoInput.current.value = "";
 
         const newTravelReviewImageUrls = travelReviewImageUrl.filter((url, index) => index !== deleteIndex);
         setTravelReviewImageUrl(newTravelReviewImageUrls);
@@ -307,13 +304,13 @@ export default function ReviewUpdate() {
     //                    render : review 수정 화면 컴포넌트                     //
     return (
         <div id="review-write-wrapper">
-            {scheduleRenderStatus ? 
+            {scheduleRenderStatus ? (
                 <div className="schedule-delete-button-box">
                     <div className="schedule-delete-button" onClick={onScheduleRenderDeleteButton}></div>
                 </div>
-                :
+            ) : (
                 <></>
-            }
+            )}
             {scheduleRenderStatus && (
                 <div id="schedule-wrapper">
                     <div id="schedule-list-item-wrapper">
@@ -378,7 +375,7 @@ export default function ReviewUpdate() {
                     />
                 </div>
                 <div className="write-content-box">
-                {travelReviewImageUrl.map((url, index) => (
+                    {travelReviewImageUrl.map((url, index) => (
                         <div
                             className="review-detail-content"
                             key={url}
@@ -390,7 +387,7 @@ export default function ReviewUpdate() {
                                 backgroundPosition: "center",
                             }}
                         >
-                        <div className="delete-image-button" onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                            <div className="delete-image-button" onClick={() => onImageDeleteButtonClickHandler(index)}></div>
                         </div>
                     ))}
                     <textarea

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import "./style.css";
 import { useNavigate } from "react-router";
 import { MAIN_ABSOLUTE_PATH, MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE } from "src/constant";

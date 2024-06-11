@@ -1,18 +1,26 @@
-import Container from "src/layouts/Container";
-import './style.css'
+import "./style.css";
 import { useNavigate } from "react-router";
 import { ReviewBoardListItem } from "src/types";
 import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { ChangeEvent, useEffect, useState } from "react";
-import { getTravelReviewBoardRequest, getTravelReviewTitleAndContentSearchRequest, getTravelReviewWriteDateSearchRequest, getTravelReviewWriterSearchRequest } from "src/apis/review";
-import { GetReviewTitleAndContentSearchRequestDto, GetReviewWriteDateSearchRequestDto, GetReviewWriterSearchRequestDto, GetTravelReviewBoardResponseDto } from "src/apis/review/dto/response";
+import {
+    getTravelReviewBoardRequest,
+    getTravelReviewTitleAndContentSearchRequest,
+    getTravelReviewWriteDateSearchRequest,
+    getTravelReviewWriterSearchRequest,
+} from "src/apis/review";
+import {
+    GetReviewTitleAndContentSearchRequestDto,
+    GetReviewWriteDateSearchRequestDto,
+    GetReviewWriterSearchRequestDto,
+    GetTravelReviewBoardResponseDto,
+} from "src/apis/review/dto/response";
 import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
 import { useUserStore } from "src/stores";
-import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
 //                    component                    //
-function ListItem ({ 
+function ListItem({
     reviewNumber,
     reviewTitle,
     writerId,
@@ -21,19 +29,17 @@ function ListItem ({
     reviewViewCount,
     reviewFavoriteCount,
 }: ReviewBoardListItem) {
-
     //                    function                    //
     const navigator = useNavigate();
 
-    
-    const datetime = reviewDatetime.slice(0,10);
+    const datetime = reviewDatetime.slice(0, 10);
 
     //                    event handler                    //
     const onClickHandler = () => navigator(REVIEW_DETAIL_ABSOLUTE_PATH(reviewNumber));
 
     //                    render                    //
     return (
-        <div className='review-list-table-tr' onClick={onClickHandler}>
+        <div className="review-list-table-tr" onClick={onClickHandler}>
             {travelReviewImageUrl === null ? (
                 <div className="travel-list-picture">
                     <img title="travel" width="200px" height="135px" src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`} />
@@ -43,18 +49,17 @@ function ListItem ({
                     <img title="travel" width="200px" height="135px" src={`${travelReviewImageUrl}`} />
                 </div>
             )}
-            <div className='review-list-table-title'>{reviewTitle}</div>
-            <div className='review-list-table-writer'>{writerId}</div>
-            <div className='review-list-table-write-date'>{datetime}</div>
-            <div className='review-list-table-view-count'>{reviewViewCount}</div>
-            <div className='review-list-table-favorite-count'>{reviewFavoriteCount}</div>
+            <div className="review-list-table-title">{reviewTitle}</div>
+            <div className="review-list-table-writer">{writerId}</div>
+            <div className="review-list-table-write-date">{datetime}</div>
+            <div className="review-list-table-view-count">{reviewViewCount}</div>
+            <div className="review-list-table-favorite-count">{reviewFavoriteCount}</div>
         </div>
     );
 }
 
 //                    Component : 리뷰 게시판 화면 컴포넌트                     //
-export default function ReviewList () {
-
+export default function ReviewList() {
     //                    state                    //
     const [cookies] = useCookies();
     const { loginUserRole } = useUserStore();
@@ -67,10 +72,10 @@ export default function ReviewList () {
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
 
-    const [searchWord, setSearchWord] = useState<string>('');
+    const [searchWord, setSearchWord] = useState<string>("");
     const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
 
-    const [selectedOption, setSelectedOption] = useState<string>('writer');
+    const [selectedOption, setSelectedOption] = useState<string>("writer");
 
     //                    function                    //
     const navigator = useNavigate();
@@ -87,7 +92,7 @@ export default function ReviewList () {
 
     const changeSection = (totalPage: number) => {
         if (!currentSection) return;
-        const startPage = (currentSection * COUNT_PER_SECTION) - (COUNT_PER_SECTION - 1);
+        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
         let endPage = currentSection * COUNT_PER_SECTION;
         if (endPage > totalPage) endPage = totalPage;
         const pageList: number[] = [];
@@ -112,15 +117,18 @@ export default function ReviewList () {
         changeSection(totalPage);
     };
 
-
     const getTravelReviewBoardResponse = (result: GetTravelReviewBoardResponseDto | ResponseDto | null) => {
-        const message =
-        !result ? '서버에 문제가 있습니다.' :
-        result.code === 'VF' ? '검색어를 입력하세요.' : 
-        result.code === 'AF' ? '인증에 실패했습니다.' :
-        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "검색어를 입력하세요."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
 
-        if (!result || result.code !== 'SU') {
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
@@ -130,67 +138,78 @@ export default function ReviewList () {
 
         setCurrentPage(1);
         setCurrentSection(1);
-
     };
 
     const getTravelReviewTitleAndContentSearchResponse = (result: ResponseDto | GetReviewTitleAndContentSearchRequestDto | null) => {
-        const message =
-            !result ? '서버에 문제가 있습니다.' :
-            result.code === 'VF' ? '검색어를 입력하세요.' : 
-            result.code === 'AF' ? '인증에 실패했습니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "검색어를 입력하세요."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
 
-        if (!result || result.code !== 'SU') {
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        const { reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
         changeBoardList(reviewSearchList);
 
-        if(reviewSearchList.length == 0) alert('검색 결과가 없습니다.');
+        if (reviewSearchList.length == 0) alert("검색 결과가 없습니다.");
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
     };
-    
-    const getTravelReviewWriteDateSearchResponse = (result: ResponseDto | GetReviewWriteDateSearchRequestDto | null) => {
-        const message =
-        !result ? '서버에 문제가 있습니다.' :
-        result.code === 'VF' ? '검색어를 입력하세요.' : 
-        result.code === 'AF' ? '인증에 실패했습니다.' :
-        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-        if (!result || result.code !== 'SU') {
+    const getTravelReviewWriteDateSearchResponse = (result: ResponseDto | GetReviewWriteDateSearchRequestDto | null) => {
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "검색어를 입력하세요."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
+
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        const { reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
         changeBoardList(reviewSearchList);
 
-        if(reviewSearchList.length == 0) alert('검색 결과가 없습니다.');
+        if (reviewSearchList.length == 0) alert("검색 결과가 없습니다.");
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
     };
 
     const getTravelReviewWriterSearchResponse = (result: ResponseDto | GetReviewWriterSearchRequestDto | null) => {
-        const message =
-        !result ? '서버에 문제가 있습니다.' :
-        result.code === 'VF' ? '검색어를 입력하세요.' : 
-        result.code === 'AF' ? '인증에 실패했습니다.' :
-        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        const message = !result
+            ? "서버에 문제가 있습니다."
+            : result.code === "VF"
+            ? "검색어를 입력하세요."
+            : result.code === "AF"
+            ? "인증에 실패했습니다."
+            : result.code === "DBE"
+            ? "서버에 문제가 있습니다."
+            : "";
 
-        if (!result || result.code !== 'SU') {
+        if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
 
-        const{ reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        const { reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
         changeBoardList(reviewSearchList);
 
-        if(reviewSearchList.length === 0) alert('검색 결과가 없습니다.');
+        if (reviewSearchList.length === 0) alert("검색 결과가 없습니다.");
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
@@ -214,13 +233,13 @@ export default function ReviewList () {
     };
 
     const onWriteButtonClickHandler = () => {
-        if(!cookies.accessToken) {
-            alert('로그인 후 이용해 주세요');
+        if (!cookies.accessToken) {
+            alert("로그인 후 이용해 주세요");
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
-        if (loginUserRole !== 'ROLE_USER') {
-            alert('사용자가 아닙니다.');
+        if (loginUserRole !== "ROLE_USER") {
+            alert("사용자가 아닙니다.");
             navigator(REVIEW_ABSOULUTE_PATH);
             return;
         }
@@ -237,15 +256,12 @@ export default function ReviewList () {
     };
 
     const onSearchButtonClickHandler = () => {
-        if(selectedOption === "writer")
-            getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
-        
-        if(selectedOption === "write-date")
-            getTravelReviewWriteDateSearchRequest(searchWord).then(getTravelReviewWriteDateSearchResponse);
-        
-        if(selectedOption === "title-contents")
+        if (selectedOption === "writer") getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
+
+        if (selectedOption === "write-date") getTravelReviewWriteDateSearchRequest(searchWord).then(getTravelReviewWriteDateSearchResponse);
+
+        if (selectedOption === "title-contents")
             getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
-        
     };
 
     //                    effect                    //
@@ -269,12 +285,11 @@ export default function ReviewList () {
 
     useEffect(() => {
         setSearchButtonStatus(!setSearchButtonStatus);
-    }, [searchButtonStatus])
+    }, [searchButtonStatus]);
 
     //                    render                    //
     return (
         <div id="review-wrapper">
-
             <div className="review-search-wrapper">
                 <div className="review-search-item">
                     <div className="review-search-item-writer font-size-color ">
@@ -282,22 +297,31 @@ export default function ReviewList () {
                         작성자
                     </div>
                     <div className="review-search-item-write-date font-size-color">
-                    <input name="check" type="radio" onChange={onRadioChangeHandler} value={"write-date"}/>
+                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"write-date"} />
                         작성일
                     </div>
                     <div className="review-search-item-title-contents font-size-color">
-                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"title-contents"}/>
+                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"title-contents"} />
                         제목 + 내용
                     </div>
                 </div>
                 <div className="review-search-box">
                     <div className="review-search-input-box">
-                        <input className="review-search-input" placeholder="검색어를 입력하세요." value={searchWord} onChange={onSearchWordChangeHandler} />
+                        <input
+                            className="review-search-input"
+                            placeholder="검색어를 입력하세요."
+                            value={searchWord}
+                            onChange={onSearchWordChangeHandler}
+                        />
                     </div>
-                    <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>검색</div>
+                    <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>
+                        검색
+                    </div>
                 </div>
                 <div className="writebox">
-                    <div className="review-write-button primary-button" onClick={onWriteButtonClickHandler}>글쓰기</div>
+                    <div className="review-write-button primary-button" onClick={onWriteButtonClickHandler}>
+                        글쓰기
+                    </div>
                 </div>
             </div>
 
@@ -310,20 +334,26 @@ export default function ReviewList () {
                     <div className="review-list-table-view-count">조회수</div>
                     <div className="review-list-table-favorite-count">추천수</div>
                 </div>
-                {viewList.map(item => <ListItem {...item} />)}
+                {viewList.map((item) => (
+                    <ListItem {...item} />
+                ))}
             </div>
 
             <div className="review-list-bottom">
-                <div className='review-list-pagenation'>
-                    <div className='review-list-page-left' onClick={onPreSectionClickHandler}></div>
-                    <div className='review-list-page-box'>
-                        {pageList.map(page => 
-                        page === currentPage ?
-                        <div className='review-list-page-active'>{page}</div> :
-                        <div className='review-list-page' onClick={() => onPageClickHandler(page)}>{page}</div>
+                <div className="review-list-pagenation">
+                    <div className="review-list-page-left" onClick={onPreSectionClickHandler}></div>
+                    <div className="review-list-page-box">
+                        {pageList.map((page) =>
+                            page === currentPage ? (
+                                <div className="review-list-page-active">{page}</div>
+                            ) : (
+                                <div className="review-list-page" onClick={() => onPageClickHandler(page)}>
+                                    {page}
+                                </div>
+                            )
                         )}
                     </div>
-                    <div className='review-list-page-right' onClick={onNextSectionClickHandler}></div>
+                    <div className="review-list-page-right" onClick={onNextSectionClickHandler}></div>
                 </div>
             </div>
         </div>

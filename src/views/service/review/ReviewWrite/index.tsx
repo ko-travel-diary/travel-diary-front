@@ -15,10 +15,7 @@ import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
 import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
-
-const numberCommas = (number: Number) => {
-    return number.toLocaleString();
-};
+import { numberCommas } from "src/utils";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
@@ -77,7 +74,7 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //
-    const datetime = scheduleDate.slice(0,10);
+    const datetime = scheduleDate.slice(0, 10);
     return (
         <div className="schedule-list-box">
             <div>{datetime}</div>
@@ -190,8 +187,8 @@ export default function ReviewWrite() {
     };
 
     const onPostReviewButtonClickHandler = async () => {
-        if (!reviewTitle.trim() || !reviewContent.trim()){
-            alert("제목과 내용을 모두 입력해 주세요.")
+        if (!reviewTitle.trim() || !reviewContent.trim()) {
+            alert("제목과 내용을 모두 입력해 주세요.");
             return;
         }
         if (!cookies.accessToken) return;
@@ -238,8 +235,8 @@ export default function ReviewWrite() {
     };
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
-        if(!photoInput.current) return;
-        photoInput.current.value = '';
+        if (!photoInput.current) return;
+        photoInput.current.value = "";
 
         const newTravelReviewImageUrls = travelReviewImageUrl.filter((url, index) => index !== deleteIndex);
         setTravelReviewImageUrl(newTravelReviewImageUrls);
@@ -250,7 +247,7 @@ export default function ReviewWrite() {
 
     const onScheduleRenderDeleteButton = () => {
         setScheduleRenderStatus(!scheduleRenderStatus);
-    }
+    };
 
     //                    effect                    //
     useEffect(() => {
@@ -265,13 +262,13 @@ export default function ReviewWrite() {
     //                    render : review 작성 화면 컴포넌트                     //
     return (
         <div id="review-write-wrapper">
-            {scheduleRenderStatus ? 
+            {scheduleRenderStatus ? (
                 <div className="schedule-delete-button-box">
                     <div className="schedule-delete-button" onClick={onScheduleRenderDeleteButton}></div>
                 </div>
-                :
+            ) : (
                 <></>
-            }
+            )}
             {scheduleRenderStatus && (
                 <div id="schedule-wrapper">
                     <div id="schedule-list-item-wrapper">
@@ -348,7 +345,7 @@ export default function ReviewWrite() {
                                 backgroundPosition: "center",
                             }}
                         >
-                        <div className="delete-image-button" onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                            <div className="delete-image-button" onClick={() => onImageDeleteButtonClickHandler(index)}></div>
                         </div>
                     ))}
                     <textarea
