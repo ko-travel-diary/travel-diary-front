@@ -16,7 +16,7 @@ import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponse
 import { getRestaurantListRequest, getSearchRestaurantListRequest } from "src/apis/restaurant";
 import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
 
-//                    Component : Qna 화면 컴포넌트                     //
+//                    component : Tour Search View List 화면 컴포넌트                     //
 function Tourlist({
     tourAttractionsNumber,
     tourAttractionsImageUrl,
@@ -89,7 +89,7 @@ function Tourlist({
     );
 }
 
-//                    Component : Qna 화면 컴포넌트                     //
+//                    component : Rest Search List 컴포넌트                     //
 function Restlist({
     restaurantNumber,
     restaurantImageUrl,
@@ -112,7 +112,7 @@ function Restlist({
             navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(restaurantNumber));
         }
     };
-    //                    Render : Qna 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div className="travel-list-table" onClick={onClickHandler}>
             <div className="travel-list-table-th">
@@ -162,12 +162,14 @@ function Restlist({
     );
 }
 
-//                    Component : Qna 화면 컴포넌트                     //
+//                    component : Tour / Rest Search List 컴포넌트                     //
 export default function SearchTravelList() {
     //                    state                     //
     const [selectLocal, setSelectLocal] = useState<string>("");
+
     const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
     const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
+
     const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>([]);
     const [restViewList, setRestViewList] = useState<RestaurantListItem[]>([]);
 
@@ -427,7 +429,7 @@ export default function SearchTravelList() {
         setSearchButtonStatus(!setSearchButtonStatus);
     }, [searchButtonStatus]);
 
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div id="travelList-wrapper">
             <div className="travel-search-list">

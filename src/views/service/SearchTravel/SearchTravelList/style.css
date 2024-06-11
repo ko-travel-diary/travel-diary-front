@@ -116,9 +116,9 @@ html::-webkit-scrollbar {
     width: 1100px;
 }
 
-.travel-list-table:hover {
+.travel-list-table-th:hover {
     cursor: pointer;
-    color: rgba(238, 238, 238, 0.8);
+    background-color: rgba(238, 238, 238, 0.2);
 }
 
 .travel-list-table-title {
@@ -191,7 +191,7 @@ html::-webkit-scrollbar {
 
     padding-left: 15px;
 
-    width: 1214px;
+    width: 1150px;
 }
 
 .travel-list-picture {

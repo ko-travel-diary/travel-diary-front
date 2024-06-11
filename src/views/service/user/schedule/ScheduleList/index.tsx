@@ -8,7 +8,7 @@ import { getScheduleListRequest } from "src/apis/schedule";
 import ResponseDto from "src/apis/response.dto";
 import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 
-//                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
+//                    component : Schedule ListItem View 컴포넌트                     //
 function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
     //                     function                     //
     const navigator = useNavigate();
@@ -16,7 +16,7 @@ function ScheduleListView({ travelScheduleName, travelScheduleNumber }: Schedule
     //                     event handler                     //
     const onClickHandler = () => navigator(SCHEDULE_DETAIL_ABSOLUTE_PATH(travelScheduleNumber));
 
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div className="schedule-list" onClick={onClickHandler}>
             {travelScheduleName}
@@ -24,7 +24,7 @@ function ScheduleListView({ travelScheduleName, travelScheduleNumber }: Schedule
     );
 }
 
-//                    Component : SCHEDULE LIST 화면 컴포넌트                     //
+//                    component : Schedule List 화면 컴포넌트                     //
 export default function ScheduleList() {
     //                     state                     //
     const [cookies] = useCookies();
@@ -78,7 +78,6 @@ export default function ScheduleList() {
         <div id="schedule-wrapper">
             <div className="schedule-list-table">
                 <div className="schedule-add-table">
-                    <div style={{ width: "10px" }}></div>
                     <div className="schedule-add" onClick={onScheduleAddClickHandler}>
                         새 일정
                     </div>

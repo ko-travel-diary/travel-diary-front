@@ -34,7 +34,7 @@ input::-webkit-inner-spin-button {
 
 .schedule-add-table {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
 }
 
 .schedule-add {
@@ -154,6 +154,8 @@ input::-webkit-inner-spin-button {
     display: flex;
 
     gap: 3px;
+
+    font-size: 12px;
 }
 
 .calendar-container {
@@ -191,6 +193,8 @@ input::-webkit-inner-spin-button {
     gap: 3px;
 
     margin-bottom: 10px;
+
+    font-size: 12px;
 }
 
 .schedule-text {
@@ -251,8 +255,8 @@ input::-webkit-inner-spin-button {
 .schedule-minus-icon {
     display: flex;
 
-    width: 21px;
-    height: 21px;
+    width: 19px;
+    height: 19px;
 
     background-image: url(../../../../../assets/image/minus-icon.png);
     background-size: 100%;
@@ -359,6 +363,8 @@ input::-webkit-inner-spin-button {
     margin-left: 10px;
     padding: 5px 5px 10px 5px;
     gap: 10px;
+
+    font-size: 12px;
 }
 
 .schedule-money {
@@ -419,13 +425,8 @@ input::-webkit-inner-spin-button {
 
 .schedule-write-table {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
+    gap: 5px;
 
     padding: 10px;
-}
-
-.schedule-bottom-right-box {
-    display: flex;
-
-    gap: 5px;
 }

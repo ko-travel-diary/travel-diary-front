@@ -9,7 +9,7 @@ html::-webkit-scrollbar {
 
 #qna-write-wrapper {
     max-width: 1400px;
-    margin: 100px 100px;
+    margin: 100px 200px;
     display: flex;
     flex-direction: column;
 
@@ -82,7 +82,7 @@ html::-webkit-scrollbar {
 
 .qna-write-bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
 
     min-width: 1434px;
 }

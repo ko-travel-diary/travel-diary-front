@@ -25,7 +25,7 @@ html::-webkit-scrollbar {
     display: flex;
     justify-content: center;
 
-    border-radius: 8PX;
+    border-radius: 8px;
     padding: 12px 20px;
 
     font-size: 14px;
@@ -88,10 +88,10 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid rgba(238,238,238,1);
+    border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
 
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .myreview-list-table-title {
@@ -100,19 +100,19 @@ html::-webkit-scrollbar {
     padding: 15px 24px;
 
     gap: 95px;
-    
+
     font-size: 13px;
     font-weight: 700;
     text-align: center;
-    
-    color: rgba(64,64,64,1);
+
+    color: rgba(64, 64, 64, 1);
 }
 
 .myreview-list-table-list {
     display: flex;
     align-items: center;
     padding: 15px 24px;
-    border-top: 1px solid rgba(238,238,238,1);
+    border-top: 1px solid rgba(238, 238, 238, 1);
 
     gap: 95px;
 
@@ -121,7 +121,7 @@ html::-webkit-scrollbar {
     line-height: 20px;
     text-align: center;
 
-    color: rgba(64,64,64,1);
+    color: rgba(64, 64, 64, 1);
 }
 
 .myreview-list-table-list:hover {
@@ -140,7 +140,7 @@ html::-webkit-scrollbar {
 }
 
 .myreview-list-write-date {
-    width: 70px;
+    width: 90px;
 }
 
 .myreview-list-view-count {
@@ -156,7 +156,7 @@ html::-webkit-scrollbar {
     display: flex;
     align-items: center;
 
-    gap: 24px; 
+    gap: 24px;
 }
 
 .myreview-list-page-left {
@@ -189,7 +189,7 @@ html::-webkit-scrollbar {
     font-weight: 400;
     line-height: 20px;
 
-    color: rgba(148,146,166,1);
+    color: rgba(148, 146, 166, 1);
 
     cursor: pointer;
 }
@@ -199,7 +199,7 @@ html::-webkit-scrollbar {
     font-weight: 400;
     line-height: 20px;
 
-    color: rgba(64,64,64,1);
+    color: rgba(64, 64, 64, 1);
 
     cursor: default;
 }
@@ -211,9 +211,9 @@ html::-webkit-scrollbar {
 }
 
 .myreview-list-search-input-box {
-    border: 1px solid rgba(238,238,238,1);
+    border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 6px;
-    
+
     padding: 8px 16px;
     width: 168px;
 
@@ -231,4 +231,3 @@ html::-webkit-scrollbar {
     font-weight: 400;
     line-height: 175%;
 }
-

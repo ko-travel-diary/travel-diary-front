@@ -8,17 +8,17 @@ import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH } from "src/constant";
 import { PostQnaRequestDto } from "src/apis/qna/dto/request";
 import { postQnaRequest } from "src/apis/qna";
 
-//                    Component : Qna 화면 컴포넌트                     //
+//                    component : Qna Write 화면 컴포넌트                     //
 export default function QnaWrite() {
     //                    state                     //
-    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
+    const [cookies] = useCookies();
 
     const { loginUserRole } = useUserStore();
 
-    const [cookies] = useCookies();
-
     const [qnaTitle, setQnaTitle] = useState<string>("");
     const [qnaContent, setQnaContent] = useState<string>("");
+
+    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -77,7 +77,7 @@ export default function QnaWrite() {
         }
     }, [loginUserRole]);
 
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div id="qna-write-wrapper">
             <div className="qna-write-top">
@@ -102,7 +102,6 @@ export default function QnaWrite() {
                 />
             </div>
             <div className="qna-write-bottom">
-                <div style={{ width: "250px" }}></div>
                 <div className="primary-button" onClick={onPostButtonClickHandler}>
                     올리기
                 </div>

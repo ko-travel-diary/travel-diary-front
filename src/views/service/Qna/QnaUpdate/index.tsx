@@ -9,16 +9,20 @@ import { GetQnaResponseDto } from "src/apis/qna/dto/response";
 import { getQnaRequest, patchQnaRequest } from "src/apis/qna";
 import { PatchQnaRequestDto } from "src/apis/qna/dto/request";
 
-//                    Component : Qna 화면 컴포넌트                     //
+//                    component : Qna Update 화면 컴포넌트                     //
 export default function QnaUpdate() {
     //                    state                     //
-    const qnaContentRef = useRef<HTMLTextAreaElement | null>(null);
-    const { loginUserId, loginUserRole } = useUserStore();
-    const { receptionNumber } = useParams();
     const [cookies] = useCookies();
+
+    const { receptionNumber } = useParams();
+
+    const { loginUserId, loginUserRole } = useUserStore();
+
     const [writerId, setWriterId] = useState<string>("");
     const [qnaTitle, setQnaTitle] = useState<string>("");
     const [qnaContent, setQnaContent] = useState<string>("");
+
+    const qnaContentRef = useRef<HTMLTextAreaElement | null>(null);
 
     //                   function                        //
     const navigator = useNavigate();
@@ -124,7 +128,7 @@ export default function QnaUpdate() {
         getQnaRequest(receptionNumber, cookies.accessToken).then(getQnaResponse);
     }, [loginUserRole]);
 
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div id="qna-write-wrapper">
             <div className="qna-write-top">
@@ -149,7 +153,6 @@ export default function QnaUpdate() {
                 />
             </div>
             <div className="qna-write-bottom">
-                <div style={{ width: "250px" }}></div>
                 <div className="primary-button" onClick={onUpdateButtonClickHandler}>
                     수정
                 </div>
