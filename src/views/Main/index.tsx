@@ -933,7 +933,6 @@ export default function Main() {
   //                    render : 메인 화면 컴포넌트                     //
   return (
     <div id="main-wrapper">
-      {mapCenter.lat} {mapCenter.lng}
       <Map
         ref={mapRef}
         center={mapCenter}

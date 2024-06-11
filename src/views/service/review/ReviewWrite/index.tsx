@@ -16,6 +16,10 @@ import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 
+const numberCommas = (number: Number) => {
+    return number.toLocaleString();
+};
+
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
     //                    state                     //
@@ -92,7 +96,7 @@ function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleE
     return (
         <div className="expenditure-item">
             <div>{travelScheduleExpenditureDetail}</div>
-            <div>{travelScheduleExpenditure}</div>
+            <div>{numberCommas(Number(travelScheduleExpenditure))} 원</div>
         </div>
     );
 }
@@ -277,19 +281,18 @@ export default function ReviewWrite() {
                         <div> 가계부</div>
                         <div className="total-people-money-box">
                             <div>인원수</div>
+                            <div className="total-people">{travelSchedulePeople} 명</div>
                             <div>|</div>
-                            <div className="total-people">{travelSchedulePeople}</div>
                             <div>총 금액</div>
-                            <div>|</div>
-                            <div className="total-money">{travelScheduleTotalMoney}</div>
+                            <div className="total-money">{numberCommas(Number(travelScheduleTotalMoney))} 원</div>
                         </div>
                         {expenditureViewList && expenditureViewList.map((item) => <ExpenditureListItems {...item} />)}
                         <div className="balance-duchPay">
                             <div>잔액</div>
-                            <div>{balnace}</div>
+                            <div>{numberCommas(Number(balnace))} 원</div>
                             <div>|</div>
                             <div>더치페이</div>
-                            <div>{duchPay}</div>
+                            <div>{numberCommas(Number(duchPay))} 원</div>
                         </div>
                     </div>
                 </div>

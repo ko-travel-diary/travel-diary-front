@@ -20,3 +20,7 @@ export const convertUrlToFile = async (url: string) => {
 export const changeText = (text: string) => {
     return text.replace(/<br\s*\/?>/g, " ").replace(/\n/g, "");
 }
+
+export const numberCommas = (number: Number) => {
+    return number.toLocaleString();
+};
