@@ -177,6 +177,10 @@
     font-size: 16px;
 }
 
+.side-list-item-info-title:hover {
+    cursor: pointer;
+}
+
 .side-list-item-info-type {
     font-size: 12px;
     color: rgba(64, 64, 64, 0.8);
@@ -326,6 +330,10 @@
     font-weight: 600;
 }
 
+.info-box-main-title:hover {
+    cursor: pointer;
+}
+
 .info-box-main-type {
     width: 80px;
     color: rgba(64, 64, 64, 0.8);
@@ -354,8 +362,8 @@
     width: 36px;
     height: 36px;
 
-    /* background-image: url('../../assets/image/favorite-icon.png');
-    background-size: 100% 100%; */
+    background-image: url('../../assets/image/favorite-icon-clicked.png');
+    background-size: 100% 100%;
 }
 
 .favorite-icon-button-clicked:hover {

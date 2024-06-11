@@ -172,7 +172,7 @@ export const increaseViewCountRequest = async (reviewNumber: number | string) =>
 };
 
 // function : 리뷰 게시물 좋아요 API 함수
-export const favoriteCountRequest = async (reviewNumber: number | string, accessToken: string) => {
+export const patchFavoriteRequest = async (reviewNumber: number | string, accessToken: string) => {
     const result = await axios
         .patch(PATCH_FAVORITE_COUNT_REQUEST_URL(reviewNumber), {}, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)

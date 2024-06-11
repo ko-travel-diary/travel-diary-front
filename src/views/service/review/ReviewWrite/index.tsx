@@ -73,9 +73,10 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //
+    const datetime = scheduleDate.slice(0,10);
     return (
         <div className="schedule-list-box">
-            <div>{scheduleDate}</div>
+            <div>{datetime}</div>
             <div className="schedule-item">
                 <div>{scheduleContent}</div>
                 <div>{scheduleStartTime}</div>

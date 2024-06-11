@@ -64,7 +64,7 @@ export const getRestaurantRecommendStatusRequest =  async (restaurantNumber: num
 }
 
 // function : 음식점 좋아요 API 함수
-export const restRecommendCountRequest = async (restaurantNumber: number | string, accessToken: string) => {
+export const patchRestRecommendRequest = async (restaurantNumber: number | string, accessToken: string) => {
     const result = await axios
         .patch(PATCH_RESTAURANT_RECOMMEND_URL(restaurantNumber), {}, bearerAuthorization(accessToken))
         .then(requestHandler<ResponseDto>)
