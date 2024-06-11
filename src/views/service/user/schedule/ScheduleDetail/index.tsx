@@ -13,13 +13,11 @@ import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router";
-import { useScheduleNameStore } from "src/stores/useScheduleNameStores";
 
 const YYYYMMDD = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    //check zero padding
     return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
 };
 
@@ -27,19 +25,17 @@ const numberCommas = (number: Number) => {
     return number.toLocaleString();
 };
 
-//                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
+//                    component : Schedule ListItem View 컴포넌트                     //
 function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
-    const { setTravelScheduleName } = useScheduleNameStore();
     //                     function                     //
     const navigator = useNavigate();
 
     //                     event handler                     //
     const onClickHandler = () => {
         navigator(SCHEDULE_DETAIL_ABSOLUTE_PATH(travelScheduleNumber));
-        setTravelScheduleName(travelScheduleName);
     };
 
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div className="schedule-list" onClick={onClickHandler}>
             {travelScheduleName}
@@ -47,9 +43,9 @@ function ScheduleListView({ travelScheduleName, travelScheduleNumber }: Schedule
     );
 }
 
-//                    Component : SCHEDULE LIST 컴포넌트                     //
+//                    component : Schedule List View 컴포넌트                     //
 function ScheduleListItem({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div className="schedule-add-box">
             <div className="schedule-calendar-box">
@@ -69,9 +65,9 @@ function ScheduleListItem({ scheduleDate, scheduleContent, scheduleStartTime, sc
     );
 }
 
-//                    Component : SCHEDULE LIST 컴포넌트                     //
+//                    component : Schedule ExpenditureList 컴포넌트                     //
 function ExpendListItem({ travelScheduleExpenditureDetail, travelScheduleExpenditure }: ExpenditureList) {
-    //                    render : QnA 화면 컴포넌트                     //
+    //                    render                     //
     return (
         <div className="schedule-household-add-box">
             <div className="schedule-text">{travelScheduleExpenditureDetail}</div>
@@ -81,15 +77,15 @@ function ExpendListItem({ travelScheduleExpenditureDetail, travelScheduleExpendi
     );
 }
 
-//                    Component : SCHEDULE LIST 화면 컴포넌트                     //
+//                    component : Schedule Detail 화면 컴포넌트                     //
 export default function ScheduleDetail() {
     //                     state                     //
     const [cookies] = useCookies();
+
     const { travelScheduleNumber } = useParams();
 
-    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
-    const [scheduleView, setScheduleView] = useState<ScheduleListViewItem[]>([]);
+    const [travelScheduleName, setTravelScheduleName] = useState<string>("");
+
     const [scheduleList, setScheduleListItem] = useState<ScheduleList[]>([]);
     const [expenditureList, setExpenditureListItem] = useState<ExpenditureList[]>([]);
 
@@ -97,7 +93,8 @@ export default function ScheduleDetail() {
     const [scheduleListViewList, setScheduleListViewList] = useState<ScheduleList[]>([]);
     const [expendListViewList, setExpendListViewList] = useState<ExpenditureList[]>([]);
 
-    const { travelScheduleName } = useScheduleNameStore();
+    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
+    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
@@ -148,7 +145,9 @@ export default function ScheduleDetail() {
             navigator(SCHEDULE_ABSOLUTE_PATH);
         }
 
-        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } = result as GetScheduleDetailResponseDto;
+        const { travelScheduleName, travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } =
+            result as GetScheduleDetailResponseDto;
+        setTravelScheduleName(travelScheduleName);
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
         setScheduleListItem(scheduleList);
@@ -223,7 +222,6 @@ export default function ScheduleDetail() {
         <div id="schedule-wrapper">
             <div className="schedule-list-table">
                 <div className="schedule-add-table">
-                    <div style={{ width: "10px" }}></div>
                     <div className="schedule-add" onClick={onScheduleAddClickHandler}>
                         새 일정
                     </div>
@@ -280,14 +278,11 @@ export default function ScheduleDetail() {
                         <div className="schedule-select-devider-name">원</div>
                     </div>
                     <div className="schedule-write-table">
-                        <div style={{ width: "10px" }}></div>
-                        <div className="schedule-bottom-right-box">
-                            <div className="schedule-add error" onClick={onScheduleDeleteClickHandler}>
-                                삭제
-                            </div>
-                            <div className="schedule-add primary" onClick={onScheduleUpdateClickHandler}>
-                                수정
-                            </div>
+                        <div className="schedule-add error" onClick={onScheduleDeleteClickHandler}>
+                            삭제
+                        </div>
+                        <div className="schedule-add primary" onClick={onScheduleUpdateClickHandler}>
+                            수정
                         </div>
                     </div>
                 </div>

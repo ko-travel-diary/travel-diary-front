@@ -8,9 +8,9 @@ import { AUTH_ABSOLUTE_PATH } from "src/constant";
 
 const SHOW_IMAGE_BUTTON_LIMIT = 7;
 
-//                    Component : Restaurant Detail 화면 컴포넌트                     //
+//                    component : Restaurant Detail 화면 컴포넌트                     //
 export default function RestDetail() {
-    //                    State                     //
+    //                    state                     //
     const { restaurantNumber } = useParams();
 
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
@@ -32,10 +32,10 @@ export default function RestDetail() {
     const hours = restaurantHours ? restaurantHours.split("<br>").join("") : "";
     const outline = restaurantOutline ? restaurantOutline.split("<br>").join("") : "";
 
-    //                    Function                     //
+    //                    function                     //
     const navigator = useNavigate();
 
-    //                    Event Handler                     //
+    //                    event Handler                     //
     const getRestaurantResponse = (result: GetRestaurantResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -71,7 +71,7 @@ export default function RestDetail() {
         setrestaurantServiceMenu(restaurantServiceMenu);
     };
 
-    //                    Effect                     //
+    //                    effect                     //
     useEffect(() => {
         if (!restaurantNumber) return;
         getRestaurantRequest(restaurantNumber).then(getRestaurantResponse);
@@ -98,17 +98,15 @@ export default function RestDetail() {
         }
     };
 
-    //                    Render                     //
-    const emptyImage = "https://cdn-icons-png.flaticon.com/128/11423/11423562.png";
-
+    //                    render                     //
     return (
         <div id="travel-detail-wrapper">
-            <div className="travel-detail-image-table">
-                <div>
-                    <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : restaurantImageUrl[0]} />
-                </div>
-                {restaurantImageUrl === null || restaurantImageUrl.length < 1 ? (
-                    <>
+            {restaurantImageUrl === null || restaurantImageUrl.length ? (
+                <>
+                    <div className="travel-detail-image-table">
+                        <div>
+                            <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : restaurantImageUrl[0]} />
+                        </div>
                         <div className="travel-detail-image-list">
                             {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
                                 <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
@@ -132,11 +130,13 @@ export default function RestDetail() {
                                 <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
                             ) : null}
                         </div>
-                    </>
-                ) : (
-                    emptyImage
-                )}
-            </div>
+                    </div>
+                </>
+            ) : (
+                <div className="travel-empty-image-box">
+                    <div className="travel-empty-image"></div>
+                </div>
+            )}
             <div className="travel-detail-table">
                 <div className="travel-name">
                     <div className="travel-title">이름</div>

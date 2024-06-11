@@ -21,8 +21,9 @@ export interface GetRestaurantResponseDto extends ResponseDto {
     restaurantServiceMenu: string;
     restaurantLat: number;
     restaurantLng: number;
+    restaurantRecommendCount: number;
 }
 
 export interface GetRestaurantRecommendStatusResponseDto extends ResponseDto {
-    restRecommendeStatus: boolean;
+    restRecommendStatus: boolean;
 }

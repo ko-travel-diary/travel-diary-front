@@ -12,27 +12,27 @@ import {
   Polyline,
 } from "react-kakao-maps-sdk";
 import "./style.css";
-import { getTourAttractionRecommendStatusRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
-import { getRestaurantListRequest, getRestaurantRecommendStatusRequest } from "src/apis/restaurant";
-import { GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
+import { getSearchTourAttractionsListRequest, getTourAttractionRecommendStatusRequest, getTourAttractionsListRequest, patchTourRecommendRequest } from "src/apis/tour_attraction";
+import { getRestaurantListRequest, getRestaurantRecommendStatusRequest, getSearchRestaurantListRequest, patchRestRecommendRequest } from "src/apis/restaurant";
+import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto, GetTourAttractionsRecommendResponseDto } from "src/apis/tour_attraction/dto/response";
 import ResponseDto from "src/apis/response.dto";
-import { AUTH_ABSOLUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
 import {
   Destination,
-  MarkerOpen,
   Position,
   RestaurantListItem,
   TourAttractionsListItem,
 } from "src/types";
 import { useNavigate } from "react-router";
-import { GetRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
+import { GetRestaurantListResponseDto, GetRestaurantRecommendStatusResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
 import { useCheckBoxStore } from "src/stores/useCheckBoxStores";
 import { useTourListStore } from "src/stores/useTourListStore";
 
 import RestaurantIcon from "src/assets/image/restaurant-icon.png";
 import TourIcon from "src/assets/image/tour-attracion-icon.png";
-import { useDestinationStore, usePathStore } from "src/stores";
+import { useDestinationStore, useMapCenterStore, useOpenListStore, usePathStore, useSearchWordStore } from "src/stores";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 //                    component : 경로 컴포넌트                     //
 function Waypoints() {
@@ -68,7 +68,6 @@ function Waypoints() {
     }
     axios.post('https://apis-navi.kakaomobility.com/v1/waypoints/directions', data, {headers: { Authorization: 'KakaoAK cdf3640f786fbe72c3a456c5064a2f7a' }})
       .then(response => {
-        // const { roads } = response.data.routes[0].sections[0];
         const path: Position[] = [];
         const { sections } = response.data.routes[0];
 
@@ -131,10 +130,82 @@ function InfoItem(
   const { waypoints, setOrigin, setDestination, setWaypoints } =
     useDestinationStore();
 
+  const navigator = useNavigate();
+  const [cookies] = useCookies();
+
   const [restaurantNumber, setRestaurantNumber] = useState<number>(0);
   const [tourAttractionsNumber, setTourAttractionsNumber] = useState<number>(0);
 
   const [restRecommendStatus, setRestRecommendStatus] = useState<boolean>(false);
+  const [tourRecommendStatus, setTourRecommendStatus] = useState<boolean>(false);
+
+  //                    function                     //
+  const getRestaurantRecommendStatusResponse = (result: ResponseDto | GetRestaurantRecommendStatusResponseDto | null) => {
+    const message = !result
+    ? "서버에 문제가 있습니다."
+    : result.code === "NB"
+    ? "존재하지 않는 음식점입니다."
+    : result.code === "AF"
+    ? "로그인후 이용해주세요."
+    : result.code === "DBE"
+    ? "서버에 문제가 있습니다."
+    : "";
+
+    if (!result || result.code !== "SU") {
+        alert(message);
+        return;
+    }
+    
+    const { restRecommendStatus } = result as GetRestaurantRecommendStatusResponseDto;
+    setRestRecommendStatus(restRecommendStatus);
+  };
+
+  const getTourAttractionRecommendStatusResponse = (result: ResponseDto | GetTourAttractionsRecommendResponseDto | null) => {
+    const message = !result
+    ? "서버에 문제가 있습니다."
+    : result.code === "NB"
+    ? "존재하지 않는 관광지입니다."
+    : result.code === "AF"
+    ? "로그인후 이용해주세요."
+    : result.code === "DBE"
+    ? "서버에 문제가 있습니다."
+    : "";
+
+    if (!result || result.code !== "SU") {
+        alert(message);
+        return;
+    }
+  };
+
+  const patchRestRecommendResponse = (result: ResponseDto | null) => {
+    const message = !result
+    ? "서버에 문제가 있습니다."
+    : result.code === "NB"
+    ? "존재하지 않는 게시글입니다."
+    : result.code === "DBE"
+    ? "서버에 문제가 있습니다."
+    : "";
+
+    if (!result || result.code !== "SU") {
+        alert(message);
+        return;
+    }
+  };
+
+  const patchTourRecommendResponse = (result: ResponseDto | null) => {
+    const message = !result
+    ? "서버에 문제가 있습니다."
+    : result.code === "NB"
+    ? "존재하지 않는 게시글입니다."
+    : result.code === "DBE"
+    ? "서버에 문제가 있습니다."
+    : "";
+
+    if (!result || result.code !== "SU") {
+        alert(message);
+        return;
+    }
+  };
 
   //                    event handler                     //
   const onClose = () => {
@@ -157,6 +228,8 @@ function InfoItem(
         lng: props.tourAttractionsLng,
       };
     setOrigin(origin);
+    if ("restaurantNumber" in props) props.onClose(props.restaurantNumber);
+    else props.onClose(props.tourAttractionsNumber);
   };
 
   const onStopoverButtonClickHandler = (event: MouseEvent<HTMLDivElement>) => {
@@ -179,6 +252,8 @@ function InfoItem(
       };
     const newWaypoints = [...waypoints, waypoint];
     setWaypoints(newWaypoints);
+    if ("restaurantNumber" in props) props.onClose(props.restaurantNumber);
+    else props.onClose(props.tourAttractionsNumber);
   };
 
   const onEndButtonClickHandler = (event: MouseEvent<HTMLDivElement>) => {
@@ -196,16 +271,51 @@ function InfoItem(
         lng: props.tourAttractionsLng,
       };
     setDestination(destination);
+    if ("restaurantNumber" in props) props.onClose(props.restaurantNumber);
+    else props.onClose(props.tourAttractionsNumber);
   };
 
-  const onFavoriteButtonClickHandler = () => {
-    
+  const onRestRecommendButtonClickHandler = () => {
+    if ("restaurantNumber" in props){
+      const restaurantNumber = props.restaurantNumber;
+      setRestaurantNumber(restaurantNumber);
+      patchRestRecommendRequest(restaurantNumber, cookies.accessToken).then(patchRestRecommendResponse);
+      setRestRecommendStatus(!restRecommendStatus);
+    }
   };
-  // props.tourAttractionsName
-  // useEffect(() => {
-  //   getTourAttractionRecommendStatusRequest(tourAttractionsNumber as props.tourAttractionsNumber)
-  //   getRestaurantRecommendStatusRequest(restaurantNumber)
-  // }, []);
+
+  const onTourRecommendButtonClickHandler = () => {
+    if ("tourAttractionsNumber" in props){
+      const tourAttractionsNumber = props.tourAttractionsNumber;
+      setTourAttractionsNumber(tourAttractionsNumber);
+      patchTourRecommendRequest(tourAttractionsNumber, cookies.accessToken).then(patchTourRecommendResponse)
+      setTourRecommendStatus(!tourRecommendStatus);
+    }
+  }
+
+  
+  const onTitleClickHandler = () => {
+    if ("restaurantNumber" in props){
+      navigator(RESTAURANT_DETAIL_ABSOLUTE_PATH(props.restaurantNumber));
+    }
+    else{
+      navigator(TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH(props.tourAttractionsNumber));
+    }
+  };
+
+  //               effect              //
+  useEffect(() => {
+    if(!cookies.accessToken) return;
+    if("restaurantNumber" in props){
+      const restaurantNumber = props.restaurantNumber;
+      getRestaurantRecommendStatusRequest(restaurantNumber, cookies.accessToken).then(getRestaurantRecommendStatusResponse);
+    }
+    if("tourAttractionsNumber" in props){
+      const restaurantNumber = props.tourAttractionsNumber;
+      getTourAttractionRecommendStatusRequest(tourAttractionsNumber, cookies.accessToken).then(getTourAttractionRecommendStatusResponse);
+    }
+  
+  } ,[props])
 
   //               render               //
 
@@ -223,7 +333,7 @@ function InfoItem(
             ></div>
             <div className="info-box-main">
               <div className="info-box-main-title-box">
-                <div className="info-box-main-title">
+                <div className="info-box-main-title" onClick={onTitleClickHandler}>
                   {props.restaurantName}
                 </div>
                 <div className="info-box-main-type">음식점</div>
@@ -242,9 +352,9 @@ function InfoItem(
           <div className="info-box-bottom">
             <div className="info-box-bottom-left">
               {restRecommendStatus ?
-                <div className="favorite-icon-button-clicked" onClick={onFavoriteButtonClickHandler}> ♥ </div>
+                <div className="favorite-icon-button-clicked" onClick={onRestRecommendButtonClickHandler}></div>
                 :
-                <div className="favorite-icon-button" onClick={onFavoriteButtonClickHandler}></div>
+                <div className="favorite-icon-button" onClick={onRestRecommendButtonClickHandler}></div>
               }
             </div>
             <div className="info-box-bottom-right">
@@ -287,7 +397,7 @@ function InfoItem(
           ></div>
           <div className="info-box-main">
             <div className="info-box-main-title-box">
-              <div className="info-box-main-title">
+              <div className="info-box-main-title" onClick={onTitleClickHandler}>
                 {props.tourAttractionsName}
               </div>
               <div className="info-box-main-type">관광명소</div>
@@ -305,7 +415,11 @@ function InfoItem(
         </div>
         <div className="info-box-bottom">
           <div className="info-box-bottom-left">
-            <div className="favorite-icon-button"></div>
+            {tourRecommendStatus ?
+              <div className="favorite-icon-button-clicked" onClick={onTourRecommendButtonClickHandler}> ♥ </div>
+              :
+              <div className="favorite-icon-button" onClick={onTourRecommendButtonClickHandler}></div>
+            }
           </div>
           <div className="info-box-bottom-right">
             <div className="side-list-item-button start" onClick={onStartButtonClickHandler}>출발</div>
@@ -323,9 +437,37 @@ function SideListItem(props: RestaurantListItem | TourAttractionsListItem) {
   //                    state                     //
   const { waypoints, setOrigin, setDestination, setWaypoints } =
     useDestinationStore();
+  const {mapCenter, setMapCenter} = useMapCenterStore();
+
+  // description: 마커 오버레이 리스트 //
+  const {openList, setOpenList} = useOpenListStore();
+  // description: 마커 오버레이 오픈 처리 이벤트 함수 //
+  const onMarkerOverrayOpenHandler = (type: string, typeNumber: number) => {
+    const newOpenList = [...openList, { type, typeNumber }];
+    setOpenList(newOpenList);
+  };
 
   //                    event handler                     //
-  const onItemClickHandler = () => {};
+  const onItemClickHandler = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if ("restaurantNumber" in props){
+      const mapCenter = {
+        lat: props.restaurantLat,
+        lng: props.restaurantLng
+      }
+      setMapCenter(mapCenter);
+      
+      onMarkerOverrayOpenHandler("restaurant", props.restaurantNumber);
+    }
+    else{
+      const mapCenter = {
+        lat: props.tourAttractionsLat,
+        lng: props.tourAttractionsLng
+      }
+      setMapCenter(mapCenter);
+      onMarkerOverrayOpenHandler("tour", props.tourAttractionsNumber);
+    }
+  };
 
   const onStartButtonClickHandler = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -486,17 +628,15 @@ function SideListItem(props: RestaurantListItem | TourAttractionsListItem) {
 //                    component : 사이드 컴포넌트                     //
 function Side() {
   //                    state                     //
-  const [searchWord, setSearchWord] = useState<string>("");
-
+  const {openList, setOpenList} = useOpenListStore();
+  const {searchWord, setSearchWord} = useSearchWordStore();
   const {
     restCheckStatus,
     tourCheckStatus,
     setRestCheckStatus,
     setTourCheckStatus,
   } = useCheckBoxStore();
-  const { tourAttractionsListItem, restaurantListItem } = useTourListStore();
-
-  // const { PlacesSearchResult, Status, Pagination } = kakao.maps;
+  const { tourAttractionsListItem, restaurantListItem,setRestaurantListItem, setTourAttractionsListItem } = useTourListStore();
 
   //                    function                     //
   const onTourCheckBoxClickHandler = () => {
@@ -507,8 +647,41 @@ function Side() {
     setRestCheckStatus(!restCheckStatus);
   };
 
-  // const placesSearchCB = ( result: PlacesSearchResult, status: Status, pagination: Pagination) => {
-  // };
+  const getSearchTourAttractionsListResponse = (result: GetSearchTourAttractionsListResponseDto | ResponseDto | null) => {
+    const message = !result
+    ? "서버에 문제가 있습니다."
+    : result.code === "AF"
+    ? "인증에 실패했습니다."
+    : result.code === "DBE"
+    ? "서버에 문제가 있습니다."
+    : "";
+
+    if (!result || result.code !== "SU") {
+      alert(message);
+      return result;
+    }
+
+    const { tourAttractionsListItem } = result as GetSearchTourAttractionsListResponseDto;
+    setTourAttractionsListItem(tourAttractionsListItem);
+  };
+
+  const getSearchRestaurantListResponse = (result: GetSearchRestaurantListResponseDto | ResponseDto | null) => {
+    const message = !result
+    ? "서버에 문제가 있습니다."
+    : result.code === "AF"
+    ? "인증에 실패했습니다."
+    : result.code === "DBE"
+    ? "서버에 문제가 있습니다."
+    : "";
+
+    if (!result || result.code !== "SU") {
+      alert(message);
+      return result;
+    }
+
+    const { restaurantListItem } = result as GetRestaurantListResponseDto;
+    setRestaurantListItem(restaurantListItem);
+  };
 
   //                    event handler                     //
   const onSearchWordChangeHanlder = (event: ChangeEvent<HTMLInputElement>) => {
@@ -516,10 +689,12 @@ function Side() {
     setSearchWord(searchWord);
   };
 
-  const onSaerchButtonClickHandler = () => {
-    // 장소 검색 객체를 생성합니다
-    const places = new kakao.maps.services.Places();
-    // places.keywordSearch(searchWord, placesSearchCB);
+  const onSaerchButtonClickHandler = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    setOpenList([]);
+    if(tourCheckStatus) getSearchTourAttractionsListRequest(searchWord).then(getSearchTourAttractionsListResponse);
+    if(restCheckStatus) getSearchRestaurantListRequest(searchWord).then(getSearchRestaurantListResponse);
+    if(!tourCheckStatus && !restCheckStatus) alert("관광 명소 또는 음식점을 체크해주세요.");
   };
 
   //                    render : 사이드 컴포넌트                     //
@@ -583,20 +758,23 @@ export default function Main() {
   //                    state                     //
   // description: 사이드 상태 //
   const [sideOpen, setSideOpen] = useState<boolean>(false);
+
+  const {mapCenter, setMapCenter} = useMapCenterStore();
+
   // description: 맵 중심 상태 //
-  const [mapCenter, setMapCenter] = useState<Position>({
-    lat: 35.179665,
-    lng: 129.0747635,
-  });
+  const [mouseFlag, setMouseFlag] = useState<boolean>(false);
 
   // description: 알림 창 오픈 여부 리스트 상태 //
-  const [openList, setOpenList] = useState<MarkerOpen[]>([]);
+  const {searchWord} = useSearchWordStore();
+  // description: 마커 오버레이 리스트 //
+  const {openList, setOpenList} = useOpenListStore();
+  // description: 마커 오버레이 오픈 처리 이벤트 함수 //
+  const onMarkerOverrayOpenHandler = (type: string, typeNumber: number) => {
+    const newOpenList = [...openList, { type, typeNumber }];
+    setOpenList(newOpenList);
+  };
 
   const mapRef = useRef<kakao.maps.Map | null>(null);
-  const clusterRef = useRef<kakao.maps.MarkerClusterer | null>(null);
-  const [markeres] = useState<kakao.maps.Marker[]>([]);
-
-  const [mouseFlag, setMouseFlag] = useState<boolean>(false);
 
   const {
     tourAttractionsListItem,
@@ -604,7 +782,6 @@ export default function Main() {
     setTourAttractionsListItem,
     setRestaurantListItem,
   } = useTourListStore();
-
   const { restCheckStatus, tourCheckStatus } = useCheckBoxStore();
   const { path } = usePathStore();
 
@@ -672,9 +849,11 @@ export default function Main() {
     setRestaurantListItem(restaurantListItem);
   };
 
+
+
   const isRestaurantOpen = (item: RestaurantListItem) => {
     return openList.some(
-      (open) =>
+      (open) => 
         open.type === "restaurant" && open.typeNumber === item.restaurantNumber
     );
   };
@@ -694,17 +873,9 @@ export default function Main() {
 
   // description: 지도의 중심 좌표가 변경될 때 실행할 콜백 함수 //
   const onCenterChanged = (map: kakao.maps.Map) => {
-    // 지도의 중심 좌표를 가져옴
-    const newCenter = map.getCenter();
-    // 새로운 중심 좌표를 상태로 업데이트
-    setMapCenter({ lat: newCenter.getLat(), lng: newCenter.getLng() });
-    // 여기서 서버에 새로운 중심 좌표를 전송하고 필요한 작업을 수행할 수 있음
-  };
-
-  // description: 마커 오버레이 오픈 처리 이벤트 함수 //
-  const onMarkerOverrayOpenHandler = (type: string, typeNumber: number) => {
-    const newOpenList = [...openList, { type, typeNumber }];
-    setOpenList(newOpenList);
+    
+    if (mouseFlag) return;
+    map.setCenter(new kakao.maps.LatLng(mapCenter.lat, mapCenter.lng))
   };
 
   // description: 마커 오버레이 레스토랑 클로즈 처리 이벤트 함수 //
@@ -723,15 +894,6 @@ export default function Main() {
     setOpenList(newOpenList);
   };
 
-  const onClusterClick = (
-    target: kakao.maps.MarkerClusterer,
-    cluster: kakao.maps.Cluster
-  ) => {
-    const map = mapRef.current;
-    if (!map) return;
-    map.setLevel(4, { anchor: cluster.getCenter() });
-  };
-
   const onMapMouseDownHandler = () => {
     setMouseFlag(true);
   };
@@ -743,21 +905,35 @@ export default function Main() {
   //                    effect                     //
   useEffect(() => {
     if (mouseFlag) return;
+    if (searchWord) return;
     const { lat, lng } = mapCenter;
-    getTourAttractionsListRequest(lat, lng).then(
-      getTourAttractionsListResponse
-    );
-    getRestaurantListRequest(lat, lng).then(getRestaurantListResponse);
+    if(tourCheckStatus) getTourAttractionsListRequest(lat, lng).then(getTourAttractionsListResponse);
+    if(restCheckStatus) getRestaurantListRequest(lat, lng).then(getRestaurantListResponse);
   }, [mouseFlag, mapCenter]);
 
   useEffect(() => {
-    if (mouseFlag) return;
-    // setMarkers();
-  }, [mouseFlag, restaurantListItem, tourAttractionsListItem]);
+    if (!mapRef.current) return;
+    if (!searchWord) return;
+    if(restaurantListItem.length) {
+      const mapCenter = {
+        lat: restaurantListItem[0].restaurantLat,
+        lng: restaurantListItem[0].restaurantLng
+      }
+      setMapCenter(mapCenter);
+    }
+    if(tourAttractionsListItem.length) {
+      const mapCenter = {
+        lat: tourAttractionsListItem[0].tourAttractionsLat,
+        lng: tourAttractionsListItem[0].tourAttractionsLng
+      }
+      setMapCenter(mapCenter);
+    }
+  }, [restaurantListItem, tourAttractionsListItem]);
 
   //                    render : 메인 화면 컴포넌트                     //
   return (
     <div id="main-wrapper">
+      {mapCenter.lat} {mapCenter.lng}
       <Map
         ref={mapRef}
         center={mapCenter}
@@ -797,10 +973,7 @@ export default function Main() {
                 clickable
                 image={restaurantIcon}
                 onClick={() =>
-                  onMarkerOverrayOpenHandler(
-                    "restaurant",
-                    item.restaurantNumber
-                  )
+                  onMarkerOverrayOpenHandler("restaurant", item.restaurantNumber)
                 }
               >
                 {isRestaurantOpen(item) && (

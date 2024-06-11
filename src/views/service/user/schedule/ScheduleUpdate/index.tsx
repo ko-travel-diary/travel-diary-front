@@ -15,7 +15,6 @@ const YYYYMMDD = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    //check zero padding
     return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
 };
 
@@ -44,7 +43,8 @@ interface ScheduleDateItemProps {
     changeDate: (date: Date | null, index: number) => void;
     setToggleFlag: (index: number) => void;
 }
-//                    Component : SCHEDULE DATE 컴포넌트                     //
+
+//                    component : Schedule Calendar View 컴포넌트                     //
 function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setToggleFlag }: ScheduleDateItemProps) {
     //                    state                 //
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
@@ -86,13 +86,13 @@ function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setTogg
     );
 }
 
-//                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
-function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
-    //                    render : QnA 화면 컴포넌트                     //
+//                    component : Schedule ListItem View 컴포넌트                     //
+function ScheduleListView({ travelScheduleName }: ScheduleListViewItem) {
+    //                    render                     //
     return <div className="schedule-list">{travelScheduleName}</div>;
 }
 
-//                    Component : SCHEDULE Update 화면 컴포넌트                     //
+//                    component : Schedule Update 화면 컴포넌트                     //
 export default function ScheduleWrite() {
     //                     state                     //
     const [cookies] = useCookies();
@@ -100,14 +100,15 @@ export default function ScheduleWrite() {
     const { travelScheduleNumber } = useParams();
 
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
-    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
     const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [scheduleList, setScheduleList] = useState<ScheduleList[]>(emptySchedule);
     const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 
     const [toggleFlag, setToggleFlag] = useState<number>(0);
+
+    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
+    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
@@ -158,8 +159,9 @@ export default function ScheduleWrite() {
             return;
         }
 
-        const { travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } = result as GetScheduleDetailResponseDto;
-
+        const { travelScheduleName, travelSchedulePeople, travelScheduleTotalMoney, expenditureList, scheduleList } =
+            result as GetScheduleDetailResponseDto;
+        setTravelScheduleName(travelScheduleName);
         setTravelSchedulePeople(travelSchedulePeople);
         setTravelScheduleTotalMoney(travelScheduleTotalMoney);
         setExpenditureList(expenditureList);
@@ -423,7 +425,6 @@ export default function ScheduleWrite() {
                         <div className="schedule-select-devider-name">원</div>
                     </div>
                     <div className="schedule-write-table">
-                        <div style={{ width: "10px" }}></div>
                         <div className="schedule-add primary" onClick={onScheduleUpdateButtonClickHandler}>
                             수정
                         </div>

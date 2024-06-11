@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import "./style.css";
 import { useNavigate } from "react-router";
-import { AUTH_ABSOLUTE_PATH, IMAGE_LOAD_URL, IMAGE_UPLOAD_URL, MYPAGE_ABSOULUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, MYPAGE_ABSOULUTE_PATH } from "src/constant";
 import { NickNameCheckRequestDto } from "src/apis/auth/dto/request";
 import { nickNameCheckRequest } from "src/apis/auth";
 import ResponseDto from "src/apis/response.dto";
@@ -12,7 +12,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { GetUserInfoResponseDto } from "src/apis/user/dto/response";
 
-//                    interface : 회원가입 인풋 박스 프로퍼티즈                     //
+//                    interface : Profile Update Input Box Props                     //
 interface InputBoxProps {
     title: string;
     value: string;
@@ -26,9 +26,9 @@ interface InputBoxProps {
     disabled: boolean;
 }
 
-//                    Component : 회원가입 인풋 박스 컴포넌트                     //
+//                    component : Profile Update View 화면 컴포넌트                     //
 function InputBox({ title, value, onChange, placeholder, type, messageError, message, buttonTitle, onButtonClick, disabled }: InputBoxProps) {
-    //                    render :  회원가입 인풋 박스 컴포넌트                     //
+    //                    render                     //
     const messageClass = "sign-up-message " + (messageError ? "error" : "primary");
     return (
         <div className="sign-up-input-box">
@@ -48,30 +48,33 @@ function InputBox({ title, value, onChange, placeholder, type, messageError, mes
     );
 }
 
-//                    Component : PROFILE UPDATE 화면 컴포넌트                     //
+//                    component : Profile Update 화면 컴포넌트                     //
 export default function ProfileUpdate() {
     //                    state                     //
     const [cookies] = useCookies();
+
     const [nickName, setNickName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
+
     const [nickNameButtonStatus, setNickNameButtonStatus] = useState<boolean>(false);
     const [nickNameCheck, setNickNameCheck] = useState<boolean>(false);
+
     const [nickNameMessage, setNickNameMessage] = useState<string>("");
-    const [passwordMessage, setPasswordMessage] = useState<string>("");
-    const [emailMessage, setEmailMessage] = useState<string>("");
-    const [isEqualNickName, setEqualNickName] = useState<boolean>(false);
+    const [passwordMessage] = useState<string>("");
+    const [emailMessage] = useState<string>("");
+
     const [profileImage, setProfileImage] = useState<string>("");
     const [profileUpdateImage, setProfileUpdateImage] = useState<string>("");
     const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+
     const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
-    const [passwordMessageError, setPasswordMessageError] = useState<boolean>(false);
-    const [emailMessageError, setEmailMessageError] = useState<boolean>(false);
+    const [passwordMessageError] = useState<boolean>(false);
+    const [emailMessageError] = useState<boolean>(false);
+
     const photoInput = useRef<HTMLInputElement | null>(null);
 
     const updateCondition = nickNameCheck;
-
-    const updateButtonActive = updateCondition ? "primary-button" : "disable-button";
 
     //                     function                     //
     const navigator = useNavigate();

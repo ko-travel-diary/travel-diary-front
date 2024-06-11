@@ -40,7 +40,7 @@ interface ScheduleDateItemProps {
     setToggleFlag: (index: number) => void;
 }
 
-//                    Component : SCHEDULE Date 컴포넌트                     //
+//                    component : Schedule Calendar View 컴포넌트                     //
 function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setToggleFlag }: ScheduleDateItemProps) {
     //                    state                     //
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
@@ -84,26 +84,27 @@ function ScheduleDateItem({ index, scheduleDate, toggleFlag, changeDate, setTogg
     );
 }
 
-//                    Component : SCHEDULE LIST VIEW 컴포넌트                     //
-function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
-    //                    render : QnA 화면 컴포넌트                     //
+//                    component : Schedule ListItem View 컴포넌트                     //
+function ScheduleListView({ travelScheduleName }: ScheduleListViewItem) {
+    //                    render                     //
     return <div className="schedule-list">{travelScheduleName}</div>;
 }
 
-//                    Component : SCHEDULE WRITE 화면 컴포넌트                     //
+//                    component : Schedule Write 화면 컴포넌트                     //
 export default function ScheduleWrite() {
     //                     state                     //
     const [cookies] = useCookies();
 
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
-    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
     const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [scheduleList, setScheduleList] = useState<ScheduleList[]>(emptySchedule);
     const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 
     const [toggleFlag, setToggleFlag] = useState<number>(0);
+
+    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
+    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
@@ -389,7 +390,6 @@ export default function ScheduleWrite() {
                         <div className="schedule-select-devider-name">원</div>
                     </div>
                     <div className="schedule-write-table">
-                        <div style={{ width: "10px" }}></div>
                         <div className="schedule-add" onClick={onScheduleButtonClickHandler}>
                             올리기
                         </div>

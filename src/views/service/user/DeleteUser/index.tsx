@@ -8,12 +8,14 @@ import { DeleteUserRequestDto } from "src/apis/user/dto/request";
 import ResponseDto from "src/apis/response.dto";
 import { useUserStore } from "src/stores";
 
-//                    Component : DELETE USER 화면 컴포넌트                     //
+//                    component : Delete User 화면 컴포넌트                     //
 export default function DeleteUser() {
     //                    state                     //
     const [cookies, setCookies] = useCookies();
+
+    const { setLoginUserId } = useUserStore();
+
     const [password, setPassword] = useState<string>("");
-    const { loginUserId, setLoginUserId, loginUserRole, setLoginUserRole } = useUserStore();
 
     //                     function                     //
     const navigator = useNavigate();

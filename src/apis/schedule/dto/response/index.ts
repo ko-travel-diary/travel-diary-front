@@ -6,6 +6,7 @@ export interface GetScheduleListResponseDto extends ResponseDto {
 }
 
 export interface GetScheduleDetailResponseDto extends ResponseDto {
+    travelScheduleName: string;
     travelSchedulePeople: number;
     travelScheduleTotalMoney: number;
     expenditureList: ExpenditureList[];
