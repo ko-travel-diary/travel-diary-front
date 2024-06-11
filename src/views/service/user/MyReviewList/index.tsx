@@ -9,10 +9,9 @@ import ResponseDto from "src/apis/response.dto";
 import { GetTravelReviewMyListResponseDto, GetTravelReviewMyListSearchResponseDto } from "src/apis/review/dto/response";
 import { getTravelReviewMyListRequest, getTravelReviewMyListSearchRequest } from "src/apis/review";
 
-//                    Component : MY REVIEW LIST 화면 컴포넌트                     //
+//                    component : My Review View List 화면 컴포넌트                     //
 function ListItem({ reviewNumber, reviewTitle, reviewDatetime, reviewViewCount }: TravelReviewMyList) {
-    //                    state                     //
-
+    const datetime = reviewDatetime.slice(0, 10);
     //                     function                     //
     const navigator = useNavigate();
 
@@ -26,22 +25,23 @@ function ListItem({ reviewNumber, reviewTitle, reviewDatetime, reviewViewCount }
                 <div className="myreview-list-title" style={{ textAlign: "left" }}>
                     {reviewTitle}
                 </div>
-                <div className="myreview-list-write-date">{reviewDatetime}</div>
+                <div className="myreview-list-write-date">{datetime}</div>
                 <div className="myreview-list-view-count">{reviewViewCount}</div>
             </div>
         </div>
     );
 }
 
-//                    Component : MY_REVIEW 화면 컴포넌트                     //
+//                    component : My Review List 화면 컴포넌트                     //
 export default function MyReviewList() {
     //                    state                     //
-    const { loginUserRole } = useUserStore();
-
     const [cookies] = useCookies();
+
+    const { loginUserRole } = useUserStore();
 
     const [reviewList, setReviewList] = useState<TravelReviewMyList[]>([]);
     const [viewList, setViewList] = useState<TravelReviewMyList[]>([]);
+
     const [totalLength, setTotalLength] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);

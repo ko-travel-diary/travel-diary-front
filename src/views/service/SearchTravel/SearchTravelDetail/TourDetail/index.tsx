@@ -8,9 +8,9 @@ import { AUTH_ABSOLUTE_PATH } from "src/constant";
 
 const SHOW_IMAGE_BUTTON_LIMIT = 7;
 
-//                    Component : TourAttractions Detail 화면 컴포넌트                     //
+//                    component : TourAttractions Detail 화면 컴포넌트                     //
 export default function TourDetail() {
-    //                    State                     //
+    //                    state                     //
     const { tourAttractionsNumber } = useParams();
 
     const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
@@ -30,10 +30,10 @@ export default function TourDetail() {
     const hours = tourAttractionsHours ? tourAttractionsHours.split("<br>").join("") : "";
     const outline = tourAttractionsOutline ? tourAttractionsOutline.split("<br>").join("") : "";
 
-    //                    Function                     //
+    //                    function                     //
     const navigator = useNavigate();
 
-    //                    Event Handler                     //
+    //                    event Handler                     //
     const getTourAttractionsResponse = (result: GetTourAttractionsResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -65,7 +65,7 @@ export default function TourDetail() {
         setTourAttractionsOutline(tourAttractionsOutline);
     };
 
-    //                    Effect                     //
+    //                    effect                     //
     useEffect(() => {
         if (!tourAttractionsNumber) return;
         getTourAttractionsRequest(tourAttractionsNumber).then(getTourAttractionsResponse);
@@ -92,7 +92,7 @@ export default function TourDetail() {
         }
     };
 
-    //                    Render                     //
+    //                    render                     //
     return (
         <div id="travel-detail-wrapper">
             {tourAttractionsImageUrl === null || tourAttractionsImageUrl.length ? (

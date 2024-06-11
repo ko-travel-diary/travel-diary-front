@@ -8,8 +8,7 @@ html::-webkit-scrollbar {
 }
 
 #qna-list-wrapper {
-    max-width: 1400px;
-    margin: 100px 100px;
+    margin: 100px 200px;
     display: flex;
     flex-direction: column;
 
@@ -38,6 +37,7 @@ html::-webkit-scrollbar {
 
 .qna-list-write-box:hover {
     cursor: pointer;
+    opacity: 0.7;
 }
 
 .qna-list-top {
@@ -132,6 +132,7 @@ html::-webkit-scrollbar {
 
 .qna-list-table-list:hover {
     cursor: pointer;
+    background-color: rgba(238, 238, 238, 0.2);
 }
 
 .qna-list-reception-number {

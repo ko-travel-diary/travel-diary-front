@@ -61,6 +61,8 @@ html::-webkit-scrollbar {
 }
 
 .delete-password-box {
+    text-align: center;
+
     border: none;
     outline: none;
     background: none;
