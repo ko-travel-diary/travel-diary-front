@@ -10,7 +10,7 @@ import { getScheduleDetailRequest, getScheduleListRequest, patchScheduleRequest 
 import ResponseDto from "src/apis/response.dto";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { YYYYMMDD, emptyExpenditure, emptySchedule, numberCommas } from "src/utils";
+import { YYYYMMDD, emptyExpenditure, emptySchedule, numberCommas, timeOptions } from "src/utils";
 
 //                    interface : Schedule Update Input Box Props                     //
 interface ScheduleDateItemProps {
@@ -207,13 +207,13 @@ export default function ScheduleWrite() {
         setScheduleList(newScheduleList);
     };
 
-    const onScheduleStartTimeChangeHandler = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+    const onScheduleStartTimeChangeHandler = (event: ChangeEvent<HTMLSelectElement>, index: number) => {
         scheduleList[index] = { ...scheduleList[index], scheduleStartTime: event.target.value };
         const newScheduleList = [...scheduleList];
         setScheduleList(newScheduleList);
     };
 
-    const onScheduleEndTimeChangeHandler = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+    const onScheduleEndTimeChangeHandler = (event: ChangeEvent<HTMLSelectElement>, index: number) => {
         scheduleList[index] = { ...scheduleList[index], scheduleEndTime: event.target.value };
         const newScheduleList = [...scheduleList];
         setScheduleList(newScheduleList);
@@ -315,19 +315,33 @@ export default function ScheduleWrite() {
                                 onChange={(e) => onScheduleContentChangeHandler(e, index)}
                                 placeholder="내용을 입력해주세요."
                             />
-                            <input
+                            <select
+                                title="start-hour"
                                 className="schedule-start-hour"
                                 value={schedule.scheduleStartTime}
-                                onChange={(e) => onScheduleStartTimeChangeHandler(e, index)}
-                                placeholder="출발 시간"
-                            />
+                                onChange={(event) => onScheduleStartTimeChangeHandler(event, index)}
+                            >
+                                <option value="">출발시간</option>
+                                {timeOptions.map((time) => (
+                                    <option key={time} value={time}>
+                                        {time}
+                                    </option>
+                                ))}
+                            </select>
                             <div className="schedule-devider">{"~"}</div>
-                            <input
+                            <select
+                                title="end-hour"
                                 className="schedule-end-hour"
                                 value={schedule.scheduleEndTime}
-                                onChange={(e) => onScheduleEndTimeChangeHandler(e, index)}
-                                placeholder="도착 시간"
-                            />
+                                onChange={(event) => onScheduleEndTimeChangeHandler(event, index)}
+                            >
+                                <option value="">도착시간</option>
+                                {timeOptions.map((time) => (
+                                    <option key={time} value={time}>
+                                        {time}
+                                    </option>
+                                ))}
+                            </select>
                             {index === scheduleList.length - 1 ? (
                                 <div className="schedule-add-icon" onClick={onAddScheduleList} />
                             ) : (
@@ -345,6 +359,7 @@ export default function ScheduleWrite() {
                             <div className="schedule-select-name">인원수</div>
                             <div className="schedule-devider">{"|"}</div>
                             <input
+                                title="people"
                                 className="select-people-input-box"
                                 type="number"
                                 value={travelSchedulePeople}
@@ -356,6 +371,7 @@ export default function ScheduleWrite() {
                             <div className="schedule-select-name">총금액</div>
                             <div className="schedule-devider">{"|"}</div>
                             <input
+                                title="money"
                                 className="select-money-input-box"
                                 type="number"
                                 value={travelScheduleTotalMoney}
@@ -377,6 +393,7 @@ export default function ScheduleWrite() {
                                 placeholder="내용을 입력해주세요."
                             />
                             <input
+                                title="money"
                                 className="schedule-text-money"
                                 type="number"
                                 value={Number(expenditure.travelScheduleExpenditure).toString()}
