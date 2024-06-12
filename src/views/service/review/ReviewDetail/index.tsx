@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import "./style.css";
 import { useCookies } from "react-cookie";
-import { useUserStore } from "src/stores";
+import { useReviewNumberStore, useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useUserStore, useViewListStore } from "src/stores";
 import { ChangeEvent, useEffect, useState } from "react";
 import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from "src/constant";
 import {
@@ -25,13 +25,8 @@ import {
 import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
 import { ExpenditureList, ReviewCommentList, ScheduleList } from "src/types";
 import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
-import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
 import { getScheduleDetailRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto } from "src/apis/schedule/dto/response";
-import useViewListStore from "src/stores/useViewListStores/viewList.store";
-import { useScheduleStore } from "src/stores/useScheduleStores";
-import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
-import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 import { numberCommas } from "src/utils";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //

@@ -26,12 +26,10 @@ import {
 } from "src/types";
 import { useNavigate } from "react-router";
 import { GetRestaurantListResponseDto, GetRestaurantRecommendStatusResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
-import { useCheckBoxStore } from "src/stores/useCheckBoxStores";
-import { useTourListStore } from "src/stores/useTourListStore";
 
 import RestaurantIcon from "src/assets/image/restaurant-icon.png";
 import TourIcon from "src/assets/image/tour-attracion-icon.png";
-import { useDestinationStore, useMapCenterStore, useOpenListStore, usePathStore, useSearchWordStore } from "src/stores";
+import { useCheckBoxStore, useDestinationStore, useMapCenterStore, useOpenListStore, usePathStore, useSearchWordStore, useTourListStore } from "src/stores";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 

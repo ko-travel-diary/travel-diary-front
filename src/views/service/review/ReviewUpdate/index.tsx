@@ -3,20 +3,15 @@ import "./style.css";
 import { useCookies } from "react-cookie";
 import { getTravelReviewDetailRequest, patchTravelReviewRequestDto } from "src/apis/review";
 import { PatchTravelReviewRequestDto } from "src/apis/review/dto/request";
-import { useReviewNumberStore } from "src/stores/useReviewNumberStores";
 import { GetTravelReviewDetailResponseDto } from "src/apis/review/dto/response";
 import ResponseDto from "src/apis/response.dto";
 import { useNavigate } from "react-router";
 import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
-import { useUserStore } from "src/stores";
+import { useReviewNumberStore, useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useUserStore, useViewListStore } from "src/stores";
 import axios from "axios";
 import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { useScheduleStore } from "src/stores/useScheduleStores";
-import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
-import useViewListStore from "src/stores/useViewListStores/viewList.store";
-import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 import { numberCommas } from "src/utils";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
