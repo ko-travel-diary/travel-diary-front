@@ -160,7 +160,7 @@ export default function ReviewDetail() {
             travelScheduleNumber,
         } = result as GetTravelReviewDetailResponseDto;
 
-        const requestBody: PostUserNickNameRequestDto = { writerId };
+        const requestBody: PostUserNickNameRequestDto = { userId: writerId };
         postUserNickNameRequest(requestBody).then(postUserNickNameResponse);
 
         setReviewTitle(reviewTitle);
@@ -434,7 +434,7 @@ export default function ReviewDetail() {
             setCommentWriterNickName(nickName);
         };
 
-        const requestBody: PostUserNickNameRequestDto = { writerId: reviewCommentWriterId };
+        const requestBody: PostUserNickNameRequestDto = { userId: reviewCommentWriterId };
         postUserNickNameRequest(requestBody).then(postCommentUserNickNameResponse);
 
         const deleteTravelReviewCommentResponse = (result: ResponseDto | null) => {

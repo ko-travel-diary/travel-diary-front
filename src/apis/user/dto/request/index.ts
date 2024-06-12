@@ -1,5 +1,5 @@
 export interface PostUserNickNameRequestDto {
-    writerId: string;
+    userId: string;
 }
 
 export interface PatchUserInfoRequestDto {
