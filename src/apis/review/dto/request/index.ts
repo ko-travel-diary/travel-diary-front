@@ -18,6 +18,7 @@ export interface PatchTravelReviewRequestDto {
     reviewTitle : string;
     reviewContent : string;
     travelReviewImageUrl : string[];
+    travelScheduleNumber : number;
 }
 
 // description: 리뷰 게시글의 댓글 & 답글 수정 Request Body DTO //
