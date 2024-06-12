@@ -192,7 +192,7 @@ export default function TourAdd() {
                                         backgroundPosition: "center",
                                     }}
                                 ></div>
-                                <div className='delete-image-button' onClick={() => onImageDeleteButtonClickHandler(index)}></div>
+                                <div className='delete-image-buttons' onClick={() => onImageDeleteButtonClickHandler(index)}></div>
                             </>
                             ))}
                         </div>

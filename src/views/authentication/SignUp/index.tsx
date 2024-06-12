@@ -314,7 +314,7 @@ function SignUp () {
 
             </div>
             <Social title='sns 로그인'/>
-            <div className='primary-button full-width' onClick={onSignUpButtonClickHandler}>회원가입</div>
+            <div className={signUpButtonActive} onClick={onSignUpButtonClickHandler}>회원가입</div>
         </div>
     );
 }
