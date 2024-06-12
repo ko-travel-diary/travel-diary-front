@@ -731,6 +731,7 @@ function Side() {
               type="checkbox"
               onClick={onTourCheckBoxClickHandler}
               checked={tourCheckStatus}
+              defaultChecked
             />
             <div className="main-side-check-label">관광 명소</div>
           </div>
