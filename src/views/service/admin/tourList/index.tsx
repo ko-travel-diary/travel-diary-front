@@ -10,14 +10,8 @@ import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } fr
 import { changeText } from "src/utils";
 
 //                  Component                   //
-export function TourListItems({
-    tourAttractionsNumber,
-    tourAttractionsImageUrl,
-    tourAttractionsName,
-    tourAttractionsLocation,
-    tourAttractionsTelNumber,
-    tourAttractionsHours,
-}: TourAttractionsListItem) {
+export function TourListItems({ 
+    tourAttractionsNumber,tourAttractionsImageUrl,tourAttractionsName,tourAttractionsLocation,tourAttractionsTelNumber,tourAttractionsHours }: TourAttractionsListItem) {
     //                  Function                    //
     const navigator = useNavigate();
 
