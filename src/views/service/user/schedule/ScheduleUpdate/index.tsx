@@ -259,7 +259,7 @@ export default function ScheduleWrite() {
         if (date !== null) {
             console.log(scheduleList);
             const newScheduleList = scheduleList.map((item, index) => {
-                if (index === selectIndex) item.scheduleDate = date.toISOString();
+                if (index === selectIndex) item.scheduleDate = YYYYMMDD(date);
                 return item;
             });
             setScheduleList(newScheduleList);

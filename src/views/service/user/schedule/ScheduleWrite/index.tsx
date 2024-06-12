@@ -10,7 +10,7 @@ import { getScheduleListRequest, postScheduleRequest } from "src/apis/schedule";
 import ResponseDto from "src/apis/response.dto";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
 import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { YYYYMMDD, emptyExpenditure, emptySchedule } from "src/utils";
+import { YYYYMMDD, emptyExpenditure, emptySchedule, numberCommas } from "src/utils";
 
 //                    interface : Schedule Write Input Box Props                     //
 interface ScheduleDateItemProps {
@@ -224,9 +224,8 @@ export default function ScheduleWrite() {
 
     const handleDateChange = (date: Date | null, selectIndex: number) => {
         if (date !== null) {
-            console.log(scheduleList);
             const newScheduleList = scheduleList.map((item, index) => {
-                if (index === selectIndex) item.scheduleDate = date.toISOString();
+                if (index === selectIndex) item.scheduleDate = YYYYMMDD(date);
                 return item;
             });
             setScheduleList(newScheduleList);
@@ -362,12 +361,12 @@ export default function ScheduleWrite() {
                 <div className="schedule-spend-box-bottom">
                     <div className="schedule-spend-box">
                         <div className="schedule-spend-text">잔액</div>
-                        <div className="schedule-balance">{balnace}</div>
+                        <div className="schedule-balance">{numberCommas(Number(balnace))}</div>
                         <div className="schedule-select-devider-name">원</div>
                     </div>
                     <div className="schedule-spend-box">
                         <div className="schedule-spend-text">더치페이</div>
-                        <div className="schedule-dutchpay">{duchPay}</div>
+                        <div className="schedule-dutchpay">{numberCommas(Number(duchPay))}</div>
                         <div className="schedule-select-devider-name">원</div>
                     </div>
                     <div className="schedule-write-table">
