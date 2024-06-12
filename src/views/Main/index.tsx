@@ -1,5 +1,6 @@
 import React, {
   ChangeEvent,
+  KeyboardEvent,
   MouseEvent,
   useEffect,
   useRef,
@@ -444,7 +445,7 @@ function SideListItem(props: RestaurantListItem | TourAttractionsListItem) {
   // description: 마커 오버레이 오픈 처리 이벤트 함수 //
   const onMarkerOverrayOpenHandler = (type: string, typeNumber: number) => {
     const newOpenList = [...openList, { type, typeNumber }];
-    setOpenList(newOpenList);
+    setTimeout(() => setOpenList(newOpenList), 250);
   };
 
   //                    event handler                     //
@@ -688,6 +689,10 @@ function Side() {
     const searchWord = event.target.value;
     setSearchWord(searchWord);
   };
+  
+  const onSearchWordKeydownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") return onSaerchButtonClickHandler(event as unknown as MouseEvent<HTMLDivElement>);
+  };
 
   const onSaerchButtonClickHandler = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -711,6 +716,7 @@ function Side() {
             className="main-side-top-search-input"
             value={searchWord}
             onChange={onSearchWordChangeHanlder}
+            onKeyDown={onSearchWordKeydownHandler}
           />
           <div
             className="main-side-top-search-button"

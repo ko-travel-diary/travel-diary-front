@@ -2,7 +2,7 @@ import "./style.css";
 import { useNavigate } from "react-router";
 import { ReviewBoardListItem } from "src/types";
 import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import {
     getTravelReviewBoardRequest,
     getTravelReviewTitleAndContentSearchRequest,
@@ -75,7 +75,7 @@ export default function ReviewList() {
     const [searchWord, setSearchWord] = useState<string>("");
     const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
 
-    const [selectedOption, setSelectedOption] = useState<string>("writer");
+    const [selectedOption, setSelectedOption] = useState<string>("title-contents");
 
     //                    function                    //
     const navigator = useNavigate();
@@ -255,13 +255,19 @@ export default function ReviewList() {
         setSearchWord(searchWord);
     };
 
+    const onSearchWordKeydownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") return onSearchButtonClickHandler();
+    };
+
     const onSearchButtonClickHandler = () => {
-        if (selectedOption === "writer") getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
+        console.log(selectedOption);
+        if (selectedOption === "title-contents")
+            getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
 
         if (selectedOption === "write-date") getTravelReviewWriteDateSearchRequest(searchWord).then(getTravelReviewWriteDateSearchResponse);
 
-        if (selectedOption === "title-contents")
-            getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
+        if (selectedOption === "writer") getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
+
     };
 
     //                    effect                    //
@@ -292,17 +298,17 @@ export default function ReviewList() {
         <div id="review-wrapper">
             <div className="review-search-wrapper">
                 <div className="review-search-item">
+                    <div className="review-search-item-title-contents font-size-color">
+                        <input name="check" type="radio" defaultChecked onChange={onRadioChangeHandler} value={"title-contents"} />
+                        제목 + 내용
+                    </div>
                     <div className="review-search-item-writer font-size-color ">
-                        <input name="check" type="radio" defaultChecked onChange={onRadioChangeHandler} value={"writer"} />
+                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"writer"} />
                         작성자
                     </div>
                     <div className="review-search-item-write-date font-size-color">
                         <input name="check" type="radio" onChange={onRadioChangeHandler} value={"write-date"} />
                         작성일
-                    </div>
-                    <div className="review-search-item-title-contents font-size-color">
-                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"title-contents"} />
-                        제목 + 내용
                     </div>
                 </div>
                 <div className="review-search-box">
@@ -312,6 +318,7 @@ export default function ReviewList() {
                             placeholder="검색어를 입력하세요."
                             value={searchWord}
                             onChange={onSearchWordChangeHandler}
+                            onKeyDown={onSearchWordKeydownHandler}
                         />
                     </div>
                     <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>
