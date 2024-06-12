@@ -10,12 +10,9 @@ import { PostTravelReviewResponseDto } from "src/apis/review/dto/response";
 import axios from "axios";
 import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { useScheduleStore } from "src/stores/useScheduleStores";
-import { useScheduleButtonStore } from "src/stores/useScheduleButtonStores";
-import useViewListStore from "src/stores/useViewListStores/viewList.store";
 import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
-import { useScheduleNumberStore } from "src/stores/useScheduleNumberStores";
 import { numberCommas } from "src/utils";
+import { useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useViewListStore } from "src/stores";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
