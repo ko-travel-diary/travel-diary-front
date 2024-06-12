@@ -79,9 +79,18 @@
 .photo-view{
     position: absolute;
 }
-.delete-image-button{
+.delete-image-buttons{
     position: relative;
+    z-index: 3;
+
+    width: 20px;
+    height: 20px;
+
+    background-image: url(../../../../assets/image/delete-icon.png);
+    background-size: 100% 100%;
 
     top: 5px;
     right: 35px;
+
+    cursor: pointer;
 }
