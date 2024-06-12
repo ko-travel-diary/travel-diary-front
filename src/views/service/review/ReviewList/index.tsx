@@ -260,7 +260,6 @@ export default function ReviewList() {
     };
 
     const onSearchButtonClickHandler = () => {
-        console.log(selectedOption);
         if (selectedOption === "title-contents")
             getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
 

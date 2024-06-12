@@ -305,6 +305,7 @@ export default function ReviewDetail() {
             : result.code === "DBE"
             ? "서버에 문제가 있습니다."
             : "";
+        if (!cookies.accessToken) return;
 
         if (!result || result.code !== "SU") {
             alert(message);

@@ -8,7 +8,7 @@ interface CheckBoxStore {
 }
 
 const useCheckBoxStore = create<CheckBoxStore>(set => ({
-    tourCheckStatus: false,
+    tourCheckStatus: true,
     setTourCheckStatus: (tourCheckStatus: boolean) => set(state => ({...state, tourCheckStatus})),
     restCheckStatus: false,
     setRestCheckStatus: (restCheckStatus: boolean) => set(state => ({...state, restCheckStatus}))
