@@ -76,7 +76,6 @@ export default function MyReviewList() {
     const changeReivewList = (reviewList: TravelReviewMyList[]) => {
         setReviewList(reviewList);
 
-        console.log(reviewList);
         const totalLength = reviewList.length;
         setTotalLength(totalLength);
 

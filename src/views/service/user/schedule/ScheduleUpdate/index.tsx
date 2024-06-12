@@ -257,7 +257,6 @@ export default function ScheduleWrite() {
 
     const handleDateChange = (date: Date | null, selectIndex: number) => {
         if (date !== null) {
-            console.log(scheduleList);
             const newScheduleList = scheduleList.map((item, index) => {
                 if (index === selectIndex) item.scheduleDate = YYYYMMDD(date);
                 return item;
