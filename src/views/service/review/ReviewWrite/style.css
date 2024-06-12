@@ -17,6 +17,7 @@ html::-webkit-scrollbar {
 .schedule-delete-button-box {
     display: flex;
     justify-content: end;
+    min-width: 1520px;
 }
 
 .schedule-delete-button {
@@ -35,11 +36,13 @@ html::-webkit-scrollbar {
     flex-direction: row;
     justify-content: flex-end;
     gap: 20px;
+    min-width: 1520px;
 }
 
 .write-contents-box{
     display: flex;
     flex-direction: column;
+    min-width: 1520px;
 }
 
 .write-title-box{

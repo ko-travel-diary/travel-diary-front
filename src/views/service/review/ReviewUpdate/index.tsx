@@ -26,6 +26,7 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
     const { setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
     const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
+    const { setTravelScheduleNumber } = useScheduleNumberStore();
 
     //                    function                     //
     const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
@@ -52,12 +53,13 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
     };
 
     //                    event handler                     //
-    const onTravelScheduleNameButtonClickHandler = () => {
+    const onTravelScheduleNameClickHandler = () => {
         if (!cookies.accessToken) {
             alert("로그인 후 이용해주세요.");
             return;
         }
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
+        setTravelScheduleNumber(travelScheduleNumber);
         setScheduleButtonStatus(!scheduleButtonStatus);
         const renderStatus = scheduleRenderStatus ? !scheduleRenderStatus : scheduleRenderStatus;
         setScheduleRenderStatus(!renderStatus);
@@ -65,7 +67,7 @@ function ScheduleListView({ travelScheduleNumber, travelScheduleName }: Schedule
 
     //                    render                     //
     return (
-        <div className="my-travel-diary-content" style={{ color: "black" }} onClick={onTravelScheduleNameButtonClickHandler}>
+        <div className="my-travel-diary-content" style={{ color: "black" }} onClick={onTravelScheduleNameClickHandler}>
             {travelScheduleName}
         </div>
     );
@@ -141,7 +143,7 @@ export default function ReviewUpdate() {
         const { scheduleListViewItems } = result as GetScheduleListResponseDto;
         setViewList(scheduleListViewItems);
     };
-
+    
     const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -231,34 +233,24 @@ export default function ReviewUpdate() {
         setReviewTitle(reviewTitle);
     };
 
-    const imageInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const imageInputOnChange = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setTravelReviewImages([...travelReviewImages, file]);
-        const url = URL.createObjectURL(file);
-        setTravelReviewImageUrl([...travelReviewImageUrl, url]);
+        const data = new FormData();
+        data.append("file", file);
+        const url = await axios
+            .post(IMAGE_UPLOAD_URL, data, { headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${cookies.accessToken}` } })
+            .then((response) => response.data as string)
+            .catch((error) => null);
+
+        if (url)setTravelReviewImageUrl([...travelReviewImageUrl, url]);
     };
 
-    const onPostReviewButtonClickHandler = async () => {
+    const onPachReviewButtonClickHandler = () => {
         if (!reviewTitle.trim() || !reviewContent.trim()) return;
         if (!cookies.accessToken) return;
 
-        const travelReviewImageUrl: string[] = [];
-
-        // travelReviewImage upload 반복작업
-        for (const image of travelReviewImages) {
-            const data = new FormData();
-            data.append("file", image);
-            const url = await axios
-                .post(IMAGE_UPLOAD_URL, data, { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${cookies.accessToken}` } })
-                .then((response) => response.data as string)
-                .catch((error) => null);
-            if (!url) continue;
-            console.log(url);
-            travelReviewImageUrl.push(url);
-        }
-
-        const requestBody: PatchTravelReviewRequestDto = { reviewTitle, reviewContent, travelReviewImageUrl };
+        const requestBody: PatchTravelReviewRequestDto = { reviewTitle, reviewContent, travelReviewImageUrl, travelScheduleNumber };
         patchTravelReviewRequestDto(updateReviewNumber, requestBody, cookies.accessToken).then(patchTravelReviewResponseDto);
     };
 
@@ -402,7 +394,7 @@ export default function ReviewUpdate() {
                 </div>
             </div>
             <div className="write-update-button">
-                <div className="primary-button" onClick={onPostReviewButtonClickHandler}>
+                <div className="primary-button" onClick={onPachReviewButtonClickHandler}>
                     올리기
                 </div>
             </div>
