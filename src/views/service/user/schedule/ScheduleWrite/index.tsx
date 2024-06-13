@@ -212,6 +212,14 @@ export default function ScheduleWrite() {
     const onScheduleButtonClickHandler = () => {
         if (!cookies.accessToken) return;
 
+        for (const schedule of scheduleList) {
+            const { scheduleContent, scheduleDate, scheduleEndTime, scheduleStartTime } = schedule;
+            if (!scheduleContent || !scheduleDate || !scheduleEndTime || !scheduleStartTime) {
+                alert("내용을 모두 입력해주세요.");
+                return;
+            }
+        }
+
         const requestBody: PostScheduleRequestDto = {
             travelSchedulePeople,
             travelScheduleTotalMoney,
