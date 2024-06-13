@@ -5,14 +5,10 @@ import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import {
     getTravelReviewBoardRequest,
-    getTravelReviewTitleAndContentSearchRequest,
-    getTravelReviewWriteDateSearchRequest,
-    getTravelReviewWriterSearchRequest,
+    getTravelReviewSearchRequest,
 } from "src/apis/review";
 import {
-    GetReviewTitleAndContentSearchRequestDto,
-    GetReviewWriteDateSearchRequestDto,
-    GetReviewWriterSearchRequestDto,
+    GetReviewSearchRequestDto,
     GetTravelReviewBoardResponseDto,
 } from "src/apis/review/dto/response";
 import ResponseDto from "src/apis/response.dto";
@@ -140,7 +136,7 @@ export default function ReviewList() {
         setCurrentSection(1);
     };
 
-    const getTravelReviewTitleAndContentSearchResponse = (result: ResponseDto | GetReviewTitleAndContentSearchRequestDto | null) => {
+    const getTravelSearchResponse = (result: ResponseDto | GetReviewSearchRequestDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "VF"
@@ -156,60 +152,10 @@ export default function ReviewList() {
             return;
         }
 
-        const { reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
+        const { reviewSearchList } = result as GetReviewSearchRequestDto;
         changeBoardList(reviewSearchList);
 
         if (reviewSearchList.length == 0) alert("검색 결과가 없습니다.");
-
-        setCurrentPage(!boardList.length ? 0 : 1);
-        setCurrentSection(!boardList.length ? 0 : 1);
-    };
-
-    const getTravelReviewWriteDateSearchResponse = (result: ResponseDto | GetReviewWriteDateSearchRequestDto | null) => {
-        const message = !result
-            ? "서버에 문제가 있습니다."
-            : result.code === "VF"
-            ? "검색어를 입력하세요."
-            : result.code === "AF"
-            ? "인증에 실패했습니다."
-            : result.code === "DBE"
-            ? "서버에 문제가 있습니다."
-            : "";
-
-        if (!result || result.code !== "SU") {
-            alert(message);
-            return;
-        }
-
-        const { reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
-        changeBoardList(reviewSearchList);
-
-        if (reviewSearchList.length == 0) alert("검색 결과가 없습니다.");
-
-        setCurrentPage(!boardList.length ? 0 : 1);
-        setCurrentSection(!boardList.length ? 0 : 1);
-    };
-
-    const getTravelReviewWriterSearchResponse = (result: ResponseDto | GetReviewWriterSearchRequestDto | null) => {
-        const message = !result
-            ? "서버에 문제가 있습니다."
-            : result.code === "VF"
-            ? "검색어를 입력하세요."
-            : result.code === "AF"
-            ? "인증에 실패했습니다."
-            : result.code === "DBE"
-            ? "서버에 문제가 있습니다."
-            : "";
-
-        if (!result || result.code !== "SU") {
-            alert(message);
-            return;
-        }
-
-        const { reviewSearchList } = result as GetReviewWriteDateSearchRequestDto;
-        changeBoardList(reviewSearchList);
-
-        if (reviewSearchList.length === 0) alert("검색 결과가 없습니다.");
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);
@@ -260,13 +206,7 @@ export default function ReviewList() {
     };
 
     const onSearchButtonClickHandler = () => {
-        if (selectedOption === "title-contents")
-            getTravelReviewTitleAndContentSearchRequest(searchWord).then(getTravelReviewTitleAndContentSearchResponse);
-
-        if (selectedOption === "write-date") getTravelReviewWriteDateSearchRequest(searchWord).then(getTravelReviewWriteDateSearchResponse);
-
-        if (selectedOption === "writer") getTravelReviewWriterSearchRequest(searchWord).then(getTravelReviewWriterSearchResponse);
-
+        getTravelReviewSearchRequest(searchWord).then(getTravelSearchResponse);
     };
 
     //                    effect                    //
