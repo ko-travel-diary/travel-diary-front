@@ -30,20 +30,20 @@ export const TOUR_DETAIL_PATH = "tourlist/:tourAttractionsNumber";
 export const REST_DETAIL_PATH = "restlist/:restaurantNumber";
 
 // USER
-export const PROFILE_UPDATE_PATH = "profileUpdate";
-export const MY_REVIEWLIST_PATH = "reviewList";
+export const PROFILE_UPDATE_PATH = "profile-update";
+export const MY_REVIEWLIST_PATH = "review-list";
 export const DELETE_USER_PATH = "cancle-account";
 
 // ADMIN
-export const TOUR_LIST_PATH = "tourList";
-export const TOUR_ADD_PATH = "addTour";
+export const TOUR_LIST_PATH = "tour-list";
+export const TOUR_ADD_PATH = "add-tour";
 export const TOUR_CONTROL_PATH = "tourcontrol/:tourAttractionsNumber";
 
-export const REST_LIST_PATH = "restList";
-export const REST_ADD_PATH = "addRest";
+export const REST_LIST_PATH = "rest-list";
+export const REST_ADD_PATH = "add-rest";
 export const REST_CONTROL_PATH = "restcontrol/:restaurantNumber";
 
-export const USER_LIST_PATH = "userList";
+export const USER_LIST_PATH = "user-list";
 
 // description : Navigation 절대 URL PATH
 export const MAIN_ABSOLUTE_PATH = MAIN_PATH;
