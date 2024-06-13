@@ -130,11 +130,10 @@ export const DELETE_QNA_COMMENT_REQUEST_URL = (receptionNumber: number | string)
 
 //review
 export const SERVER_REVIEW_MODULE_URL = `${SERVER_API_URL}/review`;
-export const SEARCH_REVIEW_MODULE_URL = `${SERVER_REVIEW_MODULE_URL}/search`;
 export const POST_REVIEW_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/`;
 export const POST_REVIEW_COMMENT_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment`;
 export const GET_REVIEW_LIST_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/list`;
-export const GET_SEARCH_REVIEW_REQUEST_LIST_URL = `${SEARCH_REVIEW_MODULE_URL}/search`;
+export const GET_SEARCH_REVIEW_REQUEST_LIST_URL = `${SERVER_REVIEW_MODULE_URL}/search`;
 export const GET_REVIEW_MY_LIST_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/my-list`;
 export const GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL = `${SERVER_REVIEW_MODULE_URL}/my-search`;
 export const GET_COMMENT_LIST_REQUEST_URL = (reviewNumber: number | string) => `${SERVER_REVIEW_MODULE_URL}/${reviewNumber}/comment/list`;
