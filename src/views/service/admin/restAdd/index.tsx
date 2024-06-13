@@ -4,10 +4,72 @@ import { useCookies } from 'react-cookie'
 import { PostRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
-import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, SEARCH_URL } from 'src/constant';
 import { postRestaurantRequest } from 'src/apis/restaurant';
 import axios from 'axios';
 import { useUserStore } from 'src/stores';
+import useButtonStatusStore from 'src/stores/search-button.store';
+import useSearchAddressStore from 'src/stores/search-address.store';
+
+//                  Component                   //
+export function SearchAddress() {
+
+    //                  State                   //
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
+
+    const [searchWord, setSearchWord] = useState<string>('');
+    const [address, setAddress] = useState<string[]>([]);
+
+    //                  Function                    //
+    
+
+    //                  Event Handler                   //
+    const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        const word = event.target.value;
+        setSearchWord(word);
+    }
+
+    const onSearchButtonClickHandler = async () => {
+
+        const query = searchWord;
+        const page = 1;
+        const size = 10;
+        const data = await axios.get(SEARCH_URL, {params: {query, page, size}})
+            .then(response => response.data)
+            .catch(error => null)
+
+        if (!data) return;     
+
+        await setAddress(data.addresses);
+
+    }
+
+    const onElementClickHandler = (selectAddress: string) => {
+        setSearchAddress(selectAddress);
+        setButtonStatus(!buttonStatus)
+    }
+    
+    //                  Render                  //
+    return (
+        <div className='search-console'>
+            <div className='search-console-box'>
+                <div className='search-console-title'>주소 찾기</div>
+                <div className='search-console-input-box'>
+                    <div className='search-console-input-wrapper'>
+                        <input className='search-input-element' placeholder='주소를 입력하세요' onChange={onSearchWordChangeHandler} />
+                    </div>
+                    <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
+                </div>
+                <div className='search-address-list'>
+                    {address.map((index) =>
+                        <div className="address-element" key={index} onClick={() => onElementClickHandler(index)}>{index}</div>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
 
 
 //                  Component                   //
@@ -15,6 +77,8 @@ export default function RestAdd() {
 
     //                  State                   //
     const { loginUserRole } = useUserStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const [cookies] = useCookies();
     const imageSeq = useRef<HTMLInputElement | null>(null);
 
@@ -55,7 +119,8 @@ export default function RestAdd() {
 
     const onRestaurantLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const location = event.target.value;        
-        setRestaurantLocation(location);
+        setSearchAddress(location);
+        setRestaurantLocation(searchAddress);
     }
 
     const onRestaurantTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -115,15 +180,14 @@ export default function RestAdd() {
             .then(response => response.data)
             .catch(error => null)
 
-        if (!(data.documents[0])) {
-            alert("주소를 정확히 입력해주세요.")
-            return;
-        }
-
-        const restaurantLat = data.documents[0].y as number;
-        const restaurantLng = data.documents[0].x as number;
-
-
+            if (!(data)) {
+                alert("주소를 정확히 입력해주세요.")
+                return;
+            }
+    
+            const restaurantLat = data.y as number;
+            const restaurantLng = data.x as number;
+    
         const requestBody: PostRestaurantRequestDto = {
             restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
             restaurantImageUrl,
@@ -143,12 +207,18 @@ export default function RestAdd() {
         setRestaurantImageUrl(newTourAttractionsImageUrls);
     }
 
+    const onSearchButtonClickHandler = () => {
+        setButtonStatus(!buttonStatus);
+    }
+
     //                  Effect                  //
     useEffect(() => {
         if (loginUserRole === 'ROLE_USER') {
             navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
+
+        setSearchAddress('');
         
     }, [])
 
@@ -164,8 +234,11 @@ export default function RestAdd() {
                 </div>
                 <div className='rest-register-top-element-box'>
                     <div className='rest-register-top-title'>▣ 음식점 주소</div>
-                    <div className='rest-register-element'>
-                        <input className='rest-register-input-element' placeholder='주소를 입력해주세요.' onChange={onRestaurantLocationChangeHandler}/>
+                    <div className='rest-register-top-element'>
+                        <div className='rest-register-element-search'>
+                            <input className='rest-register-input-element' placeholder='주소를 입력해주세요.' value={searchAddress} onChange={onRestaurantLocationChangeHandler}/>
+                        </div>
+                        <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>
                 </div>
                 <div className='rest-register-top-element-box'>
@@ -229,6 +302,9 @@ export default function RestAdd() {
             <div className='rest-register-bottom'>
                 <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
             </div>
+            {buttonStatus &&
+                <SearchAddress/>
+            }
         </div>
     )
 }

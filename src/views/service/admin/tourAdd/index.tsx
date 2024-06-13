@@ -1,13 +1,75 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import { useNavigate } from 'react-router';
-import { ADDRESS_URL, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL } from 'src/constant';
+import { ADDRESS_URL, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, SEARCH_URL } from 'src/constant';
 import ResponseDto from 'src/apis/response.dto';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { PostTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
 import { postTourAttractionsRequest } from 'src/apis/tour_attraction';
 import { useUserStore } from 'src/stores';
+import useSearchAddressStore from 'src/stores/search-address.store';
+import useButtonStatusStore from 'src/stores/search-button.store';
+
+//                  Component                   //
+export function SearchAddress() {
+
+    //                  State                   //
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
+
+    const [searchWord, setSearchWord] = useState<string>('');
+    const [address, setAddress] = useState<string[]>([]);
+
+    //                  Function                    //
+    
+
+    //                  Event Handler                   //
+    const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        const word = event.target.value;
+        setSearchWord(word);
+    }
+
+    const onSearchButtonClickHandler = async () => {
+
+        const query = searchWord;
+        const page = 1;
+        const size = 10;
+        const data = await axios.get(SEARCH_URL, {params: {query, page, size}})
+            .then(response => response.data)
+            .catch(error => null)
+
+        if (!data) return;     
+
+        await setAddress(data.addresses);
+
+    }
+
+    const onElementClickHandler = (selectAddress: string) => {
+        setSearchAddress(selectAddress);
+        setButtonStatus(!buttonStatus)
+    }
+    
+    //                  Render                  //
+    return (
+        <div className='search-console'>
+            <div className='search-console-box'>
+                <div className='search-console-title'>주소 찾기</div>
+                <div className='search-console-input-box'>
+                    <div className='search-console-input-wrapper'>
+                        <input className='search-input-element' placeholder='주소를 입력하세요' onChange={onSearchWordChangeHandler} />
+                    </div>
+                    <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
+                </div>
+                <div className='search-address-list'>
+                    {address.map((index) =>
+                        <div className="address-element" key={index} onClick={() => onElementClickHandler(index)}>{index}</div>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
 
 //                  Component                   //
 export default function TourAdd() {
@@ -15,6 +77,8 @@ export default function TourAdd() {
     
     //                  State                   //
     const { loginUserRole } = useUserStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const imageSeq = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
 
@@ -52,7 +116,8 @@ export default function TourAdd() {
 
     const onTourAtrractionLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const location = event.target.value;        
-        settourAtrractionLocation(location);
+        setSearchAddress(location);
+        settourAtrractionLocation(searchAddress);
     }
 
     const onTourAtrractionTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,13 +166,13 @@ export default function TourAdd() {
             .then(response => response.data)
             .catch(error => null);
             
-        if (!(data.documents[0])) {
+        if (!(data)) {
             alert("주소를 정확히 입력해주세요.")
             return;
         }
 
-        const tourAttractionsLat = data.documents[0].y as number;
-        const tourAttractionsLng = data.documents[0].x as number;
+        const tourAttractionsLat = data.y as number;
+        const tourAttractionsLng = data.x as number;
 
         const requestBody: PostTourAttractionsRequestDto = {
             tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
@@ -128,12 +193,18 @@ export default function TourAdd() {
         setTourAttractionsImageUrl(newTourAttractionsImageUrls);
     };
 
+    const onSearchButtonClickHandler = () => {
+        setButtonStatus(!buttonStatus);
+    } 
+
     //                  Effect                  //
     useEffect(() => {
         if (loginUserRole === 'ROLE_USER') {
             navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
+
+        setSearchAddress('');
 
     }, [])
 
@@ -149,20 +220,23 @@ export default function TourAdd() {
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 주소</div>
-                    <div className='tour-register-element'>
-                        <input className='tour-register-address-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionLocationChangeHandler}/>
+                    <div className='tour-register-top-element'>
+                        <div className='tour-register-element-search'>
+                            <input className='tour-register-input-element' placeholder='제목을 입력해주세요.' value={searchAddress} onChange={onTourAtrractionLocationChangeHandler}/>
+                        </div>
+                        <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 연락처</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-tel-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionTelNumberChangeHandler}/>
+                        <input className='tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionTelNumberChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 영업시간</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-hour-input tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionHoursChangeHandler}/>
+                        <input className='tour-register-input-element' placeholder='제목을 입력해주세요.' onChange={onTourAtrractionHoursChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
@@ -174,7 +248,7 @@ export default function TourAdd() {
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 사진</div>
                     <div className='tour-register-element'>
-                        <input className='tour-register-image-input tour-register-input-element' type='file' multiple ref={imageSeq} 
+                        <input className='tour-register-input-element' type='file' multiple ref={imageSeq} 
                         accept=".png, .jpg, .jpeg" onChange={onTourAttractionImgFileChangeHandler}/>
                     </div>
                     <div className='photo-view-element'>
@@ -202,6 +276,9 @@ export default function TourAdd() {
             <div className='tour-register-bottom'>
                 <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
             </div>
+            {buttonStatus &&
+                <SearchAddress/>
+            }
         </div>
     )
 }
