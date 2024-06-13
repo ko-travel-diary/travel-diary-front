@@ -9,7 +9,7 @@ import {
     GET_REVIEW_MY_LIST_REQUEST_URL,
     GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL,
     GET_REVIEW_REQUEST_URL,
-    GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL,
+    GET_SEARCH_REVIEW_REQUEST_LIST_URL,
     GET_WRITER_SEARCH_REVIEW_REQUEST_LIST_URL,
     GET_WRITE_DATE_SEARCH_REVIEW_REQUEST_LIST_URL,
     PATCH_FAVORITE_COUNT_REQUEST_URL,
@@ -99,7 +99,7 @@ export const getTravelReviewBoardRequest = async () => {
 export const getTravelReviewTitleAndContentSearchRequest = async (searchWord: string) => {
     const config = { params: { searchWord } };
     const result = await axios
-        .get(GET_TITLE_SEARCH_REVIEW_REQUEST_LIST_URL, config)
+        .get(GET_SEARCH_REVIEW_REQUEST_LIST_URL, config)
         .then(requestHandler<GetReviewTitleAndContentSearchRequestDto>)
         .catch(requestErrorHandler);
     return result;
