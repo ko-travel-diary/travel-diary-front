@@ -275,6 +275,12 @@ function InfoItem(
   };
 
   const onRestRecommendButtonClickHandler = () => {
+
+    if(!cookies.accessToken) {
+      alert("로그인 후 이용해 주세요.");
+      return;
+    }
+
     if ("restaurantNumber" in props){
       const restaurantNumber = props.restaurantNumber;
       setRestaurantNumber(restaurantNumber);
