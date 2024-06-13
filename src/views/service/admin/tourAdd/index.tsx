@@ -17,6 +17,7 @@ export function SearchAddress() {
     //                  State                   //
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
+    const [ cookies ] = useCookies();
 
     const [searchWord, setSearchWord] = useState<string>('');
     const [address, setAddress] = useState<string[]>([]);
@@ -35,7 +36,10 @@ export function SearchAddress() {
         const query = searchWord;
         const page = 1;
         const size = 10;
-        const data = await axios.get(SEARCH_URL, {params: {query, page, size}})
+        const data = await axios.get(SEARCH_URL, {
+            params: { query, page, size },
+            headers: { Authorization: `Bearer ${cookies.accessToken}` }
+            })
             .then(response => response.data)
             .catch(error => null)
 
@@ -117,7 +121,6 @@ export default function TourAdd() {
     const onTourAtrractionLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const location = event.target.value;        
         setSearchAddress(location);
-        settourAtrractionLocation(searchAddress);
     }
 
     const onTourAtrractionTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +133,7 @@ export default function TourAdd() {
         setTourAttractionsHours(hours);
     }
 
-    const onTourAtrracntionOutlineChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const onTourAtrractionOutlineChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const outLine = event.target.value;
         setTourAttractionsOutline(outLine);
     }
@@ -162,7 +165,7 @@ export default function TourAdd() {
         }
 
         const query = tourAttractionsLocation;
-        const data = await axios.get(ADDRESS_URL, {params: {query}})
+        const data = await axios.get(ADDRESS_URL, {params: { query }, headers: { Authorization: `Bearer ${cookies.accessToken}` }}, )
             .then(response => response.data)
             .catch(error => null);
             
@@ -208,6 +211,10 @@ export default function TourAdd() {
 
     }, [])
 
+    useEffect(() => {
+        settourAtrractionLocation(searchAddress);
+    }, [searchAddress])
+
     //                  Render                   //
     return (
         <div id='tour-register-wrapper'>
@@ -242,7 +249,7 @@ export default function TourAdd() {
                 <div className='tour-register-top-element-box'>
                     <div className='tour-register-top-title'>▣ 관광지 개요</div>
                     <div className='tour-register-element'>
-                        <textarea className='tour-register-textarea-element' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} onChange={onTourAtrracntionOutlineChangeHandler}/>
+                        <textarea className='tour-register-textarea-element' placeholder='내용을 입력해주세요. / 1000자' maxLength={1000} onChange={onTourAtrractionOutlineChangeHandler}/>
                     </div>
                 </div>
                 <div className='tour-register-top-element-box'>
