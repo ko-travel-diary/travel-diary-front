@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
+import { bearerAuthorization } from 'src/apis';
 
 //                  Component                   //
 export function SearchAddress() {
@@ -17,6 +18,8 @@ export function SearchAddress() {
     //                  State                   //
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
+
+    const [ cookies ] = useCookies();
 
     const [searchWord, setSearchWord] = useState<string>('');
     const [address, setAddress] = useState<string[]>([]);
@@ -35,19 +38,25 @@ export function SearchAddress() {
         const query = searchWord;
         const page = 1;
         const size = 10;
-        const data = await axios.get(SEARCH_URL, {params: {query, page, size}})
+        const data = await axios.get(SEARCH_URL, {
+            params: { query, page, size },
+            headers: { Authorization: `Bearer ${cookies.accessToken}` }
+            })
             .then(response => response.data)
             .catch(error => null)
 
-        if (!data) return;     
+        if (!data) return;
+
 
         await setAddress(data.addresses);
 
     }
 
     const onElementClickHandler = (selectAddress: string) => {
+
         setSearchAddress(selectAddress);
         setButtonStatus(!buttonStatus)
+
     }
     
     //                  Render                  //
@@ -117,10 +126,9 @@ export default function RestAdd() {
         setRestaurantName(name);
     }
 
-    const onRestaurantLocationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onRestaurantLocationChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
         const location = event.target.value;        
         setSearchAddress(location);
-        setRestaurantLocation(searchAddress);
     }
 
     const onRestaurantTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -176,7 +184,11 @@ export default function RestAdd() {
         }
 
         const query = restaurantLocation;
-        const data = await axios.get(ADDRESS_URL, {params: {query}})
+        console.log(restaurantLocation);
+        const data = await axios.get(ADDRESS_URL, { 
+            params: { query },
+            headers: { Authorization: `Bearer ${cookies.accessToken}` }
+            })
             .then(response => response.data)
             .catch(error => null)
 
@@ -221,6 +233,10 @@ export default function RestAdd() {
         setSearchAddress('');
         
     }, [])
+
+    useEffect(() => {
+        setRestaurantLocation(searchAddress);
+    }, [searchAddress])
 
     //                  Render                   //
     return (
