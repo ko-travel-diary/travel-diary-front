@@ -307,7 +307,7 @@ export default function ReviewUpdate() {
                         <div> 가계부</div>
                         <div className="total-people-money-box">
                             <div>인원수</div>
-                            <div className="total-people">{travelSchedulePeople}</div>
+                            <div className="total-people">{travelSchedulePeople} 명</div>
                             <div>|</div>
                             <div>총 금액</div>
                             <div className="total-money">{numberCommas(Number(travelScheduleTotalMoney))} 원</div>

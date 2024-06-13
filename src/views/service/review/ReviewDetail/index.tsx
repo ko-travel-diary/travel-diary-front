@@ -27,14 +27,14 @@ import { ExpenditureList, ReviewCommentList, ScheduleList } from "src/types";
 import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
 import { getScheduleDetailRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto } from "src/apis/schedule/dto/response";
-import { numberCommas } from "src/utils";
+import { YYYYMMDD, numberCommas } from "src/utils";
 
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //
     return (
         <div className="schedule-list-box">
-            <div>{scheduleDate}</div>
+            <div>{YYYYMMDD(new Date(scheduleDate))}</div>
             <div className="schedule-item">
                 <div>{scheduleContent}</div>
                 <div>{scheduleStartTime}</div>
@@ -600,10 +600,9 @@ export default function ReviewDetail() {
                                 <div> 가계부</div>
                                 <div className="total-people-money-box">
                                     <div>인원수</div>
+                                    <div className="total-people">{travelSchedulePeople} 명</div>
                                     <div>|</div>
-                                    <div className="total-people">{travelSchedulePeople}</div>
                                     <div>총 금액</div>
-                                    <div>|</div>
                                     <div className="total-money">{numberCommas(Number(travelScheduleTotalMoney))} 원</div>
                                 </div>
                                 {expenditureViewList.map((item) => (
