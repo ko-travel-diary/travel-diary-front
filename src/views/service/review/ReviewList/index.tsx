@@ -206,7 +206,22 @@ export default function ReviewList() {
     };
 
     const onSearchButtonClickHandler = () => {
-        getTravelReviewSearchRequest(searchWord).then(getTravelSearchResponse);
+        
+        if(selectedOption === "title-contents") {
+            const titleAndContent = searchWord;
+            getTravelReviewSearchRequest(titleAndContent, "", "").then(getTravelSearchResponse);
+        }
+
+        if(selectedOption === "writer") {
+            const writer = searchWord;
+            getTravelReviewSearchRequest("", writer, "").then(getTravelSearchResponse);
+        }
+
+        if(selectedOption === "write-date") {
+            const writedate = searchWord;
+            getTravelReviewSearchRequest("", "", writedate).then(getTravelSearchResponse);
+        }
+
     };
 
     //                    effect                    //
