@@ -1,16 +1,35 @@
 #sign-up-wrapper {
     margin: 0px auto;
-    height: 100vh;
+    height: 966px;
     min-height: 500px;
-    width: 450px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 
-    gap: 40px;
+    background-image: url(../../../assets/image/travel-image.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
 }
+.sign-up-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
 
+    margin: 0px auto;
+    /* border: 1px solid black; */
+    border-radius: 10px;
+    /* padding: 50px 0; */
+
+    background-color: rgba(255, 255, 255, 0.6) ;
+
+    height: 800px;
+    width: 600px;
+}
 .sign-up-title {
     text-align: center;
 
@@ -23,19 +42,24 @@
 .sign-up-input-container {
     display: flex;
     flex-direction: column;
-
     gap: 32px;
+
+    width: 450px;
 }
 
 .sign-up-input-box {
     display: flex;
     flex-direction: column;
+
+    width: 100%;
 }
 
 .sign-up-input-main {
     display: flex;
     align-items: center;
     gap: 8px;
+
+    width: 100%;
 }
 
 .sign-up-input-title {
@@ -47,7 +71,7 @@
 }
 
 .sign-up-input {
-    width: 100%;
+    width: 90%;
 
     background: none;
     border: none;

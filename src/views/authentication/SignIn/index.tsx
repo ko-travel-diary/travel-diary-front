@@ -110,25 +110,27 @@ function SignIn () {
     //                    render : 로그인 화면 컴포넌트                     //
     return (
         <div id='sign-in-wrapper'>
-            <div className='sign-in-title'>로그인</div>
-            <div className='sign-in-input-container'>
-                <div className='sign-in-input-box'>
-                    <div className='sign-in-input-title'>아이디</div>
-                    <div className='sign-in-input-border'>
-                        <input className='sign-in-input' value={userId} onChange={onUserIdChangeEventHandler} onKeyDown={onEnterKeyDownHandler} ref={focusRef}/>
+            <div className='sign-in-content'>    
+                <div className='sign-in-title'>로그인</div>
+                <div className='sign-in-input-container'>
+                    <div className='sign-in-input-box'>
+                        <div className='sign-in-input-title'>아이디</div>
+                        <div className='sign-in-input-border'>
+                            <input className='sign-in-input' value={userId} onChange={onUserIdChangeEventHandler} onKeyDown={onEnterKeyDownHandler} ref={focusRef}/>
+                        </div>
+                    </div>
+                    <div className='sign-in-input-box'>
+                        <div className='sign-in-input-title'>비밀번호</div>
+                        <div className='sign-in-input-border'>
+                            <input className='sign-in-input' type='password' value={userPassword} onChange={onUserPasswordChangeEventHandler} onKeyDown={onEnterKeyDownHandler}/>
+                        </div>
                     </div>
                 </div>
-                <div className='sign-in-input-box'>
-                    <div className='sign-in-input-title'>비밀번호</div>
-                    <div className='sign-in-input-border'>
-                        <input className='sign-in-input' type='password' value={userPassword} onChange={onUserPasswordChangeEventHandler} onKeyDown={onEnterKeyDownHandler}/>
-                    </div>
+                <Social title='sns 로그인' />
+                <div className='sign-in-button-box'>
+                    <div className='primary-button full-width' onClick={onSignInButtonClickHandler}>로그인</div>
+                    <div className='primary-button full-width' onClick={onSignUpButtonClickHandler}>회원가입</div>
                 </div>
-            </div>
-            <Social title='sns 로그인' />
-            <div className='sign-in-button-box'>
-                <div className='primary-button full-width' onClick={onSignInButtonClickHandler}>로그인</div>
-                <div className='primary-button full-width' onClick={onSignUpButtonClickHandler}>회원가입</div>
             </div>
         </div>
     );
