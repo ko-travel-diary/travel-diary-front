@@ -11,8 +11,19 @@ html::-webkit-scrollbar {
     margin: 100px 200px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     gap: 16px;
+}
+
+.qna-top-image{
+    display: flex;
+    width: 1920px;
+    height: 400px;
+    background-position: cover;
+    background-repeat: no-repeat;
+    background-image: url("../../../../assets/image/qna-top-image2.jpg");
+    background-size: 100% 100%;
 }
 
 .qna-list-topbar {
@@ -45,7 +56,7 @@ html::-webkit-scrollbar {
     justify-content: space-between;
     align-items: flex-end;
 
-    min-width: 1400px;
+    min-width: 1200px;
 }
 
 .qna-list-top-left {
@@ -97,7 +108,7 @@ html::-webkit-scrollbar {
 
     background-color: rgba(255, 255, 255, 1);
 
-    min-width: 1400px;
+    min-width: 1200px;
 }
 
 .qna-list-table-title {
@@ -168,7 +179,7 @@ html::-webkit-scrollbar {
     display: flex;
     justify-content: space-between;
 
-    min-width: 1400px;
+    min-width: 1200px;
 }
 
 .qna-list-pagenation {

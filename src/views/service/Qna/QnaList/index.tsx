@@ -201,80 +201,83 @@ export default function QnaList() {
     const searchButtonClass = searchWord ? "primary-button" : "disable-button";
 
     return (
-        <div id="qna-list-wrapper">
-            <div className="qna-list-top">
-                <div className="qna-list-top-left">
-                    전체 <span className="emphasis">{totalLength}건</span> | 페이지{" "}
-                    <span className="emphasis">
-                        {currentPage}/{totalPage}
-                    </span>
-                </div>
-                <div className="qna-list-top-right">
-                    {loginUserRole === "ROLE_USER" ? (
-                        <>
-                            <div className={toggleUserClass} onClick={onToggleUserClickHandler}></div>
-                            <div className="qna-list-top-right-text">내가 쓴 문의내역</div>
-                        </>
-                    ) : (
-                        <>
-                            <div className={toggleAdminClass} onClick={onToggleAdminClickHandler}></div>
-                            <div className="qna-list-admin-text">미완료 보기</div>
-                        </>
-                    )}
-                </div>
-            </div>
-
-            <div className="qna-list-table">
-                <div className="qna-list-table-title">
-                    <div className="qna-list-reception-number">접수번호</div>
-                    <div className="qna-list-status">상태</div>
-                    <div className="qna-list-title">제목</div>
-                    <div className="qna-list-writer-id">작성자</div>
-                    <div className="qna-list-write-date">작성일</div>
-                </div>
-                {viewList.map((item) => (
-                    <ListItem {...item} />
-                ))}
-            </div>
-
-            <div className="qna-list-bottom">
-                <div className="qna-list-write-box" onClick={onWriteButtonClickHandler}>
-                    글쓰기
-                </div>
-
-                <div className="qna-list-pagenation">
-                    <div className="qna-list-page-left" onClick={onPreSectionClickHandler}></div>
-                    <div className="qna-list-page-box">
-                        {pageList.map((page) =>
-                            page === currentPage ? (
-                                <div className="qna-list-page-active" key={page}>
-                                    {page}
-                                </div>
-                            ) : (
-                                <div className="qna-list-page" onClick={() => onPageClickHandler(page)} key={page}>
-                                    {page}
-                                </div>
-                            )
+        <>
+            <div className="qna-top-image"></div>
+            <div id="qna-list-wrapper">
+                <div className="qna-list-top">
+                    <div className="qna-list-top-left">
+                        전체 <span className="emphasis">{totalLength}건</span> | 페이지{" "}
+                        <span className="emphasis">
+                            {currentPage}/{totalPage}
+                        </span>
+                    </div>
+                    <div className="qna-list-top-right">
+                        {loginUserRole === "ROLE_USER" ? (
+                            <>
+                                <div className={toggleUserClass} onClick={onToggleUserClickHandler}></div>
+                                <div className="qna-list-top-right-text">내가 쓴 문의내역</div>
+                            </>
+                        ) : (
+                            <>
+                                <div className={toggleAdminClass} onClick={onToggleAdminClickHandler}></div>
+                                <div className="qna-list-admin-text">미완료 보기</div>
+                            </>
                         )}
                     </div>
-                    <div className="qna-list-page-right" onClick={onNextSectionClickHandler}></div>
                 </div>
 
-                <div className="qna-list-bottom-right">
-                    <div className="qna-list-search-box">
-                        <input
-                            className="qna-list-search-input"
-                            placeholder="검색어를 입력해주세요."
-                            value={searchWord}
-                            onChange={onSearchWordChangeHandler}
-                            onKeyDown={onPasswordKeydownHandler}
-                        ></input>
+                <div className="qna-list-table">
+                    <div className="qna-list-table-title">
+                        <div className="qna-list-reception-number">접수번호</div>
+                        <div className="qna-list-status">상태</div>
+                        <div className="qna-list-title">제목</div>
+                        <div className="qna-list-writer-id">작성자</div>
+                        <div className="qna-list-write-date">작성일</div>
                     </div>
-                    <div className={searchButtonClass} onClick={onSearchButtonClickHandler}>
-                        검색
+                    {viewList.map((item) => (
+                        <ListItem {...item} />
+                    ))}
+                </div>
+
+                <div className="qna-list-bottom">
+                    <div className="qna-list-write-box" onClick={onWriteButtonClickHandler}>
+                        글쓰기
+                    </div>
+
+                    <div className="qna-list-pagenation">
+                        <div className="qna-list-page-left" onClick={onPreSectionClickHandler}></div>
+                        <div className="qna-list-page-box">
+                            {pageList.map((page) =>
+                                page === currentPage ? (
+                                    <div className="qna-list-page-active" key={page}>
+                                        {page}
+                                    </div>
+                                ) : (
+                                    <div className="qna-list-page" onClick={() => onPageClickHandler(page)} key={page}>
+                                        {page}
+                                    </div>
+                                )
+                            )}
+                        </div>
+                        <div className="qna-list-page-right" onClick={onNextSectionClickHandler}></div>
+                    </div>
+
+                    <div className="qna-list-bottom-right">
+                        <div className="qna-list-search-box">
+                            <input
+                                className="qna-list-search-input"
+                                placeholder="검색어를 입력해주세요."
+                                value={searchWord}
+                                onChange={onSearchWordChangeHandler}
+                                onKeyDown={onPasswordKeydownHandler}
+                            ></input>
+                        </div>
+                        <div className={searchButtonClass} onClick={onSearchButtonClickHandler}>
+                            검색
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
