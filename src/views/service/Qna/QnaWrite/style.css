@@ -43,7 +43,6 @@ html::-webkit-scrollbar {
 
     width: 100%;
 
-    font-family: WavvePADO;
     font-size: 16px;
     font-weight: 400;
     line-height: 175%;
@@ -71,8 +70,7 @@ html::-webkit-scrollbar {
     resize: none;
 
     width: 100%;
-
-    font-family: WavvePADO;
+    
     font-size: 16px;
     font-weight: 400;
     line-height: 175%;
