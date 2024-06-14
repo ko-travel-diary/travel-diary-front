@@ -12,14 +12,14 @@ export default function TourDetail() {
     //                    state                     //
     const { tourAttractionsNumber } = useParams();
 
-    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
     const [tourAttractionsName, setTourAttractionsName] = useState<string>("");
-    const [tourAttractionsLocation, setTourAttractionsLocation] = useState<string>("");
-    const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>("");
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>("");
-    const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
-
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+    const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
+    const [tourAttractionsLocation, setTourAttractionsLocation] = useState<string>("");
+    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
+    const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>("");
+
     const [page, setPage] = useState<{ start: number; end: number }>({
         start: 0,
         end: 7,

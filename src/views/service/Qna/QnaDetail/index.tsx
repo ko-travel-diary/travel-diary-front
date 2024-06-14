@@ -26,7 +26,6 @@ export default function QnaDetail() {
     const [qnaComment, setQnaComment] = useState<string | null>(null);
     const [qnaCommentRows, setQnaCommentRows] = useState<number>(1);
     const [qnaCommentUpdate, setQnaCommentUpdate] = useState<string>("");
-    const [qnaCommentUpdateRows, setQnaCommentUpdateRows] = useState<number>(1);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -166,8 +165,6 @@ export default function QnaDetail() {
         const qnaCommentUpdate = event.target.value;
         setQnaCommentUpdate(qnaCommentUpdate);
 
-        const qnaCommentUpdateRows = qnaCommentUpdate.split("\n").length;
-        setQnaCommentUpdateRows(qnaCommentUpdateRows);
     };
 
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {

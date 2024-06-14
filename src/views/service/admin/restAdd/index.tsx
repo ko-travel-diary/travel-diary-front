@@ -10,7 +10,6 @@ import axios from 'axios';
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
-import { bearerAuthorization } from 'src/apis';
 
 //                  Component                   //
 export function SearchAddress() {
