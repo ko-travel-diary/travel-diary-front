@@ -11,6 +11,8 @@ import useScheduleNumberStore from "./schedule-number.stroe";
 import useScheduleStore from "./schedule.store";
 import useTourListStore from "./tour-list.store";
 import useViewListStore from "./view-list.store";
+import useSearchAddressStore from "./search-address.store";
+import useButtonStatusStore from "./search-button.store";
 
 export { useReviewNumberStore,
          useCheckBoxStore, 
@@ -24,4 +26,7 @@ export { useReviewNumberStore,
          useScheduleNumberStore,
          useScheduleStore,
          useTourListStore,
-         useViewListStore };
+         useViewListStore,
+         useSearchAddressStore,
+         useButtonStatusStore 
+        };

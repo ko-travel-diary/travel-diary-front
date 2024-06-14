@@ -3,7 +3,7 @@ import "./style.css";
 
 export default function NotFound() {
     return (
-        <div id='not-found-wrapper'>s            
+        <div id='not-found-wrapper'>           
             <div className='not-found-404'></div>
             <h1 className='not-found-title'>찾을 수 없는 페이지 입니다!</h1>
             <div className='not-found-text'>
