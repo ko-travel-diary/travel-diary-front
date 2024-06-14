@@ -294,7 +294,7 @@ export default function ReviewWrite() {
             <div className="write-button-wrapper">
                 <input
                     type="file"
-                    accept="image/jpg, image/png"
+                    accept=".png, .jpg, .jpeg"
                     multiple
                     ref={photoInput}
                     onChange={imageInputOnChange}
