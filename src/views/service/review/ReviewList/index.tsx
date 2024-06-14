@@ -249,74 +249,77 @@ export default function ReviewList() {
 
     //                    render                    //
     return (
-        <div id="review-wrapper">
-            <div className="review-search-wrapper">
-                <div className="review-search-item">
-                    <div className="review-search-item-title-contents font-size-color">
-                        <input name="check" type="radio" defaultChecked onChange={onRadioChangeHandler} value={"title-contents"} />
-                        제목 + 내용
+        <>
+            <div className="review-top-image"></div>
+            <div id="review-wrapper">
+                <div className="review-search-wrapper">
+                    <div className="review-search-item">
+                        <div className="review-search-item-title-contents font-size-color">
+                            <input name="check" type="radio" defaultChecked onChange={onRadioChangeHandler} value={"title-contents"} />
+                            제목 + 내용
+                        </div>
+                        <div className="review-search-item-writer font-size-color ">
+                            <input name="check" type="radio" onChange={onRadioChangeHandler} value={"writer"} />
+                            작성자
+                        </div>
+                        <div className="review-search-item-write-date font-size-color">
+                            <input name="check" type="radio" onChange={onRadioChangeHandler} value={"write-date"} />
+                            작성일
+                        </div>
                     </div>
-                    <div className="review-search-item-writer font-size-color ">
-                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"writer"} />
-                        작성자
+                    <div className="review-search-box">
+                        <div className="review-search-input-box">
+                            <input
+                                className="review-search-input"
+                                placeholder="검색어를 입력하세요."
+                                value={searchWord}
+                                onChange={onSearchWordChangeHandler}
+                                onKeyDown={onSearchWordKeydownHandler}
+                            />
+                        </div>
+                        <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>
+                            검색
+                        </div>
                     </div>
-                    <div className="review-search-item-write-date font-size-color">
-                        <input name="check" type="radio" onChange={onRadioChangeHandler} value={"write-date"} />
-                        작성일
+                    <div className="writebox">
+                        <div className="review-write-button primary-button" onClick={onWriteButtonClickHandler}>
+                            글쓰기
+                        </div>
                     </div>
                 </div>
-                <div className="review-search-box">
-                    <div className="review-search-input-box">
-                        <input
-                            className="review-search-input"
-                            placeholder="검색어를 입력하세요."
-                            value={searchWord}
-                            onChange={onSearchWordChangeHandler}
-                            onKeyDown={onSearchWordKeydownHandler}
-                        />
-                    </div>
-                    <div className="review-search-button primary-button" onClick={onSearchButtonClickHandler}>
-                        검색
-                    </div>
-                </div>
-                <div className="writebox">
-                    <div className="review-write-button primary-button" onClick={onWriteButtonClickHandler}>
-                        글쓰기
-                    </div>
-                </div>
-            </div>
 
-            <div className="review-list-table">
-                <div className="review-list-table-th">
-                    <div className="review-list-table-image">사진</div>
-                    <div className="review-list-table-title">제목</div>
-                    <div className="review-list-table-writer">작성자</div>
-                    <div className="review-list-table-write-date">작성일</div>
-                    <div className="review-list-table-view-count">조회수</div>
-                    <div className="review-list-table-favorite-count">추천수</div>
-                </div>
-                {viewList.map((item) => (
-                    <ListItem {...item} />
-                ))}
-            </div>
-
-            <div className="review-list-bottom">
-                <div className="review-list-pagenation">
-                    <div className="review-list-page-left" onClick={onPreSectionClickHandler}></div>
-                    <div className="review-list-page-box">
-                        {pageList.map((page) =>
-                            page === currentPage ? (
-                                <div className="review-list-page-active">{page}</div>
-                            ) : (
-                                <div className="review-list-page" onClick={() => onPageClickHandler(page)}>
-                                    {page}
-                                </div>
-                            )
-                        )}
+                <div className="review-list-table">
+                    <div className="review-list-table-th">
+                        <div className="review-list-table-image">사진</div>
+                        <div className="review-list-table-title">제목</div>
+                        <div className="review-list-table-writer">작성자</div>
+                        <div className="review-list-table-write-date">작성일</div>
+                        <div className="review-list-table-view-count">조회수</div>
+                        <div className="review-list-table-favorite-count">추천수</div>
                     </div>
-                    <div className="review-list-page-right" onClick={onNextSectionClickHandler}></div>
+                    {viewList.map((item) => (
+                        <ListItem {...item} />
+                    ))}
+                </div>
+
+                <div className="review-list-bottom">
+                    <div className="review-list-pagenation">
+                        <div className="review-list-page-left" onClick={onPreSectionClickHandler}></div>
+                        <div className="review-list-page-box">
+                            {pageList.map((page) =>
+                                page === currentPage ? (
+                                    <div className="review-list-page-active">{page}</div>
+                                ) : (
+                                    <div className="review-list-page" onClick={() => onPageClickHandler(page)}>
+                                        {page}
+                                    </div>
+                                )
+                            )}
+                        </div>
+                        <div className="review-list-page-right" onClick={onNextSectionClickHandler}></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
