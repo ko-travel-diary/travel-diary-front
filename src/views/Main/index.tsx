@@ -316,7 +316,7 @@ function InfoItem(
       getRestaurantRecommendStatusRequest(restaurantNumber, cookies.accessToken).then(getRestaurantRecommendStatusResponse);
     }
     if("tourAttractionsNumber" in props){
-      const restaurantNumber = props.tourAttractionsNumber;
+      const tourAttractionsNumber = props.tourAttractionsNumber;
       getTourAttractionRecommendStatusRequest(tourAttractionsNumber, cookies.accessToken).then(getTourAttractionRecommendStatusResponse);
     }
   
