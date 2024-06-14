@@ -71,7 +71,7 @@ export default function ReviewDetail() {
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
     const [commentContent, setCommentContent] = useState<string>("");
     const [commentList, setCommentList] = useState<ReviewCommentList[]>([]);
-    const [recommendStatus, setRecommendstate] = useState<boolean>(true);
+    const [recommendStatus, setRecommendstate] = useState<boolean>(false);
 
     const { scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { scheduleListItemViewList, expenditureViewList, setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
@@ -172,7 +172,7 @@ export default function ReviewDetail() {
         setReviewViewCount(reviewViewCount);
         setReviewFavoriteCount(reviewFavoriteCount);
         setTravelScheduleNumber(travelScheduleNumber);
-        if (travelScheduleNumber === 0) {
+        if (!travelScheduleNumber) {
             setScheduleRenderStatus(false);
             return;
         }
@@ -546,6 +546,7 @@ export default function ReviewDetail() {
         }
         increaseViewCountRequest(reviewNumber).then(increaseViewCountResponse);
         getTravelReviewCommentListRequest(reviewNumber).then(getTravelReviewCommentListResponse);
+        if (!cookies.accessToken) return;
         getTravelReviewFavoriteStatusRequest(reviewNumber, cookies.accessToken).then(getTravelReviewFavoriteStatusResponse);
     }, []);
 

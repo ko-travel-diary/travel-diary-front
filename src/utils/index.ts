@@ -32,14 +32,12 @@ export const YYYYMMDD = (date: Date) => {
     return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
 };
 
-export const emptySchedule = [
-    {
-        scheduleDate: YYYYMMDD(new Date()),
-        scheduleContent: "",
-        scheduleStartTime: "",
-        scheduleEndTime: "",
-    },
-];
+export const emptySchedule = {
+    scheduleDate: YYYYMMDD(new Date()),
+    scheduleContent: "",
+    scheduleStartTime: "",
+    scheduleEndTime: "",
+};
 
 export const emptyExpenditure = {
     travelScheduleExpenditureDetail: "",
