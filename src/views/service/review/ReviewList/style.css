@@ -57,12 +57,7 @@ html::-webkit-scrollbar {
 }
 
 .font-size-color{
-<<<<<<< HEAD
     font-size: 20px;
-=======
-    font-style: WavvePADO;
-    font-size: 16px;
->>>>>>> 4447e4f80acd5b938262724e8e94d606452ea347
     font-weight: 700;
     color: rgba(7, 65, 115, 1);
 }
