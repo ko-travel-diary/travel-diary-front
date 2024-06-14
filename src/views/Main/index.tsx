@@ -931,11 +931,8 @@ export default function Main() {
     if (mouseFlag) return;
     if (searchWord) return;
     const { lat, lng } = mapCenter;
-    console.log("여기!!!");
     if(tourCheckStatus) getTourAttractionsListRequest(lat, lng).then(getTourAttractionsListResponse);
     if(restCheckStatus) getRestaurantListRequest(lat, lng).then(getRestaurantListResponse);
-    console.log(lat, lng);
-    console.log("여기222!!!");
   }, [mouseFlag, mapCenter]);
 
   useEffect(() => {
