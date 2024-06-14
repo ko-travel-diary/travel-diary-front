@@ -292,29 +292,31 @@ function SignUp () {
     //                    render : 회원가입 화면 컴포넌트                     //
     return (
         <div id='sign-up-wrapper'>
-            <div className='sign-up-title'>회원가입</div>
-            <div className='sign-up-input-container' >
-                <InputBox title='아이디' value={userId} onChange={onUserIdChangeHandler} placeholder='' type='text' 
-                messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler} ref={focusRef}/>
+            <div className='sign-up-content'>
+                <div className='sign-up-title'>회원가입</div>
+                <div className='sign-up-input-container' >
+                    <InputBox title='아이디' value={userId} onChange={onUserIdChangeHandler} placeholder='' type='text' 
+                    messageError={userIdMessageError} message={userIdMessage} buttonTitle='중복 확인' onButtonClick={onUserIdButtonClickHandler} ref={focusRef}/>
 
-                <InputBox title='비밀번호' value={userPassword} onChange={onUserPasswordChangeHandler} placeholder='' type='password' 
-                messageError={userPasswordMessageError} message={userPasswordMessage} />
+                    <InputBox title='비밀번호' value={userPassword} onChange={onUserPasswordChangeHandler} placeholder='' type='password' 
+                    messageError={userPasswordMessageError} message={userPasswordMessage} />
 
-                <InputBox title='비밀번호 확인' value={userPasswordCheck} onChange={onUserPasswordCheckChangeHandler} placeholder='' type='password' 
-                messageError={userPasswordCheckMessageError} message={userPasswordCheckMessage} />
+                    <InputBox title='비밀번호 확인' value={userPasswordCheck} onChange={onUserPasswordCheckChangeHandler} placeholder='' type='password' 
+                    messageError={userPasswordCheckMessageError} message={userPasswordCheckMessage} />
 
-                <InputBox title='닉네임' value={nickName} onChange={onNickNameChangeHandler} placeholder='' type='text' messageError={nickNameMessageError} 
-                message={nickNameMessage} buttonTitle='중복 확인' onButtonClick={onNickNameButtonClickHandler} />
+                    <InputBox title='닉네임' value={nickName} onChange={onNickNameChangeHandler} placeholder='' type='text' messageError={nickNameMessageError} 
+                    message={nickNameMessage} buttonTitle='중복 확인' onButtonClick={onNickNameButtonClickHandler} />
 
-                <InputBox title='이메일' value={userEmail} onChange={onUserEmailChangeHandler} placeholder='' type='text' messageError={userEmailMessageError} 
-                message={userEmailMessage} buttonTitle='중복 확인' onButtonClick={onUserEmailButtonClickHandler}  />
+                    <InputBox title='이메일' value={userEmail} onChange={onUserEmailChangeHandler} placeholder='' type='text' messageError={userEmailMessageError} 
+                    message={userEmailMessage} buttonTitle='중복 확인' onButtonClick={onUserEmailButtonClickHandler}  />
 
-                <InputBox title='인증번호' value={authNumber} onChange={onAuthNumberChangeHandler} placeholder='' type='text' messageError={authNumberMessageError} 
-                message={authNumberMessage} buttonTitle='인증 확인' onButtonClick={onAuthNumberButtonClickHandler}  />
+                    <InputBox title='인증번호' value={authNumber} onChange={onAuthNumberChangeHandler} placeholder='' type='text' messageError={authNumberMessageError} 
+                    message={authNumberMessage} buttonTitle='인증 확인' onButtonClick={onAuthNumberButtonClickHandler}  />
 
+                </div>
+                <Social title='sns 로그인'/>
+                <div className={signUpButtonActive} onClick={onSignUpButtonClickHandler} style={{width: "360px"}}>회원가입</div>
             </div>
-            <Social title='sns 로그인'/>
-            <div className={signUpButtonActive} onClick={onSignUpButtonClickHandler}>회원가입</div>
         </div>
     );
 }
