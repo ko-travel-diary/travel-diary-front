@@ -421,7 +421,7 @@ function InfoItem(
         <div className="info-box-bottom">
           <div className="info-box-bottom-left">
             {tourRecommendStatus ?
-              <div className="favorite-icon-button-clicked" onClick={onTourRecommendButtonClickHandler}> ♥ </div>
+              <div className="favorite-icon-button-clicked" onClick={onTourRecommendButtonClickHandler}></div>
               :
               <div className="favorite-icon-button" onClick={onTourRecommendButtonClickHandler}></div>
             }
@@ -770,9 +770,9 @@ export default function Main() {
   // description: 사이드 상태 //
   const [sideOpen, setSideOpen] = useState<boolean>(false);
 
+  // description: 맵 중심 상태 //
   const {mapCenter, setMapCenter} = useMapCenterStore();
 
-  // description: 맵 중심 상태 //
   const [mouseFlag, setMouseFlag] = useState<boolean>(false);
 
   // description: 알림 창 오픈 여부 리스트 상태 //
@@ -886,7 +886,7 @@ export default function Main() {
   const onCenterChanged = (map: kakao.maps.Map) => {
     
     if (mouseFlag) return;
-    map.setCenter(new kakao.maps.LatLng(mapCenter.lat, mapCenter.lng))
+    map.setCenter(new kakao.maps.LatLng(mapCenter.lat, mapCenter.lng));
   };
 
   // description: 마커 오버레이 레스토랑 클로즈 처리 이벤트 함수 //
@@ -899,14 +899,27 @@ export default function Main() {
 
   // description: 마커 오버레이 관광명소 클로즈 처리 이벤트 함수 //
   const onMarkerOverrayTourCloseHandler = (typeNumber: number) => {
+
     const newOpenList = openList.filter(
       (item) => !(item.type === "tour" && item.typeNumber === typeNumber)
     );
     setOpenList(newOpenList);
+
   };
 
   const onMapMouseDownHandler = () => {
+
     setMouseFlag(true);
+    if(mapRef.current) { 
+      
+      const center =  mapRef.current.getCenter();
+      const lat = center.getLat();
+      const lng = center.getLng();
+      const mapCenter = { lat, lng }
+      setMapCenter(mapCenter);
+
+    }
+
   };
 
   const onMapMouseUpHandler = () => {
@@ -918,8 +931,11 @@ export default function Main() {
     if (mouseFlag) return;
     if (searchWord) return;
     const { lat, lng } = mapCenter;
+    console.log("여기!!!");
     if(tourCheckStatus) getTourAttractionsListRequest(lat, lng).then(getTourAttractionsListResponse);
     if(restCheckStatus) getRestaurantListRequest(lat, lng).then(getRestaurantListResponse);
+    console.log(lat, lng);
+    console.log("여기222!!!");
   }, [mouseFlag, mapCenter]);
 
   useEffect(() => {
