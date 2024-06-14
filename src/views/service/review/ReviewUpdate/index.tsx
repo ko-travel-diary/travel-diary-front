@@ -276,6 +276,7 @@ export default function ReviewUpdate() {
 
     const onScheduleRenderDeleteButton = () => {
         setScheduleRenderStatus(!scheduleRenderStatus);
+        setTravelScheduleNumber(0);
     };
 
     //                     effect                     //
