@@ -37,7 +37,7 @@ export default function QnaList() {
     //                    state                     //
     const [cookies] = useCookies();
 
-    const { loginUserRole } = useUserStore();
+    const { loginUserRole, loginUserId } = useUserStore();
 
     const [qnaList, setQnaList] = useState<QnaListItem[]>([]);
     const [viewList, setViewList] = useState<QnaListItem[]>([]);
@@ -47,7 +47,8 @@ export default function QnaList() {
     const [pageList, setPageList] = useState<number[]>([1]);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-    const [isToggleOn, setToggleOn] = useState<boolean>(false);
+    const [isUserToggleOn, setUserToggleOn] = useState<boolean>(false);
+    const [isAdminToggleOn, setAdminToggleOn] = useState<boolean>(false);
     const [searchWord, setSearchWord] = useState<string>("");
 
     //                     function                     //
@@ -73,7 +74,8 @@ export default function QnaList() {
     };
 
     const changeQnaList = (qnaList: QnaListItem[]) => {
-        if (isToggleOn) qnaList = qnaList.filter((qna) => !qna.qnaStatus);
+        if (isAdminToggleOn) qnaList = qnaList.filter((qna) => !qna.qnaStatus);
+        if (isUserToggleOn) qnaList = qnaList.filter((qna) => loginUserId === qna.qnaWriterId);
         setQnaList(qnaList);
 
         const totalLength = qnaList.length;
@@ -157,9 +159,14 @@ export default function QnaList() {
         getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
     };
 
-    const onToggleClickHandler = () => {
+    const onToggleUserClickHandler = () => {
+        if (loginUserRole !== "ROLE_USER") return;
+        setUserToggleOn(!isUserToggleOn);
+    };
+
+    const onToggleAdminClickHandler = () => {
         if (loginUserRole !== "ROLE_ADMIN") return;
-        setToggleOn(!isToggleOn);
+        setAdminToggleOn(!isAdminToggleOn);
     };
 
     //                    effect                     //
@@ -168,9 +175,14 @@ export default function QnaList() {
     }, []);
 
     useEffect(() => {
+        if (!cookies.accessToken || loginUserRole !== "ROLE_USER") return;
+        getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
+    }, [isUserToggleOn]);
+
+    useEffect(() => {
         if (!cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
-    }, [isToggleOn]);
+    }, [isAdminToggleOn]);
 
     useEffect(() => {
         if (!qnaList.length) return;
@@ -182,8 +194,9 @@ export default function QnaList() {
         changeSection(totalPage);
     }, [currentSection]);
 
-    //                    render                     //
-    const toggleClass = isToggleOn ? "toggle-active" : "toggle";
+    //                    render                     //\
+    const toggleAdminClass = isAdminToggleOn ? "toggle-active" : "toggle";
+    const toggleUserClass = isUserToggleOn ? "toggle-active" : "toggle";
 
     const searchButtonClass = searchWord ? "primary-button" : "disable-button";
 
@@ -198,10 +211,13 @@ export default function QnaList() {
                 </div>
                 <div className="qna-list-top-right">
                     {loginUserRole === "ROLE_USER" ? (
-                        <div className="qna-list-top-right-text">내가 쓴 문의내역</div>
+                        <>
+                            <div className={toggleUserClass} onClick={onToggleUserClickHandler}></div>
+                            <div className="qna-list-top-right-text">내가 쓴 문의내역</div>
+                        </>
                     ) : (
                         <>
-                            <div className={toggleClass} onClick={onToggleClickHandler}></div>
+                            <div className={toggleAdminClass} onClick={onToggleAdminClickHandler}></div>
                             <div className="qna-list-admin-text">미완료 보기</div>
                         </>
                     )}
