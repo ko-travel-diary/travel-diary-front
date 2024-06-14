@@ -23,10 +23,11 @@ interface InputBoxProps {
 
 //                    Component : 회원가입 인풋 박스 컴포넌트                     //
 const InputBox = forwardRef<HTMLInputElement, InputBoxProps>((props, ref) => {
+    //                    state                     //
     const { title, value, onChange, placeholder, type, messageError, message, buttonTitle, onButtonClick } = props;
 
+    //                    render : 회원가입 인풋 박스 컴포넌트                     //
     const messageClass = 'sign-up-message ' + (messageError ? 'error' :  'primary');
-    
     return (
         <div className='sign-up-input-box'>
             <div className='sign-up-input-main'>
@@ -89,8 +90,6 @@ function SignUp () {
     const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);   
     const [userEmailMessageError, setUserEmailMessageError] = useState<boolean>(false);
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
-
-    const signUpButtonActive = signUpCondition ? 'primary-button' : 'disable-button';
 
     //                  Function                    //
     const idCheckResponse = (result: ResponseDto | null) => {
@@ -290,6 +289,7 @@ function SignUp () {
     }, [focusRef])
 
     //                    render : 회원가입 화면 컴포넌트                     //
+    const signUpButtonActive = signUpCondition ? 'primary-button' : 'disable-button';
     return (
         <div id='sign-up-wrapper'>
             <div className='sign-up-content'>
