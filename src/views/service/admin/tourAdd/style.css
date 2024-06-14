@@ -111,3 +111,9 @@
 
     cursor: pointer;
 }
+
+.tour-register-bottom{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}

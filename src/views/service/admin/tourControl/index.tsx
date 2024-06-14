@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import './style.css'
 import { useCookies } from 'react-cookie'
 import ResponseDto from 'src/apis/response.dto';
@@ -52,6 +52,12 @@ export function SearchAddress() {
         setSearchAddress(selectAddress);
         setButtonStatus(!buttonStatus)
     }
+
+    const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            return onSearchButtonClickHandler();
+        }
+    }
     
     //                  Render                  //
     return (
@@ -60,7 +66,7 @@ export function SearchAddress() {
                 <div className='search-console-title'>주소 찾기</div>
                 <div className='search-console-input-box'>
                     <div className='search-console-input-wrapper'>
-                        <input className='search-input-element' placeholder='주소를 입력하세요' onChange={onSearchWordChangeHandler} />
+                        <input className='search-input-element' placeholder='주소를 입력하세요' onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
                     </div>
                     <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
@@ -255,6 +261,7 @@ export default function TourControl() {
             return;
         }
 
+        setButtonStatus(false)
         setSearchAddress('');
 
     }, [])
@@ -334,7 +341,7 @@ export default function TourControl() {
                     </div>
                 </div>
             </div>
-            <div className='tour-control-bottom'>
+            <div className='tour-register-bottom'>
                 <div className='primary-button' onClick={onPatchButtonClickHandler}>수정</div>
                 <div className='error-button' onClick={onDeleteButtonClickHandler}>삭제</div>
             </div>
