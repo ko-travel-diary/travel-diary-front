@@ -34,12 +34,13 @@
 }
 
 .top-navigation-title {
-    font-style: WavvePADO;
+    font-family: WavvePADO;
     font-size: 24px;
     font-weight: 700;
     color: rgba(7, 65, 115, 1);
 
     cursor: pointer;
+    
 }
 
 .top-navigation-main {
@@ -49,6 +50,7 @@
 }
 
 .top-navigation-item {
+    font-family: WavvePADO;
     font-size: 16px;
     font-weight: 400;
     color: rgba(7, 65, 115, 0.8);
@@ -63,6 +65,7 @@
 }
 
 .top-navigation-item-active {
+    font-family: WavvePADO;
     color: rgba(7, 65, 115, 1);
 }
 
