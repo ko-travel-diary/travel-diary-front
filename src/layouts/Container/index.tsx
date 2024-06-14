@@ -58,7 +58,11 @@ function TopNavigation() {
 
     //                  event handler                   //
     const onSignInButtonClickHandler = () => navigator(SIGN_IN_ABSOLUTE_PATH);
-    const onMainPageButtonClickHandler = () => navigator(MAIN_ABSOLUTE_PATH);
+    const onMainPageButtonClickHandler = () => {
+        navigator(MAIN_ABSOLUTE_PATH);
+        window.location.reload();
+    }
+    
     const onTourButtonClickHandler = () => navigator(TRAVEL_ABSOLUTE_PATH);
     const onReivewButtonClickHandler = () => navigator(REVIEW_ABSOULUTE_PATH);
     const onQnaButtonClickHandler = () => navigator(QNA_ABSOLUTE_PATH);
