@@ -22,7 +22,7 @@ html::-webkit-scrollbar {
     height: 400px;
     background-position: cover;
     background-repeat: no-repeat;
-    background-image: url("../../../../assets/image/qna-top-image2.jpg");
+    background-image: url("../../../../assets/image/qna-top-image.jpg");
     background-size: 100% 100%;
 }
 
