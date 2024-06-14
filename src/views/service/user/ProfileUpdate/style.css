@@ -49,6 +49,8 @@ html::-webkit-scrollbar {
     border-radius: 150px;
 
     background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: cover;
 }
 
 .profile-add-image {
