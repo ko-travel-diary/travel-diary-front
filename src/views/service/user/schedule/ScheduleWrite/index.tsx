@@ -79,7 +79,7 @@ export default function ScheduleWrite() {
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
 
     const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
-    const [scheduleList, setScheduleList] = useState<ScheduleList[]>(emptySchedule);
+    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
     const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 
     const [toggleFlag, setToggleFlag] = useState<number>(0);
