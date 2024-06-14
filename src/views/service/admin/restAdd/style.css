@@ -213,8 +213,3 @@
     overflow-x: auto;
     overflow-y: hidden;
 }
-.rest-register-bottom{
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
