@@ -96,36 +96,34 @@ export default function RestDetail() {
     return (
         <div id="travel-detail-wrapper">
             {restaurantImageUrl === null || restaurantImageUrl.length ? (
-                <>
-                    <div className="travel-detail-image-table">
-                        <div>
-                            <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : restaurantImageUrl[0]} />
-                        </div>
-                        <div className="travel-detail-image-list">
-                            {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                                <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
-                            ) : null}
-                            {restaurantImageUrl.slice(page.start, page.end).map((url) => (
-                                <div
-                                    className="travel-lmage-list"
-                                    key={url}
-                                    style={{
-                                        backgroundImage: `url(${url})`,
-                                        minWidth: "150px",
-                                        height: "100px",
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center",
-                                        cursor: "pointer",
-                                    }}
-                                    onClick={() => onUpdateImageUrl(url)}
-                                />
-                            ))}
-                            {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                                <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
-                            ) : null}
-                        </div>
+                <div className="travel-detail-image-table">
+                    <div>
+                        <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : restaurantImageUrl[0]} />
                     </div>
-                </>
+                    <div className="travel-detail-image-list">
+                        {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                            <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
+                        ) : null}
+                        {restaurantImageUrl.slice(page.start, page.end).map((url) => (
+                            <div
+                                className="travel-lmage-list"
+                                key={url}
+                                style={{
+                                    backgroundImage: `url(${url})`,
+                                    minWidth: "150px",
+                                    height: "100px",
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() => onUpdateImageUrl(url)}
+                            />
+                        ))}
+                        {restaurantImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                            <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
+                        ) : null}
+                    </div>
+                </div>
             ) : (
                 <div className="travel-empty-image-box">
                     <div className="travel-empty-image"></div>

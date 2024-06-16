@@ -10,26 +10,40 @@ html::-webkit-scrollbar {
 #travelList-wrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
     margin: 20px 200px;
 
     width: 1512px;
 }
 
+.travel-top-image {
+    display: flex;
+    width: 1920px;
+    height: 400px;
+    background-position: cover;
+    background-repeat: no-repeat;
+    background-image: url("../../../../assets/image/travel-top-image.jpg");
+    background-size: 100% 100%;
+
+    position: absolute;
+    z-index: -99999;
+}
+
 .travel-search-list {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
+    margin: 122px 0;
+    background-color: rgba(255, 255, 255, 0.5);
 
     width: 100%;
     border: 1px solid rgba(7, 65, 115, 0.2);
     border-radius: 8px;
 
     gap: 20px;
-    padding: 20px;
+    padding: 30px 10px 5px 10px;
 
-    min-width: 1470px;
+    width: 1230px;
 }
 
 .travel-search-location {
@@ -73,11 +87,13 @@ html::-webkit-scrollbar {
 .travel-search-input {
     width: 700px;
 
+    padding: 0px 0px 0px 10px;
+
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
     border-radius: 8px;
 
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
 }
 
