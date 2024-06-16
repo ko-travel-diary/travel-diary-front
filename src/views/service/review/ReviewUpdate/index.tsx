@@ -189,7 +189,10 @@ export default function ReviewUpdate() {
         setReviewWriterId(writerId);
         setTravelReviewImageUrl(travelReviewImageUrl);
         setTravelScheduleNumber(travelScheduleNumber);
-        if (travelScheduleNumber === 0) return;
+        if (!travelScheduleNumber) {
+            setScheduleRenderStatus(false);
+            return;
+        }
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
     };
 
