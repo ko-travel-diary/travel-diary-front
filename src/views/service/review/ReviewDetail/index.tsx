@@ -646,6 +646,7 @@ export default function ReviewDetail() {
                                 height: "200px",
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
+                                left:"16px"
                             }}
                         ></div>
                     ))

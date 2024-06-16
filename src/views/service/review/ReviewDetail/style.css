@@ -10,7 +10,7 @@ html::-webkit-scrollbar {
 #reivew-detail-wrapper{
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 32px;
     margin: 20px 200px;
 }
 
@@ -27,6 +27,7 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     border: 1px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
 
     min-width: 1520px;
 }
@@ -38,19 +39,21 @@ html::-webkit-scrollbar {
     padding: 10px;
     border-bottom: 1px solid rgba(7, 65, 115, 0.2);
 
-    font-size: 30px;
+    font-size: 32px;
     justify-content: space-between;
+    
 }
 
 .review-detail-title{
     width: 1200px;
+    padding: 0px 0px 0px 8px;
 }
 
 .review-detail-content{
     margin: 0px;
-    padding: 10px;
+    padding: 10px 10px 10px 16px;
 
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .review-detail-middle{
@@ -91,7 +94,7 @@ html::-webkit-scrollbar {
 .review-detail-bottom{
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 32px;
 }
 
 .comments-content{
@@ -110,6 +113,7 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     border: 2px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
     padding: 10px;
 
     min-width: 1497px;
@@ -127,7 +131,7 @@ html::-webkit-scrollbar {
 .review-detail-comment-textarea-box{
     display: flex;
     flex-direction: row;
-    gap: 7px;
+    gap: 16px;
 
     min-width: 1520px;
 }
@@ -140,8 +144,9 @@ html::-webkit-scrollbar {
 
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
+    border-radius: 8px;
 
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .recomment-textarea {
@@ -152,8 +157,9 @@ html::-webkit-scrollbar {
     resize: none;
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
+    
 
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .comment-button{
@@ -192,16 +198,16 @@ html::-webkit-scrollbar {
 }
 
 .recommend-button{
-    min-width: 34px;
-    min-height: 34px;
+    min-width: 36px;
+    height: 36px;
 
     background-image: url('../../../../assets/image/recommend-button.png');
     background-size: 100%;
 }
 
 .recommend-button-clicked{
-    min-width: 34px;
-    min-height: 34px;
+    min-width: 36px;
+    height: 36px;
 
     background-image: url('../../../../assets/image/recommend-button-click.png');
     background-size: 100%;
