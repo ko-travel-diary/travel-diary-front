@@ -91,35 +91,33 @@ export default function TourDetail() {
     return (
         <div id="travel-detail-wrapper">
             {tourAttractionsImageUrl === null || tourAttractionsImageUrl.length ? (
-                <>
-                    <div className="travel-detail-image-table">
-                        <div>
-                            <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : tourAttractionsImageUrl[0]} />
-                        </div>
-                        <div className="travel-detail-image-list">
-                            {tourAttractionsImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                                <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
-                            ) : null}
-                            {tourAttractionsImageUrl.slice(page.start, page.end).map((url) => (
-                                <div
-                                    className="travel-image-list"
-                                    key={url}
-                                    style={{
-                                        backgroundImage: `url(${url})`,
-                                        width: "150px",
-                                        height: "100px",
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center",
-                                    }}
-                                    onClick={() => onUpdateImageUrl(url)}
-                                />
-                            ))}
-                            {tourAttractionsImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
-                                <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
-                            ) : null}
-                        </div>
+                <div className="travel-detail-image-table">
+                    <div>
+                        <img title="travel" width="300px" src={selectedImageUrl ? selectedImageUrl : tourAttractionsImageUrl[0]} />
                     </div>
-                </>
+                    <div className="travel-detail-image-list">
+                        {tourAttractionsImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                            <div className="travel-image-list-left" onClick={() => onClickImageButton(true)} />
+                        ) : null}
+                        {tourAttractionsImageUrl.slice(page.start, page.end).map((url) => (
+                            <div
+                                className="travel-image-list"
+                                key={url}
+                                style={{
+                                    backgroundImage: `url(${url})`,
+                                    width: "150px",
+                                    height: "100px",
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
+                                onClick={() => onUpdateImageUrl(url)}
+                            />
+                        ))}
+                        {tourAttractionsImageUrl.length > SHOW_IMAGE_BUTTON_LIMIT ? (
+                            <div className="travel-image-list-right" onClick={() => onClickImageButton(false)} />
+                        ) : null}
+                    </div>
+                </div>
             ) : (
                 <div className="travel-empty-image-box">
                     <div className="travel-empty-image"></div>

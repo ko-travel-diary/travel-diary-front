@@ -424,65 +424,75 @@ export default function SearchTravelList() {
 
     //                    render                     //
     return (
-        <div id="travelList-wrapper">
-            <div className="travel-search-list">
-                <div className="travel-search-location">
-                    <div>지역</div>
-                    <div>{"|"}</div>
-                    <SelectBox value={selectLocal} onChange={onLocalChangeHandler} />
-                </div>
-                <div className="travel-search-category">
-                    <div>카테고리</div>
-                    <div>{"|"}</div>
-                    <div className="review-search-item-travel-attraction travel-font ">
-                        <input title="travel" name="check" type="radio" onChange={onRadioChangeHandler} defaultChecked value={"tourAttractions"} />
-                        관광명소
+        <>
+            <div className="travel-top-image" />
+            <div id="travelList-wrapper">
+                <div className="travel-search-list">
+                    <div className="travel-search-location">
+                        <div>지역</div>
+                        <div>{"|"}</div>
+                        <SelectBox value={selectLocal} onChange={onLocalChangeHandler} />
                     </div>
-                    <div className="review-search-item-restaurant travel-font ">
-                        <input title="travel" name="check" type="radio" onChange={onRadioChangeHandler} value={"restaurant"} />
-                        음식점
-                    </div>
-                </div>
-                <div className="travel-write-box">
-                    <div className="travel-search-box">
-                        <div className="travel-search-input-box">
+                    <div className="travel-search-category">
+                        <div>카테고리</div>
+                        <div>{"|"}</div>
+                        <div className="review-search-item-travel-attraction travel-font ">
                             <input
-                                className="travel-search-input"
-                                placeholder="검색어를 입력하세요."
-                                value={searchWord}
-                                onChange={onSearchWordChangeHandler}
-                                onKeyDown={onPasswordKeydownHandler}
+                                title="travel"
+                                name="check"
+                                type="radio"
+                                onChange={onRadioChangeHandler}
+                                defaultChecked
+                                value={"tourAttractions"}
                             />
-                            <div className="travel-search-button primary-button" onClick={onSearchButtonClickHandler}>
-                                검색
+                            관광명소
+                        </div>
+                        <div className="review-search-item-restaurant travel-font ">
+                            <input title="travel" name="check" type="radio" onChange={onRadioChangeHandler} value={"restaurant"} />
+                            음식점
+                        </div>
+                    </div>
+                    <div className="travel-write-box">
+                        <div className="travel-search-box">
+                            <div className="travel-search-input-box">
+                                <input
+                                    className="travel-search-input"
+                                    placeholder="검색어를 입력하세요."
+                                    value={searchWord}
+                                    onChange={onSearchWordChangeHandler}
+                                    onKeyDown={onPasswordKeydownHandler}
+                                />
+                                <div className="travel-search-button primary-button" onClick={onSearchButtonClickHandler}>
+                                    검색
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {selectOption === "tourAttractions" && tourViewList.map((item) => <Tourlist {...item} />)}
-            {selectOption === "restaurant" && restViewList.map((item) => <Restlist {...item} />)}
+                {selectOption === "tourAttractions" && tourViewList.map((item) => <Tourlist {...item} />)}
+                {selectOption === "restaurant" && restViewList.map((item) => <Restlist {...item} />)}
 
-            <div className="travel-list-bottom">
-                <div className="travel-list-pagenation">
-                    <div className="travel-list-page-left" onClick={onPreSectionClickHandler}></div>
-                    <div className="travel-list-page-box">
-                        {pageList.map((page) =>
-                            page === currentPage ? (
-                                <div className="travel-list-page-active" key={page}>
-                                    {page}
-                                </div>
-                            ) : (
-                                <div className="travel-list-page" onClick={() => onPageClickHandler(page)} key={page}>
-                                    {page}
-                                </div>
-                            )
-                        )}
+                <div className="travel-list-bottom">
+                    <div className="travel-list-pagenation">
+                        <div className="travel-list-page-left" onClick={onPreSectionClickHandler}></div>
+                        <div className="travel-list-page-box">
+                            {pageList.map((page) =>
+                                page === currentPage ? (
+                                    <div className="travel-list-page-active" key={page}>
+                                        {page}
+                                    </div>
+                                ) : (
+                                    <div className="travel-list-page" onClick={() => onPageClickHandler(page)} key={page}>
+                                        {page}
+                                    </div>
+                                )
+                            )}
+                        </div>
+                        <div className="travel-list-page-right" onClick={onNextSectionClickHandler}></div>
                     </div>
-                    <div className="travel-list-page-right" onClick={onNextSectionClickHandler}></div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
