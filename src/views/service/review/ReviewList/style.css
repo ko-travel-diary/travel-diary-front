@@ -1,6 +1,9 @@
 html {
     scrollbar-width: none;
     -ms-overflow-style: none;
+    gap: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 html::-webkit-scrollbar {
@@ -12,14 +15,24 @@ html::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin: 20px 200px;
+    margin: 0px 200px;
+    
+}
+
+#iamge-wrapper{
+    background-image: url(../../../../assets/image/top-image8.jpg);
+    background-attachment: fixed;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    margin: 0px;
 }
 
 .review-search-wrapper {
     display: flex;
     flex-direction: column;
     margin: 122px 0;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.8);
 
     width: 100%;
     border: 1px solid rgba(7, 65, 115, 0.2);
@@ -29,19 +42,6 @@ html::-webkit-scrollbar {
     padding: 30px 10px 5px 10px;
 
     width: 1230px;
-}
-
-.review-top-image {
-    display: flex;
-    width: 1920px;
-    height: 400px;
-    background-position: cover;
-    background-repeat: no-repeat;
-    background-image: url("../../../../assets/image/review-top-image\ .png");
-    background-size: 100% 100%;
-
-    position: absolute;
-    z-index: -99999;
 }
 
 .review-search-item {
@@ -103,7 +103,7 @@ html::-webkit-scrollbar {
     border: 1px solid rgba(7, 65, 115, 0.2);
     border-radius: 8px;
 
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.8);
     min-width: 1150px;
 }
 

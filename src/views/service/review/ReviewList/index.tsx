@@ -249,8 +249,7 @@ export default function ReviewList() {
 
     //                    render                    //
     return (
-        <>
-            <div className="review-top-image"></div>
+        <div id="iamge-wrapper">
             <div id="review-wrapper">
                 <div className="review-search-wrapper">
                     <div className="review-search-item">
@@ -320,6 +319,6 @@ export default function ReviewList() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

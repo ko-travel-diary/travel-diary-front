@@ -191,6 +191,7 @@ export default function ReviewUpdate() {
         setTravelScheduleNumber(travelScheduleNumber);
         if (!travelScheduleNumber) {
             setScheduleRenderStatus(false);
+            setTravelScheduleNumber(0);
             return;
         }
         getScheduleDetailRequest(travelScheduleNumber, cookies.accessToken).then(getScheduleDetailResponse);
