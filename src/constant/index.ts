@@ -199,7 +199,7 @@ export const GET_COORDINATE_URL = `${SERVER_API_URL}/address/search`;
 export const GET_ADDRESS_URL = `${SERVER_API_URL}/address/query`;
 
 // waypoints
-export const POST_WAYPOINTS_URRL = "https://apis-navi.kakaomobility.com/v1/waypoints/directions"; 
+export const POST_WAYPOINTS_URL = "https://apis-navi.kakaomobility.com/v1/waypoints/directions"; 
 
 // description : Board Const
 export const COUNT_PER_PAGE = 10;

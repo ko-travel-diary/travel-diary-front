@@ -17,7 +17,7 @@ import { getSearchTourAttractionsListRequest, getTourAttractionRecommendStatusRe
 import { getRestaurantListRequest, getRestaurantRecommendStatusRequest, getSearchRestaurantListRequest, patchRestRecommendRequest } from "src/apis/restaurant";
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto, GetTourAttractionsRecommendResponseDto } from "src/apis/tour_attraction/dto/response";
 import ResponseDto from "src/apis/response.dto";
-import { AUTH_ABSOLUTE_PATH, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, POST_WAYPOINTS_URL, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
 import {
   Destination,
   Position,
@@ -32,6 +32,8 @@ import TourIcon from "src/assets/image/tour-attracion-icon.png";
 import { useCheckBoxStore, useDestinationStore, useMapCenterStore, useOpenListStore, usePathStore, useSearchWordStore, useTourListStore } from "src/stores";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { postWaypointsRequest } from "src/apis/waypoints";
+import { kakaoAuthorization } from "src/apis";
 
 //                    component : 경로 컴포넌트                     //
 function Waypoints() {
@@ -65,7 +67,11 @@ function Waypoints() {
       },
       waypoints: waypoints.map(waypoint => ({ name: waypoint.name, x: String(waypoint.lng), y: String(waypoint.lat) }))
     }
-    axios.post('https://apis-navi.kakaomobility.com/v1/waypoints/directions', data, {headers: { Authorization: 'KakaoAK cdf3640f786fbe72c3a456c5064a2f7a' }})
+
+    const kakaoAppKey = process.env.REACT_APP_API_KEY;
+    if(!kakaoAppKey) return;
+
+    axios.post(POST_WAYPOINTS_URL, data, kakaoAuthorization(kakaoAppKey))
       .then(response => {
         const path: Position[] = [];
         const { sections } = response.data.routes[0];
@@ -132,9 +138,6 @@ function InfoItem(
 
   const navigator = useNavigate();
   const [cookies] = useCookies();
-
-  const [restaurantNumber, setRestaurantNumber] = useState<number>(0);
-  const [tourAttractionsNumber, setTourAttractionsNumber] = useState<number>(0);
 
   const [restRecommendStatus, setRestRecommendStatus] = useState<boolean>(false);
   const [tourRecommendStatus, setTourRecommendStatus] = useState<boolean>(false);
@@ -284,7 +287,6 @@ function InfoItem(
 
     if ("restaurantNumber" in props){
       const restaurantNumber = props.restaurantNumber;
-      setRestaurantNumber(restaurantNumber);
       patchRestRecommendRequest(restaurantNumber, cookies.accessToken).then(patchRestRecommendResponse);
       setRestRecommendStatus(!restRecommendStatus);
     }
@@ -293,7 +295,6 @@ function InfoItem(
   const onTourRecommendButtonClickHandler = () => {
     if ("tourAttractionsNumber" in props){
       const tourAttractionsNumber = props.tourAttractionsNumber;
-      setTourAttractionsNumber(tourAttractionsNumber);
       patchTourRecommendRequest(tourAttractionsNumber, cookies.accessToken).then(patchTourRecommendResponse)
       setTourRecommendStatus(!tourRecommendStatus);
     }
