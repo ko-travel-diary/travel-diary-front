@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router';
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
-
 import ResponseDto from 'src/apis/response.dto';
 import { imageUploadRequest } from 'src/apis/image';
 import { getAddressRequest, getCoordinateRequest } from 'src/apis/address';
@@ -13,7 +12,6 @@ import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
 import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
 import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from 'src/apis/address/dto/response';
 import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
-
 import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
 
 import './style.css'
@@ -48,7 +46,6 @@ export function SearchAddress() {
 
         const { addresses } = result as GetSearchAddressResponseDto;
         setAddresses(addresses);
-
     }
 
     //                  Event Handler                   //
@@ -58,19 +55,15 @@ export function SearchAddress() {
     }
 
     const onSearchButtonClickHandler = () => {
-
         const query = searchWord;
         const page = 1;
         const size = 10;
         getAddressRequest(query, page, size, cookies.accessToken).then(getAddressResponse);
-
     }
 
     const onElementClickHandler = (selectAddress: string) => {
-
         setSearchAddress(selectAddress);
         setButtonStatus(!buttonStatus)
-
     }
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -167,7 +160,6 @@ export default function RestControl() {
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
-
     }
 
     const deleteRestaurantResponse = (result: ResponseDto | null) => {
@@ -182,10 +174,9 @@ export default function RestControl() {
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
-        
     }
 
-    const getCoordinateResponse = (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
+    const getCoordinateResponse = (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {  
         const message =
             !result ? "정확한 주소를 입력해주세요." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
@@ -204,7 +195,6 @@ export default function RestControl() {
         setRestaurantLng(x);
 
         if (x !== 0 || y !== 0) setUpdateWhether(true);
-    
     }
 
     //                  Event Handler                   //
@@ -261,7 +251,6 @@ export default function RestControl() {
 
         const query = restaurantLocation;
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
-
     }
 
     const onDeleteButtonClickHandler = () => {
@@ -281,7 +270,6 @@ export default function RestControl() {
 
         const newTourAttractionsImageUrls = restaurantImageUrl.filter((imageUrl, index) => index !== deleteIndex);
         setRestaurantImageUrl(newTourAttractionsImageUrls);
-
     }
 
     const onSearchButtonClickHandler = () => {
@@ -296,26 +284,19 @@ export default function RestControl() {
         }
 
         setButtonStatus(false)
-
     }, [])
     
     useEffect(() => {
-
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         getRestaurantRequest(restaurantNumber).then(getRestaurantResponse);
-
     }, [loginUserRole])
 
     useEffect(() => {
-
         setRestaurantLocation(searchAddress);
-        
     }, [searchAddress])
 
     useEffect(() => {
-
-        if(updateWhether) {
-    
+        if(updateWhether) {  
             if ((restaurantLat === 0.0) || (restaurantLng === 0.0)) {
                 alert('주소를 정확히 입력해주세요.');
                 return;
@@ -330,9 +311,7 @@ export default function RestControl() {
             patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);
     
             navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
-
         }
-
     }, [restaurantLat, restaurantLng])
 
     //                  Render                   //
@@ -419,7 +398,7 @@ export default function RestControl() {
                 <div className='error-button' onClick={onDeleteButtonClickHandler}>삭제</div>
             </div>
             {buttonStatus &&
-                <SearchAddress/>
+                <SearchAddress />
             }
         </div>
     )

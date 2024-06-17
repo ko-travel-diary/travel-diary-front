@@ -17,7 +17,6 @@ import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/const
 
 import './style.css'
 
-
 //                  Component                   //
 export function SearchAddress() {
 
@@ -48,7 +47,6 @@ export function SearchAddress() {
 
         const { addresses } = result as GetSearchAddressResponseDto;
         setAddresses(addresses);
-
     }
 
     //                  Event Handler                   //
@@ -58,20 +56,16 @@ export function SearchAddress() {
     }
 
     const onSearchButtonClickHandler = () => {
-
         const query = searchWord;
         const page = 1;
         const size = 10;
         
         getAddressRequest(query, page, size, cookies.accessToken).then(getAddressResponse);
-
     }
 
     const onElementClickHandler = (selectAddress: string) => {
-
         setSearchAddress(selectAddress);
         setButtonStatus(!buttonStatus)
-
     }
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -141,7 +135,6 @@ export default function RestAdd() {
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
-
     }
 
     const getCoordinateResponse = async (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
@@ -163,7 +156,6 @@ export default function RestAdd() {
         setRestaurantLng(x);
 
         if (x !== 0 || y !== 0) setUpdateWhether(true);
-    
     }
 
     //                  Event Handler                   //
@@ -219,20 +211,9 @@ export default function RestAdd() {
 
         if (!cookies.accessToken) return;
         
-        // const restaurantImageUrl = [];
-        // for (const image of restaurantImage) {
-        //     const data = new FormData();
-        //     data.append('file', image);
-        //     const url = imageUploadRequest(data, cookies.accessToken);
-            
-        //     if (!url) continue;
-        //     restaurantImageUrl.push(url);
-        // }
-
         const query = restaurantLocation;
 
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
-
     }
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
@@ -369,7 +350,7 @@ export default function RestAdd() {
                 <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
             </div>
             {buttonStatus &&
-                <SearchAddress/>
+                <SearchAddress />
             }
         </div>
     )

@@ -2,12 +2,11 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 
+import { changeText } from 'src/utils';
+import { RestaurantListItem } from 'src/types'
 import ResponseDto from 'src/apis/response.dto';
 import { getRestaurantListRequest, getSearchRestaurantListRequest } from 'src/apis/restaurant';
 import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
-
-import { changeText } from 'src/utils';
-import { RestaurantListItem } from 'src/types'
 import { ADMINPAGE_REST_ADD_ABSOLUTE_PATH, ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, RESTAURANT_DETAIL_ABSOLUTE_PATH } from 'src/constant';
 
 import './style.css'

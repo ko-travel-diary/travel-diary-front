@@ -70,6 +70,7 @@ function SignIn () {
         const {accessToken, expires} = result as SignInResponseDto; 
         const expiration = new Date(Date.now() + (expires * 1000));
         setCookies('accessToken', accessToken, { path: '/' , expires: expiration });
+        if (!cookies.accessToken) return;
         getUserInfoRequest(accessToken).then(getSignInUserResponse);
 
     };
