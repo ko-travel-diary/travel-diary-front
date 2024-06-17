@@ -1,28 +1,30 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import "./style.css";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
+
+import { numberCommas } from "src/utils";
+import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
+import { useReviewNumberStore, useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useUserStore, useViewListStore } from "src/stores";
+import ResponseDto from "src/apis/response.dto";
+import { GetTravelReviewDetailResponseDto } from "src/apis/review/dto/response";
+import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import { imageUploadRequest } from "src/apis/image";
+import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { getTravelReviewDetailRequest, patchTravelReviewRequestDto } from "src/apis/review";
 import { PatchTravelReviewRequestDto } from "src/apis/review/dto/request";
-import { GetTravelReviewDetailResponseDto } from "src/apis/review/dto/response";
-import ResponseDto from "src/apis/response.dto";
-import { useNavigate } from "react-router";
-import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
-import { useReviewNumberStore, useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useUserStore, useViewListStore } from "src/stores";
-import axios from "axios";
-import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
-import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
-import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { numberCommas } from "src/utils";
-import { imageUploadRequest } from "src/apis/image";
+import { REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
     //                    state                     //
     const [cookies] = useCookies();
+
+    const { setTravelScheduleNumber } = useScheduleNumberStore();
+    const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
     const { setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
     const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
-    const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
-    const { setTravelScheduleNumber } = useScheduleNumberStore();
 
     //                    function                     //
     const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
@@ -96,28 +98,31 @@ function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleE
 //                    component: 리뷰 수정 컴포넌트                     //
 export default function ReviewUpdate() {
     //                    state                     //
-    const { updateReviewNumber } = useReviewNumberStore();
-    const { loginUserId } = useUserStore();
     const [cookies] = useCookies();
 
-    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
+    const { updateReviewNumber } = useReviewNumberStore();
+
     const photoInput = useRef<HTMLInputElement | null>(null);
+    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const [reviewWriterId, setReviewWriterId] = useState<string>("");
-    const [reviewContent, setReivewContent] = useState<string>("");
-    const [reviewTitle, setReviewTitle] = useState<string>("");
-    const [travelReviewImages, setTravelReviewImages] = useState<File[]>([]);
-    const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
-    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
+    const { loginUserId } = useUserStore();
     const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
-
-    const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
     const { setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
     const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
+    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
+    const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
 
-    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
-    const duchPay = balnace / travelSchedulePeople;
+    const [reviewTitle, setReviewTitle] = useState<string>("");
+    const [reviewContent, setReivewContent] = useState<string>("");
+    const [reviewWriterId, setReviewWriterId] = useState<string>("");
+    const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
+    const [travelReviewImages, setTravelReviewImages] = useState<File[]>([]);
+    const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
+
+    const balnace = Array.isArray(expenditureViewList)
+        ? travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
+        : 0;
+    const duchPay = travelSchedulePeople > 0 ? Math.floor(balnace / travelSchedulePeople) : 0;
 
     //                    function                    //
     const navigator = useNavigate();
@@ -139,7 +144,7 @@ export default function ReviewUpdate() {
         const { scheduleListViewItems } = result as GetScheduleListResponseDto;
         setViewList(scheduleListViewItems);
     };
-    
+
     const getScheduleDetailResponse = (result: GetScheduleDetailResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -240,7 +245,7 @@ export default function ReviewUpdate() {
         data.append("file", file);
         const url: string | null = await imageUploadRequest(data, cookies.accessToken);
 
-        if (url)setTravelReviewImageUrl([...travelReviewImageUrl, url]);
+        if (url) setTravelReviewImageUrl([...travelReviewImageUrl, url]);
     };
 
     const onPachReviewButtonClickHandler = () => {
