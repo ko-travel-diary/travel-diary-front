@@ -13,6 +13,7 @@ import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 import { numberCommas } from "src/utils";
+import { imageUploadRequest } from "src/apis/image";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
@@ -237,10 +238,7 @@ export default function ReviewUpdate() {
         const file = event.target.files[0];
         const data = new FormData();
         data.append("file", file);
-        const url = await axios
-            .post(IMAGE_UPLOAD_URL, data, { headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${cookies.accessToken}` } })
-            .then((response) => response.data as string)
-            .catch((error) => null);
+        const url: string | null = await imageUploadRequest(data, cookies.accessToken);
 
         if (url)setTravelReviewImageUrl([...travelReviewImageUrl, url]);
     };

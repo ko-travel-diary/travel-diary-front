@@ -13,6 +13,7 @@ import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/ap
 import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { numberCommas } from "src/utils";
 import { useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useViewListStore } from "src/stores";
+import { imageUploadRequest } from "src/apis/image";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
@@ -192,19 +193,10 @@ export default function ReviewWrite() {
 
         const travelReviewImageUrl: string[] = [];
 
-        // travelReviewImage upload 반복작업
         for (const image of travelReviewImages) {
             const data = new FormData();
             data.append("file", image);
-            const url = await axios
-                .post(IMAGE_UPLOAD_URL, data, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${cookies.accessToken}`,
-                    },
-                })
-                .then((response) => response.data as string)
-                .catch((error) => null);
+            const url: string | null = await imageUploadRequest(data, cookies.accessToken);
             if (!url) continue;
             travelReviewImageUrl.push(url);
         }

@@ -69,6 +69,7 @@ function Waypoints() {
       .then(response => {
         const path: Position[] = [];
         const { sections } = response.data.routes[0];
+        console.log(response);
 
         for (const section of sections) {
           for (const road of section.roads) {
