@@ -133,6 +133,7 @@ function Waypoints() {
     );
 }
 
+//                    interface                     //
 interface InfoItemProps {
     onClose: (typeNumber: number) => void;
 }
@@ -140,15 +141,16 @@ interface InfoItemProps {
 //                    component : 마커 정보 컴포넌트                     //
 function InfoItem(props: (RestaurantListItem | TourAttractionsListItem) & InfoItemProps) {
     //                    state                     //
-    const { waypoints, setOrigin, setDestination, setWaypoints } = useDestinationStore();
-
-    const navigator = useNavigate();
     const [cookies] = useCookies();
+
+    const { waypoints, setOrigin, setDestination, setWaypoints } = useDestinationStore();
 
     const [restRecommendStatus, setRestRecommendStatus] = useState<boolean>(false);
     const [tourRecommendStatus, setTourRecommendStatus] = useState<boolean>(false);
 
     //                    function                     //
+    const navigator = useNavigate();
+
     const getRestaurantRecommendStatusResponse = (result: ResponseDto | GetRestaurantRecommendStatusResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
@@ -423,8 +425,8 @@ function InfoItem(props: (RestaurantListItem | TourAttractionsListItem) & InfoIt
 //                    component : 사이드 리스트 컴포넌트                     //
 function SideListItem(props: RestaurantListItem | TourAttractionsListItem) {
     //                    state                     //
-    const { waypoints, setOrigin, setDestination, setWaypoints } = useDestinationStore();
     const { mapCenter, setMapCenter } = useMapCenterStore();
+    const { waypoints, setOrigin, setDestination, setWaypoints } = useDestinationStore();
 
     // description: 마커 오버레이 리스트 //
     const { openList, setOpenList } = useOpenListStore();
