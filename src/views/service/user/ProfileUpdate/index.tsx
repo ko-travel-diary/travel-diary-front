@@ -2,15 +2,13 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 
-import axios from "axios";
-
 import ResponseDto from "src/apis/response.dto";
 import { GetUserInfoResponseDto } from "src/apis/user/dto/response";
 import { nickNameCheckRequest } from "src/apis/auth";
 import { getUserInfoRequest, patchUserInfoRequest } from "src/apis/user";
 import { PatchUserInfoRequestDto } from "src/apis/user/dto/request";
 import { NickNameCheckRequestDto } from "src/apis/auth/dto/request";
-import { AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, MYPAGE_ABSOULUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, MYPAGE_ABSOULUTE_PATH } from "src/constant";
 
 import "./style.css";
 import { imageUploadRequest } from "src/apis/image";

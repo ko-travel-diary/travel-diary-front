@@ -1,19 +1,15 @@
-import "./style.css";
-import { useNavigate } from "react-router";
-import { ReviewBoardListItem } from "src/types";
-import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import {
-    getTravelReviewBoardRequest,
-    getTravelReviewSearchRequest,
-} from "src/apis/review";
-import {
-    GetReviewSearchRequestDto,
-    GetTravelReviewBoardResponseDto,
-} from "src/apis/review/dto/response";
-import ResponseDto from "src/apis/response.dto";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
+
+import { ReviewBoardListItem } from "src/types";
 import { useUserStore } from "src/stores";
+import ResponseDto from "src/apis/response.dto";
+import { GetReviewSearchRequestDto, GetTravelReviewBoardResponseDto } from "src/apis/review/dto/response";
+import { getTravelReviewBoardRequest, getTravelReviewSearchRequest } from "src/apis/review";
+import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component                    //
 function ListItem({
@@ -58,19 +54,19 @@ function ListItem({
 export default function ReviewList() {
     //                    state                    //
     const [cookies] = useCookies();
+
     const { loginUserRole } = useUserStore();
-    const [boardList, setBoardList] = useState<ReviewBoardListItem[]>([]);
-    const [viewList, setViewList] = useState<ReviewBoardListItem[]>([]);
-    const [totalLenght, setTotalLength] = useState<number>(0);
+
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageList, setPageList] = useState<number[]>([1]);
+    const [searchWord, setSearchWord] = useState<string>("");
+    const [totalLenght, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-
-    const [searchWord, setSearchWord] = useState<string>("");
+    const [viewList, setViewList] = useState<ReviewBoardListItem[]>([]);
+    const [boardList, setBoardList] = useState<ReviewBoardListItem[]>([]);
     const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
-
     const [selectedOption, setSelectedOption] = useState<string>("title-contents");
 
     //                    function                    //
@@ -206,22 +202,20 @@ export default function ReviewList() {
     };
 
     const onSearchButtonClickHandler = () => {
-        
-        if(selectedOption === "title-contents") {
+        if (selectedOption === "title-contents") {
             const titleAndContent = searchWord;
             getTravelReviewSearchRequest(titleAndContent, "", "").then(getTravelSearchResponse);
         }
 
-        if(selectedOption === "writer") {
+        if (selectedOption === "writer") {
             const writer = searchWord;
             getTravelReviewSearchRequest("", writer, "").then(getTravelSearchResponse);
         }
 
-        if(selectedOption === "write-date") {
+        if (selectedOption === "write-date") {
             const writedate = searchWord;
             getTravelReviewSearchRequest("", "", writedate).then(getTravelSearchResponse);
         }
-
     };
 
     //                    effect                    //

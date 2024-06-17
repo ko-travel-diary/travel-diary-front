@@ -1,17 +1,19 @@
-import { useNavigate, useParams } from "react-router";
-import "./style.css";
-import { useCookies } from "react-cookie";
-import { useReviewNumberStore, useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useUserStore, useViewListStore } from "src/stores";
 import { ChangeEvent, useEffect, useState } from "react";
-import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from "src/constant";
+import { useCookies } from "react-cookie";
+import { useNavigate, useParams } from "react-router";
+
+import { YYYYMMDD, numberCommas } from "src/utils";
+import { ExpenditureList, ReviewCommentList, ScheduleList } from "src/types";
+import { useReviewNumberStore, useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useUserStore, useViewListStore } from "src/stores";
+import ResponseDto from "src/apis/response.dto";
 import {
     GetTravelReviewCommentListResponseDto,
     GetTravelReviewDetailResponseDto,
     GetTravelReviewFavoriteStatusResponseDto,
 } from "src/apis/review/dto/response";
-import ResponseDto from "src/apis/response.dto";
+import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
+import { GetScheduleDetailResponseDto } from "src/apis/schedule/dto/response";
 import { postUserNickNameRequest } from "src/apis/user";
-import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
 import {
     deleteTravelReviewCommentRequest,
     deleteTravelReviewReqeust,
@@ -22,13 +24,12 @@ import {
     increaseViewCountRequest,
     postTravelReviewCommentRequest,
 } from "src/apis/review";
-import { PostUserNickNameResponseDto } from "src/apis/user/dto/response";
-import { ExpenditureList, ReviewCommentList, ScheduleList } from "src/types";
-import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
 import { getScheduleDetailRequest } from "src/apis/schedule";
-import { GetScheduleDetailResponseDto } from "src/apis/schedule/dto/response";
-import { YYYYMMDD, numberCommas } from "src/utils";
+import { PostUserNickNameRequestDto } from "src/apis/user/dto/request";
+import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
+import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from "src/constant";
 
+import "./style.css";
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //
@@ -58,30 +59,33 @@ function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleE
 //                    Component : 리뷰 게시판 상세보기 화면 컴포넌트                     //
 export default function ReviewDetail() {
     //                    state                    //
-    const { reviewNumber } = useParams();
     const [cookies] = useCookies();
 
-    const [reviewWriterId, setReviewWriterId] = useState<string>("");
-    const [reviewWriterNickName, setReviewWriterNickName] = useState<string>("");
-    const [reviewDatetime, setReviewDatetime] = useState<string>("");
-    const [reviewViewCount, setReviewViewCount] = useState<number>(0);
-    const [reviewFavoriteCount, setReviewFavoriteCount] = useState<number>(0);
-    const [reviewTitle, setReviewTitle] = useState<string>("");
-    const [reviewContents, setReviewContents] = useState<string>("");
-    const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const [commentContent, setCommentContent] = useState<string>("");
-    const [commentList, setCommentList] = useState<ReviewCommentList[]>([]);
-    const [recommendStatus, setRecommendstate] = useState<boolean>(false);
+    const { reviewNumber } = useParams();
 
+    const { loginUserId, loginUserRole } = useUserStore();
+    const { setUpdateReviewNumber } = useReviewNumberStore();
+    const { setTravelScheduleNumber } = useScheduleNumberStore();
     const { scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
     const { scheduleListItemViewList, expenditureViewList, setExpenditureViewList, setScheduleListItemViewList } = useViewListStore();
     const { travelSchedulePeople, travelScheduleTotalMoney, setTravelSchedulePeople, setTravelScheduleTotalMoney } = useScheduleStore();
-    const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
-    const { loginUserId, loginUserRole } = useUserStore();
-    const { setUpdateReviewNumber } = useReviewNumberStore();
 
-    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
-    const duchPay = balnace / travelSchedulePeople;
+    const [reviewTitle, setReviewTitle] = useState<string>("");
+    const [reviewWriterId, setReviewWriterId] = useState<string>("");
+    const [reviewDatetime, setReviewDatetime] = useState<string>("");
+    const [reviewContents, setReviewContents] = useState<string>("");
+    const [commentContent, setCommentContent] = useState<string>("");
+    const [reviewViewCount, setReviewViewCount] = useState<number>(0);
+    const [recommendStatus, setRecommendstate] = useState<boolean>(false);
+    const [commentList, setCommentList] = useState<ReviewCommentList[]>([]);
+    const [reviewFavoriteCount, setReviewFavoriteCount] = useState<number>(0);
+    const [reviewWriterNickName, setReviewWriterNickName] = useState<string>("");
+    const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
+
+    const balnace = Array.isArray(expenditureViewList)
+        ? travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
+        : 0;
+    const duchPay = travelSchedulePeople > 0 ? Math.floor(balnace / travelSchedulePeople) : 0;
 
     //                    function                    //
     const navigator = useNavigate();
@@ -156,7 +160,6 @@ export default function ReviewDetail() {
             travelReviewImageUrl,
             reviewViewCount,
             reviewFavoriteCount,
-            commentContent,
             travelScheduleNumber,
         } = result as GetTravelReviewDetailResponseDto;
 
@@ -376,15 +379,17 @@ export default function ReviewDetail() {
     };
 
     //                    Component : 리뷰 게시판 댓글 리스트 화면 컴포넌트                     //
-    function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent, commentParentsNumber }: ReviewCommentList) {
+    function ReviewCommentLists({ reviewCommentNumber, reviewCommentWriterId, commentContent }: ReviewCommentList) {
         //                    state                    //
-        const { reviewNumber } = useParams();
         const [cookies] = useCookies();
-        const [recommentContent, setRecommendContent] = useState<string>("");
-        const [childList, setChildList] = useState<ReviewCommentList[]>([]);
-        const [commentWriterNickName, setCommentWriterNickName] = useState<string>("");
+
+        const { reviewNumber } = useParams();
 
         const { loginUserId } = useUserStore();
+
+        const [childList, setChildList] = useState<ReviewCommentList[]>([]);
+        const [recommentContent, setRecommendContent] = useState<string>("");
+        const [commentWriterNickName, setCommentWriterNickName] = useState<string>("");
 
         //                    function                    //
         const postTravelReviewCommentResponse = (result: ResponseDto | null) => {
@@ -646,7 +651,7 @@ export default function ReviewDetail() {
                                 height: "200px",
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
-                                left:"16px"
+                                left: "16px",
                             }}
                         ></div>
                     ))

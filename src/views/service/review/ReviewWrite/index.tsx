@@ -1,19 +1,20 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import "./style.css";
 import { useCookies } from "react-cookie";
-import { PostTravelReviewRequestDto } from "src/apis/review/dto/request";
-import { postTravelReviewRequest } from "src/apis/review";
-import ResponseDto from "src/apis/response.dto";
-import { IMAGE_UPLOAD_URL, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
 import { useNavigate } from "react-router";
-import { PostTravelReviewResponseDto } from "src/apis/review/dto/response";
-import axios from "axios";
-import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
-import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
-import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
+
 import { numberCommas } from "src/utils";
+import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { useScheduleButtonStore, useScheduleNumberStore, useScheduleStore, useViewListStore } from "src/stores";
+import ResponseDto from "src/apis/response.dto";
+import { PostTravelReviewResponseDto } from "src/apis/review/dto/response";
+import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
 import { imageUploadRequest } from "src/apis/image";
+import { postTravelReviewRequest } from "src/apis/review";
+import { getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
+import { PostTravelReviewRequestDto } from "src/apis/review/dto/request";
+import { REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component: 스케쥴 리스트 컴포넌트                     //
 function ScheduleListView({ travelScheduleNumber, travelScheduleName }: ScheduleListViewItem) {
@@ -99,23 +100,26 @@ function ExpenditureListItems({ travelScheduleExpenditureDetail, travelScheduleE
 //                    component: 리뷰 작성 컴포넌트                     //
 export default function ReviewWrite() {
     //                    state                     //
-    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
-    const photoInput = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
 
-    const [reviewContent, setReivewContent] = useState<string>("");
+    const photoInput = useRef<HTMLInputElement | null>(null);
+    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
+    const { travelSchedulePeople, travelScheduleTotalMoney } = useScheduleStore();
+    const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
+    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
+
     const [reviewTitle, setReviewTitle] = useState<string>("");
+    const [reviewContent, setReivewContent] = useState<string>("");
+    const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
     const [travelReviewImages, setTravelReviewImages] = useState<File[]>([]);
     const [travelReviewImageUrl, setTravelReviewImageUrl] = useState<string[]>([]);
-    const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
-    const { scheduleButtonStatus, setScheduleButtonStatus, scheduleRenderStatus, setScheduleRenderStatus } = useScheduleButtonStore();
-    const { expenditureViewList, scheduleListItemViewList } = useViewListStore();
-    const { travelScheduleNumber, setTravelScheduleNumber } = useScheduleNumberStore();
 
-    const { travelSchedulePeople, travelScheduleTotalMoney } = useScheduleStore();
-
-    const balnace = travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0);
-    const duchPay = balnace / travelSchedulePeople;
+    const balnace = Array.isArray(expenditureViewList)
+        ? travelScheduleTotalMoney - expenditureViewList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
+        : 0;
+    const duchPay = travelSchedulePeople > 0 ? Math.floor(balnace / travelSchedulePeople) : 0;
 
     //                    function                     //
     const navigator = useNavigate();
@@ -284,14 +288,7 @@ export default function ReviewWrite() {
                 </div>
             )}
             <div className="write-button-wrapper">
-                <input
-                    type="file"
-                    accept=".png, .jpg, .jpeg"
-                    multiple
-                    ref={photoInput}
-                    onChange={imageInputOnChange}
-                    style={{ display: "none" }}
-                />
+                <input type="file" accept=".png, .jpg, .jpeg" multiple ref={photoInput} onChange={imageInputOnChange} style={{ display: "none" }} />
                 <div className="update-image-button primary-button" onClick={onImageUploadButtonClickHandler}>
                     사진 추가
                 </div>
