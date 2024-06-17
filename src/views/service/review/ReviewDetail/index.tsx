@@ -30,6 +30,7 @@ import { PostTravelReviewCommentRequestDto } from "src/apis/review/dto/request";
 import { REVIEW_ABSOULUTE_PATH, REVIEW_UPDATE_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
+
 //                    component: 스케쥴 일정 리스트 컴포넌트                     //
 function ScheduleListItems({ scheduleDate, scheduleContent, scheduleStartTime, scheduleEndTime }: ScheduleList) {
     //                    render                     //

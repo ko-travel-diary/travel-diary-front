@@ -27,6 +27,7 @@ export default function QnaDetail() {
     const [qnaDatetime, setQnaWriteDate] = useState<string>("");
     const [qnaCommentRows, setQnaCommentRows] = useState<number>(1);
     const [qnaComment, setQnaComment] = useState<string | null>(null);
+    const [commentStatus, setCommentStatus] = useState<boolean>(true);
     const [qnaCommentUpdate, setQnaCommentUpdate] = useState<string>("");
 
     //                     function                     //
@@ -204,7 +205,7 @@ export default function QnaDetail() {
     };
 
     const onDeleteQnaClickHandler = () => {
-        if (!receptionNumber || loginUserId !== qnaWriterId || !cookies.accessToken) return;
+        if (!receptionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         const isQnaConfirm = window.confirm("정말로 삭제하시겠습니까?");
         if (!isQnaConfirm) return;
 
@@ -217,6 +218,10 @@ export default function QnaDetail() {
         if (!isCommentConfirm) return;
 
         deleteQnaCommentRequest(receptionNumber, cookies.accessToken).then(deleteQnaCommentResponse);
+    };
+
+    const onCommentButtonClickHandler = () => {
+        setCommentStatus(!commentStatus);
     };
 
     //                    effect                     //
@@ -257,31 +262,39 @@ export default function QnaDetail() {
             </div>
             <div className="qna-detail-comment-box">
                 <div className="admin-bedge">관리자</div>
-                <div className="qna-comment-right-box">
-                    <div className="qna-detail-comment">{qnaComment}</div>
-                    {loginUserRole === "ROLE_ADMIN" && (
-                        <div className="qna-detail-owner-button-box">
-                            <div className="error-button" onClick={onDeleteCommentClickHandler}>
-                                삭제
+                {commentStatus ? (
+                    <div className="qna-comment-right-box">
+                        <div className="qna-detail-comment">{qnaComment}</div>
+                        {loginUserRole === "ROLE_ADMIN" && (
+                            <div className="qna-detail-owner-button-box">
+                                <div className="primary-button" onClick={onCommentButtonClickHandler}>
+                                    수정
+                                </div>
+                                <div className="error-button" onClick={onDeleteCommentClickHandler}>
+                                    삭제
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
-                {loginUserRole === "ROLE_ADMIN" && qnaStatus && (
-                    <div className="qna-detail-comment-write-box">
-                        <div className="qna-detail-comment-textarea-box">
-                            <textarea
-                                style={{ height: `${28 * qnaCommentRows}px` }}
-                                className="qna-detail-comment-textarea"
-                                placeholder="댓글을 작성해주세요."
-                                value={qnaCommentUpdate == null ? "" : qnaCommentUpdate}
-                                onChange={onCommentUpdateChangeHandler}
-                            />
-                        </div>
-                        <div className="primary-button" onClick={onUpdateCommentClickHandler}>
-                            수정
-                        </div>
+                        )}
                     </div>
+                ) : (
+                    <>
+                        {loginUserRole === "ROLE_ADMIN" && qnaStatus && (
+                            <div className="qna-detail-comment-write-box">
+                                <div className="qna-detail-comment-textarea-box">
+                                    <textarea
+                                        style={{ height: `${28 * qnaCommentRows}px` }}
+                                        className="qna-detail-comment-textarea"
+                                        placeholder="댓글을 작성해주세요."
+                                        value={qnaCommentUpdate == null ? "" : qnaCommentUpdate}
+                                        onChange={onCommentUpdateChangeHandler}
+                                    />
+                                </div>
+                                <div className="primary-button" onClick={onUpdateCommentClickHandler}>
+                                    수정
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
             {loginUserRole === "ROLE_ADMIN" && !qnaStatus && (
