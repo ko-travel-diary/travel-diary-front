@@ -30,6 +30,8 @@ html::-webkit-scrollbar {
     border-radius: 8px;
 
     min-width: 1520px;
+    
+    white-space: pre-wrap;
 }
 
 .review-detail-title-box{
@@ -101,6 +103,8 @@ html::-webkit-scrollbar {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
+    
+    white-space: pre-wrap;
 }
 
 .comments-button-box{
