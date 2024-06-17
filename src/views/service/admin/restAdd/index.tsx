@@ -192,12 +192,14 @@ export default function RestAdd() {
         setRestaurantOutline(outLine);
     }
 
-    const onRestaurantImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onRestaurantImgFileChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setRestaurantImage([...restaurantImage, file]);
-        const url = URL.createObjectURL(file);
-        setRestaurantImageUrl([...restaurantImageUrl, url]);
+        const data = new FormData();
+        data.append('file', file);
+        const url: string | null = await imageUploadRequest(data, cookies.accessToken);
+
+        if (url) setRestaurantImageUrl([...restaurantImageUrl, url]);
 
     }
 
@@ -217,17 +219,17 @@ export default function RestAdd() {
 
         if (!cookies.accessToken) return;
         
-        const restaurantImageUrl = [];
-        for (const image of restaurantImage) {
-            const data = new FormData();
-            data.append('file', image);
-            const url = imageUploadRequest(data, cookies.accessToken);
+        // const restaurantImageUrl = [];
+        // for (const image of restaurantImage) {
+        //     const data = new FormData();
+        //     data.append('file', image);
+        //     const url = imageUploadRequest(data, cookies.accessToken);
             
-            if (!url) continue;
-            restaurantImageUrl.push(url);
-        }
+        //     if (!url) continue;
+        //     restaurantImageUrl.push(url);
+        // }
 
-        const query = searchAddress;
+        const query = restaurantLocation;
 
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
 
@@ -266,9 +268,6 @@ export default function RestAdd() {
     useEffect(() => {
 
         if (updateWhether) {
-
-            console.log('restaurantLat =' + restaurantLat);
-            console.log('restaurantLng =' + restaurantLng);
     
             if ((restaurantLat === 0.0) || (restaurantLng === 0.0)) {
                 alert('주소를 정확히 입력해주세요.');
