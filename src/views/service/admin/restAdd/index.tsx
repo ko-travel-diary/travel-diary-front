@@ -1,30 +1,55 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
-import './style.css'
 import { useCookies } from 'react-cookie'
-import { PostRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
-import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
-import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, SEARCH_URL } from 'src/constant';
-import { postRestaurantRequest } from 'src/apis/restaurant';
-import axios from 'axios';
+
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
+
+import ResponseDto from 'src/apis/response.dto';
+import { imageUploadRequest } from 'src/apis/image';
+import { postRestaurantRequest } from 'src/apis/restaurant';
+import { PostRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
+import { getAddressRequest, getCoordinateRequest } from 'src/apis/address';
+import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from 'src/apis/address/dto/response';
+
+import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
+
+import './style.css'
+
 
 //                  Component                   //
 export function SearchAddress() {
 
     //                  State                   //
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
-    const { searchAddress, setSearchAddress } = useSearchAddressStore();
-
     const [ cookies ] = useCookies();
-
+    
+    const { setSearchAddress } = useSearchAddressStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    
     const [searchWord, setSearchWord] = useState<string>('');
-    const [address, setAddress] = useState<string[]>([]);
+    const [addresses, setAddresses] = useState<string[]>([]);
 
     //                  Function                    //
-    
+    const navigator = useNavigate();
+
+    const getAddressResponse = (result: GetSearchAddressResponseDto | ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return
+        }
+
+        const { addresses } = result as GetSearchAddressResponseDto;
+        setAddresses(addresses);
+
+    }
 
     //                  Event Handler                   //
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,22 +57,13 @@ export function SearchAddress() {
         setSearchWord(word);
     }
 
-    const onSearchButtonClickHandler = async () => {
+    const onSearchButtonClickHandler = () => {
 
         const query = searchWord;
         const page = 1;
         const size = 10;
-        const data = await axios.get(SEARCH_URL, {
-            params: { query, page, size },
-            headers: { Authorization: `Bearer ${cookies.accessToken}` }
-            })
-            .then(response => response.data)
-            .catch(error => null)
-
-        if (!data) return;
-
-
-        await setAddress(data.addresses);
+        
+        getAddressRequest(query, page, size, cookies.accessToken).then(getAddressResponse);
 
     }
 
@@ -59,9 +75,7 @@ export function SearchAddress() {
     }
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key === 'Enter') {
-            return onSearchButtonClickHandler();
-        }
+        if(event.key === 'Enter') return onSearchButtonClickHandler();
     }
     
     //                  Render                  //
@@ -76,7 +90,7 @@ export function SearchAddress() {
                     <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
                 <div className='search-address-list'>
-                    {address.map((index) =>
+                    {addresses.map((index) =>
                         <div className="address-element" key={index} onClick={() => onElementClickHandler(index)}>{index}</div>
                     )}
                 </div>
@@ -90,22 +104,27 @@ export function SearchAddress() {
 export default function RestAdd() {
 
     //                  State                   //
-    const { loginUserRole } = useUserStore();
-    const { searchAddress, setSearchAddress } = useSearchAddressStore();
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const [cookies] = useCookies();
     const imageSeq = useRef<HTMLInputElement | null>(null);
+
+    const { loginUserRole } = useUserStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
 
     const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
 
+    const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
+    const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
     const [restaurantName, setRestaurantName] = useState<string>('');
-    const [restaurantLocation, setRestaurantLocation] = useState<string>('');
-    const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>('');
     const [restaurantHours, setRestaurantHours] = useState<string>('');
+    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     const [restaurantOutline, setRestaurantOutline] = useState<string>('');
+    const [restaurantLocation, setRestaurantLocation] = useState<string>('');
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
+    const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>('');
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');
+
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -123,6 +142,28 @@ export default function RestAdd() {
             return;
         }
 
+    }
+
+    const getCoordinateResponse = async (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message)
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return;
+        }
+
+        const { x, y } = result as GetSearchCoordinateResponseDto;
+
+        setRestaurantLat(y);
+        setRestaurantLng(x);
+
+        if (x !== 0 || y !== 0) setUpdateWhether(true);
+    
     }
 
     //                  Event Handler                   //
@@ -180,40 +221,16 @@ export default function RestAdd() {
         for (const image of restaurantImage) {
             const data = new FormData();
             data.append('file', image);
-            const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
-                .then(response => response.data as string)
-                .catch(error => null);
+            const url = imageUploadRequest(data, cookies.accessToken);
             
             if (!url) continue;
             restaurantImageUrl.push(url);
         }
 
-        const query = restaurantLocation;
-        console.log(restaurantLocation);
-        const data = await axios.get(ADDRESS_URL, { 
-            params: { query },
-            headers: { Authorization: `Bearer ${cookies.accessToken}` }
-            })
-            .then(response => response.data)
-            .catch(error => null)
+        const query = searchAddress;
 
-            if (!(data)) {
-                alert("주소를 정확히 입력해주세요.")
-                return;
-            }
-    
-            const restaurantLat = data.y as number;
-            const restaurantLng = data.x as number;
-    
-        const requestBody: PostRestaurantRequestDto = {
-            restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
-            restaurantImageUrl,
-            restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
-        }
+        getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
 
-        postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
-
-        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
     }
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
@@ -241,8 +258,36 @@ export default function RestAdd() {
     }, [])
 
     useEffect(() => {
+
         setRestaurantLocation(searchAddress);
+
     }, [searchAddress])
+
+    useEffect(() => {
+
+        if (updateWhether) {
+
+            console.log('restaurantLat =' + restaurantLat);
+            console.log('restaurantLng =' + restaurantLng);
+    
+            if ((restaurantLat === 0.0) || (restaurantLng === 0.0)) {
+                alert('주소를 정확히 입력해주세요.');
+                return;
+            }
+        
+            const requestBody: PostRestaurantRequestDto = {
+                restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
+                restaurantImageUrl,
+                restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
+            }
+    
+            postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
+    
+            navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
+
+        }
+
+    }, [restaurantLat, restaurantLng]);
 
     //                  Render                   //
     return (

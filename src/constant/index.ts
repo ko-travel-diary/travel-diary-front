@@ -195,8 +195,8 @@ export const PATCH_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) 
 export const DELETE_RESTAURANT_REQUEST_URL = (restaurantNumber: number | string) => `${SERVER_RESTAURANT_MODULE_URL}/${restaurantNumber}`;
 
 // address
-export const ADDRESS_URL = `${SERVER_API_URL}/address/search`;
-export const SEARCH_URL = `${SERVER_API_URL}/address/query`;
+export const GET_COORDINATE_URL = `${SERVER_API_URL}/address/search`;
+export const GET_ADDRESS_URL = `${SERVER_API_URL}/address/query`;
 
 // description : Board Const
 export const COUNT_PER_PAGE = 10;

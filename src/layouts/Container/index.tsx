@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
-import { Outlet, useLocation, useNavigate } from "react-router";
-import {
-    ADMINPAGE_ABSOULUTE_PAGE,
-    MAIN_ABSOLUTE_PATH,
-    MYPAGE_ABSOULUTE_PATH,
-    QNA_ABSOLUTE_PATH,
-    REVIEW_ABSOULUTE_PATH,
-    SIGN_IN_ABSOLUTE_PATH,
-    TRAVEL_ABSOLUTE_PATH,
-} from "src/constant";
-import { useUserStore } from "src/stores";
 import { useCookies } from "react-cookie";
+import { Outlet, useLocation, useNavigate } from "react-router";
+
+import { useUserStore } from "src/stores";
+
+import ResponseDto from "src/apis/response.dto";
 import { getUserInfoRequest } from "src/apis/user";
 import { GetUserInfoResponseDto } from "src/apis/user/dto/response";
-import ResponseDto from "src/apis/response.dto";
 
 import DefaultProfileImage from "src/assets/image/userProfileDefault.png";
+import { ADMINPAGE_ABSOULUTE_PAGE, MAIN_ABSOLUTE_PATH, MYPAGE_ABSOULUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, TRAVEL_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                  Component                    //
 function TopNavigation() {
     //                                       state                                        //
-    const { loginUserId, setLoginUserId, loginUserRole, setLoginUserRole } = useUserStore();
+    const { setLoginUserId, loginUserRole, setLoginUserRole } = useUserStore();
     const [cookies, setCookies] = useCookies();
 
     const [userProfile, setUserProfile] = useState<string>("");

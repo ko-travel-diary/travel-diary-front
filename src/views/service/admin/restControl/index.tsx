@@ -1,28 +1,55 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
-import './style.css'
 import { useCookies } from 'react-cookie'
-import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
-import ResponseDto from 'src/apis/response.dto';
 import { useNavigate, useParams } from 'react-router';
-import { ADDRESS_URL, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, SEARCH_URL } from 'src/constant';
-import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
-import axios from 'axios';
-import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
+
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
+
+import ResponseDto from 'src/apis/response.dto';
+import { imageUploadRequest } from 'src/apis/image';
+import { getAddressRequest, getCoordinateRequest } from 'src/apis/address';
+import { GetRestaurantResponseDto } from 'src/apis/restaurant/dto/response';
+import { PatchRestaurantRequestDto } from 'src/apis/restaurant/dto/request';
+import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from 'src/apis/address/dto/response';
+import { deleteRestaurantRequest, getRestaurantRequest, patchRestaurantRequest } from 'src/apis/restaurant';
+
+import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
+
+import './style.css'
 
 //                  Component                   //
 export function SearchAddress() {
 
     //                  State                   //
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
-    const { searchAddress, setSearchAddress } = useSearchAddressStore();
-
     const [ cookies ] = useCookies();
 
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    const { setSearchAddress } = useSearchAddressStore();
+    
+    const [addresses, setAddresses] = useState<string[]>([]);
     const [searchWord, setSearchWord] = useState<string>('');
-    const [address, setAddress] = useState<string[]>([]);
+
+    //                  Function                    //
+    const navigator = useNavigate();
+
+    const getAddressResponse = (result: GetSearchAddressResponseDto | ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return
+        }
+
+        const { addresses } = result as GetSearchAddressResponseDto;
+        setAddresses(addresses);
+
+    }
 
     //                  Event Handler                   //
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -30,22 +57,12 @@ export function SearchAddress() {
         setSearchWord(word);
     }
 
-    const onSearchButtonClickHandler = async () => {
+    const onSearchButtonClickHandler = () => {
 
         const query = searchWord;
         const page = 1;
         const size = 10;
-        const data = await axios.get(SEARCH_URL, {
-            params: { query, page, size },
-            headers: { Authorization: `Bearer ${cookies.accessToken}` }
-            })
-            .then(response => response.data)
-            .catch(error => null)
-
-        if (!data) return;
-
-
-        await setAddress(data.addresses);
+        getAddressRequest(query, page, size, cookies.accessToken).then(getAddressResponse);
 
     }
 
@@ -57,9 +74,7 @@ export function SearchAddress() {
     }
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key === 'Enter') {
-            return onSearchButtonClickHandler();
-        }
+        if(event.key === 'Enter') return onSearchButtonClickHandler();
     }
     
     //                  Render                  //
@@ -74,7 +89,7 @@ export function SearchAddress() {
                     <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
                 <div className='search-address-list'>
-                    {address.map((index) =>
+                    {addresses.map((index) =>
                         <div className="address-element" key={index} onClick={() => onElementClickHandler(index)}>{index}</div>
                     )}
                 </div>
@@ -87,25 +102,29 @@ export function SearchAddress() {
 export default function RestControl() {
 
     //                  State                   //
-    const {restaurantNumber} = useParams();
-    const {loginUserRole} = useUserStore();
-    const { searchAddress, setSearchAddress } = useSearchAddressStore();
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
-    const imageSeq = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
 
-    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
-    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
+    const { restaurantNumber } = useParams();
+    
+    const imageSeq = useRef<HTMLInputElement | null>(null);
 
-    const [restaurantName, setRestaurantName] = useState<string>('');
-    const [restaurantLocation, setRestaurantLocation] = useState<string>('');
-    const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>('');
-    const [restaurantHours, setRestaurantHours] = useState<string>('');
-    const [restaurantOutline, setRestaurantOutline] = useState<string>('');
-    const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
-    const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');    
+    const {loginUserRole} = useUserStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
+    
     const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
     const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
+    const [restaurantName, setRestaurantName] = useState<string>('');
+    const [restaurantHours, setRestaurantHours] = useState<string>('');
+    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
+    const [restaurantOutline, setRestaurantOutline] = useState<string>('');
+    const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>('');
+    const [restaurantLocation, setRestaurantLocation] = useState<string>('');
+    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
+    const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>('');
+    const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>('');    
+
+    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     
     //                  Function                    //
     const navigator = useNavigate();
@@ -134,14 +153,15 @@ export default function RestControl() {
         setRestaurantServiceMenu(restaurantServiceMenu);
         setRestaurantLat(restaurantLat);
         setRestaurantLng(restaurantLng);
+        setSearchAddress(restaurantLocation);
     }
 
     const patchRestaurantResponse = (result: ResponseDto | null ) => {
         const message =
-            !result ? "서버에 문제가 있습니다." : 
+            !result ? "서버에 있습니다." : 
             result.code === 'VF' ? '데이터 유효성 에러.' : 
             result.code === 'AF' ? '권한이 없습니다.' : 
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+            result.code === 'DBE' ? '서버에 있습니다.' : '';
 
         if (!result || result.code !== 'SU') {
             alert(message);
@@ -163,6 +183,29 @@ export default function RestControl() {
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
+        
+    }
+
+    const getCoordinateResponse = (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
+        const message =
+            !result ? "정확한 주소를 입력해주세요." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message)
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return;
+        }
+
+        const { x, y } = result as GetSearchCoordinateResponseDto;
+
+        setRestaurantLat(y);
+        setRestaurantLng(x);
+
+        if (x !== 0 || y !== 0) setUpdateWhether(true);
+    
     }
 
     //                  Event Handler                   //
@@ -196,9 +239,7 @@ export default function RestControl() {
         const file = event.target.files[0];
         const data = new FormData();
         data.append('file', file);
-        const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
-            .then(response => response.data as string)
-            .catch(error => null);
+        const url: string | null = await imageUploadRequest(data, cookies.accessToken);
 
         if (url) setRestaurantImageUrl([...restaurantImageUrl, url]);
     }
@@ -214,34 +255,14 @@ export default function RestControl() {
     }
 
     const onPatchButtonClickHandler = async () => {
+        
         if (!restaurantName.trim() || !restaurantLocation.trim() || !restaurantOutline.trim() || !restaurantMainMenu.trim() ) return;
 
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
         const query = restaurantLocation;
-        const data = await axios.get(ADDRESS_URL, { 
-            params: { query },
-            headers: { Authorization: `Bearer ${cookies.accessToken}` }
-            })
-            .then(response => response.data)
-            .catch(error => null)
+        getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
 
-            if (!(data)) {
-                alert("주소를 정확히 입력해주세요.")
-                return;
-            }
-
-        const restaurantLat = data.y as number;
-        const restaurantLng = data.x as number;
-
-        const requestBody: PatchRestaurantRequestDto = {
-            restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
-            restaurantImageUrl, restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
-        }
-
-        patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);
-
-        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
     }
 
     const onDeleteButtonClickHandler = () => {
@@ -255,11 +276,13 @@ export default function RestControl() {
     }
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
+
         const newTourAttractionsImages = restaurantImage.filter((image, index) => index !== deleteIndex);
         setRestaurantImage(newTourAttractionsImages);
 
         const newTourAttractionsImageUrls = restaurantImageUrl.filter((imageUrl, index) => index !== deleteIndex);
         setRestaurantImageUrl(newTourAttractionsImageUrls);
+
     }
 
     const onSearchButtonClickHandler = () => {
@@ -274,19 +297,44 @@ export default function RestControl() {
         }
 
         setButtonStatus(false)
-        setSearchAddress('');
 
     }, [])
     
     useEffect(() => {
+
         if (!restaurantNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         getRestaurantRequest(restaurantNumber).then(getRestaurantResponse);
 
     }, [loginUserRole])
 
     useEffect(() => {
+
         setRestaurantLocation(searchAddress);
+        
     }, [searchAddress])
+
+    useEffect(() => {
+
+        if(updateWhether) {
+    
+            if ((restaurantLat === 0.0) || (restaurantLng === 0.0)) {
+                alert('주소를 정확히 입력해주세요.');
+                return;
+            }
+    
+            const requestBody: PatchRestaurantRequestDto = {
+                restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours, restaurantOutline, 
+                restaurantImageUrl, restaurantMainMenu, restaurantServiceMenu, restaurantLat, restaurantLng
+            }
+    
+            if (!restaurantNumber) return;
+            patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);
+    
+            navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
+
+        }
+
+    }, [restaurantLat, restaurantLng])
 
     //                  Render                   //
     return (
@@ -302,7 +350,7 @@ export default function RestControl() {
                     <div className='rest-register-top-title'>▣ 음식점 주소</div>
                     <div className='rest-register-top-element'>
                         <div className='rest-register-element-search'>
-                            <input className='rest-register-input-element' placeholder='주소를 입력해주세요.' value={restaurantLocation} onChange={onRestaurantLocationChangeHandler}/>
+                            <input className='rest-register-input-element' placeholder='주소를 입력해주세요.' value={searchAddress} onChange={onRestaurantLocationChangeHandler}/>
                         </div>
                         <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                     </div>

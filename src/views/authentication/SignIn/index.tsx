@@ -1,16 +1,20 @@
-import Social from 'src/components/Social';
-import './style.css';
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
-import { MAIN_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_UP_ABSOLUTE_PATH } from 'src/constant';
+
+import Social from 'src/components/Social';
+
+import { useUserStore } from 'src/stores';
+
 import { signInRequest } from 'src/apis/auth';
+import ResponseDto from 'src/apis/response.dto';
+import { getUserInfoRequest } from 'src/apis/user';
 import { SignInRequestDto } from 'src/apis/auth/dto/request';
 import { SignInResponseDto } from 'src/apis/auth/dto/response';
-import ResponseDto from 'src/apis/response.dto';
-import { useCookies } from 'react-cookie';
-import { useUserStore } from 'src/stores';
 import { GetUserInfoResponseDto } from 'src/apis/user/dto/response';
-import { getUserInfoRequest } from 'src/apis/user';
+import { MAIN_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH, SIGN_UP_ABSOLUTE_PATH } from 'src/constant';
+
+import './style.css';
 
 //                    Component : 로그인 화면 컴포넌트                     //
 function SignIn () { 
@@ -21,7 +25,7 @@ function SignIn () {
     const [userId, setUserId] = useState<string>('');
     const [userPassword, setUserPassword] = useState<string>('');
 
-    const {setLoginUserId, setLoginUserRole} = useUserStore();
+    const { setLoginUserId, setLoginUserRole } = useUserStore();
 
     const focusRef = useRef<HTMLInputElement | null>(null);
     
@@ -45,6 +49,7 @@ function SignIn () {
         const { userId, userRole } = result as GetUserInfoResponseDto;
         setLoginUserId(userId);
         setLoginUserRole(userRole);
+
     }
 
     const signInResponse = (result: SignInResponseDto | ResponseDto | null) => {
@@ -64,27 +69,31 @@ function SignIn () {
 
         const {accessToken, expires} = result as SignInResponseDto; 
         const expiration = new Date(Date.now() + (expires * 1000));
-        setCookies('accessToken', accessToken, { path: '/' , expires: expiration});
+        setCookies('accessToken', accessToken, { path: '/' , expires: expiration });
         getUserInfoRequest(accessToken).then(getSignInUserResponse);
 
     };
 
     //                     event handler                     //
     const onUserIdChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
+
         const { value } = event.target;
         setUserId(value);
+
     };
     
     const onUserPasswordChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
+
         const { value } = event.target;
         setUserPassword(value);
+
     };
 
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key === 'Enter') {
-            return onSignInButtonClickHandler();
-        }
+
+        if (event.key === 'Enter') return onSignInButtonClickHandler();
+
     }
 
     const onSignInButtonClickHandler = () => {
@@ -98,6 +107,7 @@ function SignIn () {
         signInRequest(requestBody).then(signInResponse);
 
         navigator(MAIN_ABSOLUTE_PATH);
+
     };
 
     const onSignUpButtonClickHandler = () => navigator(SIGN_UP_ABSOLUTE_PATH);
