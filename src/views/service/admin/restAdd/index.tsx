@@ -115,17 +115,16 @@ export default function RestAdd() {
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
 
-    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
-    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
-
     const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
     const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
     const [restaurantName, setRestaurantName] = useState<string>("");
     const [restaurantHours, setRestaurantHours] = useState<string>("");
+    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
     const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     const [restaurantOutline, setRestaurantOutline] = useState<string>("");
     const [restaurantLocation, setRestaurantLocation] = useState<string>("");
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>("");
+    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
     const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>("");
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>("");
 
