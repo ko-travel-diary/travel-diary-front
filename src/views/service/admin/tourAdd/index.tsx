@@ -185,12 +185,14 @@ export default function TourAdd() {
         setTourAttractionsOutline(outLine);
     }
 
-    const onTourAttractionImgFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const onTourAttractionImgFileChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
         const file = event.target.files[0];
-        setTourAtrracntionImage([...tourAttractionsImage, file]);
-        const url = URL.createObjectURL(file);
-        setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
+        const data = new FormData();
+        data.append('file', file);
+        const url: string | null = await imageUploadRequest(data, cookies.accessToken);
+
+        if (url) setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
     }
 
     const onRegisterButtonClickHandler = async () =>{
@@ -199,17 +201,7 @@ export default function TourAdd() {
 
         if (!cookies.accessToken) return;
 
-        const tourAttractionsImageUrl = [];
-        for (const image of tourAttractionsImage) {
-            const data = new FormData();
-            data.append('file', image);
-            const url = imageUploadRequest(data, cookies.accessToken);
-            
-            if (!url) continue;
-            tourAttractionsImageUrl.push(url);
-        }
-
-        const query = searchAddress;
+        const query = tourAttractionsLocation;
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
 
     }
@@ -248,9 +240,6 @@ export default function TourAdd() {
     useEffect(() => {
 
         if (updateWhether) {
-
-            console.log('tourAttractionsLat =' + tourAttractionsLat);
-            console.log('tourAttractionsLng =' + tourAttractionsLng);
     
             const requestBody: PostTourAttractionsRequestDto = {
                 tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 

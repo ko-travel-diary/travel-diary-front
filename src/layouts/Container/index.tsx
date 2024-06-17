@@ -112,7 +112,7 @@ function TopNavigation() {
                 </div>
                 <div className="vertical-divider"></div>
                 <div className={reviewPage} onClick={onReivewButtonClickHandler}>
-                    여행 후기 게시글
+                    여행 후기
                 </div>
                 <div className="vertical-divider"></div>
                 <div className={qnaPage} onClick={onQnaButtonClickHandler}>

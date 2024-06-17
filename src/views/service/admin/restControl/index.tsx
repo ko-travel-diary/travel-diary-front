@@ -103,9 +103,8 @@ export default function RestControl() {
 
     //                  State                   //
     const [cookies] = useCookies();
-
-    const { restaurantNumber } = useParams();
     
+    const { restaurantNumber } = useParams();
     const imageSeq = useRef<HTMLInputElement | null>(null);
 
     const {loginUserRole} = useUserStore();
