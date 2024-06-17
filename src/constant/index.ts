@@ -201,6 +201,9 @@ export const GET_ADDRESS_URL = `${SERVER_API_URL}/address/query`;
 // waypoints
 export const POST_WAYPOINTS_URL = "https://apis-navi.kakaomobility.com/v1/waypoints/directions"; 
 
+// sns login
+export const SNS_LOGIN_URL = "http://localhost:4000/traveldiary/v1/auth/oauth2/";
+
 // description : Board Const
 export const COUNT_PER_PAGE = 10;
 export const COUNT_PER_SECTION = 10;

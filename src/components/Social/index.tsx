@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router";
 
-import { MAIN_ABSOLUTE_PATH } from "src/constant";
+import { MAIN_ABSOLUTE_PATH, SNS_LOGIN_URL } from "src/constant";
 
 import "./style.css";
 
@@ -17,12 +17,12 @@ export function Sns() {
 
     //                  Effect                  //
     useEffect(() => {
-        if (!accessToken || !expires) return;
+        if (!cookies.accessToken || !expires) return;
         const expiration = new Date(Date.now() + Number(expires) * 1000);
         setCookie("accessToken", accessToken, { path: "/", expires: expiration });
-        if (!cookies.accessToken) return;
-
+        
         navigator(MAIN_ABSOLUTE_PATH);
+        if (!cookies.accessToken) return;
     }, []);
 
     return <></>;
@@ -37,7 +37,7 @@ interface SnsContainerProps {
 function Social({ title }: SnsContainerProps) {
     //                  Event Handler                   //
     const onSnsButtonClickHandler = (type: "kakao" | "naver" | "google") => {
-        window.location.href = "http://localhost:4000/traveldiary/v1/auth/oauth2/" + type;
+        window.location.href = SNS_LOGIN_URL + type;
     };
 
     //                    render : 소셜 컴포넌트                     //
