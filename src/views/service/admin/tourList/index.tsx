@@ -1,13 +1,16 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import "./style.css";
-import { TourAttractionsListItem } from "src/types";
 import { useCookies } from "react-cookie";
-import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
-import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
-import ResponseDto from "src/apis/response.dto";
 import { useNavigate } from "react-router";
+
+import ResponseDto from "src/apis/response.dto";
 import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
+import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
+
 import { changeText } from "src/utils";
+import { TourAttractionsListItem } from "src/types";
+import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                  Component                   //
 export function TourListItems({ 
@@ -58,22 +61,16 @@ export default function TourList() {
     //                  state                  //
     const [cookies] = useCookies();
 
-    const [tourList, setTourList] = useState<TourAttractionsListItem[]>([]);
-    const [viewList, setViewList] = useState<TourAttractionsListItem[]>([]);
-
-    const [totalLength, setTotalLength] = useState<number>(0);
-
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-
+    const [tourCount, setTourCount] = useState<number>(0);
     const [pageList, setPageList] = useState<number[]>([]);
-
+    const [searchWord, setSearchWord] = useState<string>("");
+    const [totalLength, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-
-    const [tourCount, setTourCount] = useState<number>(0);
-
-    const [searchWord, setSearchWord] = useState<string>("");
+    const [tourList, setTourList] = useState<TourAttractionsListItem[]>([]);
+    const [viewList, setViewList] = useState<TourAttractionsListItem[]>([]);
 
     //                  function                    //
     const navigator = useNavigate();
@@ -210,9 +207,7 @@ export default function TourList() {
     };
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            return onSearchButtonClickHandler();
-        }
+        if (event.key === "Enter") return onSearchButtonClickHandler();
     };
 
     //                  effect                  //

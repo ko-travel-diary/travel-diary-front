@@ -1,51 +1,68 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
-import './style.css'
-import { useNavigate } from 'react-router';
-import { ADDRESS_URL, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, SEARCH_URL } from 'src/constant';
-import ResponseDto from 'src/apis/response.dto';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
-import { PostTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
-import { postTourAttractionsRequest } from 'src/apis/tour_attraction';
+import { useNavigate } from 'react-router';
+
 import { useUserStore } from 'src/stores';
-import useSearchAddressStore from 'src/stores/search-address.store';
 import useButtonStatusStore from 'src/stores/search-button.store';
+import useSearchAddressStore from 'src/stores/search-address.store';
+
+import ResponseDto from 'src/apis/response.dto';
+import { imageUploadRequest } from 'src/apis/image';
+import { postTourAttractionsRequest } from 'src/apis/tour_attraction';
+import { getAddressRequest, getCoordinateRequest } from 'src/apis/address';
+import { PostTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
+import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from 'src/apis/address/dto/response';
+
+import { ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
+
+import './style.css'
 
 //                  Component                   //
 export function SearchAddress() {
 
     //                  State                   //
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
-    const { searchAddress, setSearchAddress } = useSearchAddressStore();
     const [ cookies ] = useCookies();
 
+    const { setSearchAddress } = useSearchAddressStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+
+    const [addresses, setAddresses] = useState<string[]>([]);
     const [searchWord, setSearchWord] = useState<string>('');
-    const [address, setAddress] = useState<string[]>([]);
 
     //                  Function                    //
-    
+    const navigator = useNavigate();
 
+    const getAddressResponse = (result: GetSearchAddressResponseDto | ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return
+        }
+
+        const { addresses } = result as GetSearchAddressResponseDto;
+        setAddresses(addresses);
+
+    }
+    
     //                  Event Handler                   //
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const word = event.target.value;
         setSearchWord(word);
     }
 
-    const onSearchButtonClickHandler = async () => {
+    const onSearchButtonClickHandler = () => {
 
         const query = searchWord;
         const page = 1;
         const size = 10;
-        const data = await axios.get(SEARCH_URL, {
-            params: { query, page, size },
-            headers: { Authorization: `Bearer ${cookies.accessToken}` }
-            })
-            .then(response => response.data)
-            .catch(error => null)
-
-        if (!data) return;     
-
-        await setAddress(data.addresses);
+        
+        getAddressRequest(query, page, size, cookies.accessToken).then(getAddressResponse);
 
     }
 
@@ -55,9 +72,7 @@ export function SearchAddress() {
     }
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key === 'Enter') {
-            return onSearchButtonClickHandler();
-        }
+        if(event.key === 'Enter') return onSearchButtonClickHandler();
     }
     
     //                  Render                  //
@@ -72,7 +87,7 @@ export function SearchAddress() {
                     <div className='search-button' onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
                 <div className='search-address-list'>
-                    {address.map((index) =>
+                    {addresses.map((index) =>
                         <div className="address-element" key={index} onClick={() => onElementClickHandler(index)}>{index}</div>
                     )}
                 </div>
@@ -92,14 +107,18 @@ export default function TourAdd() {
     const imageSeq = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
 
-    const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
-    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
-
+    
+    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
+    const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
+    const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
     const [tourAttractionsName, setTourAttractionsName] = useState<string>('');
-    const [tourAttractionsLocation, settourAtrractionLocation] = useState<string>('');
-    const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>('');
+    const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>('');
+    const [tourAttractionsLocation, setTourAtrractionLocation] = useState<string>('');
+    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
+    const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>('');
+
 
     //                  Function                    //
     const navigator = useNavigate();
@@ -116,6 +135,28 @@ export default function TourAdd() {
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
+    }
+
+    const getCoordinateResponse = (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
+        const message =
+            !result ? "서버에 문제가 있습니다." : 
+            result.code === 'VF' ? '데이터 유효성 에러.' : 
+            result.code === 'AF' ? '권한이 없습니다.' : 
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        if (!result || result.code !== 'SU') {
+            alert(message)
+            if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
+            return;
+        }
+
+        const { x, y } = result as GetSearchCoordinateResponseDto;
+
+        setTourAttractionsLat(y);
+        setTourAttractionsLng(x);
+        
+        setUpdateWhether(true);
+
     }
 
     //                  Event Handler                   //
@@ -162,35 +203,15 @@ export default function TourAdd() {
         for (const image of tourAttractionsImage) {
             const data = new FormData();
             data.append('file', image);
-            const url = await axios.post(IMAGE_UPLOAD_URL, data, { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${cookies.accessToken}` } })
-                .then(response => response.data as string)
-                .catch(error => null);
+            const url = imageUploadRequest(data, cookies.accessToken);
             
             if (!url) continue;
             tourAttractionsImageUrl.push(url);
         }
 
-        const query = tourAttractionsLocation;
-        const data = await axios.get(ADDRESS_URL, {params: { query }, headers: { Authorization: `Bearer ${cookies.accessToken}` }}, )
-            .then(response => response.data)
-            .catch(error => null);
-            
-        if (!(data)) {
-            alert("주소를 정확히 입력해주세요.")
-            return;
-        }
+        const query = searchAddress;
+        getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
 
-        const tourAttractionsLat = data.y as number;
-        const tourAttractionsLng = data.x as number;
-
-        const requestBody: PostTourAttractionsRequestDto = {
-            tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
-            tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
-        }
-
-        postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
-
-        navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
     }
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
@@ -219,8 +240,30 @@ export default function TourAdd() {
     }, [])
 
     useEffect(() => {
-        settourAtrractionLocation(searchAddress);
+
+        setTourAtrractionLocation(searchAddress);
+
     }, [searchAddress])
+
+    useEffect(() => {
+
+        if (updateWhether) {
+
+            console.log('tourAttractionsLat =' + tourAttractionsLat);
+            console.log('tourAttractionsLng =' + tourAttractionsLng);
+    
+            const requestBody: PostTourAttractionsRequestDto = {
+                tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
+                tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
+            }
+    
+            postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
+    
+            navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
+
+        }
+
+    }, [tourAttractionsLat, tourAttractionsLng]);
 
     //                  Render                   //
     return (

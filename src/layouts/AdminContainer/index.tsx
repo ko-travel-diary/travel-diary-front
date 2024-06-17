@@ -1,7 +1,9 @@
 import React from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
+
+import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, ADMINPAGE_USER_LIST_ABSOLUTE_PATH } from 'src/constant';
+
 import './style.css';
-import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, ADMINPAGE_USER_LIST_ABSOLUTE_PATH, REST_ADD_PATH, TOUR_ADD_PATH, USER_LIST_PATH } from 'src/constant';
 
 //                  Component                   //
 function SideNavigation () {

@@ -1,13 +1,16 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
-import './style.css'
-import { RestaurantListItem } from 'src/types'
 import { useCookies } from 'react-cookie';
-import { ADMINPAGE_REST_ADD_ABSOLUTE_PATH, ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, RESTAURANT_DETAIL_ABSOLUTE_PATH } from 'src/constant';
-import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
-import ResponseDto from 'src/apis/response.dto';
 import { useNavigate } from 'react-router';
+
+import ResponseDto from 'src/apis/response.dto';
 import { getRestaurantListRequest, getSearchRestaurantListRequest } from 'src/apis/restaurant';
+import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from 'src/apis/restaurant/dto/response';
+
 import { changeText } from 'src/utils';
+import { RestaurantListItem } from 'src/types'
+import { ADMINPAGE_REST_ADD_ABSOLUTE_PATH, ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, RESTAURANT_DETAIL_ABSOLUTE_PATH } from 'src/constant';
+
+import './style.css'
 
 //                  Component                    //
 export function RestListItems ({restaurantNumber, restaurantImageUrl, restaurantName, restaurantLocation, restaurantTelNumber, restaurantHours}: RestaurantListItem) {
@@ -53,22 +56,16 @@ export default function RestList() {
     //                  State                   //
     const [cookies] = useCookies();
 
-    const [restList, setRestList] = useState<RestaurantListItem[]>([]);
-    const [viewList, setViewList] = useState<RestaurantListItem[]>([]);
-
-    const [totalLength, setTotalLength] = useState<number>(0);
-
+    const [restCount, setRestCount] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-
     const [pageList, setPageList] = useState<number[]>([]);
-
+    const [searchWord, setSearchWord] = useState<string>('');
+    const [totalLength, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-
-    const [restCount, setRestCount] = useState<number>(0);
-
-    const [searchWord, setSearchWord] = useState<string>('');
+    const [restList, setRestList] = useState<RestaurantListItem[]>([]);
+    const [viewList, setViewList] = useState<RestaurantListItem[]>([]);
 
     //                  Function                   //
     const navigator = useNavigate();
@@ -186,9 +183,7 @@ export default function RestList() {
     }
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key === 'Enter') {
-            return onSearchButtonClickHandler();
-        }
+        if(event.key === 'Enter') return onSearchButtonClickHandler();
     }
 
     //                  Effect                  //

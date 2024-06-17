@@ -1,13 +1,16 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
-import './style.css'
-import { UserListItem } from 'src/types';
-import { GetSearchUserListResponseDto, GetUserListResponseDto } from 'src/apis/user/dto/response';
-import ResponseDto from 'src/apis/response.dto';
 import { useCookies } from 'react-cookie';
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from 'src/constant';
-import { deleteAdminUserRequest, getSearchUserListRequest, getUserListRequest } from 'src/apis/user';
-import { DeleteAdminUserRequestDto } from 'src/apis/user/dto/request';
 import { useNavigate } from 'react-router';
+
+import ResponseDto from 'src/apis/response.dto';
+import { DeleteAdminUserRequestDto } from 'src/apis/user/dto/request';
+import { GetSearchUserListResponseDto, GetUserListResponseDto } from 'src/apis/user/dto/response';
+import { deleteAdminUserRequest, getSearchUserListRequest, getUserListRequest } from 'src/apis/user';
+
+import { UserListItem } from 'src/types';
+import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from 'src/constant';
+
+import './style.css'
 
 //                  Component                   //
 function UserListItems ({userId, userEmail, joinDate, nickName}: UserListItem) {
@@ -17,22 +20,25 @@ function UserListItems ({userId, userEmail, joinDate, nickName}: UserListItem) {
     
     //                  Function                    //
     const deleteUserResponse = (result: ResponseDto | null) => {
-    const message = 
-        !result ? '서버에 문제가 있습니다.' :
-        result.code === 'AF' ? '인증에 실패했습니다.' : 
-        result.code === 'NU' ? '존재하지 않는 유저입니다.' :
-        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-        if (!result || result.code !== "SU") {
-            alert(message);
-            return;
-        }
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'AF' ? '인증에 실패했습니다.' : 
+            result.code === 'NU' ? '존재하지 않는 유저입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+            if (!result || result.code !== "SU") {
+                alert(message);
+                return;
+            }
 
         window.location.reload();
+
     }
 
     //                  Event Handler                   //
     const onDeleteClickHandler = () => {
+
         if(!cookies.accessToken) return;
         const confirm = window.confirm("해당 유저를 정말 삭제하시겠습니까?");
         if (!confirm) return;
@@ -40,6 +46,7 @@ function UserListItems ({userId, userEmail, joinDate, nickName}: UserListItem) {
         const requestBody: DeleteAdminUserRequestDto = {deleteToUserId: userId};
 
         deleteAdminUserRequest(requestBody, cookies.accessToken).then(deleteUserResponse);
+
     }
 
     //                  Render                  //
@@ -60,22 +67,16 @@ export default function UserList() {
     //                  state                  //
     const [cookies] = useCookies();
 
-    const [userList, setUserList] = useState<UserListItem[]>([]);
-    const [viewList, setViewList] = useState<UserListItem[]>([]);
-
-    const [totalLength, setTotalLength] = useState<number>(0);
-
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-
+    const [userCount, setUserCount] = useState<number>(0);
     const [pageList, setPageList] = useState<number[]>([]);
-
+    const [searchWord, setSearchWord] = useState<string>('');
+    const [totalLength, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-
-    const [userCount, setUserCount] = useState<number>(0);
-
-    const [searchWord, setSearchWord] = useState<string>('');
+    const [userList, setUserList] = useState<UserListItem[]>([]);
+    const [viewList, setViewList] = useState<UserListItem[]>([]);
 
     //                  function                    //
     const navigator = useNavigate();
@@ -177,20 +178,18 @@ export default function UserList() {
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchWord(searchWord);
-    }
+    };
 
     const onSearchButtonClickHandler = () => {
         if (!searchWord) return;
         if (!cookies.accessToken) return;
         
         getSearchUserListRequest(searchWord, cookies.accessToken).then(getSearchUserListResponse);
-    }
+    };
 
     const onEnterKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key === 'Enter') {
-            return onSearchButtonClickHandler();
-        }
-    }
+        if(event.key === 'Enter') return onSearchButtonClickHandler();
+    };
 
     //                  effect                  //
     useEffect(() => {

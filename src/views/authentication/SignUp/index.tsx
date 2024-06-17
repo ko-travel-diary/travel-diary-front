@@ -1,11 +1,15 @@
 import React, { ChangeEvent, forwardRef, useEffect, useRef, useState } from 'react';
-import Social from 'src/components/Social';
-import './style.css'
 import { useNavigate } from 'react-router';
+
+import Social from 'src/components/Social';
+
 import ResponseDto from 'src/apis/response.dto';
-import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, NickNameCheckRequestDto, SignUpRequestDto } from 'src/apis/auth/dto/request';
 import { emailAuthCheckRequest, emailAuthRequest, idCheckRequest, nickNameCheckRequest, singUpRequest } from 'src/apis/auth';
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, NickNameCheckRequestDto, SignUpRequestDto } from 'src/apis/auth/dto/request';
+
+import { SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
+
+import './style.css'
 
 //                    interface : 회원가입 인풋 박스 프로퍼티즈                     //
 interface InputBoxProps {
@@ -85,8 +89,8 @@ function SignUp () {
     const [authNumberMessage, setAuthNumberMessage] = useState<string>('');
     
     const [userIdMessageError, setUserIdMessageError] = useState<boolean>(false);
-    const [userPasswordMessageError, setUserPasswordMessageError] = useState<boolean>(false);
-    const [userPasswordCheckMessageError, setUserPasswordCheckMessageError] = useState<boolean>(false);
+    const [userPasswordMessageError] = useState<boolean>(false);
+    const [userPasswordCheckMessageError] = useState<boolean>(false);
     const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);   
     const [userEmailMessageError, setUserEmailMessageError] = useState<boolean>(false);
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
@@ -124,6 +128,7 @@ function SignUp () {
         setNickNameMessage(nickNameMessage);
         setNickNameMessageError(nickNameMessageError);
         setNickNameCheck(nickNameCheck);
+
     }
 
     const emailAuthResponse = (result: ResponseDto | null) => {
@@ -142,6 +147,7 @@ function SignUp () {
         setUserEmailMessage(emailMessage);
         setUserEmailMessageError(emailError);
         setEmailCheck(emailCheck);
+
     };
 
     const emailAuthCheckResponse = (result: ResponseDto | null) => {
@@ -159,6 +165,7 @@ function SignUp () {
         setAuthNumberMessage(authNumberMessage);
         setAuthNumberMessageError(authNumberError);
         setAuthNumberCheck(authNumberCheck);
+
     };
 
     const signUpResponse = (result: ResponseDto | null) => {
@@ -194,6 +201,7 @@ function SignUp () {
         setIdCheck(false);
         setUserIdMessage('');
     };
+
     const onUserPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserPassword(value);
@@ -203,6 +211,7 @@ function SignUp () {
         const passwordMessage = isPasswordPattern ? '' : value ? '영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요' : '';
         setUserPasswordMessage(passwordMessage);
     };
+
     const onUserPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserPasswordCheck(value);
@@ -212,6 +221,7 @@ function SignUp () {
         const passwordCheckMessage = isEqualPassword ? '' : value ? '비밀번호가 일치하지 않습니다.' : '';
         setUserPasswordCheckMessage(passwordCheckMessage);
     };
+
     const onNickNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setNickName(value);
@@ -219,6 +229,7 @@ function SignUp () {
         setNickNameCheck(false);
         setNickNameMessage('');
     };
+
     const onUserEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setUserEmail(value);
@@ -227,6 +238,7 @@ function SignUp () {
         setAuthNumberCheck(false);
         setUserEmailMessage('');
     };
+
     const onAuthNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setAuthNumber(value);
@@ -243,6 +255,7 @@ function SignUp () {
 
         idCheckRequest(requestBody).then(idCheckResponse);
     };
+
     const onNickNameButtonClickHandler = () => {
         if (!nickNameButtonStatus) return;
         if (!nickName || !nickName.trim()) return;
@@ -251,6 +264,7 @@ function SignUp () {
 
         nickNameCheckRequest(requestBody).then(nickNameCheckResponse);
     };
+
     const onUserEmailButtonClickHandler = () => {
         if (!emailButtonStatus) return;
 
@@ -265,6 +279,7 @@ function SignUp () {
         const requestBody: EmailAuthRequestDto = {userEmail}
         emailAuthRequest(requestBody).then(emailAuthResponse);
     };
+
     const onAuthNumberButtonClickHandler = () => {
         if (!authNumberButtonStatus) return;
         if (!authNumber) return;
@@ -272,6 +287,7 @@ function SignUp () {
         const requestBody: EmailAuthCheckRequestDto = {userEmail, authNumber}
         emailAuthCheckRequest(requestBody).then(emailAuthCheckResponse)
     };
+
     const onSignUpButtonClickHandler = () => {
         if(!signUpCondition) return;
         if (!userId || !userPassword || !nickName || !userEmail || !authNumber) {
@@ -279,9 +295,9 @@ function SignUp () {
             return;
         }
 
-        const requestBody: SignUpRequestDto = {userId, userPassword, nickName, userEmail, authNumber}
+        const requestBody: SignUpRequestDto = {userId, userPassword, nickName, userEmail, authNumber};
         singUpRequest(requestBody).then(signUpResponse);
-    }
+    };
     
     //                  Effect                  //
     useEffect(() => {
