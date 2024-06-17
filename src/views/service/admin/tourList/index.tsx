@@ -7,30 +7,39 @@ import { TourAttractionsListItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
-import { ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
+import {
+    ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH,
+    ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH,
+    AUTH_ABSOLUTE_PATH,
+    COUNT_PER_PAGE,
+    COUNT_PER_SECTION,
+    TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH,
+} from "src/constant";
 
 import "./style.css";
 
 //                  Component                   //
-export function TourListItems({ 
-    tourAttractionsNumber,tourAttractionsImageUrl,tourAttractionsName,tourAttractionsLocation,tourAttractionsTelNumber,tourAttractionsHours }: TourAttractionsListItem) {
+export function TourListItems({
+    tourAttractionsNumber,
+    tourAttractionsImageUrl,
+    tourAttractionsName,
+    tourAttractionsLocation,
+    tourAttractionsTelNumber,
+    tourAttractionsHours,
+}: TourAttractionsListItem) {
     //                  Function                    //
     const navigator = useNavigate();
 
     //                  Event Handler`                  //
     const onControlButton = () => {
         if (tourAttractionsNumber) {
-            navigator(
-                ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH(tourAttractionsNumber)
-            );
+            navigator(ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH(tourAttractionsNumber));
         }
     };
 
     const onTourAttrctionListClickHandler = () => {
         if (tourAttractionsNumber) {
-            navigator(
-                TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH(tourAttractionsNumber)
-            );
+            navigator(TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH(tourAttractionsNumber));
         }
     };
 
@@ -38,19 +47,24 @@ export function TourListItems({
     return (
         <div className="tour-list-table-box">
             <div className="tour-list-table-number">{tourAttractionsNumber}</div>
-            {tourAttractionsImageUrl === null ? 
+            {tourAttractionsImageUrl === null ? (
                 <div className="tour-list-table-image">
                     <img title="travel" width="75px" height="50px" src={`${"https://cdn-icons-png.flaticon.com/128/11423/11423562.png"}`} />
-                </div> : 
+                </div>
+            ) : (
                 <div className="tour-list-table-image">
                     <img title="travel" width="75px" height="50px" src={`${tourAttractionsImageUrl}`} />
                 </div>
-            }
-            <div className="tour-list-table-name long-text" onClick={onTourAttrctionListClickHandler}>{tourAttractionsName}</div>
+            )}
+            <div className="tour-list-table-name long-text" onClick={onTourAttrctionListClickHandler}>
+                {tourAttractionsName}
+            </div>
             <div className="tour-list-table-locate long-text">{tourAttractionsLocation}</div>
             <div className="tour-list-table-tel long-text">{changeText(tourAttractionsTelNumber)}</div>
             <div className="tour-list-table-hours long-text">{changeText(tourAttractionsHours)}</div>
-            <div className="control-button" onClick={onControlButton}>관리</div>
+            <div className="control-button" onClick={onControlButton}>
+                관리
+            </div>
         </div>
     );
 }
@@ -74,12 +88,8 @@ export default function TourList() {
     //                  function                    //
     const navigator = useNavigate();
 
-    const changePage = (
-        tourList: TourAttractionsListItem[],
-        totalLength: number
-    ) => {
-        if (!tourList || !Array.isArray(tourList) || tourList.length === 0)
-            return;
+    const changePage = (tourList: TourAttractionsListItem[], totalLength: number) => {
+        if (!tourList || !Array.isArray(tourList) || tourList.length === 0) return;
         if (!currentPage) return;
         const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
         let endIndex = currentPage * COUNT_PER_PAGE;
@@ -90,8 +100,7 @@ export default function TourList() {
 
     const changeSection = (totalPage: number) => {
         if (!currentSection) return;
-        const startPage =
-            currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
+        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
         let endPage = currentSection * COUNT_PER_SECTION;
         if (endPage > totalPage) endPage = totalPage;
         const pageList: number[] = [];
@@ -108,8 +117,7 @@ export default function TourList() {
         const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
         setTotalPage(totalPage);
 
-        const totalSection =
-            Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
+        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
         setTotalSection(totalSection);
 
         changePage(tourList, totalLength);
@@ -118,9 +126,7 @@ export default function TourList() {
         setTourCount(totalLength);
     };
 
-    const getTourAttractionsListResponse = (
-        result: GetTourAttractionsListResponseDto | ResponseDto | null
-    ) => {
+    const getTourAttractionsListResponse = (result: GetTourAttractionsListResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "AF"
@@ -135,17 +141,14 @@ export default function TourList() {
             return;
         }
 
-        const { tourAttractionsListItem } =
-            result as GetTourAttractionsListResponseDto;
+        const { tourAttractionsListItem } = result as GetTourAttractionsListResponseDto;
         changeTourList(tourAttractionsListItem);
 
         setCurrentPage(!tourAttractionsListItem.length ? 0 : 1);
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
     };
 
-    const getSearchTourListResponse = (
-        result: GetSearchTourAttractionsListResponseDto | ResponseDto | null
-    ) => {
+    const getSearchTourListResponse = (result: GetSearchTourAttractionsListResponseDto | ResponseDto | null) => {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "VF"
@@ -162,8 +165,7 @@ export default function TourList() {
             return;
         }
 
-        const { tourAttractionsListItem } =
-            result as GetSearchTourAttractionsListResponseDto;
+        const { tourAttractionsListItem } = result as GetSearchTourAttractionsListResponseDto;
         changeTourList(tourAttractionsListItem);
 
         setCurrentPage(!tourAttractionsListItem.length ? 0 : 1);
@@ -232,7 +234,9 @@ export default function TourList() {
                     전체 관광지수 | <span className="emphasis">{tourCount}개</span>
                 </div>
                 <div className="tour-list-control-box">
-                    <div className="tour-list-add-button primary-button"onClick={onRegisterButtonClickHandler}>등록</div>
+                    <div className="tour-list-add-button primary-button" onClick={onRegisterButtonClickHandler}>
+                        등록
+                    </div>
                 </div>
             </div>
 
@@ -247,7 +251,9 @@ export default function TourList() {
                     <div className="tour-list-table-button">관리</div>
                 </div>
                 <div className="tour-list-table-line"></div>
-                {viewList.map((item) => (<TourListItems {...item} />))}
+                {viewList.map((item) => (
+                    <TourListItems {...item} />
+                ))}
             </div>
 
             <div className="tour-list-bottom">
@@ -257,9 +263,15 @@ export default function TourList() {
                         <div className="tour-list-page-left" onClick={onPreSectionClickHandler}></div>
                         <div className="tour-list-page-box">
                             {pageList.map((page) =>
-                                page === currentPage ? 
-                                <div className="tour-list-page-active"key={page}>{page}</div> : 
-                                <div className="tour-list-page" key={page} onClick={() => onPageClickHandler(page)}>{page}</div>    
+                                page === currentPage ? (
+                                    <div className="tour-list-page-active" key={page}>
+                                        {page}
+                                    </div>
+                                ) : (
+                                    <div className="tour-list-page" key={page} onClick={() => onPageClickHandler(page)}>
+                                        {page}
+                                    </div>
+                                )
                             )}
                         </div>
                         <div className="tour-list-page-right" onClick={onNextSectionClickHandler}></div>
@@ -268,9 +280,17 @@ export default function TourList() {
                 <div className="tour-list-bottom-right">
                     <div className="tour-list-search-box">
                         <div className="tour-list-search-input-box">
-                            <input className="tour-list-search-input" placeholder="관광명소명으로 검색" value={searchWord} onChange={onSearchWordChangeHandler} onKeyDown={onEnterKeyDownHandler}/>
+                            <input
+                                className="tour-list-search-input"
+                                placeholder="관광명소명으로 검색"
+                                value={searchWord}
+                                onChange={onSearchWordChangeHandler}
+                                onKeyDown={onEnterKeyDownHandler}
+                            />
                         </div>
-                        <div className="primary-button" onClick={onSearchButtonClickHandler}>검색</div>
+                        <div className="primary-button" onClick={onSearchButtonClickHandler}>
+                            검색
+                        </div>
                     </div>
                 </div>
             </div>

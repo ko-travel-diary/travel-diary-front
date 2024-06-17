@@ -10,11 +10,10 @@
     min-width: 1888px;
 
     /* text 드래그 방지 */
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .top-navigation-left {
@@ -40,7 +39,6 @@
     color: rgba(7, 65, 115, 1);
 
     cursor: pointer;
-    
 }
 
 .top-navigation-main {
@@ -86,8 +84,8 @@
 
     cursor: pointer;
 }
-.user-profile{
-    background-size: 50px 50px ;
+.user-profile {
+    background-size: 50px 50px;
     background-position: center;
 
     max-width: 50px;
@@ -113,14 +111,14 @@
 
     cursor: default;
 }
-.navigation-box{
+.navigation-box {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-.navigation-move-page{
+.navigation-move-page {
     cursor: pointer;
 }
-.sign-out-button{
+.sign-out-button {
     cursor: pointer;
 }

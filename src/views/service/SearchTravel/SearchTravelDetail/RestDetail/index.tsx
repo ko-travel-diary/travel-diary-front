@@ -1,31 +1,34 @@
 import React, { useCallback, useEffect, useState } from "react";
-import "./style.css";
-import { getRestaurantRequest } from "src/apis/restaurant";
+import { useNavigate, useParams } from "react-router";
+
 import ResponseDto from "src/apis/response.dto";
 import { GetRestaurantResponseDto } from "src/apis/restaurant/dto/response";
-import { useNavigate, useParams } from "react-router";
-import { AUTH_ABSOLUTE_PATH, SHOW_IMAGE_BUTTON_LIMIT } from "src/constant";
+import { getRestaurantRequest } from "src/apis/restaurant";
+
 import { changeText } from "src/utils";
+import { AUTH_ABSOLUTE_PATH, SHOW_IMAGE_BUTTON_LIMIT } from "src/constant";
+
+import "./style.css";
 
 //                    component : Restaurant Detail 화면 컴포넌트                     //
 export default function RestDetail() {
     //                    state                     //
     const { restaurantNumber } = useParams();
 
-    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
     const [restaurantName, setRestaurantName] = useState<string>("");
-    const [restaurantLocation, setRestaurantLocation] = useState<string>("");
-    const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>("");
     const [restaurantHours, setRestaurantHours] = useState<string>("");
     const [restaurantOutline, setRestaurantOutline] = useState<string>("");
+    const [restaurantLocation, setRestaurantLocation] = useState<string>("");
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>("");
-    const [restaurantServiceMenu, setrestaurantServiceMenu] = useState<string>("");
-
+    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
+    const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>("");
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+    const [restaurantServiceMenu, setrestaurantServiceMenu] = useState<string>("");
     const [page, setPage] = useState<{ start: number; end: number }>({
         start: 0,
         end: 7,
     });
+
     //                    function                     //
     const navigator = useNavigate();
 

@@ -1,4 +1,4 @@
-.search-console{
+.search-console {
     position: absolute;
 
     display: flex;
@@ -15,22 +15,22 @@
     top: 25%;
     left: 40%;
 }
-.search-console-box{
+.search-console-box {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-.search-console-title{
+.search-console-title {
     margin: 20px 0;
 
     text-align: center;
     font-size: 24px;
 }
-.search-console-input-box{
+.search-console-input-box {
     display: flex;
     gap: 10px;
 }
-.search-console-input-wrapper{
+.search-console-input-wrapper {
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -43,7 +43,7 @@
 
     background-color: rgba(255, 255, 255, 1);
 }
-.search-input-element{
+.search-input-element {
     border: none;
     outline: none;
     background: none;
@@ -57,7 +57,7 @@
 
     color: rgba(64, 64, 64, 1);
 }
-.search-address-list{
+.search-address-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -73,13 +73,11 @@
 
     overflow: auto;
 }
-.address-element{
+.address-element {
     display: flex;
 
     cursor: pointer;
 }
-
-
 
 #rest-register-wrapper {
     display: flex;
@@ -100,7 +98,7 @@
 
     width: 1035px;
 }
-.rest-register-top-element-box{
+.rest-register-top-element-box {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -109,7 +107,7 @@
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(238, 238, 238, 1);
 }
-.rest-register-top-element{
+.rest-register-top-element {
     display: flex;
     gap: 12px;
 }
@@ -156,12 +154,12 @@
 
     color: rgba(64, 64, 64, 1);
 }
-.search-button{
+.search-button {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    border-radius: 8PX;
+    border-radius: 8px;
     padding: 12px 20px;
 
     font-size: 14px;
@@ -193,12 +191,12 @@
     display: flex;
     gap: 10px;
 }
-.rest-register-bottom{
+.rest-register-bottom {
     display: flex;
     justify-content: center;
 }
 /* ====================================== */
-.photo-view-element{
+.photo-view-element {
     display: flex;
     gap: 10px;
     width: 1003px;

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
-import { ScheduleListViewItem } from "src/types";
-import { useNavigate } from "react-router";
-import { AUTH_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
 import { useCookies } from "react-cookie";
-import { getScheduleListRequest } from "src/apis/schedule";
+import { useNavigate } from "react-router";
+
+import { ScheduleListViewItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import { getScheduleListRequest } from "src/apis/schedule";
+import { AUTH_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component : Schedule ListItem View 컴포넌트                     //
 function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
@@ -29,8 +31,8 @@ export default function ScheduleList() {
     //                     state                     //
     const [cookies] = useCookies();
 
-    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [viewList, setViewList] = useState<ScheduleListViewItem[]>([]);
+    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();

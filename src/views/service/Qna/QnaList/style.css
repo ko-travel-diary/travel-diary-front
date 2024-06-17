@@ -16,7 +16,7 @@ html::-webkit-scrollbar {
     gap: 16px;
 }
 
-.qna-top-image{
+.qna-top-image {
     display: flex;
     width: 1920px;
     height: 400px;

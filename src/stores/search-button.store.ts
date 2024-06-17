@@ -5,9 +5,9 @@ interface ButtonStatusStore {
     setButtonStatus: (status: boolean) => void;
 }
 
-const useButtonStatusStore = create<ButtonStatusStore>(set => ({
+const useButtonStatusStore = create<ButtonStatusStore>((set) => ({
     buttonStatus: false,
-    setButtonStatus: (status: boolean) => set({buttonStatus: status}),
+    setButtonStatus: (status: boolean) => set({ buttonStatus: status }),
 }));
 
 export default useButtonStatusStore;

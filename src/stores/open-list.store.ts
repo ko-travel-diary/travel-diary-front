@@ -1,4 +1,3 @@
-
 import { Destination, MarkerOpen, Position } from "src/types";
 import { create } from "zustand";
 
@@ -7,9 +6,9 @@ interface OpenListStore {
     setOpenList: (openList: MarkerOpen[]) => void;
 }
 
-const useOpenListStore = create<OpenListStore>(set => ({
+const useOpenListStore = create<OpenListStore>((set) => ({
     openList: [],
-    setOpenList: (openList: MarkerOpen[]) => set(state => ({ ...state, openList })),
+    setOpenList: (openList: MarkerOpen[]) => set((state) => ({ ...state, openList })),
 }));
 
 export default useOpenListStore;

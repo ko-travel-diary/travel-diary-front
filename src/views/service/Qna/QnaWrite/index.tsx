@@ -1,12 +1,14 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import "./style.css";
-import { useUserStore } from "src/stores";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
+
+import { useUserStore } from "src/stores";
 import ResponseDto from "src/apis/response.dto";
-import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH } from "src/constant";
-import { PostQnaRequestDto } from "src/apis/qna/dto/request";
 import { postQnaRequest } from "src/apis/qna";
+import { PostQnaRequestDto } from "src/apis/qna/dto/request";
+import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component : Qna Write 화면 컴포넌트                     //
 export default function QnaWrite() {
@@ -15,10 +17,10 @@ export default function QnaWrite() {
 
     const { loginUserRole } = useUserStore();
 
+    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
+
     const [qnaTitle, setQnaTitle] = useState<string>("");
     const [qnaContent, setQnaContent] = useState<string>("");
-
-    const contentsRef = useRef<HTMLTextAreaElement | null>(null);
 
     //                     function                     //
     const navigator = useNavigate();

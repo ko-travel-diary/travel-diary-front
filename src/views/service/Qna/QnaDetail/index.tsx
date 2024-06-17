@@ -1,13 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import "./style.css";
-import { useNavigate, useParams } from "react-router";
-import { useUserStore } from "src/stores";
 import { useCookies } from "react-cookie";
-import { GetQnaResponseDto } from "src/apis/qna/dto/response";
+import { useNavigate, useParams } from "react-router";
+
+import { useUserStore } from "src/stores";
+
 import ResponseDto from "src/apis/response.dto";
-import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, QNA_UPDATE_ABSOLUTE_PATH } from "src/constant";
+import { GetQnaResponseDto } from "src/apis/qna/dto/response";
 import { deleteQnaCommentRequest, deleteQnaRequest, getQnaRequest, patchQnaCommentRequest, postQnaCommentRequest } from "src/apis/qna";
 import { PatchQnaCommentRequestDto, PostQnaCommentRequestDto } from "src/apis/qna/dto/request";
+import { AUTH_ABSOLUTE_PATH, QNA_ABSOLUTE_PATH, QNA_UPDATE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component : Qna Detail 화면 컴포넌트                     //
 export default function QnaDetail() {
@@ -19,12 +22,12 @@ export default function QnaDetail() {
     const { loginUserId, loginUserRole } = useUserStore();
 
     const [qnaTitle, setQnaTitle] = useState<string>("");
-    const [qnaWriterId, setQnaWriterId] = useState<string>("");
-    const [qnaDatetime, setQnaWriteDate] = useState<string>("");
     const [qnaContent, setQnaContent] = useState<string>("");
+    const [qnaWriterId, setQnaWriterId] = useState<string>("");
     const [qnaStatus, setQnaStatus] = useState<boolean>(false);
-    const [qnaComment, setQnaComment] = useState<string | null>(null);
+    const [qnaDatetime, setQnaWriteDate] = useState<string>("");
     const [qnaCommentRows, setQnaCommentRows] = useState<number>(1);
+    const [qnaComment, setQnaComment] = useState<string | null>(null);
     const [qnaCommentUpdate, setQnaCommentUpdate] = useState<string>("");
 
     //                     function                     //
@@ -164,7 +167,6 @@ export default function QnaDetail() {
         if (!qnaComment || !qnaComment.trim() || loginUserRole !== "ROLE_ADMIN") return;
         const qnaCommentUpdate = event.target.value;
         setQnaCommentUpdate(qnaCommentUpdate);
-
     };
 
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -254,17 +256,19 @@ export default function QnaDetail() {
                     </div>
                 )}
             </div>
-            {loginUserRole === "ROLE_ADMIN" && (
-                <div className="qna-detail-comment-box">
-                    <div className="admin-bedge">관리자</div>
-                    <div className="qna-comment-right-box">
-                        <div className="qna-detail-comment">{qnaComment}</div>
+            <div className="qna-detail-comment-box">
+                <div className="admin-bedge">관리자</div>
+                <div className="qna-comment-right-box">
+                    <div className="qna-detail-comment">{qnaComment}</div>
+                    {loginUserRole === "ROLE_ADMIN" && (
                         <div className="qna-detail-owner-button-box">
                             <div className="error-button" onClick={onDeleteCommentClickHandler}>
                                 삭제
                             </div>
                         </div>
-                    </div>
+                    )}
+                </div>
+                {loginUserRole === "ROLE_ADMIN" && qnaStatus && (
                     <div className="qna-detail-comment-write-box">
                         <div className="qna-detail-comment-textarea-box">
                             <textarea
@@ -279,8 +283,8 @@ export default function QnaDetail() {
                             수정
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
             {loginUserRole === "ROLE_ADMIN" && !qnaStatus && (
                 <div className="qna-detail-comment-write-box">
                     <div className="qna-detail-comment-textarea-box">

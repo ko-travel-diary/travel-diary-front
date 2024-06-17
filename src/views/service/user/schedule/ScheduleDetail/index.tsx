@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
-import { deleteScheduleRequest, getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
+import { useCookies } from "react-cookie";
+import { useNavigate, useParams } from "react-router";
+
+import { YYYYMMDD, numberCommas } from "src/utils";
+import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
+import ResponseDto from "src/apis/response.dto";
 import { GetScheduleDetailResponseDto, GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import { deleteScheduleRequest, getScheduleDetailRequest, getScheduleListRequest } from "src/apis/schedule";
 import {
     AUTH_ABSOLUTE_PATH,
     SCHEDULE_ABSOLUTE_PATH,
@@ -9,11 +14,8 @@ import {
     SCHEDULE_UPDATE_ABSOLUTE_PATH,
     SCHEDULE_WRITE_ABSOLUTE_PATH,
 } from "src/constant";
-import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
-import ResponseDto from "src/apis/response.dto";
-import { useCookies } from "react-cookie";
-import { useNavigate, useParams } from "react-router";
-import { YYYYMMDD, numberCommas } from "src/utils";
+
+import "./style.css";
 
 //                    component : Schedule ListItem View 컴포넌트                     //
 function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
@@ -75,16 +77,13 @@ export default function ScheduleDetail() {
     const { travelScheduleNumber } = useParams();
 
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
-
     const [scheduleList, setScheduleListItem] = useState<ScheduleList[]>([]);
+    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
     const [expenditureList, setExpenditureListItem] = useState<ExpenditureList[]>([]);
-
+    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
+    const [expendListViewList, setExpendListViewList] = useState<ExpenditureList[]>([]);
     const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [scheduleListViewList, setScheduleListViewList] = useState<ScheduleList[]>([]);
-    const [expendListViewList, setExpendListViewList] = useState<ExpenditureList[]>([]);
-
-    const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)
@@ -109,6 +108,7 @@ export default function ScheduleDetail() {
             return result;
         }
 
+        if (!scheduleList) return;
         const { scheduleListViewItems } = result as GetScheduleListResponseDto;
         changeScheduleViewList(scheduleListViewItems);
     };

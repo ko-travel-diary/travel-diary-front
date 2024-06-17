@@ -1,16 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import "./style.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
-import { PostScheduleRequestDto } from "src/apis/schedule/dto/request";
-import { getScheduleListRequest, postScheduleRequest } from "src/apis/schedule";
-import ResponseDto from "src/apis/response.dto";
-import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
-import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import DatePicker from "react-datepicker";
+
+import { ExpenditureList, ScheduleList, ScheduleListViewItem } from "src/types";
 import { YYYYMMDD, emptyExpenditure, emptySchedule, numberCommas, timeOptions } from "src/utils";
+import ResponseDto from "src/apis/response.dto";
+import { GetScheduleListResponseDto } from "src/apis/schedule/dto/response";
+import { getScheduleListRequest, postScheduleRequest } from "src/apis/schedule";
+import { PostScheduleRequestDto } from "src/apis/schedule/dto/request";
+import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 //                    interface : Schedule Write Input Box Props                     //
 interface ScheduleDateItemProps {
@@ -76,16 +78,13 @@ export default function ScheduleWrite() {
     //                     state                     //
     const [cookies] = useCookies();
 
-    const [travelScheduleName, setTravelScheduleName] = useState<string>("");
-
-    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
-    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
-    const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
-
     const [toggleFlag, setToggleFlag] = useState<number>(0);
-
+    const [travelScheduleName, setTravelScheduleName] = useState<string>("");
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
+    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
+    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
+    const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)

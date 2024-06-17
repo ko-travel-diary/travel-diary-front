@@ -6,9 +6,9 @@ interface PathStore {
     setPath: (path: Position[]) => void;
 }
 
-const usePathStore = create<PathStore>(set => ({
+const usePathStore = create<PathStore>((set) => ({
     path: [],
-    setPath: (path: Position[]) => set(state => ({ ...state, path })),
+    setPath: (path: Position[]) => set((state) => ({ ...state, path })),
 }));
 
 export default usePathStore;
