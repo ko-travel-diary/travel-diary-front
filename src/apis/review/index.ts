@@ -1,35 +1,12 @@
 import axios from "axios";
-import { PatchTravelReviewRequestDto, PostTravelReviewCommentRequestDto, PostTravelReviewRequestDto } from "./dto/request";
-import {
-    DELETE_REVIEW_COMMENT_REQUEST_URL,
-    DELETE_REVIEW_REQUEST_URL,
-    GET_COMMENT_LIST_REQUEST_URL,
-    GET_REVIEW_FAVORITE_STATUS_REQUEST_URL,
-    GET_REVIEW_LIST_REQUEST_URL,
-    GET_REVIEW_MY_LIST_REQUEST_URL,
-    GET_SEARCH_REVIEW_REQUEST_LIST_URL,
-    GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL,
-    GET_REVIEW_REQUEST_URL,
-    PATCH_FAVORITE_COUNT_REQUEST_URL,
-    PATCH_INCREASE_VIEW_COUNT_REQUEST_URL,
-    PATCH_REVIEW_COMMENT_REQUEST_URL,
-    PATCH_REVIEW_REQUEST_URL,
-    POST_REVIEW_COMMENT_REQUEST_URL,
-    POST_REVIEW_REQUEST_URL,
-} from "src/constant";
-import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
-import ResponseDto from "../response.dto";
-import {
-    GetTravelReviewBoardResponseDto,
-    GetTravelReviewCommentListResponseDto,
-    GetTravelReviewDetailResponseDto,
-    GetTravelReviewMyListResponseDto,
-    GetTravelReviewFavoriteStatusResponseDto,
-    GetTravelReviewMyListSearchResponseDto,
-    GetReviewSearchRequestDto,
-} from "./dto/response";
 
-// function : 리뷰 게시물 작성 API 함수
+import ResponseDto from "../response.dto";
+import { PatchTravelReviewRequestDto, PostTravelReviewCommentRequestDto, PostTravelReviewRequestDto } from "./dto/request";
+import { GetTravelReviewBoardResponseDto, GetTravelReviewCommentListResponseDto, GetTravelReviewDetailResponseDto, GetTravelReviewMyListResponseDto, GetTravelReviewFavoriteStatusResponseDto, GetTravelReviewMyListSearchResponseDto, GetReviewSearchRequestDto } from "./dto/response";
+
+import { bearerAuthorization, requestErrorHandler, requestHandler } from "..";
+import { DELETE_REVIEW_COMMENT_REQUEST_URL, DELETE_REVIEW_REQUEST_URL, GET_COMMENT_LIST_REQUEST_URL, GET_REVIEW_FAVORITE_STATUS_REQUEST_URL, GET_REVIEW_LIST_REQUEST_URL, GET_REVIEW_MY_LIST_REQUEST_URL, GET_SEARCH_REVIEW_REQUEST_LIST_URL, GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL, GET_REVIEW_REQUEST_URL, PATCH_FAVORITE_COUNT_REQUEST_URL, PATCH_INCREASE_VIEW_COUNT_REQUEST_URL, PATCH_REVIEW_COMMENT_REQUEST_URL, PATCH_REVIEW_REQUEST_URL, POST_REVIEW_COMMENT_REQUEST_URL, POST_REVIEW_REQUEST_URL } from "src/constant";
+
 export const postTravelReviewRequest = async (RequestBody: PostTravelReviewRequestDto, accessToken: string) => {
     const result = await axios
         .post(POST_REVIEW_REQUEST_URL, RequestBody, bearerAuthorization(accessToken))
@@ -38,7 +15,6 @@ export const postTravelReviewRequest = async (RequestBody: PostTravelReviewReque
     return result;
 };
 
-// function : 리뷰 게시물의 댓글 & 답글 작성 API 함수
 export const postTravelReviewCommentRequest = async (
     reviewNumber: number | string,
     RequestBody: PostTravelReviewCommentRequestDto,
@@ -51,7 +27,72 @@ export const postTravelReviewCommentRequest = async (
     return result;
 };
 
-// function : 리뷰 게시물 수정 API 함수
+export const getTravelReviewCommentListRequest = async (reviewNumber: number | string) => {
+    const result = await axios
+        .get(GET_COMMENT_LIST_REQUEST_URL(reviewNumber))
+        .then(requestHandler<GetTravelReviewCommentListResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const getTravelReviewBoardRequest = async () => {
+    const result = await axios
+        .get(GET_REVIEW_LIST_REQUEST_URL)
+        .then(requestHandler<GetTravelReviewBoardResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const getTravelReviewSearchRequest = async (titleAndContent?: string, writer?: string, writedate?: string) => {
+    const config = { params: { titleAndContent, writer, writedate } };
+    const result = await axios
+        .get(GET_SEARCH_REVIEW_REQUEST_LIST_URL, config)
+        .then(requestHandler<GetReviewSearchRequestDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const getTravelReviewDetailRequest = async (reviewNumber: number | string) => {
+    const result = await axios
+        .get(GET_REVIEW_REQUEST_URL(reviewNumber))
+        .then(requestHandler<GetTravelReviewDetailResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const getTravelReviewMyListRequest = async (accessToken: string) => {
+    const result = await axios
+        .get(GET_REVIEW_MY_LIST_REQUEST_URL, bearerAuthorization(accessToken))
+        .then(requestHandler<GetTravelReviewMyListResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const getTravelReviewMyListSearchRequest = async (searchWord: string, accessToken: string) => {
+    const config = { params: { searchWord }, ...bearerAuthorization(accessToken) };
+    const result = await axios
+        .get(GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL, config)
+        .then(requestHandler<GetTravelReviewMyListSearchResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const getTravelReviewFavoriteStatusRequest = async (reviewNumber: number | string, accessToken: string) => {
+    const result = await axios
+        .get(GET_REVIEW_FAVORITE_STATUS_REQUEST_URL(reviewNumber), bearerAuthorization(accessToken))
+        .then(requestHandler<GetTravelReviewFavoriteStatusResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
+export const increaseViewCountRequest = async (reviewNumber: number | string) => {
+    const result = await axios
+        .patch(PATCH_INCREASE_VIEW_COUNT_REQUEST_URL(reviewNumber))
+        .then(requestHandler<ResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+
 export const patchTravelReviewRequestDto = async (reviewNumber: number | string, RequestBody: PatchTravelReviewRequestDto, accessToken: string) => {
     const result = await axios
         .patch(PATCH_REVIEW_REQUEST_URL(reviewNumber), RequestBody, bearerAuthorization(accessToken))
@@ -60,7 +101,6 @@ export const patchTravelReviewRequestDto = async (reviewNumber: number | string,
     return result;
 };
 
-// function : 리뷰 게시물의 댓글 & 답글 수정 API 함수
 export const patchTravelCommentRequestDto = async (
     commentNumber: number | string,
     RequestBody: PostTravelReviewCommentRequestDto,
@@ -73,81 +113,6 @@ export const patchTravelCommentRequestDto = async (
     return result;
 };
 
-// function : 리뷰 게시물의 전체 댓글 & 답글 불러오기 API 함수
-export const getTravelReviewCommentListRequest = async (reviewNumber: number | string) => {
-    const result = await axios
-        .get(GET_COMMENT_LIST_REQUEST_URL(reviewNumber))
-        .then(requestHandler<GetTravelReviewCommentListResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 리뷰 게시물 목록 불러오기 API 함수
-export const getTravelReviewBoardRequest = async () => {
-    const result = await axios
-        .get(GET_REVIEW_LIST_REQUEST_URL)
-        .then(requestHandler<GetTravelReviewBoardResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 리뷰 게시물 검색 목록 불러오기 API 함수
-export const getTravelReviewSearchRequest = async (titleAndContent?: string, writer?: string, writedate?: string) => {
-    const config = { params: { titleAndContent, writer, writedate } };
-    const result = await axios
-        .get(GET_SEARCH_REVIEW_REQUEST_LIST_URL, config)
-        .then(requestHandler<GetReviewSearchRequestDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 리뷰 게시물 상세보기 API 함수
-export const getTravelReviewDetailRequest = async (reviewNumber: number | string) => {
-    const result = await axios
-        .get(GET_REVIEW_REQUEST_URL(reviewNumber))
-        .then(requestHandler<GetTravelReviewDetailResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 내가 쓴 리뷰 게시물 불러오기 API 함수
-export const getTravelReviewMyListRequest = async (accessToken: string) => {
-    const result = await axios
-        .get(GET_REVIEW_MY_LIST_REQUEST_URL, bearerAuthorization(accessToken))
-        .then(requestHandler<GetTravelReviewMyListResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 내가 쓴 리뷰 게시물 제목 검색 목록 불러오기 API 함수
-export const getTravelReviewMyListSearchRequest = async (searchWord: string, accessToken: string) => {
-    const config = { params: { searchWord }, ...bearerAuthorization(accessToken) };
-    const result = await axios
-        .get(GET_REVIEW_MY_LIST_SEARCH_REQUEST_URL, config)
-        .then(requestHandler<GetTravelReviewMyListSearchResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 해당 게시물에 유저가 좋아요 눌렀는지 상태 불러오기 API 함수
-export const getTravelReviewFavoriteStatusRequest = async (reviewNumber: number | string, accessToken: string) => {
-    const result = await axios
-        .get(GET_REVIEW_FAVORITE_STATUS_REQUEST_URL(reviewNumber), bearerAuthorization(accessToken))
-        .then(requestHandler<GetTravelReviewFavoriteStatusResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 리뷰 게시물 조회수 증가 API 함수
-export const increaseViewCountRequest = async (reviewNumber: number | string) => {
-    const result = await axios
-        .patch(PATCH_INCREASE_VIEW_COUNT_REQUEST_URL(reviewNumber))
-        .then(requestHandler<ResponseDto>)
-        .catch(requestErrorHandler);
-    return result;
-};
-
-// function : 리뷰 게시물 좋아요 API 함수
 export const patchFavoriteRequest = async (reviewNumber: number | string, accessToken: string) => {
     const result = await axios
         .patch(PATCH_FAVORITE_COUNT_REQUEST_URL(reviewNumber), {}, bearerAuthorization(accessToken))
@@ -156,7 +121,6 @@ export const patchFavoriteRequest = async (reviewNumber: number | string, access
     return result;
 };
 
-// function : 리뷰 게시물 삭제 API 함수
 export const deleteTravelReviewReqeust = async (reviewNumber: number | string, accessToken: string) => {
     const result = await axios
         .delete(DELETE_REVIEW_REQUEST_URL(reviewNumber), bearerAuthorization(accessToken))
@@ -165,7 +129,6 @@ export const deleteTravelReviewReqeust = async (reviewNumber: number | string, a
     return result;
 };
 
-// function : 리뷰 게시물의 댓글 & 답글 삭제 API 함수
 export const deleteTravelReviewCommentRequest = async (commentNumber: number | string, reviewNumber: number | string, accessToken: string) => {
     const result = await axios
         .delete(DELETE_REVIEW_COMMENT_REQUEST_URL(reviewNumber, commentNumber), bearerAuthorization(accessToken))
