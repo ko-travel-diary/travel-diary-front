@@ -2,12 +2,11 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 
+import { UserListItem } from 'src/types';
 import ResponseDto from 'src/apis/response.dto';
 import { DeleteAdminUserRequestDto } from 'src/apis/user/dto/request';
 import { GetSearchUserListResponseDto, GetUserListResponseDto } from 'src/apis/user/dto/response';
 import { deleteAdminUserRequest, getSearchUserListRequest, getUserListRequest } from 'src/apis/user';
-
-import { UserListItem } from 'src/types';
 import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from 'src/constant';
 
 import './style.css'
@@ -74,9 +73,9 @@ export default function UserList() {
     const [totalLength, setTotalLength] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
     const [userList, setUserList] = useState<UserListItem[]>([]);
     const [viewList, setViewList] = useState<UserListItem[]>([]);
+    const [currentSection, setCurrentSection] = useState<number>(1);
 
     //                  function                    //
     const navigator = useNavigate();

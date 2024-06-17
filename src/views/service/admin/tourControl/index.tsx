@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router';
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
-
 import ResponseDto from 'src/apis/response.dto';
 import { imageUploadRequest } from 'src/apis/image';
 import { getAddressRequest, getCoordinateRequest } from 'src/apis/address';
@@ -13,8 +12,8 @@ import { GetTourAttractionsResponseDto } from 'src/apis/tour_attraction/dto/resp
 import { PatchTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
 import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from 'src/apis/address/dto/response';
 import { deleteTourAttractionsRequest, getTourAttractionsRequest, patchTourAttractionsRequest } from 'src/apis/tour_attraction';
-
 import {ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
+
 import './style.css'
 
 //                  Component                   //
@@ -145,7 +144,6 @@ export default function TourControl() {
         setTourAttractionsLat(tourAttractionsLat);
         setTourAttractionsLng(tourAttractionsLng);
         setSearchAddress(tourAttractionsLocation);
-
     }
 
     const patchTourAttractionResponse = (result: ResponseDto | null ) => {
@@ -160,7 +158,6 @@ export default function TourControl() {
             if (result?.code === 'AF') navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
-
     }
 
     const deleteTourAttractionResponse = (result: ResponseDto | null) => {
@@ -195,8 +192,7 @@ export default function TourControl() {
         setTourAttractionsLat(y);
         setTourAttractionsLng(x);
 
-        if (x !== 0 || y !== 0) setUpdateWhether(true);
-    
+        if (x !== 0 || y !== 0) setUpdateWhether(true);  
     }
 
     //                  Event Handler                   //
@@ -235,19 +231,16 @@ export default function TourControl() {
         if (url) setTourAttractionsImageUrl([...tourAttractionsImageUrl, url]);
     }
 
-    const onPatchButtonClickHandler = async () => {
-        
+    const onPatchButtonClickHandler = async () => {  
         if (!tourAttractionsName.trim() || !tourAttractionsLocation.trim() || !tourAttractionsOutline.trim()) return;
 
         if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
 
         const query = tourAttractionsLocation;
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
-
     }
 
     const onDeleteButtonClickHandler = () => {
-
         if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         deleteTourAttractionsRequest(tourAttractionsNumber, cookies.accessToken).then(deleteTourAttractionResponse)
 
@@ -255,7 +248,6 @@ export default function TourControl() {
         if (!confirm) return;
 
         navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
-
     }
 
     const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
@@ -265,7 +257,6 @@ export default function TourControl() {
 
         const newTourAttractionsImageUrls = tourAttractionsImageUrl.filter((imageUrl, index) => index !== deleteIndex);
         setTourAttractionsImageUrl(newTourAttractionsImageUrls);
-
     };
 
     const onSearchButtonClickHandler = () => {
@@ -282,13 +273,11 @@ export default function TourControl() {
 
         setButtonStatus(false)
         setSearchAddress('');
-
     }, [])
 
     useEffect(() => {
         if (!tourAttractionsNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
         getTourAttractionsRequest(tourAttractionsNumber).then(getTourAttractionResponse);
-
     }, [loginUserRole])
 
     useEffect(() => {
@@ -296,9 +285,7 @@ export default function TourControl() {
     }, [searchAddress])
 
     useEffect(() => {
-
         if(updateWhether) {
-
             if ((tourAttractionsLat === 0.0) || (tourAttractionsLng === 0.0)) {
                 alert('주소를 정확히 입력해주세요.');
                 return;
@@ -313,9 +300,7 @@ export default function TourControl() {
             patchTourAttractionsRequest(requestBody, tourAttractionsNumber, cookies.accessToken).then(patchTourAttractionResponse);
 
             navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
-
         }
-
     }, [tourAttractionsLat, tourAttractionsLng])
 
     //                  Render                   //
@@ -388,7 +373,7 @@ export default function TourControl() {
                 <div className='error-button' onClick={onDeleteButtonClickHandler}>삭제</div>
             </div>
             {buttonStatus &&
-                <SearchAddress/>
+                <SearchAddress />
             }
         </div>
     )

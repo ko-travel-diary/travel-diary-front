@@ -5,14 +5,12 @@ import { useNavigate } from 'react-router';
 import { useUserStore } from 'src/stores';
 import useButtonStatusStore from 'src/stores/search-button.store';
 import useSearchAddressStore from 'src/stores/search-address.store';
-
 import ResponseDto from 'src/apis/response.dto';
 import { imageUploadRequest } from 'src/apis/image';
 import { postTourAttractionsRequest } from 'src/apis/tour_attraction';
 import { getAddressRequest, getCoordinateRequest } from 'src/apis/address';
 import { PostTourAttractionsRequestDto } from 'src/apis/tour_attraction/dto/request';
 import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from 'src/apis/address/dto/response';
-
 import { ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from 'src/constant';
 
 import './style.css'
@@ -98,7 +96,6 @@ export function SearchAddress() {
 
 //                  Component                   //
 export default function TourAdd() {
-
     
     //                  State                   //
     const { loginUserRole } = useUserStore();
@@ -106,8 +103,6 @@ export default function TourAdd() {
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const imageSeq = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
-
-    
     const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
     const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
@@ -156,7 +151,6 @@ export default function TourAdd() {
         setTourAttractionsLng(x);
         
         setUpdateWhether(true);
-
     }
 
     //                  Event Handler                   //
@@ -203,11 +197,9 @@ export default function TourAdd() {
 
         const query = tourAttractionsLocation;
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
-
     }
 
-    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {
-        
+    const onImageDeleteButtonClickHandler = (deleteIndex: number) => {     
         const newTourAttractionsImages = tourAttractionsImage.filter((image, index) => index !== deleteIndex);
         setTourAtrracntionImage(newTourAttractionsImages);
 
@@ -228,19 +220,14 @@ export default function TourAdd() {
 
         setButtonStatus(false)
         setSearchAddress('');
-
     }, [])
 
     useEffect(() => {
-
         setTourAtrractionLocation(searchAddress);
-
     }, [searchAddress])
 
     useEffect(() => {
-
         if (updateWhether) {
-    
             const requestBody: PostTourAttractionsRequestDto = {
                 tourAttractionsName, tourAttractionsLocation, tourAttractionsTelNumber, tourAttractionsHours, tourAttractionsOutline, 
                 tourAttractionsImageUrl, tourAttractionsLat, tourAttractionsLng
@@ -249,9 +236,7 @@ export default function TourAdd() {
             postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
     
             navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
-
         }
-
     }, [tourAttractionsLat, tourAttractionsLng]);
 
     //                  Render                   //
@@ -323,7 +308,7 @@ export default function TourAdd() {
                 <div className='primary-button' onClick={onRegisterButtonClickHandler}>등록</div>
             </div>
             {buttonStatus &&
-                <SearchAddress/>
+                <SearchAddress />
             }
         </div>
     )
