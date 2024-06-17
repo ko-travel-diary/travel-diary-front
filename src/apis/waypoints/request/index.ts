@@ -1,4 +1,4 @@
-export interface PostWaypointsRequestBody {
+export interface PostWaypointsRequestDto {
     origin: {
         x: string,
         y: string

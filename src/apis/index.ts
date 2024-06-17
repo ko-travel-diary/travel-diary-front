@@ -13,3 +13,5 @@ export const requestErrorHandler = (error: any) => {
 }
 
 export const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}`}});
+
+export const kakaoAuthorization = (kakaoAppKey: string) => ({ headers: { 'Authorization': `KakaoAK ${kakaoAppKey}` }})
