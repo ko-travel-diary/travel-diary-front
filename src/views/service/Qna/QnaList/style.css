@@ -74,6 +74,7 @@ html::-webkit-scrollbar {
 .qna-list-top-right {
     display: flex;
     text-align: center;
+    gap: 5px;
 }
 
 .toggle {
