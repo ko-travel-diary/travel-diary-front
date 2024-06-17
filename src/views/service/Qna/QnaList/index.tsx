@@ -1,18 +1,19 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import "./style.css";
-import { QnaListItem } from "src/types";
-import { useNavigate } from "react-router";
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, QNA_DETAIL_ABSOLUTE_PATH, QNA_WRITE_ABSOLUTE_PATH } from "src/constant";
-import { useUserStore } from "src/stores";
 import { useCookies } from "react-cookie";
-import { getQnaListRequest, getQnaSearchListRequest } from "src/apis/qna";
-import { GetQnaListResponseDto, GetQnaSearchListResponseDto } from "src/apis/qna/dto/response";
+import { useNavigate } from "react-router";
+
+import { QnaListItem } from "src/types";
+import { useUserStore } from "src/stores";
 import ResponseDto from "src/apis/response.dto";
+import { GetQnaListResponseDto, GetQnaSearchListResponseDto } from "src/apis/qna/dto/response";
+import { getQnaListRequest, getQnaSearchListRequest } from "src/apis/qna";
+import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, QNA_DETAIL_ABSOLUTE_PATH, QNA_WRITE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component : Qna View List 컴포넌트                     //
 function ListItem({ receptionNumber, qnaStatus, qnaTitle, qnaWriterId, qnaDatetime }: QnaListItem) {
     const datetime = qnaDatetime.slice(0, 10);
-
     //                     function                     //
     const navigator = useNavigate();
 
@@ -39,17 +40,17 @@ export default function QnaList() {
 
     const { loginUserRole, loginUserId } = useUserStore();
 
-    const [qnaList, setQnaList] = useState<QnaListItem[]>([]);
-    const [viewList, setViewList] = useState<QnaListItem[]>([]);
-    const [totalLength, setTotalLength] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageList, setPageList] = useState<number[]>([1]);
+    const [searchWord, setSearchWord] = useState<string>("");
+    const [qnaList, setQnaList] = useState<QnaListItem[]>([]);
+    const [totalLength, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
+    const [viewList, setViewList] = useState<QnaListItem[]>([]);
     const [currentSection, setCurrentSection] = useState<number>(1);
     const [isUserToggleOn, setUserToggleOn] = useState<boolean>(false);
     const [isAdminToggleOn, setAdminToggleOn] = useState<boolean>(false);
-    const [searchWord, setSearchWord] = useState<string>("");
 
     //                     function                     //
     const navigator = useNavigate();
@@ -197,7 +198,6 @@ export default function QnaList() {
     //                    render                     //\
     const toggleAdminClass = isAdminToggleOn ? "toggle-active" : "toggle";
     const toggleUserClass = isUserToggleOn ? "toggle-active" : "toggle";
-
     const searchButtonClass = searchWord ? "primary-button" : "disable-button";
 
     return (

@@ -3,13 +3,19 @@ import { useCookies } from "react-cookie";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
 import { useUserStore } from "src/stores";
-
 import ResponseDto from "src/apis/response.dto";
 import { getUserInfoRequest } from "src/apis/user";
 import { GetUserInfoResponseDto } from "src/apis/user/dto/response";
-
 import DefaultProfileImage from "src/assets/image/userProfileDefault.png";
-import { ADMINPAGE_ABSOULUTE_PAGE, MAIN_ABSOLUTE_PATH, MYPAGE_ABSOULUTE_PATH, QNA_ABSOLUTE_PATH, REVIEW_ABSOULUTE_PATH, SIGN_IN_ABSOLUTE_PATH, TRAVEL_ABSOLUTE_PATH } from "src/constant";
+import {
+    ADMINPAGE_ABSOULUTE_PAGE,
+    MAIN_ABSOLUTE_PATH,
+    MYPAGE_ABSOULUTE_PATH,
+    QNA_ABSOLUTE_PATH,
+    REVIEW_ABSOULUTE_PATH,
+    SIGN_IN_ABSOLUTE_PATH,
+    TRAVEL_ABSOLUTE_PATH,
+} from "src/constant";
 
 import "./style.css";
 
@@ -56,8 +62,8 @@ function TopNavigation() {
     const onMainPageButtonClickHandler = () => {
         navigator(MAIN_ABSOLUTE_PATH);
         window.location.reload();
-    }
-    
+    };
+
     const onTourButtonClickHandler = () => navigator(TRAVEL_ABSOLUTE_PATH);
     const onReivewButtonClickHandler = () => navigator(REVIEW_ABSOULUTE_PATH);
     const onQnaButtonClickHandler = () => navigator(QNA_ABSOLUTE_PATH);

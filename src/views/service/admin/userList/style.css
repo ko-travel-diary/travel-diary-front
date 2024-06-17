@@ -1,10 +1,10 @@
-.user-list-table-box{
+.user-list-table-box {
     display: flex;
     justify-content: space-around;
     text-align: center;
 
     width: 100%;
-    
+
     padding: 10px 0;
     border-bottom: 1px solid rgba(238, 238, 238, 1);
 }
@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     width: 200px;
 }
 .user-list-table-id {
@@ -44,7 +44,7 @@
     width: 100px;
 }
 
-#user-list-wrapper{
+#user-list-wrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -52,17 +52,16 @@
     width: 1235px;
 }
 
-.user-list-top{
+.user-list-top {
     display: flex;
     align-items: center;
     height: 44px;
-
 }
 .user-list-count-text .emphasis {
     color: rgba(64, 64, 64, 1);
 }
 
-.user-list-table{
+.user-list-table {
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
 
@@ -77,7 +76,7 @@
 
     background-color: rgba(255, 255, 255, 1);
 }
-.user-list-table-top{
+.user-list-table-top {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -93,17 +92,17 @@
     color: rgba(64, 64, 64, 1);
 }
 
-.user-list-bottom{
+.user-list-bottom {
     display: flex;
     justify-content: space-between;
 }
-.user-list-bottom-left{
+.user-list-bottom-left {
     width: 300px;
 }
-.user-list-bottom-middle{
+.user-list-bottom-middle {
     display: flex;
 }
-.user-list-pagenation{
+.user-list-pagenation {
     display: flex;
     gap: 8px;
 }
@@ -111,7 +110,7 @@
     width: 40px;
     height: 40px;
 
-    background-image: url('../../../../assets/image/page-left.png');
+    background-image: url("../../../../assets/image/page-left.png");
     background-size: 100% 100%;
 
     cursor: pointer;
@@ -122,20 +121,20 @@
     align-items: center;
 }
 
-.user-list-page{
+.user-list-page {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    
+
     color: rgba(138, 146, 166, 1);
 
     cursor: pointer;
 }
-.user-list-page-active{
+.user-list-page-active {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    
+
     color: rgba(64, 64, 64, 1);
 
     cursor: default;
@@ -144,12 +143,12 @@
     width: 40px;
     height: 40px;
 
-    background-image: url('../../../../assets/image/page-right.png');
+    background-image: url("../../../../assets/image/page-right.png");
     background-size: 100% 100%;
 
     cursor: pointer;
 }
-.user-list-bottom-right{
+.user-list-bottom-right {
     width: 300px;
 }
 

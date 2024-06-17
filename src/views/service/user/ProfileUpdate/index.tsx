@@ -1,16 +1,19 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import "./style.css";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
-import { AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, MYPAGE_ABSOULUTE_PATH } from "src/constant";
-import { NickNameCheckRequestDto } from "src/apis/auth/dto/request";
-import { nickNameCheckRequest } from "src/apis/auth";
-import ResponseDto from "src/apis/response.dto";
-import { PatchUserInfoRequestDto } from "src/apis/user/dto/request";
-import { getUserInfoRequest, patchUserInfoRequest } from "src/apis/user";
 
 import axios from "axios";
-import { useCookies } from "react-cookie";
+
+import ResponseDto from "src/apis/response.dto";
 import { GetUserInfoResponseDto } from "src/apis/user/dto/response";
+import { nickNameCheckRequest } from "src/apis/auth";
+import { getUserInfoRequest, patchUserInfoRequest } from "src/apis/user";
+import { PatchUserInfoRequestDto } from "src/apis/user/dto/request";
+import { NickNameCheckRequestDto } from "src/apis/auth/dto/request";
+import { AUTH_ABSOLUTE_PATH, IMAGE_UPLOAD_URL, MYPAGE_ABSOULUTE_PATH } from "src/constant";
+
+import "./style.css";
+import { imageUploadRequest } from "src/apis/image";
 
 //                    interface : Profile Update Input Box Props                     //
 interface InputBoxProps {
@@ -53,28 +56,22 @@ export default function ProfileUpdate() {
     //                    state                     //
     const [cookies] = useCookies();
 
-    const [nickName, setNickName] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-
-    const [nickNameButtonStatus, setNickNameButtonStatus] = useState<boolean>(false);
-    const [nickNameCheck, setNickNameCheck] = useState<boolean>(false);
-
-    const [nickNameMessage, setNickNameMessage] = useState<string>("");
-    const [passwordMessage] = useState<string>("");
-    const [emailMessage] = useState<string>("");
-
-    const [profileImage, setProfileImage] = useState<string>("");
-    const [profileUpdateImage, setProfileUpdateImage] = useState<string>("");
-    const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
-
-    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
-    const [passwordMessageError] = useState<boolean>(false);
-    const [emailMessageError] = useState<boolean>(false);
-
     const photoInput = useRef<HTMLInputElement | null>(null);
 
-    const updateCondition = nickNameCheck;
+    const [emailMessage] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [passwordMessage] = useState<string>("");
+    const [nickName, setNickName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [emailMessageError] = useState<boolean>(false);
+    const [passwordMessageError] = useState<boolean>(false);
+    const [profileImage, setProfileImage] = useState<string>("");
+    const [nickNameCheck, setNickNameCheck] = useState<boolean>(false);
+    const [nickNameMessage, setNickNameMessage] = useState<string>("");
+    const [profileUpdateImage, setProfileUpdateImage] = useState<string>("");
+    const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+    const [nickNameButtonStatus, setNickNameButtonStatus] = useState<boolean>(false);
+    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -143,7 +140,7 @@ export default function ProfileUpdate() {
 
     //                     event handler                     //
     const onUpdateClickHandler = async () => {
-        if (!updateCondition) return;
+        if (!nickNameCheck) return;
         if (!cookies.accessToken) return;
         if (!nickName) {
             alert("모든 내용을 입력해주세요.");
@@ -156,17 +153,10 @@ export default function ProfileUpdate() {
             const data = new FormData();
             data.append("file", profileImageFile);
 
-            await axios
-                .post(IMAGE_UPLOAD_URL, data, {
-                    headers: {
-                        Authorization: `Bearer ${cookies.accessToken}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((response) => (newProfileImage = response.data));
-        }
+            const changeProfileImage = await imageUploadRequest(data, cookies.accessToken);
 
-        newProfileImage = newProfileImage ? newProfileImage : profileImage;
+            newProfileImage = changeProfileImage ? changeProfileImage : profileImage;
+        }
 
         const requestBody: PatchUserInfoRequestDto = {
             nickName,
@@ -198,11 +188,13 @@ export default function ProfileUpdate() {
 
     const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
+        if (!password) return;
         setPassword(value);
     };
 
     const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
+        if (!email) return;
         setEmail(value);
     };
 

@@ -1,7 +1,9 @@
 import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import "./style.css";
+
 import { DELETE_USER_ABSOLUTE_PAGE, MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE, MY_REVIEWLIST_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                  Component                   //
 function SideNavigation() {

@@ -5,9 +5,9 @@ interface SearchAddressStore {
     setSearchAddress: (searchWord: string) => void;
 }
 
-const useSearchAddressStore = create<SearchAddressStore>(set => ({
-    searchAddress: '',
-    setSearchAddress: (searchWord: string) => set({searchAddress: searchWord}),
+const useSearchAddressStore = create<SearchAddressStore>((set) => ({
+    searchAddress: "",
+    setSearchAddress: (searchWord: string) => set({ searchAddress: searchWord }),
 }));
 
 export default useSearchAddressStore;

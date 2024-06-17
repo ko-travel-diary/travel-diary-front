@@ -5,9 +5,9 @@ interface SearchWordStore {
     setSearchWord: (searchWord: string) => void;
 }
 
-const useSearchWordStore = create<SearchWordStore>(set => ({
-    searchWord: '',
-    setSearchWord: (searchWord: string) => set(state => ({ ...state, searchWord })),
+const useSearchWordStore = create<SearchWordStore>((set) => ({
+    searchWord: "",
+    setSearchWord: (searchWord: string) => set((state) => ({ ...state, searchWord })),
 }));
 
 export default useSearchWordStore;

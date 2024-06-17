@@ -1,4 +1,4 @@
-#tour-list-wrapper{
+#tour-list-wrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -6,7 +6,7 @@
     width: 1235px;
 }
 
-.tour-list-top{
+.tour-list-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,7 +16,7 @@
 .tour-list-count-text .emphasis {
     color: rgba(64, 64, 64, 1);
 }
-.tour-list-control-box{
+.tour-list-control-box {
     display: flex;
 }
 .control-button {
@@ -27,7 +27,7 @@
 
     padding: 8px 24px;
 
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 1);
     border: 1px solid rgba(64, 64, 64, 1);
     border-radius: 6px;
 
@@ -47,8 +47,7 @@
     margin-right: 10px;
 }
 
-
-.tour-list-table{
+.tour-list-table {
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
 
@@ -63,7 +62,7 @@
 
     background-color: rgba(255, 255, 255, 1);
 }
-.tour-list-table-top{
+.tour-list-table-top {
     display: flex;
     gap: 56px;
     align-items: center;
@@ -80,21 +79,21 @@
     color: rgba(64, 64, 64, 1);
 }
 
-.tour-list-bottom{
+.tour-list-bottom {
     display: flex;
     justify-content: space-between;
 }
-.tour-list-bottom-left{
+.tour-list-bottom-left {
     width: 300px;
 }
-.tour-list-bottom-middle{
+.tour-list-bottom-middle {
     display: flex;
 }
-.tour-list-pagenation{
+.tour-list-pagenation {
     display: flex;
     gap: 8px;
 }
-.tour-list-bottom-right{
+.tour-list-bottom-right {
     width: 300px;
 }
 
@@ -102,7 +101,7 @@
     width: 40px;
     height: 40px;
 
-    background-image: url('../../../../assets/image/page-left.png');
+    background-image: url("../../../../assets/image/page-left.png");
     background-size: 100% 100%;
 
     cursor: pointer;
@@ -112,20 +111,20 @@
     gap: 16px;
     align-items: center;
 }
-.tour-list-page{
+.tour-list-page {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    
+
     color: rgba(138, 146, 166, 1);
 
     cursor: pointer;
 }
-.tour-list-page-active{
+.tour-list-page-active {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    
+
     color: rgba(64, 64, 64, 1);
 
     cursor: default;
@@ -134,7 +133,7 @@
     width: 40px;
     height: 40px;
 
-    background-image: url('../../../../assets/image/page-right.png');
+    background-image: url("../../../../assets/image/page-right.png");
     background-size: 100% 100%;
 
     cursor: pointer;
@@ -165,7 +164,6 @@
     line-height: 175%;
 }
 
-
 .primary-button {
     box-sizing: border-box;
     display: flex;
@@ -185,7 +183,7 @@
     color: rgba(255, 255, 255, 1);
 }
 
-.tour-list-table-box{
+.tour-list-table-box {
     display: flex;
     gap: 56px;
     justify-content: center;
@@ -195,11 +193,11 @@
 
     overflow: hidden;
     white-space: nowrap;
-    
+
     padding: 10px 0;
     border-bottom: 1px solid rgba(238, 238, 238, 1);
 }
-.tour-list-table-number{
+.tour-list-table-number {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -209,7 +207,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     width: 100px;
 }
 .tour-list-table-name {
@@ -221,7 +219,7 @@
 
     cursor: pointer;
 }
-.tour-list-table-locate{
+.tour-list-table-locate {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -245,9 +243,7 @@
 .tour-list-table-button {
     width: 80px;
 }
-.long-text{
+.long-text {
     line-height: 52px;
     text-align: left;
 }
-
-

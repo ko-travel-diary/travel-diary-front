@@ -1,26 +1,10 @@
 import React, { useState } from "react";
+
+import { listItem } from "src/utils";
+
 import "./style.css";
 
-const listItem = [
-    { name: "전국", value: "all" },
-    { name: "서울", value: "서울" },
-    { name: "경기도", value: "경기도" },
-    { name: "강원도", value: "강원도" },
-    { name: "부산", value: "부산" },
-    { name: "대구", value: "대구" },
-    { name: "인천", value: "인천" },
-    { name: "광주", value: "광주" },
-    { name: "대전", value: "대전" },
-    { name: "울산", value: "울산" },
-    { name: "충청남도", value: "충청남도" },
-    { name: "충청북도", value: "충청북도" },
-    { name: "경상남도", value: "경상남도" },
-    { name: "경상북도", value: "경상북도" },
-    { name: "전라남도", value: "전라남도" },
-    { name: "전라북도", value: "전라북도" },
-    { name: "제주", value: "제주" },
-];
-
+//                    interface                    //
 interface Prop {
     value: string;
     onChange: (value: string) => void;
@@ -28,10 +12,9 @@ interface Prop {
 
 //                    component                    //
 export default function SelectBox({ value, onChange }: Prop) {
-
     //                    state                    //
-    const [show, setShow] = useState<boolean>(false);
     const [name, setName] = useState<string>("");
+    const [show, setShow] = useState<boolean>(false);
 
     //                    event handler                    //
     const onButtonClickHandler = () => {

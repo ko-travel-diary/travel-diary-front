@@ -1,13 +1,15 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import "./style.css";
-import { useUserStore } from "src/stores";
 import { useCookies } from "react-cookie";
-import { TravelReviewMyList } from "src/types";
 import { useNavigate } from "react-router";
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
+
+import { useUserStore } from "src/stores";
+import { TravelReviewMyList } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { GetTravelReviewMyListResponseDto, GetTravelReviewMyListSearchResponseDto } from "src/apis/review/dto/response";
 import { getTravelReviewMyListRequest, getTravelReviewMyListSearchRequest } from "src/apis/review";
+import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
+
+import "./style.css";
 
 //                    component : My Review View List 화면 컴포넌트                     //
 function ListItem({ reviewNumber, reviewTitle, reviewDatetime, reviewViewCount }: TravelReviewMyList) {
@@ -39,17 +41,15 @@ export default function MyReviewList() {
 
     const { loginUserRole } = useUserStore();
 
-    const [reviewList, setReviewList] = useState<TravelReviewMyList[]>([]);
-    const [viewList, setViewList] = useState<TravelReviewMyList[]>([]);
-
-    const [totalLength, setTotalLength] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageList, setPageList] = useState<number[]>([1]);
+    const [searchWord, setSearchWord] = useState<string>("");
+    const [totalLength, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-
-    const [searchWord, setSearchWord] = useState<string>("");
+    const [viewList, setViewList] = useState<TravelReviewMyList[]>([]);
+    const [reviewList, setReviewList] = useState<TravelReviewMyList[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();

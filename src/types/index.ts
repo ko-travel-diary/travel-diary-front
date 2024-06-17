@@ -89,7 +89,7 @@ export interface ReviewBoardListItem {
 }
 
 export interface Position {
-    lat: number; 
+    lat: number;
     lng: number;
 }
 
@@ -100,6 +100,6 @@ export interface MarkerOpen {
 
 export interface Destination {
     name: string;
-    lat: number; 
+    lat: number;
     lng: number;
 }

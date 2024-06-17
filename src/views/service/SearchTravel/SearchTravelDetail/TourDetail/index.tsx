@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import "./style.css";
 import { useNavigate, useParams } from "react-router";
+
+import { changeText } from "src/utils";
+import ResponseDto from "src/apis/response.dto";
 import { GetTourAttractionsResponseDto } from "src/apis/tour_attraction/dto/response";
 import { getTourAttractionsRequest } from "src/apis/tour_attraction";
-import ResponseDto from "src/apis/response.dto";
 import { AUTH_ABSOLUTE_PATH, SHOW_IMAGE_BUTTON_LIMIT } from "src/constant";
-import { changeText } from "src/utils";
+
+import "./style.css";
 
 //                    component : TourAttractions Detail 화면 컴포넌트                     //
 export default function TourDetail() {
@@ -17,8 +19,8 @@ export default function TourDetail() {
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
     const [tourAttractionsLocation, setTourAttractionsLocation] = useState<string>("");
-    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>("");
+    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
 
     const [page, setPage] = useState<{ start: number; end: number }>({
         start: 0,

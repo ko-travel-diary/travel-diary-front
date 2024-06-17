@@ -1,7 +1,14 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import "./style.css";
-import SelectBox from "src/components/Selectbox";
 import { useNavigate } from "react-router";
+
+import SelectBox from "src/components/Selectbox";
+import { changeText } from "src/utils";
+import { RestaurantListItem, TourAttractionsListItem } from "src/types";
+import ResponseDto from "src/apis/response.dto";
+import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
+import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
+import { getRestaurantListRequest, getSearchRestaurantListRequest } from "src/apis/restaurant";
+import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
 import {
     AUTH_ABSOLUTE_PATH,
     COUNT_PER_PAGE,
@@ -9,13 +16,8 @@ import {
     RESTAURANT_DETAIL_ABSOLUTE_PATH,
     TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH,
 } from "src/constant";
-import { RestaurantListItem, TourAttractionsListItem } from "src/types";
-import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
-import ResponseDto from "src/apis/response.dto";
-import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
-import { getRestaurantListRequest, getSearchRestaurantListRequest } from "src/apis/restaurant";
-import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
-import { changeText } from "src/utils";
+
+import "./style.css";
 
 //                    component : Tour Search View List 화면 컴포넌트                     //
 function Tourlist({
@@ -158,24 +160,20 @@ function Restlist({
 //                    component : Tour / Rest Search List 컴포넌트                     //
 export default function SearchTravelList() {
     //                    state                     //
-    const [selectLocal, setSelectLocal] = useState<string>("");
-
-    const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
-    const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
-
-    const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>([]);
-    const [restViewList, setRestViewList] = useState<RestaurantListItem[]>([]);
-
-    const [totalLength, setTotalLength] = useState<number>(0);
     const [totalPage, setTotalPage] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageList, setPageList] = useState<number[]>([1]);
+    const [searchWord, setSearchWord] = useState<string>("");
+    const [totalLength, setTotalLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [selectLocal, setSelectLocal] = useState<string>("");
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
-
-    const [searchWord, setSearchWord] = useState<string>("");
-    const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
+    const [restViewList, setRestViewList] = useState<RestaurantListItem[]>([]);
     const [selectOption, setSelectOption] = useState<string>("tourAttractions");
+    const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
+    const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>([]);
+    const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
+    const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();

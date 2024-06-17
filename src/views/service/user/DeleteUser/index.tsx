@@ -1,12 +1,14 @@
 import React, { ChangeEvent, useState } from "react";
-import "./style.css";
-import { useNavigate } from "react-router";
-import { MAIN_ABSOLUTE_PATH, MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE } from "src/constant";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
+
+import { useUserStore } from "src/stores";
+import ResponseDto from "src/apis/response.dto";
 import { deleteUserRequest } from "src/apis/user";
 import { DeleteUserRequestDto } from "src/apis/user/dto/request";
-import ResponseDto from "src/apis/response.dto";
-import { useUserStore } from "src/stores";
+import { MAIN_ABSOLUTE_PATH, MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE } from "src/constant";
+
+import "./style.css";
 
 //                    component : Delete User 화면 컴포넌트                     //
 export default function DeleteUser() {
