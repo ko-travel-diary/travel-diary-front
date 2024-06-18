@@ -3,8 +3,6 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 import { Map, MapMarker, MarkerClusterer, Polyline } from "react-kakao-maps-sdk";
 
-import axios from "axios";
-
 import { Destination, Position, RestaurantListItem, TourAttractionsListItem } from "src/types";
 import {
     useCheckBoxStore,
@@ -38,19 +36,20 @@ import {
     getSearchRestaurantListRequest,
     patchRestRecommendRequest,
 } from "src/apis/restaurant";
+import { postWaypointsRequest } from "src/apis/waypoints";
 import TourIcon from "src/assets/image/tour-attracion-icon.png";
 import RestaurantIcon from "src/assets/image/restaurant-icon.png";
-import { AUTH_ABSOLUTE_PATH, POST_WAYPOINTS_URL, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
-
-import { kakaoAuthorization } from "src/apis";
+import { AUTH_ABSOLUTE_PATH, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
 //                    component : 경로 컴포넌트                     //
 function Waypoints() {
+    //                  state                    //
     const { origin, waypoints, destination, setOrigin, setWaypoints, setDestination } = useDestinationStore();
     const { setPath } = usePathStore();
 
+    //                  event handler                    //
     const onOriginCancleClickHandler = () => {
         setOrigin(null);
     };
@@ -65,7 +64,7 @@ function Waypoints() {
     };
 
     const onSearchButtonClickHandler = () => {
-        if (!origin || !destination || !waypoints.length) return;
+        if (!origin || !destination) return;
 
         const data = {
             origin: {
@@ -82,27 +81,26 @@ function Waypoints() {
         const kakaoAppKey = process.env.REACT_APP_API_KEY;
         if (!kakaoAppKey) return;
 
-        axios
-            .post(POST_WAYPOINTS_URL, data, kakaoAuthorization(kakaoAppKey))
-            .then((response) => {
-                const path: Position[] = [];
-                const { sections } = response.data.routes[0];
-                console.log(response);
-
-                for (const section of sections) {
-                    for (const road of section.roads) {
-                        for (let index = 0; index < road.vertexes.length / 2; index++) {
-                            path.push({ lng: road.vertexes[index * 2], lat: road.vertexes[index * 2 + 1] });
-                        }
-                    }
-                }
-                setPath(path);
-            })
-            .catch((error) => {
-                console.log(error.response);
-            });
+        postWaypointsRequest(data, kakaoAppKey).then(waypiontResponse);
     };
 
+    //                  function                    //
+    const waypiontResponse = (result: any | null) => {
+        if(!result) return;
+        const path: Position[] = [];
+        const { sections } = result.routes[0];
+
+        for (const section of sections) {
+            for (const road of section.roads) {
+                for (let index = 0; index < road.vertexes.length / 2; index++) {
+                    path.push({ lng: road.vertexes[index * 2], lat: road.vertexes[index * 2 + 1] });
+                }
+            }
+        }
+        setPath(path);
+    };
+
+    //                   render                 //
     return (
         <div className="main-waypoints">
             <div className="main-waypoints-item">
@@ -124,7 +122,7 @@ function Waypoints() {
                 <div className="main-waypoints-name">{destination ? destination.name : "도착지를 입력하세요."}</div>
                 <div className="main-waypoints-cancle-button" onClick={onDestinationCancleClickHandler}></div>
             </div>
-            {origin !== null && destination !== null && waypoints.length !== 0 && (
+            {origin !== null && destination !== null && (
                 <div className="main-waypoints-search-button" onClick={onSearchButtonClickHandler}>
                     경로 검색
                 </div>
