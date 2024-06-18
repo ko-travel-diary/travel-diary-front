@@ -20,20 +20,20 @@ html::-webkit-scrollbar {
 .travel-top-image {
     display: flex;
     width: 1920px;
-    height: 400px;
+    height: 600px;
     background-position: cover;
     background-repeat: no-repeat;
-    background-image: url("../../../../assets/image/travel-top-image.jpg");
+    background-image: url("../../../../assets/image/tour-top-image.jpg");
     background-size: 100% 100%;
-
     position: absolute;
-    z-index: -99999;
+    z-index: -9999;
+    top: 0px;
 }
 
 .travel-search-list {
     display: flex;
     flex-direction: column;
-    margin: 122px 0;
+    margin: 50px 0;
     background-color: rgba(255, 255, 255, 0.5);
 
     width: 100%;

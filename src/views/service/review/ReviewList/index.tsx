@@ -243,7 +243,10 @@ export default function ReviewList() {
 
     //                    render                    //
     return (
-        <div id="iamge-wrapper">
+        <>
+            <div className="review-top-image"></div>
+            <div style={{height: "500px"}}></div>
+            <div className="review-title-page">Travel Review</div>
             <div id="review-wrapper">
                 <div className="review-search-wrapper">
                     <div className="review-search-item">
@@ -313,6 +316,6 @@ export default function ReviewList() {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

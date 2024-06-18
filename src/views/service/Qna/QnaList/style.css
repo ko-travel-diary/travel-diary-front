@@ -19,11 +19,14 @@ html::-webkit-scrollbar {
 .qna-top-image {
     display: flex;
     width: 1920px;
-    height: 400px;
+    height: 600px;
     background-position: cover;
     background-repeat: no-repeat;
-    background-image: url("../../../../assets/image/top-image3.jpg");
+    background-image: url("../../../../assets/image/qna-top-image.jpg");
     background-size: 100% 100%;
+    position: absolute;
+    z-index: -9999;
+    top: 0px;
 }
 
 .qna-list-topbar {
