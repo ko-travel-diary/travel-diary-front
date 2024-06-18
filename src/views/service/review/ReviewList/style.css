@@ -19,19 +19,32 @@ html::-webkit-scrollbar {
     
 }
 
-#iamge-wrapper{
-    background-image: url(../../../../assets/image/top-image8.jpg);
-    background-attachment: fixed;
-    background-size: 100%;
+.review-top-image{
+    display: flex;
+    width: 1920px;
+    height: 600px;
+    background-position: cover;
     background-repeat: no-repeat;
-    background-color: white;
-    margin: 0px;
+    background-image: url("../../../../assets/image/review-top-image.jpg");
+    background-size: 100% 100%;
+    position: absolute;
+    z-index: -9999;
+    top: 0px;
+}
+
+.review-title-page{
+    position: absolute;
+    font-size: 80px;
+    top: 160px;
+    left: 650px;
+    color: rgba(0, 0, 0, 0.8);
+    font-family: "Playwrite AU VIC", cursive;
 }
 
 .review-search-wrapper {
     display: flex;
     flex-direction: column;
-    margin: 122px 0;
+    margin: 50px 0;
     background-color: rgba(255, 255, 255, 0.8);
 
     width: 100%;

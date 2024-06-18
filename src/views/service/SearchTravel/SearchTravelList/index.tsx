@@ -424,6 +424,7 @@ export default function SearchTravelList() {
     return (
         <>
             <div className="travel-top-image" />
+            <div style={{height: "500px"}}></div>
             <div id="travelList-wrapper">
                 <div className="travel-search-list">
                     <div className="travel-search-location">

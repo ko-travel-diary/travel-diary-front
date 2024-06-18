@@ -203,6 +203,7 @@ export default function QnaList() {
     return (
         <>
             <div className="qna-top-image"></div>
+            <div style={{height: "500px"}}></div>
             <div id="qna-list-wrapper">
                 <div className="qna-list-top">
                     <div className="qna-list-top-left">
