@@ -143,7 +143,7 @@ function SignIn() {
                         </div>
                     </div>
                 </div>
-                <Social title="sns 로그인" />
+                <Social />
                 <div className="sign-in-button-box">
                     <div className="primary-button full-width" onClick={onSignInButtonClickHandler}>
                         로그인

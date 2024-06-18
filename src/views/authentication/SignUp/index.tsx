@@ -400,7 +400,7 @@ function SignUp() {
                         onButtonClick={onAuthNumberButtonClickHandler}
                     />
                 </div>
-                <Social title="sns 로그인" />
+                <Social />
                 <div className={signUpButtonActive} onClick={onSignUpButtonClickHandler} style={{ width: "360px" }}>
                     회원가입
                 </div>
