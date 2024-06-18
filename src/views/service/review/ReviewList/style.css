@@ -39,6 +39,11 @@ html::-webkit-scrollbar {
     left: 650px;
     color: rgba(0, 0, 0, 0.8);
     font-family: "Playwrite AU VIC", cursive;
+    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .review-search-wrapper {
