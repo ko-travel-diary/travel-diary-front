@@ -8,7 +8,7 @@ import { usePagination } from "src/hooks";
 import ResponseDto from "src/apis/response.dto";
 import { GetReviewSearchRequestDto, GetTravelReviewBoardResponseDto } from "src/apis/review/dto/response";
 import { getTravelReviewBoardRequest, getTravelReviewSearchRequest } from "src/apis/review";
-import { COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
+import { REVIEW_ABSOULUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -123,7 +123,7 @@ export default function ReviewList() {
         const { reviewSearchList } = result as GetReviewSearchRequestDto;
         changeBoardList(reviewSearchList);
 
-        if (reviewSearchList.length == 0) alert("검색 결과가 없습니다.");
+        if (reviewSearchList.length === 0) alert("검색 결과가 없습니다.");
 
         setCurrentPage(!boardList.length ? 0 : 1);
         setCurrentSection(!boardList.length ? 0 : 1);

@@ -80,12 +80,9 @@ export default function TourList() {
         pageList,
         currentPage,
         boardCount,
-
         setCurrentPage,
         setCurrentSection,
-
         changeBoardList,
-
         onPreSectionClickHandler,
         onPageClickHandler,
         onNextSectionClickHandler

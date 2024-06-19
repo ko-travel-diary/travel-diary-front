@@ -21,8 +21,8 @@ export function SearchAddress() {
     //                  State                   //
     const [cookies] = useCookies();
 
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { setSearchAddress } = useSearchAddressStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
 
     const [addresses, setAddresses] = useState<string[]>([]);
     const [searchWord, setSearchWord] = useState<string>("");
@@ -115,19 +115,20 @@ export default function RestControl() {
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
 
+    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
+    
+    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
+    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
+
     const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
     const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
     const [restaurantName, setRestaurantName] = useState<string>("");
     const [restaurantHours, setRestaurantHours] = useState<string>("");
-    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
     const [restaurantOutline, setRestaurantOutline] = useState<string>("");
-    const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>("");
     const [restaurantLocation, setRestaurantLocation] = useState<string>("");
-    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
+    const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>("");
     const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>("");
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>("");
-
-    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
 
     //                  Function                    //
     const navigator = useNavigate();

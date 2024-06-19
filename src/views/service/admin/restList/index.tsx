@@ -81,12 +81,9 @@ export default function RestList() {
         pageList,
         currentPage,
         boardCount,
-
         setCurrentPage,
         setCurrentSection,
-
         changeBoardList,
-
         onPreSectionClickHandler,
         onPageClickHandler,
         onNextSectionClickHandler
