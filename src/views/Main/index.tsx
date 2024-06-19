@@ -298,6 +298,11 @@ function InfoItem(props: (RestaurantListItem | TourAttractionsListItem) & InfoIt
     };
 
     const onTourRecommendButtonClickHandler = () => {
+        if (!cookies.accessToken) {
+            alert("로그인 후 이용해 주세요.");
+            return;
+        }
+
         if ("tourAttractionsNumber" in props) {
             const tourAttractionsNumber = props.tourAttractionsNumber;
             patchTourRecommendRequest(tourAttractionsNumber, cookies.accessToken).then(patchTourRecommendResponse);
