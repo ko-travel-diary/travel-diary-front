@@ -11,6 +11,7 @@ const usePagination = <T>() => {
     const [pageList, setPageList] = useState<number[]>([1]);
     const [totalSection, setTotalSection] = useState<number>(1);
     const [currentSection, setCurrentSection] = useState<number>(1);
+    const [boardCount, setBoardCount] = useState<number>(1);
 
     const changePage = (boardList: T[], totalLenght: number) => {
         if (!currentPage) return;
@@ -48,8 +49,9 @@ const usePagination = <T>() => {
         setTotalSection(totalSection);
 
         changePage(boardList, totalLenght);
-
         changeSection(totalPage);
+
+        setBoardCount(totalLenght)
     };
 
     const onPageClickHandler = (page: number) => {
@@ -81,9 +83,11 @@ const usePagination = <T>() => {
     return {
         viewList,
         pageList,
+        boardList,
         totalPage,
         totalLenght,
         currentPage,
+        boardCount,
 
         setCurrentPage,
         setCurrentSection,

@@ -10,6 +10,7 @@ import { deleteAdminUserRequest, getSearchUserListRequest, getUserListRequest } 
 import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from "src/constant";
 
 import "./style.css";
+import { usePagination } from "src/hooks";
 
 //                  Component                   //
 function UserListItems({ userId, userEmail, joinDate, nickName }: UserListItem) {
@@ -66,57 +67,26 @@ export default function UserList() {
     //                  state                  //
     const [cookies] = useCookies();
 
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [userCount, setUserCount] = useState<number>(0);
-    const [pageList, setPageList] = useState<number[]>([]);
     const [searchWord, setSearchWord] = useState<string>("");
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [userList, setUserList] = useState<UserListItem[]>([]);
-    const [viewList, setViewList] = useState<UserListItem[]>([]);
-    const [currentSection, setCurrentSection] = useState<number>(1);
+
+    const {
+        viewList,
+        pageList,
+        currentPage,
+        boardCount,
+
+        setCurrentPage,
+        setCurrentSection,
+
+        changeBoardList,
+
+        onPreSectionClickHandler,
+        onPageClickHandler,
+        onNextSectionClickHandler
+    } = usePagination<UserListItem>();
 
     //                  function                    //
     const navigator = useNavigate();
-
-    const changePage = (userList: UserListItem[], totalLength: number) => {
-        if (!userList || !Array.isArray(userList) || userList.length === 0) return;
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength) endIndex = totalLength;
-        const viewList = userList.slice(startIndex, endIndex);
-        setViewList(viewList);
-    };
-
-    const changeSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
-    };
-
-    const changeUserList = (userList: UserListItem[]) => {
-        setUserList(userList);
-
-        const totalLength = userList.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changePage(userList, totalLength);
-        changeSection(totalPage);
-
-        setUserCount(totalLength);
-    };
 
     const getUserListResponse = (result: GetUserListResponseDto | ResponseDto | null) => {
         const message = !result
@@ -134,7 +104,7 @@ export default function UserList() {
         }
 
         const { userListItem } = result as GetUserListResponseDto;
-        changeUserList(userListItem);
+        changeBoardList(userListItem);
 
         setCurrentPage(!userListItem.length ? 0 : 1);
         setCurrentSection(!userListItem.length ? 0 : 1);
@@ -158,29 +128,13 @@ export default function UserList() {
         }
 
         const { searchUserListItem } = result as GetSearchUserListResponseDto;
-        changeUserList(searchUserListItem);
+        changeBoardList(searchUserListItem);
 
         setCurrentPage(!searchUserListItem.length ? 0 : 1);
         setCurrentSection(!searchUserListItem.length ? 0 : 1);
     };
 
     //                  event handler                   //
-    const onPageClickHandler = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const onPreSectionClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextSectionClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
-    };
-
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchWord(searchWord);
@@ -203,22 +157,12 @@ export default function UserList() {
         getUserListRequest(cookies.accessToken).then(getUserListResponse);
     }, []);
 
-    useEffect(() => {
-        if (!userList.length) return;
-        changePage(userList, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!userList.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
-
     //                  Render                   //
     return (
         <div id="user-list-wrapper">
             <div className="user-list-top">
                 <div className="user-list-count-text">
-                    전체유저 | <span className="emphasis">{userCount}명</span>
+                    전체유저 | <span className="emphasis">{boardCount}명</span>
                 </div>
             </div>
 

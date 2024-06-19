@@ -11,12 +11,11 @@ import {
     ADMINPAGE_REST_ADD_ABSOLUTE_PATH,
     ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH,
     AUTH_ABSOLUTE_PATH,
-    COUNT_PER_PAGE,
-    COUNT_PER_SECTION,
     RESTAURANT_DETAIL_ABSOLUTE_PATH,
 } from "src/constant";
 
 import "./style.css";
+import { usePagination } from "src/hooks";
 
 //                  Component                    //
 export function RestListItems({
@@ -75,57 +74,26 @@ export default function RestList() {
     //                  State                   //
     const [cookies] = useCookies();
 
-    const [restCount, setRestCount] = useState<number>(0);
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [pageList, setPageList] = useState<number[]>([]);
     const [searchWord, setSearchWord] = useState<string>("");
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
-    const [restList, setRestList] = useState<RestaurantListItem[]>([]);
-    const [viewList, setViewList] = useState<RestaurantListItem[]>([]);
+
+    const {
+        viewList,
+        pageList,
+        currentPage,
+        boardCount,
+
+        setCurrentPage,
+        setCurrentSection,
+
+        changeBoardList,
+
+        onPreSectionClickHandler,
+        onPageClickHandler,
+        onNextSectionClickHandler
+    } = usePagination<RestaurantListItem>();
 
     //                  Function                   //
     const navigator = useNavigate();
-
-    const changePage = (restList: RestaurantListItem[], totalLength: number) => {
-        if (!restList || !Array.isArray(restList) || restList.length === 0) return;
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength) endIndex = totalLength;
-        const viewList = restList.slice(startIndex, endIndex);
-        setViewList(viewList);
-    };
-
-    const changeSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
-    };
-
-    const changeRestList = (restList: RestaurantListItem[]) => {
-        setRestList(restList);
-
-        const totalLength = restList.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changePage(restList, totalLength);
-        changeSection(totalPage);
-
-        setRestCount(totalLength);
-    };
 
     const getRestaurantListResponse = (result: GetRestaurantListResponseDto | ResponseDto | null) => {
         const message = !result
@@ -143,7 +111,7 @@ export default function RestList() {
         }
 
         const { restaurantListItem } = result as GetRestaurantListResponseDto;
-        changeRestList(restaurantListItem);
+        changeBoardList(restaurantListItem);
 
         setCurrentPage(!restaurantListItem.length ? 0 : 1);
         setCurrentSection(!restaurantListItem.length ? 0 : 1);
@@ -167,29 +135,13 @@ export default function RestList() {
         }
 
         const { restaurantListItem } = result as GetSearchRestaurantListResponseDto;
-        changeRestList(restaurantListItem);
+        changeBoardList(restaurantListItem);
 
         setCurrentPage(!restaurantListItem.length ? 0 : 1);
         setCurrentSection(!restaurantListItem.length ? 0 : 1);
     };
 
     //                  Event Handler                   //
-    const onPageClickHandler = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const onPreSectionClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextSectionClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
-    };
-
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchWord(searchWord);
@@ -217,22 +169,12 @@ export default function RestList() {
         getRestaurantListRequest().then(getRestaurantListResponse);
     }, []);
 
-    useEffect(() => {
-        if (!restList.length) return;
-        changePage(restList, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!restList.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
-
     //                  Render                  //
     return (
         <div id="rest-list-wrapper">
             <div className="rest-list-top">
                 <div className="rest-list-count-text">
-                    전체 음식점수 | <span className="emphasis">{restCount}개</span>
+                    전체 음식점수 | <span className="emphasis">{boardCount}개</span>
                 </div>
                 <div className="rest-list-control-box">
                     <div className="primary-button" onClick={onRegisterButtonClickHandler}>

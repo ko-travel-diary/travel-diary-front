@@ -11,12 +11,11 @@ import {
     ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH,
     ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH,
     AUTH_ABSOLUTE_PATH,
-    COUNT_PER_PAGE,
-    COUNT_PER_SECTION,
     TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH,
 } from "src/constant";
 
 import "./style.css";
+import { usePagination } from "src/hooks";
 
 //                  Component                   //
 export function TourListItems({
@@ -74,57 +73,26 @@ export default function TourList() {
     //                  state                  //
     const [cookies] = useCookies();
 
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [tourCount, setTourCount] = useState<number>(0);
-    const [pageList, setPageList] = useState<number[]>([]);
     const [searchWord, setSearchWord] = useState<string>("");
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
-    const [tourList, setTourList] = useState<TourAttractionsListItem[]>([]);
-    const [viewList, setViewList] = useState<TourAttractionsListItem[]>([]);
+
+    const {
+        viewList,
+        pageList,
+        currentPage,
+        boardCount,
+
+        setCurrentPage,
+        setCurrentSection,
+
+        changeBoardList,
+
+        onPreSectionClickHandler,
+        onPageClickHandler,
+        onNextSectionClickHandler
+    } = usePagination<TourAttractionsListItem>();
 
     //                  function                    //
     const navigator = useNavigate();
-
-    const changePage = (tourList: TourAttractionsListItem[], totalLength: number) => {
-        if (!tourList || !Array.isArray(tourList) || tourList.length === 0) return;
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength) endIndex = totalLength;
-        const viewList = tourList.slice(startIndex, endIndex);
-        setViewList(viewList);
-    };
-
-    const changeSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
-    };
-
-    const changeTourList = (tourList: TourAttractionsListItem[]) => {
-        setTourList(tourList);
-
-        const totalLength = tourList.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changePage(tourList, totalLength);
-        changeSection(totalPage);
-
-        setTourCount(totalLength);
-    };
 
     const getTourAttractionsListResponse = (result: GetTourAttractionsListResponseDto | ResponseDto | null) => {
         const message = !result
@@ -142,7 +110,7 @@ export default function TourList() {
         }
 
         const { tourAttractionsListItem } = result as GetTourAttractionsListResponseDto;
-        changeTourList(tourAttractionsListItem);
+        changeBoardList(tourAttractionsListItem);
 
         setCurrentPage(!tourAttractionsListItem.length ? 0 : 1);
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
@@ -166,29 +134,13 @@ export default function TourList() {
         }
 
         const { tourAttractionsListItem } = result as GetSearchTourAttractionsListResponseDto;
-        changeTourList(tourAttractionsListItem);
+        changeBoardList(tourAttractionsListItem);
 
         setCurrentPage(!tourAttractionsListItem.length ? 0 : 1);
         setCurrentSection(!tourAttractionsListItem.length ? 0 : 1);
     };
 
     //                  Event handler                   //
-    const onPageClickHandler = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const onPreSectionClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextSectionClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
-    };
-
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const searchWord = event.target.value;
         setSearchWord(searchWord);
@@ -216,22 +168,12 @@ export default function TourList() {
         getTourAttractionsListRequest().then(getTourAttractionsListResponse);
     }, []);
 
-    useEffect(() => {
-        if (!tourList.length) return;
-        changePage(tourList, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!tourList.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
-
     //                  Render                   //
     return (
         <div id="tour-list-wrapper">
             <div className="tour-list-top">
                 <div className="tour-list-count-text">
-                    전체 관광지수 | <span className="emphasis">{tourCount}개</span>
+                    전체 관광지수 | <span className="emphasis">{boardCount}개</span>
                 </div>
                 <div className="tour-list-control-box">
                     <div className="tour-list-add-button primary-button" onClick={onRegisterButtonClickHandler}>
