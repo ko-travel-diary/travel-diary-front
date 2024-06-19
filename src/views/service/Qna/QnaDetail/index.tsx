@@ -39,7 +39,7 @@ export default function QnaDetail() {
             : result.code === "VF"
             ? "잘못된 접수번호입니다."
             : result.code === "AF"
-            ? "인증에 실패했습니다."
+            ? "로그인 후 이용 가능합니다."
             : result.code === "NB"
             ? "존재하지 않는 접수번호입니다."
             : result.code === "DBE"

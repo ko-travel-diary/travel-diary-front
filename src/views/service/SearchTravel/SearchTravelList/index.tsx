@@ -73,7 +73,7 @@ function Tourlist({
                     </div>
                     <div className="travel-list-table-outline">
                         <div className="travel-outline-text">
-                            <div className="travel-title">개요</div>
+                            <div className="travel-title ot">개요</div>
                             <div className="travel-outline">{changeText(tourAttractionsOutline)}</div>
                         </div>
                     </div>

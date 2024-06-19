@@ -150,8 +150,10 @@ input::-webkit-inner-spin-button {
 }
 
 .schedule-calendar-box {
-    position: relative;
     display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 10px;
 
     gap: 3px;
 
@@ -167,8 +169,8 @@ input::-webkit-inner-spin-button {
 .schedule-date {
     text-align: center;
 
-    width: 140px;
-    margin-bottom: 10px;
+    width: 130px;
+    padding: 3px 1px 1px 5px;
 
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
@@ -190,6 +192,7 @@ input::-webkit-inner-spin-button {
 
 .schedule-text-box {
     display: flex;
+    align-items: center;
     gap: 3px;
 
     margin-bottom: 10px;
@@ -198,8 +201,9 @@ input::-webkit-inner-spin-button {
 }
 
 .schedule-text {
-    width: 130px;
     text-align: start;
+    width: 130px;
+    padding: 3px 1px 1px 5px;
 
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
@@ -208,8 +212,9 @@ input::-webkit-inner-spin-button {
 }
 
 .schedule-text-money {
-    width: 100px;
     text-align: end;
+    width: 100px;
+    padding: 3px 5px 1px 5px;
 
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
@@ -220,18 +225,19 @@ input::-webkit-inner-spin-button {
 .schedule-start-hour {
     text-align: center;
     width: 75px;
+    padding: 3px 1px 1px 3px;
 
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
 
     background-color: rgba(255, 255, 255, 1);
-
     overflow: hidden;
 }
 
 .schedule-end-hour {
     text-align: center;
     width: 75px;
+    padding: 3px 1px 1px 3px;
 
     border: 1px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
@@ -314,7 +320,7 @@ input::-webkit-inner-spin-button {
 }
 
 .schedule-select-name {
-    width: 50px;
+    width: 46px;
 }
 
 .select-people-input-box {
@@ -363,8 +369,6 @@ input::-webkit-inner-spin-button {
 
 .schedule-household-add-box {
     display: flex;
-
-    margin-left: 10px;
     padding: 5px 5px 10px 5px;
     gap: 10px;
 
@@ -395,6 +399,7 @@ input::-webkit-inner-spin-button {
 
 .schedule-spend-text {
     text-align: center;
+    align-self: center;
 
     padding: 10px;
 
@@ -407,6 +412,7 @@ input::-webkit-inner-spin-button {
 
     margin: 10px;
     width: 120px;
+    padding: 3px 5px 0px 0px;
 
     border: 2px solid rgba(238, 238, 238, 1);
     border-radius: 8px;
@@ -420,6 +426,7 @@ input::-webkit-inner-spin-button {
 
     margin: 10px;
     width: 120px;
+    padding: 3px 5px 0px 0px;
 
     border: 2px solid rgba(238, 238, 238, 1);
     border-radius: 8px;

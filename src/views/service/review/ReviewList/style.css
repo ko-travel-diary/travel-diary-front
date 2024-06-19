@@ -10,16 +10,15 @@ html::-webkit-scrollbar {
     display: none;
 }
 
-#review-wrapper{
+#review-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin: 0px 200px;
-    
+    margin: 20px 200px;
 }
 
-.review-top-image{
+.review-top-image {
     display: flex;
     width: 1920px;
     height: 600px;
@@ -32,14 +31,14 @@ html::-webkit-scrollbar {
     top: 0px;
 }
 
-.review-title-page{
+.review-title-page {
     position: absolute;
     font-size: 80px;
     top: 160px;
     left: 650px;
     color: rgba(0, 0, 0, 0.8);
     font-family: "Playwrite AU VIC", cursive;
-    
+
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -54,10 +53,10 @@ html::-webkit-scrollbar {
 
     width: 100%;
     border: 1px solid rgba(7, 65, 115, 0.2);
-    border-radius: 8px;;
+    border-radius: 8px;
 
     gap: 20px;
-    padding: 30px 10px 5px 10px;
+    padding: 30px 10px 10px 10px;
 
     width: 1230px;
 }
@@ -74,23 +73,23 @@ html::-webkit-scrollbar {
     flex-direction: row;
 }
 
-.font-size-color{
+.font-size-color {
     font-size: 20px;
     font-weight: 700;
     color: rgba(7, 65, 115, 1);
 }
 
-.review-search-box{
+.review-search-box {
     display: flex;
     gap: 30px;
 }
 
-.review-search-input-box{
+.review-search-input-box {
     width: 500px;
     padding: 0px 0px 0px 32px;
 }
 
-.review-search-input{
+.review-search-input {
     width: 100%;
     height: 100%;
 
@@ -104,16 +103,16 @@ html::-webkit-scrollbar {
     font-weight: 700;
 }
 
-.writebox{
+.writebox {
     display: flex;
     justify-content: flex-end;
 }
 
-.review-write-button{
+.review-write-button {
     width: 100px;
 }
 
-.review-list-table{
+.review-list-table {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -125,7 +124,7 @@ html::-webkit-scrollbar {
     min-width: 1150px;
 }
 
-.review-list-table-th{
+.review-list-table-th {
     display: flex;
     align-items: center;
     padding: 15px 24px;
@@ -139,7 +138,7 @@ html::-webkit-scrollbar {
     width: 1200px;
 }
 
-.review-list-table-tr{
+.review-list-table-tr {
     display: flex;
     align-items: center;
 
@@ -161,38 +160,38 @@ html::-webkit-scrollbar {
     background-color: rgba(238, 238, 238, 0.2);
 }
 
-.review-list-table-image{
+.review-list-table-image {
     text-align: center;
     width: 200px;
 }
-.review-list-table-review-image{
+.review-list-table-review-image {
     text-align: center;
     align-items: center;
     width: 200px;
     height: 200px;
 }
 
-.review-list-table-title{
+.review-list-table-title {
     text-align: center;
     width: 400px;
 }
 
-.review-list-table-writer{
+.review-list-table-writer {
     text-align: center;
     width: 200px;
 }
 
-.review-list-table-write-date{
+.review-list-table-write-date {
     text-align: center;
     width: 200px;
 }
 
-.review-list-table-view-count{
+.review-list-table-view-count {
     text-align: center;
     width: 100px;
 }
 
-.review-list-table-favorite-count{
+.review-list-table-favorite-count {
     text-align: center;
     width: 100px;
 }
@@ -212,7 +211,7 @@ html::-webkit-scrollbar {
     width: 40px;
     height: 40px;
 
-    background-image: url('../../../../assets/image/page-left.png');
+    background-image: url("../../../../assets/image/page-left.png");
     background-size: 100% 100%;
 
     cursor: pointer;
@@ -222,7 +221,7 @@ html::-webkit-scrollbar {
     width: 40px;
     height: 40px;
 
-    background-image: url('../../../../assets/image/page-right.png');
+    background-image: url("../../../../assets/image/page-right.png");
     background-size: 100% 100%;
 
     cursor: pointer;

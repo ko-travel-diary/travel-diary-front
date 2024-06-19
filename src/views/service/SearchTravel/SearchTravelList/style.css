@@ -21,6 +21,7 @@ html::-webkit-scrollbar {
     display: flex;
     width: 1920px;
     height: 600px;
+
     background-position: cover;
     background-repeat: no-repeat;
     background-image: url("../../../../assets/image/tour-top-image.jpg");
@@ -41,9 +42,9 @@ html::-webkit-scrollbar {
     border-radius: 8px;
 
     gap: 20px;
-    padding: 30px 10px 5px 10px;
+    padding: 30px 10px 10px 10px;
 
-    width: 1230px;
+    width: 1288px;
 }
 
 .travel-search-location {
@@ -53,6 +54,8 @@ html::-webkit-scrollbar {
 
     align-items: center;
     justify-items: center;
+
+    padding: 0px 0px 0px 32px;
 
     font-size: 20px;
 }
@@ -64,6 +67,8 @@ html::-webkit-scrollbar {
 
     align-items: center;
     justify-items: center;
+
+    padding: 0px 0px 0px 32px;
 
     font-size: 20px;
 }
@@ -77,6 +82,8 @@ html::-webkit-scrollbar {
 .travel-search-box {
     display: flex;
     justify-content: space-between;
+
+    padding: 0px 0px 0px 32px;
 }
 
 .travel-search-input-box {
@@ -86,8 +93,6 @@ html::-webkit-scrollbar {
 
 .travel-search-input {
     width: 700px;
-
-    padding: 0px 0px 0px 10px;
 
     outline: none;
     border: 1px solid rgba(7, 65, 115, 0.2);
@@ -100,7 +105,7 @@ html::-webkit-scrollbar {
 .travel-list-table {
     display: flex;
 
-    min-width: 1515px;
+    min-width: 1252px;
 }
 
 .travel-list-table-th {
@@ -116,19 +121,16 @@ html::-webkit-scrollbar {
 
     font-size: 16px;
     font-weight: 700;
-    text-align: center;
 
     color: rgba(64, 64, 64, 1);
 
-    min-width: 1504px;
+    min-width: 1252px;
 }
 
 .travel-list-table-show {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-
-    width: 1100px;
 }
 
 .travel-list-table-th:hover {
@@ -145,7 +147,7 @@ html::-webkit-scrollbar {
 }
 
 .travel-title {
-    text-align: center;
+    align-self: start;
     width: 59px;
     color: lightslategrey;
 }
@@ -177,6 +179,7 @@ html::-webkit-scrollbar {
 
 .travel-hours {
     display: flex;
+
     flex-grow: 1;
     gap: 10px;
 
@@ -204,9 +207,7 @@ html::-webkit-scrollbar {
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    padding-left: 15px;
-
-    width: 1150px;
+    width: 950px;
 }
 
 .travel-list-picture {
@@ -269,4 +270,15 @@ html::-webkit-scrollbar {
     color: rgba(64, 64, 64, 1);
 
     cursor: default;
+}
+
+.travel-detail-info {
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ot {
+    align-self: start;
 }
