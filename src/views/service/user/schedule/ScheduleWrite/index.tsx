@@ -11,7 +11,6 @@ import { getScheduleListRequest, postScheduleRequest } from "src/apis/schedule";
 import { PostScheduleRequestDto } from "src/apis/schedule/dto/request";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
 
-import "./style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 //                    interface : Schedule Write Input Box Props                     //
@@ -79,10 +78,12 @@ export default function ScheduleWrite() {
     const [cookies] = useCookies();
 
     const [toggleFlag, setToggleFlag] = useState<number>(0);
+
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
+
+    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
     const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 
@@ -295,7 +296,7 @@ export default function ScheduleWrite() {
                                 value={schedule.scheduleStartTime}
                                 onChange={(event) => onScheduleStartTimeChangeHandler(event, index)}
                             >
-                                <option value="">출발시간</option>
+                                <option value="">출발</option>
                                 {timeOptions.map((time) => (
                                     <option key={time} value={time}>
                                         {time}
@@ -309,7 +310,7 @@ export default function ScheduleWrite() {
                                 value={schedule.scheduleEndTime}
                                 onChange={(event) => onScheduleEndTimeChangeHandler(event, index)}
                             >
-                                <option value="">도착시간</option>
+                                <option value="">도착</option>
                                 {timeOptions.map((time) => (
                                     <option key={time} value={time}>
                                         {time}

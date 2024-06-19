@@ -11,7 +11,6 @@ import { getScheduleDetailRequest, getScheduleListRequest, patchScheduleRequest 
 import { PatchScheduleRequestDto } from "src/apis/schedule/dto/request";
 import { AUTH_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
 
-import "./style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 //                    interface : Schedule Update Input Box Props                     //
@@ -79,10 +78,12 @@ export default function ScheduleWrite() {
     const { travelScheduleNumber } = useParams();
 
     const [toggleFlag, setToggleFlag] = useState<number>(0);
+
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
+
+    const [scheduleList, setScheduleList] = useState<ScheduleList[]>([emptySchedule]);
     const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [expenditureList, setExpenditureList] = useState<ExpenditureList[]>([emptyExpenditure]);
 

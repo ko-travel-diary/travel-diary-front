@@ -56,20 +56,25 @@ export default function ProfileUpdate() {
 
     const photoInput = useRef<HTMLInputElement | null>(null);
 
-    const [emailMessage] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const [passwordMessage] = useState<string>("");
     const [nickName, setNickName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const [nickNameCheck, setNickNameCheck] = useState<boolean>(false);
+
+    const [emailMessage] = useState<string>("");
+    const [passwordMessage] = useState<string>("");
+    const [nickNameMessage, setNickNameMessage] = useState<string>("");
+
     const [emailMessageError] = useState<boolean>(false);
     const [passwordMessageError] = useState<boolean>(false);
-    const [profileImage, setProfileImage] = useState<string>("");
-    const [nickNameCheck, setNickNameCheck] = useState<boolean>(false);
-    const [nickNameMessage, setNickNameMessage] = useState<string>("");
-    const [profileUpdateImage, setProfileUpdateImage] = useState<string>("");
-    const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
-    const [nickNameButtonStatus, setNickNameButtonStatus] = useState<boolean>(false);
     const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
+
+    const [profileImage, setProfileImage] = useState<string>("");
+    const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+    const [profileUpdateImage, setProfileUpdateImage] = useState<string>("");
+
+    const [nickNameButtonStatus, setNickNameButtonStatus] = useState<boolean>(false);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -244,7 +249,7 @@ export default function ProfileUpdate() {
                             message={nickNameMessage}
                             disabled={false}
                         />
-                        <div className="primary-button" onClick={onNickNameButtonClickHandler}>
+                        <div className="primary-button width" onClick={onNickNameButtonClickHandler}>
                             중복확인
                         </div>
                     </div>

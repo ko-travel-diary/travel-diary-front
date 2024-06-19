@@ -15,8 +15,6 @@ import {
     SCHEDULE_WRITE_ABSOLUTE_PATH,
 } from "src/constant";
 
-import "./style.css";
-
 //                    component : Schedule ListItem View 컴포넌트                     //
 function ScheduleListView({ travelScheduleName, travelScheduleNumber }: ScheduleListViewItem) {
     //                     function                     //
@@ -77,13 +75,15 @@ export default function ScheduleDetail() {
     const { travelScheduleNumber } = useParams();
 
     const [travelScheduleName, setTravelScheduleName] = useState<string>("");
-    const [scheduleList, setScheduleListItem] = useState<ScheduleList[]>([]);
     const [travelSchedulePeople, setTravelSchedulePeople] = useState<number>(1);
-    const [expenditureList, setExpenditureListItem] = useState<ExpenditureList[]>([]);
     const [travelScheduleTotalMoney, setTravelScheduleTotalMoney] = useState<number>(0);
+
+    const [scheduleList, setScheduleListItem] = useState<ScheduleList[]>([]);
+    const [expenditureList, setExpenditureListItem] = useState<ExpenditureList[]>([]);
+
     const [expendListViewList, setExpendListViewList] = useState<ExpenditureList[]>([]);
-    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
     const [scheduleListViewList, setScheduleListViewList] = useState<ScheduleList[]>([]);
+    const [scheduleViewList, setScheduleViewList] = useState<ScheduleListViewItem[]>([]);
 
     const balnace = Array.isArray(expenditureList)
         ? travelScheduleTotalMoney - expenditureList.reduce((acc, item) => acc + item.travelScheduleExpenditure, 0)

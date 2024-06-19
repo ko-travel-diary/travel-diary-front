@@ -113,3 +113,7 @@ html::-webkit-scrollbar {
     font-size: 20px;
     font-weight: 400;
 }
+
+.width {
+    width: 128px;
+}
