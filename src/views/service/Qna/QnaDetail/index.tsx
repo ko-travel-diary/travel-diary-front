@@ -206,7 +206,7 @@ export default function QnaDetail() {
     };
 
     const onDeleteQnaClickHandler = () => {
-        if (!receptionNumber || !cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        if (!receptionNumber || !cookies.accessToken || loginUserRole !== "ROLE_USER") return;
         const isQnaConfirm = window.confirm("정말로 삭제하시겠습니까?");
         if (!isQnaConfirm) return;
 
