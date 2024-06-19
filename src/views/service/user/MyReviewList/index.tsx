@@ -2,12 +2,13 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 
-import { useUserStore } from "src/stores";
 import { TravelReviewMyList } from "src/types";
+import { useUserStore } from "src/stores";
+import { usePagination } from "src/hooks";
 import ResponseDto from "src/apis/response.dto";
 import { GetTravelReviewMyListResponseDto, GetTravelReviewMyListSearchResponseDto } from "src/apis/review/dto/response";
 import { getTravelReviewMyListRequest, getTravelReviewMyListSearchRequest } from "src/apis/review";
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, REVIEW_DETAIL_ABSOLUTE_PATH, REVIEW_WRITE_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -41,53 +42,24 @@ export default function MyReviewList() {
 
     const { loginUserRole } = useUserStore();
 
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [pageList, setPageList] = useState<number[]>([1]);
+    const {
+        viewList,
+        pageList,
+        totalPage,
+        totalLength,
+        currentPage,
+        setCurrentPage,
+        setCurrentSection,
+        changeBoardList,
+        onPreSectionClickHandler,
+        onPageClickHandler,
+        onNextSectionClickHandler,
+    } = usePagination<TravelReviewMyList>();
+
     const [searchWord, setSearchWord] = useState<string>("");
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
-    const [viewList, setViewList] = useState<TravelReviewMyList[]>([]);
-    const [reviewList, setReviewList] = useState<TravelReviewMyList[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();
-
-    const changePage = (reviewList: TravelReviewMyList[], totalLength: number) => {
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength - 1) endIndex = totalLength;
-        const viewList = reviewList.slice(startIndex, endIndex);
-        setViewList(viewList);
-    };
-
-    const changeSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
-    };
-
-    const changeReivewList = (reviewList: TravelReviewMyList[]) => {
-        setReviewList(reviewList);
-
-        const totalLength = reviewList.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changePage(reviewList, totalLength);
-        changeSection(totalPage);
-    };
 
     const getTravelReviewMyListResponse = (result: GetTravelReviewMyListResponseDto | ResponseDto | null) => {
         const message = !result
@@ -105,7 +77,7 @@ export default function MyReviewList() {
         }
 
         const { travelReviewMyList } = result as GetTravelReviewMyListResponseDto;
-        changeReivewList(travelReviewMyList);
+        changeBoardList(travelReviewMyList);
 
         setCurrentPage(!travelReviewMyList.length ? 0 : 1);
         setCurrentSection(!travelReviewMyList.length ? 0 : 1);
@@ -127,7 +99,7 @@ export default function MyReviewList() {
         }
 
         const { reviewSearchList } = result as GetTravelReviewMyListSearchResponseDto;
-        changeReivewList(reviewSearchList);
+        changeBoardList(reviewSearchList);
 
         setCurrentPage(!reviewSearchList.length ? 0 : 1);
         setCurrentSection(!reviewSearchList.length ? 0 : 1);
@@ -137,22 +109,6 @@ export default function MyReviewList() {
     const onWriteButtonClickHandler = () => {
         if (loginUserRole !== "ROLE_USER") return;
         navigator(REVIEW_WRITE_ABSOLUTE_PATH);
-    };
-
-    const onPageClickHandler = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const onPreSectionClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextSectionClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
     };
 
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -176,16 +132,6 @@ export default function MyReviewList() {
         if (!cookies.accessToken) return;
         getTravelReviewMyListRequest(cookies.accessToken).then(getTravelReviewMyListResponse);
     }, []);
-
-    useEffect(() => {
-        if (!reviewList.length) return;
-        changePage(reviewList, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!reviewList.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
 
     //                    render                     //
     const searchButtonClass = searchWord ? "primary-button" : "disable-button";

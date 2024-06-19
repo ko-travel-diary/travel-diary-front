@@ -4,10 +4,11 @@ import { useNavigate } from "react-router";
 
 import { QnaListItem } from "src/types";
 import { useUserStore } from "src/stores";
+import { usePagination } from "src/hooks";
 import ResponseDto from "src/apis/response.dto";
 import { GetQnaListResponseDto, GetQnaSearchListResponseDto } from "src/apis/qna/dto/response";
 import { getQnaListRequest, getQnaSearchListRequest } from "src/apis/qna";
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION, QNA_DETAIL_ABSOLUTE_PATH, QNA_WRITE_ABSOLUTE_PATH } from "src/constant";
+import { AUTH_ABSOLUTE_PATH, QNA_DETAIL_ABSOLUTE_PATH, QNA_WRITE_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -38,59 +39,29 @@ export default function QnaList() {
     //                    state                     //
     const [cookies] = useCookies();
 
-    const { loginUserRole, loginUserId } = useUserStore();
+    const { loginUserRole } = useUserStore();
 
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [pageList, setPageList] = useState<number[]>([1]);
-    const [searchWord, setSearchWord] = useState<string>("");
-    const [qnaList, setQnaList] = useState<QnaListItem[]>([]);
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [viewList, setViewList] = useState<QnaListItem[]>([]);
-    const [currentSection, setCurrentSection] = useState<number>(1);
+    const {
+        viewList,
+        pageList,
+        totalPage,
+        totalLength,
+        currentPage,
+        setCurrentPage,
+        setCurrentSection,
+        changeBoardList,
+        onPreSectionClickHandler,
+        onPageClickHandler,
+        onNextSectionClickHandler,
+    } = usePagination<QnaListItem>();
+
     const [isUserToggleOn, setUserToggleOn] = useState<boolean>(false);
     const [isAdminToggleOn, setAdminToggleOn] = useState<boolean>(false);
 
+    const [searchWord, setSearchWord] = useState<string>("");
+
     //                     function                     //
     const navigator = useNavigate();
-
-    const changePage = (qnaList: QnaListItem[], totalLength: number) => {
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength - 1) endIndex = totalLength;
-        const viewList = qnaList.slice(startIndex, endIndex);
-        setViewList(viewList);
-    };
-
-    const changeSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
-    };
-
-    const changeQnaList = (qnaList: QnaListItem[]) => {
-        if (isAdminToggleOn) qnaList = qnaList.filter((qna) => !qna.qnaStatus);
-        if (isUserToggleOn) qnaList = qnaList.filter((qna) => loginUserId === qna.qnaWriterId);
-        setQnaList(qnaList);
-
-        const totalLength = qnaList.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changePage(qnaList, totalLength);
-        changeSection(totalPage);
-    };
 
     const getQnaListResponse = (result: GetQnaListResponseDto | ResponseDto | null) => {
         const message = !result ? "서버에 문제가 있습니다." : result.code === "DBE" ? "서버에 문제가 있습니다." : "";
@@ -102,10 +73,21 @@ export default function QnaList() {
         }
 
         const { qnaList } = result as GetQnaListResponseDto;
-        changeQnaList(qnaList);
-
-        setCurrentPage(!qnaList.length ? 0 : 1);
-        setCurrentSection(!qnaList.length ? 0 : 1);
+        if (loginUserRole === "ROLE_USER") {
+            changeBoardList(qnaList, undefined, isUserToggleOn);
+            setCurrentPage(!qnaList.length ? 0 : 1);
+            setCurrentSection(!qnaList.length ? 0 : 1);
+        }
+        if (loginUserRole === "ROLE_ADMIN") {
+            changeBoardList(qnaList, isAdminToggleOn);
+            setCurrentPage(!qnaList.length ? 0 : 1);
+            setCurrentSection(!qnaList.length ? 0 : 1);
+        }
+        if (!loginUserRole) {
+            changeBoardList(qnaList);
+            setCurrentPage(!qnaList.length ? 0 : 1);
+            setCurrentSection(!qnaList.length ? 0 : 1);
+        }
     };
 
     const getQnaSearchListResponse = (result: GetQnaSearchListResponseDto | ResponseDto | null) => {
@@ -117,7 +99,21 @@ export default function QnaList() {
             return result;
         }
         const { searchQnaList } = result as GetQnaSearchListResponseDto;
-        changeQnaList(searchQnaList);
+        if (loginUserRole === "ROLE_USER") {
+            changeBoardList(searchQnaList, undefined, isUserToggleOn);
+            setCurrentPage(!searchQnaList.length ? 0 : 1);
+            setCurrentSection(!searchQnaList.length ? 0 : 1);
+        }
+        if (loginUserRole === "ROLE_ADMIN") {
+            changeBoardList(searchQnaList, isAdminToggleOn);
+            setCurrentPage(!searchQnaList.length ? 0 : 1);
+            setCurrentSection(!searchQnaList.length ? 0 : 1);
+        }
+        if (!loginUserRole) {
+            changeBoardList(searchQnaList);
+            setCurrentPage(!searchQnaList.length ? 0 : 1);
+            setCurrentSection(!searchQnaList.length ? 0 : 1);
+        }
 
         setCurrentPage(!searchQnaList.length ? 0 : 1);
         setCurrentSection(!searchQnaList.length ? 0 : 1);
@@ -127,22 +123,6 @@ export default function QnaList() {
     const onWriteButtonClickHandler = () => {
         if (loginUserRole !== "ROLE_USER") return;
         navigator(QNA_WRITE_ABSOLUTE_PATH);
-    };
-
-    const onPageClickHandler = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const onPreSectionClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextSectionClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
     };
 
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -158,6 +138,7 @@ export default function QnaList() {
         if (!searchWord) return;
         if (!cookies.accessToken) return;
         getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
+        setButtonStatus(!buttonStatus);
     };
 
     const onToggleUserClickHandler = () => {
@@ -171,29 +152,40 @@ export default function QnaList() {
     };
 
     //                    effect                     //
+    const [buttonStatus, setButtonStatus] = useState<boolean>(false);
     useEffect(() => {
         getQnaListRequest().then(getQnaListResponse);
     }, []);
 
     useEffect(() => {
         if (!cookies.accessToken || loginUserRole !== "ROLE_USER") return;
-        getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
+        getQnaListRequest().then(getQnaListResponse);
+    }, []);
+
+    useEffect(() => {
+        if (!cookies.accessToken || loginUserRole !== "ROLE_USER") return;
+        getQnaListRequest().then(getQnaListResponse);
     }, [isUserToggleOn]);
 
     useEffect(() => {
-        if (!cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        if (!searchWord) return;
         getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
+    }, [isUserToggleOn, buttonStatus]);
+
+    useEffect(() => {
+        if (!cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        getQnaListRequest().then(getQnaListResponse);
+    }, []);
+
+    useEffect(() => {
+        if (!cookies.accessToken || loginUserRole !== "ROLE_ADMIN") return;
+        getQnaListRequest().then(getQnaListResponse);
     }, [isAdminToggleOn]);
 
     useEffect(() => {
-        if (!qnaList.length) return;
-        changePage(qnaList, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!qnaList.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
+        if (!searchWord) return;
+        getQnaSearchListRequest(searchWord, cookies.accessToken).then(getQnaSearchListResponse);
+    }, [isAdminToggleOn, buttonStatus]);
 
     //                    render                     //\
     const toggleAdminClass = isAdminToggleOn ? "toggle-active" : "toggle";
@@ -203,7 +195,7 @@ export default function QnaList() {
     return (
         <>
             <div className="qna-top-image"></div>
-            <div style={{height: "500px"}}></div>
+            <div style={{ height: "500px" }}></div>
             <div id="qna-list-wrapper">
                 <div className="qna-list-top">
                     <div className="qna-list-top-left">
