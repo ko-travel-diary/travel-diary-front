@@ -13,7 +13,7 @@ import "./style.css";
 //                    component : 사이드 컴포넌트                     //
 export default function Side() {
     //                    state                     //
-    const { openList, setOpenList } = useOpenListStore();
+    const { setOpenList } = useOpenListStore();
     const { searchWord, setSearchWord } = useSearchWordStore();
     const { restCheckStatus, tourCheckStatus, setRestCheckStatus, setTourCheckStatus } = useCheckBoxStore();
     const { tourAttractionsListItem, restaurantListItem, setRestaurantListItem, setTourAttractionsListItem } = useTourListStore();
