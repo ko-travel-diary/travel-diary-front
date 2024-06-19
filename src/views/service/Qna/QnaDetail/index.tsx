@@ -25,6 +25,7 @@ export default function QnaDetail() {
     const [qnaWriterId, setQnaWriterId] = useState<string>("");
     const [qnaStatus, setQnaStatus] = useState<boolean>(false);
     const [qnaDatetime, setQnaWriteDate] = useState<string>("");
+
     const [qnaCommentRows, setQnaCommentRows] = useState<number>(1);
     const [qnaComment, setQnaComment] = useState<string | null>(null);
     const [commentStatus, setCommentStatus] = useState<boolean>(true);
