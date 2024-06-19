@@ -4,18 +4,13 @@ import { useNavigate } from "react-router";
 import SelectBox from "src/components/Selectbox";
 import { changeText } from "src/utils";
 import { RestaurantListItem, TourAttractionsListItem } from "src/types";
+import { usePagination } from "src/hooks";
 import ResponseDto from "src/apis/response.dto";
 import { GetRestaurantListResponseDto, GetSearchRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
 import { GetSearchTourAttractionsListResponseDto, GetTourAttractionsListResponseDto } from "src/apis/tour_attraction/dto/response";
 import { getRestaurantListRequest, getSearchRestaurantListRequest } from "src/apis/restaurant";
 import { getSearchTourAttractionsListRequest, getTourAttractionsListRequest } from "src/apis/tour_attraction";
-import {
-    AUTH_ABSOLUTE_PATH,
-    COUNT_PER_PAGE,
-    COUNT_PER_SECTION,
-    RESTAURANT_DETAIL_ABSOLUTE_PATH,
-    TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH,
-} from "src/constant";
+import { AUTH_ABSOLUTE_PATH, RESTAURANT_DETAIL_ABSOLUTE_PATH, TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -160,20 +155,27 @@ function Restlist({
 //                    component : Tour / Rest Search List 컴포넌트                     //
 export default function SearchTravelList() {
     //                    state                     //
-    const [totalPage, setTotalPage] = useState<number>(1);
-    const [pageList, setPageList] = useState<number[]>([1]);
+    const {
+        pageList,
+        tourViewList,
+        restViewList,
+        currentPage,
+
+        setCurrentPage,
+        setCurrentSection,
+
+        changeRestList,
+        changeTourList,
+
+        onPreSectionClickHandler,
+        onPageClickHandler,
+        onNextSectionClickHandler,
+    } = usePagination<TourAttractionsListItem | RestaurantListItem>();
+
     const [searchWord, setSearchWord] = useState<string>("");
-    const [totalLength, setTotalLength] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectLocal, setSelectLocal] = useState<string>("");
-    const [totalSection, setTotalSection] = useState<number>(1);
-    const [currentSection, setCurrentSection] = useState<number>(1);
-    const [restViewList, setRestViewList] = useState<RestaurantListItem[]>([]);
     const [selectOption, setSelectOption] = useState<string>("tourAttractions");
     const [searchButtonStatus, setSearchButtonStatus] = useState<boolean>(false);
-    const [tourViewList, setTourViewList] = useState<TourAttractionsListItem[]>([]);
-    const [restaurantListItem, setRestaurantListItem] = useState<RestaurantListItem[]>([]);
-    const [tourAttractionsListItem, setTourAttractionsListItem] = useState<TourAttractionsListItem[]>([]);
 
     //                     function                     //
     const navigator = useNavigate();
@@ -185,66 +187,6 @@ export default function SearchTravelList() {
 
     const onRadioChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setSelectOption(event.target.value);
-    };
-
-    const changeTourPage = (tourAttractionsListItem: TourAttractionsListItem[], totalLength: number) => {
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength - 1) endIndex = totalLength;
-        const tourViewList = tourAttractionsListItem.slice(startIndex, endIndex);
-        setTourViewList(tourViewList);
-    };
-
-    const changeTourList = (tourAttractionsListItem: TourAttractionsListItem[]) => {
-        setTourAttractionsListItem(tourAttractionsListItem);
-
-        const totalLength = tourAttractionsListItem.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changeTourPage(tourAttractionsListItem, totalLength);
-        changeSection(totalPage);
-    };
-
-    const changeRestPage = (restaurantListItem: RestaurantListItem[], totalLength: number) => {
-        if (!currentPage) return;
-        const startIndex = (currentPage - 1) * COUNT_PER_PAGE;
-        let endIndex = currentPage * COUNT_PER_PAGE;
-        if (endIndex > totalLength - 1) endIndex = totalLength;
-        const restViewList = restaurantListItem.slice(startIndex, endIndex);
-        setRestViewList(restViewList);
-    };
-
-    const changeRestList = (restaurantListItem: RestaurantListItem[]) => {
-        setRestaurantListItem(restaurantListItem);
-
-        const totalLength = restaurantListItem.length;
-        setTotalLength(totalLength);
-
-        const totalPage = Math.floor((totalLength - 1) / COUNT_PER_PAGE) + 1;
-        setTotalPage(totalPage);
-
-        const totalSection = Math.floor((totalPage - 1) / COUNT_PER_SECTION) + 1;
-        setTotalSection(totalSection);
-
-        changeRestPage(restaurantListItem, totalLength);
-        changeSection(totalPage);
-    };
-
-    const changeSection = (totalPage: number) => {
-        if (!currentSection) return;
-        const startPage = currentSection * COUNT_PER_SECTION - (COUNT_PER_SECTION - 1);
-        let endPage = currentSection * COUNT_PER_SECTION;
-        if (endPage > totalPage) endPage = totalPage;
-        const pageList: number[] = [];
-        for (let page = startPage; page <= endPage; page++) pageList.push(page);
-        setPageList(pageList);
     };
 
     const getTourAttractionsListResponse = (result: GetTourAttractionsListResponseDto | ResponseDto | null) => {
@@ -370,22 +312,6 @@ export default function SearchTravelList() {
         if (event.key === "Enter") return onSearchButtonClickHandler();
     };
 
-    const onPageClickHandler = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const onPreSectionClickHandler = () => {
-        if (currentSection <= 1) return;
-        setCurrentSection(currentSection - 1);
-        setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
-    };
-
-    const onNextSectionClickHandler = () => {
-        if (currentSection === totalSection) return;
-        setCurrentSection(currentSection + 1);
-        setCurrentPage(currentSection * COUNT_PER_SECTION + 1);
-    };
-
     //                    effect                     //
     useEffect(() => {
         getTourAttractionsListRequest().then(getTourAttractionsListResponse);
@@ -397,26 +323,6 @@ export default function SearchTravelList() {
     }, [selectOption]);
 
     useEffect(() => {
-        if (!tourAttractionsListItem.length) return;
-        changeTourPage(tourAttractionsListItem, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!tourAttractionsListItem.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
-
-    useEffect(() => {
-        if (!restaurantListItem.length) return;
-        changeRestPage(restaurantListItem, totalLength);
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (!restaurantListItem.length) return;
-        changeSection(totalPage);
-    }, [currentSection]);
-
-    useEffect(() => {
         setSearchButtonStatus(!setSearchButtonStatus);
     }, [searchButtonStatus]);
 
@@ -424,7 +330,7 @@ export default function SearchTravelList() {
     return (
         <>
             <div className="travel-top-image" />
-            <div style={{height: "500px"}}></div>
+            <div style={{ height: "500px" }}></div>
             <div id="travelList-wrapper">
                 <div className="travel-search-list">
                     <div className="travel-search-location">
@@ -469,8 +375,8 @@ export default function SearchTravelList() {
                     </div>
                 </div>
 
-                {selectOption === "tourAttractions" && tourViewList.map((item) => <Tourlist {...item} />)}
-                {selectOption === "restaurant" && restViewList.map((item) => <Restlist {...item} />)}
+                {selectOption === "tourAttractions" && (tourViewList as TourAttractionsListItem[]).map((item) => <Tourlist {...item} />)}
+                {selectOption === "restaurant" && (restViewList as RestaurantListItem[]).map((item) => <Restlist {...item} />)}
 
                 <div className="travel-list-bottom">
                     <div className="travel-list-pagenation">
