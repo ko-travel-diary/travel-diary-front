@@ -14,6 +14,8 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+
+    border: 1px solid rgba(65, 65, 65, 0.2);
 }
 
 .top-navigation-left {

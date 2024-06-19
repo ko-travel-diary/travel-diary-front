@@ -107,6 +107,7 @@ export function SearchAddress() {
 export default function TourControl() {
     //                  State                   //
     const [cookies] = useCookies();
+
     const { tourAttractionsNumber } = useParams();
     const imageSeq = useRef<HTMLInputElement | null>(null);
 
@@ -115,14 +116,16 @@ export default function TourControl() {
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
 
     const [updateWhether, setUpdateWhether] = useState<boolean>(false);
+    
+    const [tourAttractionsImage, setTourAtrractionImage] = useState<File[]>([]);
+    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
+
     const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
     const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
     const [tourAttractionsName, setTourAttractionsName] = useState<string>("");
-    const [tourAttractionsImage, setTourAtrractionImage] = useState<File[]>([]);
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>("");
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
     const [tourAttractionsLocation, setTourAtrractionLocation] = useState<string>("");
-    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>("");
 
     //                  Function                    //

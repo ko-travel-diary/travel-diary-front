@@ -106,20 +106,25 @@ export function SearchAddress() {
 //                  Component                   //
 export default function TourAdd() {
     //                  State                   //
-    const { loginUserRole } = useUserStore();
-    const { searchAddress, setSearchAddress } = useSearchAddressStore();
-    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
-    const imageSeq = useRef<HTMLInputElement | null>(null);
     const [cookies] = useCookies();
+    
+    const imageSeq = useRef<HTMLInputElement | null>(null);
+
+    const { loginUserRole } = useUserStore();
+    const { buttonStatus, setButtonStatus } = useButtonStatusStore();
+    const { searchAddress, setSearchAddress } = useSearchAddressStore();
+    
     const [updateWhether, setUpdateWhether] = useState<boolean>(false);
+    
+    const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
+    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
+
     const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
     const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
     const [tourAttractionsName, setTourAttractionsName] = useState<string>("");
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>("");
-    const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
     const [tourAttractionsLocation, setTourAtrractionLocation] = useState<string>("");
-    const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
     const [tourAttractionsTelNumber, setTourAttractionsTelNumber] = useState<string>("");
 
     //                  Function                    //

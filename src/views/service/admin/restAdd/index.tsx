@@ -25,8 +25,8 @@ export function SearchAddress() {
     const { setSearchAddress } = useSearchAddressStore();
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
 
-    const [searchWord, setSearchWord] = useState<string>("");
     const [addresses, setAddresses] = useState<string[]>([]);
+    const [searchWord, setSearchWord] = useState<string>("");
 
     //                  Function                    //
     const navigator = useNavigate();
@@ -109,22 +109,25 @@ export function SearchAddress() {
 export default function RestAdd() {
     //                  State                   //
     const [cookies] = useCookies();
+    
     const imageSeq = useRef<HTMLInputElement | null>(null);
 
     const { loginUserRole } = useUserStore();
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
+    
+    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
+    
+    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
+    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
 
     const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
     const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
     const [restaurantName, setRestaurantName] = useState<string>("");
     const [restaurantHours, setRestaurantHours] = useState<string>("");
-    const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
-    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     const [restaurantOutline, setRestaurantOutline] = useState<string>("");
     const [restaurantLocation, setRestaurantLocation] = useState<string>("");
     const [restaurantMainMenu, setRestaurantMainMenu] = useState<string>("");
-    const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
     const [restaurantTelNumber, setRestaurantTelNumber] = useState<string>("");
     const [restaurantServiceMenu, setRestaurantServiceMenu] = useState<string>("");
 

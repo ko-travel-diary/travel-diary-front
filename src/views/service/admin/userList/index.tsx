@@ -7,7 +7,7 @@ import ResponseDto from "src/apis/response.dto";
 import { DeleteAdminUserRequestDto } from "src/apis/user/dto/request";
 import { GetSearchUserListResponseDto, GetUserListResponseDto } from "src/apis/user/dto/response";
 import { deleteAdminUserRequest, getSearchUserListRequest, getUserListRequest } from "src/apis/user";
-import { AUTH_ABSOLUTE_PATH, COUNT_PER_PAGE, COUNT_PER_SECTION } from "src/constant";
+import { AUTH_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 import { usePagination } from "src/hooks";
@@ -74,12 +74,9 @@ export default function UserList() {
         pageList,
         currentPage,
         boardCount,
-
         setCurrentPage,
         setCurrentSection,
-
         changeBoardList,
-
         onPreSectionClickHandler,
         onPageClickHandler,
         onNextSectionClickHandler
