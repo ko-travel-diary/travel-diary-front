@@ -20,9 +20,9 @@ import TourIcon from "src/assets/image/tour-attracion-icon.png";
 import RestaurantIcon from "src/assets/image/restaurant-icon.png";
 import { AUTH_ABSOLUTE_PATH } from "src/constant";
 
-import Side from "src/components/Side";
-import InfoItem from "src/components/InfoItem";
-import Waypoints from "src/components/Waypoints";
+import Side from "./Side";
+import InfoItem from "./InfoItem";
+import Waypoints from "./Waypoints";
 
 import "./style.css";
 

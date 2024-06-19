@@ -8,7 +8,7 @@ import "./style.css";
 //                    component : 사이드 리스트 컴포넌트                     //
 export default function SideListItem(props: RestaurantListItem | TourAttractionsListItem) {
     //                    state                     //
-    const { mapCenter, setMapCenter } = useMapCenterStore();
+    const { setMapCenter } = useMapCenterStore();
     const { waypoints, setOrigin, setDestination, setWaypoints } = useDestinationStore();
     const { openList, setOpenList } = useOpenListStore();
 

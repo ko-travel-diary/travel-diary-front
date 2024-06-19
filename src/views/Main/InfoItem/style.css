@@ -26,7 +26,7 @@
 .info-box-exit-button {
     width: 20px;
     height: 20px;
-    background-image: url('../../assets/image/exit-icon.png');
+    background-image: url('../../../assets/image/exit-icon.png');
     background-size: 100% 100%;
 }
 
