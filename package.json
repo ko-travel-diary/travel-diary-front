@@ -35,7 +35,7 @@
         "build:local": "dotenv -e .env react-scripts build",
         "build:development": "dotenv -e .env.development react-scripts build",
         "build:staging": "dotenv -e .env.staging react-scripts build",
-        "build:prodcution": "dotenv -e .env.production react-scripts build"
+        "build:production": "dotenv -e .env.production react-scripts build"
     },
     "eslintConfig": {
         "extends": [

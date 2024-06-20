@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5c841d90.css",
+    "main.js": "/static/js/main.8aea2baa.js",
+    "static/media/qna-top-image.jpg": "/static/media/qna-top-image.cf97f43f99b22b3968bf.jpg",
+    "static/media/tour-top-image.jpg": "/static/media/tour-top-image.bc131cf923c5e6c92fb3.jpg",
+    "static/media/review-top-image.jpg": "/static/media/review-top-image.f2eaa03fc8662f39ab05.jpg",
+    "static/media/travel-image.jpg": "/static/media/travel-image.eae15d232c817875bf65.jpg",
+    "static/media/travel-title-icon.png": "/static/media/travel-title-icon.66b4bbb22bc2b5824d3d.png",
+    "static/media/tour-attracion-icon.png": "/static/media/tour-attracion-icon.445ab8010b7a8f87cb7f.png",
+    "static/media/restaurant-icon.png": "/static/media/restaurant-icon.01acc3fa2c19a0f2cc73.png",
+    "static/media/google.png": "/static/media/google.c05c3879fa560c35b977.png",
+    "static/media/finish-icon.png": "/static/media/finish-icon.bf1ba861b1f3099cafad.png",
+    "static/media/kakao.png": "/static/media/kakao.9d8c77db3ec1788580ce.png",
+    "static/media/start-icon.png": "/static/media/start-icon.1d51d579240407434d51.png",
+    "static/media/favorite-icon-clicked.png": "/static/media/favorite-icon-clicked.e1dc1fb8c72403bd283c.png",
+    "static/media/userProfileDefault.png": "/static/media/userProfileDefault.f3008d1a74209dd13094.png",
+    "static/media/recommend-button.png": "/static/media/recommend-button.de13854027d353e9cc86.png",
+    "static/media/delete-icon.png": "/static/media/delete-icon.f2b524169cde40964b8d.png",
+    "static/media/favorite-icon.png": "/static/media/favorite-icon.c59e35f7636d1c2352a1.png",
+    "static/media/add-icon.png": "/static/media/add-icon.c018821293d7132a3e7d.png",
+    "static/media/recommend-button-click.png": "/static/media/recommend-button-click.d1bed48484eba62839cf.png",
+    "static/media/minus-icon.png": "/static/media/minus-icon.502c42f3cdb4bf5e0e8c.png",
+    "static/media/waypoint-icon.png": "/static/media/waypoint-icon.8be4c9bdbb08294164a8.png",
+    "static/media/PageNotFountImage.png": "/static/media/PageNotFountImage.58b4020ff8cac126920a.png",
+    "index.html": "/index.html",
+    "main.5c841d90.css.map": "/static/css/main.5c841d90.css.map",
+    "main.8aea2baa.js.map": "/static/js/main.8aea2baa.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5c841d90.css",
+    "static/js/main.8aea2baa.js"
+  ]
+}
