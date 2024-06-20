@@ -31,7 +31,11 @@ export function Sns() {
 function Social() {
     //                  Event Handler                   //
     const onSnsButtonClickHandler = (type: "kakao" | "naver" | "google") => {
-        window.location.href = SNS_LOGIN_URL + type;
+        if (type === "kakao") {
+            window.location.href = SNS_LOGIN_URL + type;
+            return;
+        }
+        return alert("향후 업데이트 예정입니다.");
     };
 
     //                    render : 소셜 컴포넌트                     //
