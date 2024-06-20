@@ -1,15 +1,8 @@
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import { Map, MapMarker, MarkerClusterer, Polyline } from "react-kakao-maps-sdk";
+import { Map, MapMarker, MarkerClusterer, Polyline, useKakaoLoader } from "react-kakao-maps-sdk";
 
-import {
-    usePathStore,
-    useTourListStore,
-    useCheckBoxStore,
-    useOpenListStore,
-    useMapCenterStore,
-    useSearchWordStore,
-} from "src/stores";
+import { usePathStore, useTourListStore, useCheckBoxStore, useOpenListStore, useMapCenterStore, useSearchWordStore } from "src/stores";
 import { RestaurantListItem, TourAttractionsListItem } from "src/types";
 import ResponseDto from "src/apis/response.dto";
 import { GetRestaurantListResponseDto } from "src/apis/restaurant/dto/response";
@@ -29,6 +22,10 @@ import "./style.css";
 //                    component : 메인 화면 컴포넌트                     //
 export default function Main() {
     //                    state                     //
+    useKakaoLoader({
+        appkey: process.env.REACT_APP_KAKAO_MAP_JS_KEY as string,
+        libraries: ["clusterer", "drawing", "services"],
+    });
     // description: 사이드 상태 //
     const [sideOpen, setSideOpen] = useState<boolean>(false);
 
