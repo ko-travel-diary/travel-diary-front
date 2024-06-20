@@ -98,7 +98,7 @@ export const TOURATTRACTIONS_DETAIL_ABSOLUTE_PATH = (tourAttractionsNumber: stri
 export const RESTAURANT_DETAIL_ABSOLUTE_PATH = (restaurantNumber: string | number) => `${SERVICE_PATH}/${TOUR_PATH}/restlist/${restaurantNumber}`;
 
 // description : API URL PATH
-export const SERVER_DOMAIN_URL = "http://localhost:4000";
+export const SERVER_DOMAIN_URL = process.env.REACT_APP_REST_API_SEVER_DOMAIN;
 export const SERVER_API_URL = `${SERVER_DOMAIN_URL}/traveldiary/v1`;
 
 // file
@@ -199,7 +199,7 @@ export const GET_COORDINATE_URL = `${SERVER_API_URL}/address/search`;
 export const GET_ADDRESS_URL = `${SERVER_API_URL}/address/query`;
 
 // waypoints
-export const POST_WAYPOINTS_URL = "https://apis-navi.kakaomobility.com/v1/waypoints/directions"; 
+export const POST_WAYPOINTS_URL = "https://apis-navi.kakaomobility.com/v1/waypoints/directions";
 
 // sns login
 export const SNS_LOGIN_URL = "http://localhost:4000/traveldiary/v1/auth/oauth2/";
