@@ -99,7 +99,6 @@ export const RESTAURANT_DETAIL_ABSOLUTE_PATH = (restaurantNumber: string | numbe
 
 // description : API URL PATH
 export const SERVER_DOMAIN_URL = process.env.REACT_APP_REST_API_SEVER_DOMAIN;
-console.log(SERVER_DOMAIN_URL);
 export const SERVER_API_URL = `${SERVER_DOMAIN_URL}/traveldiary/v1`;
 
 // file
