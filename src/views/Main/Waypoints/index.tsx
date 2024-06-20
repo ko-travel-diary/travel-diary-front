@@ -39,7 +39,7 @@ export default function Waypoints() {
             waypoints: waypoints.map((waypoint) => ({ name: waypoint.name, x: String(waypoint.lng), y: String(waypoint.lat) })),
         };
 
-        const kakaoAppKey = process.env.REACT_APP_API_KEY;
+        const kakaoAppKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
         if (!kakaoAppKey) return;
 
         postWaypointsRequest(data, kakaoAppKey).then(waypiontResponse);
@@ -47,7 +47,7 @@ export default function Waypoints() {
 
     //                  function                    //
     const waypiontResponse = (result: any | null) => {
-        if(!result) return;
+        if (!result) return;
         const path: Position[] = [];
         const { sections } = result.routes[0];
 
