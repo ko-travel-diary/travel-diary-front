@@ -89,8 +89,8 @@ function SignUp() {
     const [authNumberMessage, setAuthNumberMessage] = useState<string>("");
 
     const [userIdMessageError, setUserIdMessageError] = useState<boolean>(false);
-    const [userPasswordMessageError] = useState<boolean>(false);
-    const [userPasswordCheckMessageError] = useState<boolean>(false);
+    const [userPasswordMessageError] = useState<boolean>(true);
+    const [userPasswordCheckMessageError] = useState<boolean>(true);
     const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
     const [userEmailMessageError, setUserEmailMessageError] = useState<boolean>(false);
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
