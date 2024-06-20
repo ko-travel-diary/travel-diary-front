@@ -1,7 +1,7 @@
 import React from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 
-import { DELETE_USER_ABSOLUTE_PAGE, MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE, MY_REVIEWLIST_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH } from "src/constant";
+import { DELETE_USER_ABSOLUTE_PAGE, MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE, MY_REVIEWLIST_ABSOLUTE_PATH, SCHEDULE_ABSOLUTE_PATH, SCHEDULE_DETAIL_ABSOLUTE_PATH, SCHEDULE_UPDATE_ABSOLUTE_PATH, SCHEDULE_WRITE_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -10,6 +10,8 @@ function SideNavigation() {
     //                  function                   //
     const navigator = useNavigate();
     const currentLocation = useLocation();
+
+    const { travelScheduleNumber } = useParams();
 
     //                  event handler                   //
     const onProfileUpdateClickHandler = () => navigator(MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE);
@@ -20,7 +22,12 @@ function SideNavigation() {
     //                  Render                  //
     const profileUpdateClass =
         currentLocation.pathname === MYPAGE_PROFILEUPDATE_ABSOLUTE_PAGE ? "side-container-content-active" : "side-container-content";
-    const myScheduleClass = currentLocation.pathname === SCHEDULE_ABSOLUTE_PATH ? "side-container-content-active" : "side-container-content";
+    const myScheduleClass = (
+        currentLocation.pathname === SCHEDULE_ABSOLUTE_PATH || 
+        currentLocation.pathname === SCHEDULE_WRITE_ABSOLUTE_PATH ||
+        currentLocation.pathname === SCHEDULE_DETAIL_ABSOLUTE_PATH(travelScheduleNumber as string) ||
+        currentLocation.pathname === SCHEDULE_UPDATE_ABSOLUTE_PATH(travelScheduleNumber as string)
+        ) ? "side-container-content-active" : "side-container-content";
     const myReviewClass = currentLocation.pathname === MY_REVIEWLIST_ABSOLUTE_PATH ? "side-container-content-active" : "side-container-content";
     const userDeleteClass = currentLocation.pathname === DELETE_USER_ABSOLUTE_PAGE ? "side-container-content-active" : "side-container-content";
     return (

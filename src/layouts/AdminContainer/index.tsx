@@ -1,7 +1,7 @@
-import React from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import React, { useEffect } from "react";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 
-import { ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, ADMINPAGE_USER_LIST_ABSOLUTE_PATH } from "src/constant";
+import { ADMINPAGE_REST_ADD_ABSOLUTE_PATH, ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH, ADMINPAGE_REST_LIST_ABSOLUTE_PATH, ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH, ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH, ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, ADMINPAGE_USER_LIST_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -11,15 +11,26 @@ function SideNavigation() {
     const navigator = useNavigate();
     const currentLocation = useLocation();
 
+    const { tourAttractionsNumber } = useParams();
+    const { restaurantNumber } = useParams();
+
     //                  event handler                   //
     const onUserListHandler = () => navigator(ADMINPAGE_USER_LIST_ABSOLUTE_PATH);
     const onTourListHandler = () => navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
     const onRestListHandler = () => navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
 
     //                  Render                  //
-    const userList = currentLocation.pathname === ADMINPAGE_USER_LIST_ABSOLUTE_PATH ? "side-container-content-active" : "side-container-content";
-    const tourList = currentLocation.pathname === ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH ? "side-container-content-active" : "side-container-content";
-    const restList = currentLocation.pathname === ADMINPAGE_REST_LIST_ABSOLUTE_PATH ? "side-container-content-active" : "side-container-content";
+    let userList = currentLocation.pathname === ADMINPAGE_USER_LIST_ABSOLUTE_PATH ? "side-container-content-active" : "side-container-content";
+    let tourList = 
+        currentLocation.pathname === ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH ||
+        currentLocation.pathname === ADMINPAGE_TOUR_ADD_ABSOLUTE_PATH ||
+        currentLocation.pathname === ADMINPAGE_TOUR_CONTROL_ABSOLUTE_PATH(tourAttractionsNumber as string)
+        ? "side-container-content-active" : "side-container-content";
+    let restList = 
+        currentLocation.pathname === ADMINPAGE_REST_LIST_ABSOLUTE_PATH ||
+        currentLocation.pathname === ADMINPAGE_REST_ADD_ABSOLUTE_PATH ||
+        currentLocation.pathname === ADMINPAGE_REST_CONTROL_ABSOLUTE_PATH(restaurantNumber as string)
+        ? "side-container-content-active" : "side-container-content";
     return (
         <div className="side-navigator-container">
             <div className="side-container-element side-container-link">
