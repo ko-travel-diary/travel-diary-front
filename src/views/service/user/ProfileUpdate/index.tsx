@@ -150,7 +150,7 @@ export default function ProfileUpdate() {
             return;
         }
 
-        let newProfileImage = "";
+        let newProfileImage = profileImage;
 
         if (profileImageFile) {
             const data = new FormData();
