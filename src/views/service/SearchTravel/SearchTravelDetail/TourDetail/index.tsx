@@ -129,27 +129,27 @@ export default function TourDetail() {
                 <div className="travel-name">
                     <div className="travel-title">이름</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{tourAttractionsName}</div>
+                    <div className="travel-detail-information">{tourAttractionsName}</div>
                 </div>
                 <div className="travel-telNumber">
                     <div className="travel-title">연락처</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{changeText(tourAttractionsTelNumber)}</div>
+                    <div className="travel-detail-information">{changeText(tourAttractionsTelNumber)}</div>
                 </div>
                 <div className="travel-location">
                     <div className="travel-title">지역</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{tourAttractionsLocation}</div>
+                    <div className="travel-detail-information">{tourAttractionsLocation}</div>
                 </div>
                 <div className="travel-hours">
                     <div className="travel-title">운영시간</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{changeText(tourAttractionsHours)}</div>
+                    <div className="travel-detail-information">{changeText(tourAttractionsHours)}</div>
                 </div>
                 <div className="travel-list-table-outline">
                     <div className="travel-outline-text">
                         <div className="travel-title">개요</div>
-                        <div className="travel-detail-info">{changeText(tourAttractionsOutline)}</div>
+                        <div className="travel-detail-information">{changeText(tourAttractionsOutline)}</div>
                     </div>
                 </div>
             </div>

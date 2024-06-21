@@ -136,37 +136,37 @@ export default function RestDetail() {
                 <div className="travel-name">
                     <div className="travel-title">이름</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{restaurantName}</div>
+                    <div className="travel-detail-information">{restaurantName}</div>
                 </div>
                 <div className="travel-telNumber">
                     <div className="travel-title">연락처</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{changeText(restaurantTelNumber)}</div>
+                    <div className="travel-detail-information">{changeText(restaurantTelNumber)}</div>
                 </div>
                 <div className="travel-location">
                     <div className="travel-title">지역</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{restaurantLocation}</div>
+                    <div className="travel-detail-information">{restaurantLocation}</div>
                 </div>
                 <div className="travel-hours">
                     <div className="travel-title">운영시간</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{changeText(restaurantHours)}</div>
+                    <div className="travel-detail-information">{changeText(restaurantHours)}</div>
                 </div>
                 <div className="travel-main-menu">
                     <div className="travel-title">대표메뉴</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{restaurantMainMenu}</div>
+                    <div className="travel-detail-information">{restaurantMainMenu}</div>
                 </div>
                 <div className="travel-service-menu">
                     <div className="travel-title">취급메뉴</div>
                     <div className="travel-detail-info-devider">{"|"}</div>
-                    <div className="travel-detail-info">{restaurantServiceMenu}</div>
+                    <div className="travel-detail-information">{restaurantServiceMenu}</div>
                 </div>
                 <div className="travel-list-table-outline">
                     <div className="travel-outline-text">
                         <div className="travel-title">개요</div>
-                        <div className="travel-detail-info">{changeText(restaurantOutline)}</div>
+                        <div className="travel-detail-information">{changeText(restaurantOutline)}</div>
                     </div>
                 </div>
             </div>
