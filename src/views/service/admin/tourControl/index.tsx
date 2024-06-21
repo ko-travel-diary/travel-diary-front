@@ -114,8 +114,6 @@ export default function TourControl() {
     const { loginUserRole } = useUserStore();
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
-
-    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     
     const [tourAttractionsImage, setTourAtrractionImage] = useState<File[]>([]);
     const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
@@ -167,6 +165,8 @@ export default function TourControl() {
         setTourAttractionsLat(tourAttractionsLat);
         setTourAttractionsLng(tourAttractionsLng);
         setSearchAddress(tourAttractionsLocation);
+
+        if (!tourAttractionsLat || !tourAttractionsLng) return;
     };
 
     const patchTourAttractionResponse = (result: ResponseDto | null) => {
@@ -224,10 +224,27 @@ export default function TourControl() {
 
         const { x, y } = result as GetSearchCoordinateResponseDto;
 
-        setTourAttractionsLat(y);
-        setTourAttractionsLng(x);
+        if (x === 0.0 || y === 0.0) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
 
-        if (x !== 0 || y !== 0) setUpdateWhether(true);
+        const requestBody: PatchTourAttractionsRequestDto = {
+            tourAttractionsName,
+            tourAttractionsLocation,
+            tourAttractionsTelNumber,
+            tourAttractionsHours,
+            tourAttractionsOutline,
+            tourAttractionsImageUrl,
+            tourAttractionsLat: y,
+            tourAttractionsLng: x,
+        };
+
+        if (!tourAttractionsNumber) return;
+        patchTourAttractionsRequest(requestBody, tourAttractionsNumber, cookies.accessToken).then(patchTourAttractionResponse);
+
+        navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
+
     };
 
     //                  Event Handler                   //
@@ -273,6 +290,7 @@ export default function TourControl() {
 
         const query = tourAttractionsLocation;
         getCoordinateRequest(query, cookies.accessToken).then(getCoordinateResponse);
+
     };
 
     const onDeleteButtonClickHandler = () => {
@@ -316,31 +334,6 @@ export default function TourControl() {
     useEffect(() => {
         setTourAtrractionLocation(searchAddress);
     }, [searchAddress]);
-
-    useEffect(() => {
-        if (updateWhether) {
-            if (tourAttractionsLat === 0.0 || tourAttractionsLng === 0.0) {
-                alert("주소를 정확히 입력해주세요.");
-                return;
-            }
-
-            const requestBody: PatchTourAttractionsRequestDto = {
-                tourAttractionsName,
-                tourAttractionsLocation,
-                tourAttractionsTelNumber,
-                tourAttractionsHours,
-                tourAttractionsOutline,
-                tourAttractionsImageUrl,
-                tourAttractionsLat,
-                tourAttractionsLng,
-            };
-
-            if (!tourAttractionsNumber) return;
-            patchTourAttractionsRequest(requestBody, tourAttractionsNumber, cookies.accessToken).then(patchTourAttractionResponse);
-
-            navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
-        }
-    }, [tourAttractionsLat, tourAttractionsLng]);
 
     //                  Render                   //
     return (

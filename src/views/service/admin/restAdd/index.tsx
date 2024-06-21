@@ -116,13 +116,9 @@ export default function RestAdd() {
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
     
-    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
-    
     const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
 
-    const [restaurantLat, setRestaurantLat] = useState<number>(0.0);
-    const [restaurantLng, setRestaurantLng] = useState<number>(0.0);
     const [restaurantName, setRestaurantName] = useState<string>("");
     const [restaurantHours, setRestaurantHours] = useState<string>("");
     const [restaurantOutline, setRestaurantOutline] = useState<string>("");
@@ -154,7 +150,7 @@ export default function RestAdd() {
 
     const getCoordinateResponse = async (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
         const message = !result
-            ? "서버에 문제가 있습니다."
+            ? "주소를 정확히 입력해주세요."
             : result.code === "VF"
             ? "데이터 유효성 에러."
             : result.code === "AF"
@@ -171,10 +167,27 @@ export default function RestAdd() {
 
         const { x, y } = result as GetSearchCoordinateResponseDto;
 
-        setRestaurantLat(y);
-        setRestaurantLng(x);
+        if (x === 0.0 || y === 0.0) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
 
-        if (x !== 0 || y !== 0) setUpdateWhether(true);
+        const requestBody: PostRestaurantRequestDto = {
+            restaurantName,
+            restaurantLocation,
+            restaurantTelNumber,
+            restaurantHours,
+            restaurantOutline,
+            restaurantImageUrl,
+            restaurantMainMenu,
+            restaurantServiceMenu,
+            restaurantLat: y,
+            restaurantLng: x,
+        };
+
+        postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
+
+        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);   
     };
 
     //                  Event Handler                   //
@@ -268,32 +281,6 @@ export default function RestAdd() {
     useEffect(() => {
         setRestaurantLocation(searchAddress);
     }, [searchAddress]);
-
-    useEffect(() => {
-        if (updateWhether) {
-            if (restaurantLat === 0.0 || restaurantLng === 0.0) {
-                alert("주소를 정확히 입력해주세요.");
-                return;
-            }
-
-            const requestBody: PostRestaurantRequestDto = {
-                restaurantName,
-                restaurantLocation,
-                restaurantTelNumber,
-                restaurantHours,
-                restaurantOutline,
-                restaurantImageUrl,
-                restaurantMainMenu,
-                restaurantServiceMenu,
-                restaurantLat,
-                restaurantLng,
-            };
-
-            postRestaurantRequest(requestBody, cookies.accessToken).then(postRestaurantResponse);
-
-            navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
-        }
-    }, [restaurantLat, restaurantLng]);
 
     //                  Render                   //
     return (

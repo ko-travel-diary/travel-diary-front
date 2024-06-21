@@ -114,8 +114,6 @@ export default function RestControl() {
     const { loginUserRole } = useUserStore();
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
-
-    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
     
     const [restaurantImage, setRestaurantImage] = useState<File[]>([]);
     const [restaurantImageUrl, setRestaurantImageUrl] = useState<string[]>([]);
@@ -173,6 +171,8 @@ export default function RestControl() {
         setRestaurantLat(restaurantLat);
         setRestaurantLng(restaurantLng);
         setSearchAddress(restaurantLocation);
+
+        if (!restaurantLat || !restaurantLat) return;
     };
 
     const patchRestaurantResponse = (result: ResponseDto | null) => {
@@ -230,10 +230,28 @@ export default function RestControl() {
 
         const { x, y } = result as GetSearchCoordinateResponseDto;
 
-        setRestaurantLat(y);
-        setRestaurantLng(x);
+        if (x === 0.0 || y === 0.0) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
 
-        if (x !== 0 || y !== 0) setUpdateWhether(true);
+        const requestBody: PatchRestaurantRequestDto = {
+            restaurantName,
+            restaurantLocation,
+            restaurantTelNumber,
+            restaurantHours,
+            restaurantOutline,
+            restaurantImageUrl,
+            restaurantMainMenu,
+            restaurantServiceMenu,
+            restaurantLat: y,
+            restaurantLng: x,
+        };
+
+        if (!restaurantNumber) return;
+        patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);
+
+        navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
     };
 
     //                  Event Handler                   //
@@ -321,6 +339,7 @@ export default function RestControl() {
         }
 
         setButtonStatus(false);
+        setSearchAddress("");
     }, []);
 
     useEffect(() => {
@@ -331,33 +350,6 @@ export default function RestControl() {
     useEffect(() => {
         setRestaurantLocation(searchAddress);
     }, [searchAddress]);
-
-    useEffect(() => {
-        if (updateWhether) {
-            if (restaurantLat === 0.0 || restaurantLng === 0.0) {
-                alert("주소를 정확히 입력해주세요.");
-                return;
-            }
-
-            const requestBody: PatchRestaurantRequestDto = {
-                restaurantName,
-                restaurantLocation,
-                restaurantTelNumber,
-                restaurantHours,
-                restaurantOutline,
-                restaurantImageUrl,
-                restaurantMainMenu,
-                restaurantServiceMenu,
-                restaurantLat,
-                restaurantLng,
-            };
-
-            if (!restaurantNumber) return;
-            patchRestaurantRequest(requestBody, restaurantNumber, cookies.accessToken).then(patchRestaurantResponse);
-
-            navigator(ADMINPAGE_REST_LIST_ABSOLUTE_PATH);
-        }
-    }, [restaurantLat, restaurantLng]);
 
     //                  Render                   //
     return (
