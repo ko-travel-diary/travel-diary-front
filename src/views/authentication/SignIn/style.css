@@ -13,7 +13,7 @@
     background-position: center;
     background-size: 100% 100%;
 }
-.sign-in-content {
+.sign-in-content{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,14 +21,32 @@
     gap: 40px;
 
     margin: 0px auto;
-    /* border: 1px solid black; */
     border-radius: 10px;
-    /* padding: 50px 0; */
 
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.6) ;
 
     height: 600px;
     width: 600px;
+}
+
+.go-to-home{
+    text-align: left;
+    color: rgba(128, 128, 128, 0.6);
+    font-size: 14px;
+    align-self: flex-start;
+    width: 540px;
+
+    padding: 0 30px;
+}
+
+.go-to-home-link{
+    width: 40px;
+    text-align: center;
+
+    cursor: pointer;
+}
+.go-to-home-link:hover{
+    color: rgba(128, 128, 128, 0.2);
 }
 
 .sign-in-title {

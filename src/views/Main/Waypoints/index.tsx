@@ -66,7 +66,7 @@ export default function Waypoints() {
         <div className="main-waypoints">
             <div className="main-waypoints-item">
                 <div className="main-waypoints-origin-icon"></div>
-                <div className="main-waypoints-name">{origin ? origin.name : "출발지를 입력하세요."}</div>
+                <div className="main-waypoints-name">{origin ? origin.name : "출발지를 선택하세요."}</div>
                 <div className="main-waypoints-cancle-button" onClick={onOriginCancleClickHandler}></div>
             </div>
 
@@ -80,7 +80,7 @@ export default function Waypoints() {
 
             <div className="main-waypoints-item">
                 <div className="main-waypoints-destination-icon"></div>
-                <div className="main-waypoints-name">{destination ? destination.name : "도착지를 입력하세요."}</div>
+                <div className="main-waypoints-name">{destination ? destination.name : "도착지를 선택하세요."}</div>
                 <div className="main-waypoints-cancle-button" onClick={onDestinationCancleClickHandler}></div>
             </div>
             {origin !== null && destination !== null && (
