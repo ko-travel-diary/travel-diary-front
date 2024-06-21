@@ -5,12 +5,14 @@ import { useNavigate } from "react-router";
 import { useUserStore } from "src/stores";
 import useButtonStatusStore from "src/stores/search-button.store";
 import useSearchAddressStore from "src/stores/search-address.store";
+
 import ResponseDto from "src/apis/response.dto";
 import { imageUploadRequest } from "src/apis/image";
 import { postTourAttractionsRequest } from "src/apis/tour_attraction";
 import { getAddressRequest, getCoordinateRequest } from "src/apis/address";
 import { PostTourAttractionsRequestDto } from "src/apis/tour_attraction/dto/request";
 import { GetSearchAddressResponseDto, GetSearchCoordinateResponseDto } from "src/apis/address/dto/response";
+
 import { ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH, AUTH_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
@@ -113,14 +115,11 @@ export default function TourAdd() {
     const { loginUserRole } = useUserStore();
     const { buttonStatus, setButtonStatus } = useButtonStatusStore();
     const { searchAddress, setSearchAddress } = useSearchAddressStore();
-    
-    const [updateWhether, setUpdateWhether] = useState<boolean>(false);
+
     
     const [tourAttractionsImage, setTourAtrracntionImage] = useState<File[]>([]);
     const [tourAttractionsImageUrl, setTourAttractionsImageUrl] = useState<string[]>([]);
 
-    const [tourAttractionsLat, setTourAttractionsLat] = useState<number>(0.0);
-    const [tourAttractionsLng, setTourAttractionsLng] = useState<number>(0.0);
     const [tourAttractionsName, setTourAttractionsName] = useState<string>("");
     const [tourAttractionsHours, setTourAttractionsHours] = useState<string>("");
     const [tourAttractionsOutline, setTourAttractionsOutline] = useState<string>("");
@@ -150,7 +149,7 @@ export default function TourAdd() {
 
     const getCoordinateResponse = (result: GetSearchCoordinateResponseDto | ResponseDto | null) => {
         const message = !result
-            ? "서버에 문제가 있습니다."
+            ? "주소를 정확히 입력해주세요."
             : result.code === "VF"
             ? "데이터 유효성 에러."
             : result.code === "AF"
@@ -167,10 +166,26 @@ export default function TourAdd() {
 
         const { x, y } = result as GetSearchCoordinateResponseDto;
 
-        setTourAttractionsLat(y);
-        setTourAttractionsLng(x);
+        if (x === 0.0 || y === 0.0) {
+            alert("주소를 정확히 입력해주세요.");
+            return;
+        }
 
-        setUpdateWhether(true);
+        const requestBody: PostTourAttractionsRequestDto = {
+            tourAttractionsName,
+            tourAttractionsLocation,
+            tourAttractionsTelNumber,
+            tourAttractionsHours,
+            tourAttractionsOutline,
+            tourAttractionsImageUrl,
+            tourAttractionsLat: y,
+            tourAttractionsLng: x,
+        };
+
+        postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
+
+        navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
+
     };
 
     //                  Event Handler                   //
@@ -251,25 +266,6 @@ export default function TourAdd() {
     useEffect(() => {
         setTourAtrractionLocation(searchAddress);
     }, [searchAddress]);
-
-    useEffect(() => {
-        if (updateWhether) {
-            const requestBody: PostTourAttractionsRequestDto = {
-                tourAttractionsName,
-                tourAttractionsLocation,
-                tourAttractionsTelNumber,
-                tourAttractionsHours,
-                tourAttractionsOutline,
-                tourAttractionsImageUrl,
-                tourAttractionsLat,
-                tourAttractionsLng,
-            };
-
-            postTourAttractionsRequest(requestBody, cookies.accessToken).then(postTourAttractionResponse);
-
-            navigator(ADMINPAGE_TOUR_LIST_ABSOLUTE_PATH);
-        }
-    }, [tourAttractionsLat, tourAttractionsLng]);
 
     //                  Render                   //
     return (
