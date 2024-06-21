@@ -11,7 +11,7 @@ import {
     NickNameCheckRequestDto,
     SignUpRequestDto,
 } from "src/apis/auth/dto/request";
-import { SIGN_IN_ABSOLUTE_PATH } from "src/constant";
+import { MAIN_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH } from "src/constant";
 
 import "./style.css";
 
@@ -91,7 +91,7 @@ function SignUp() {
     const [userIdMessageError, setUserIdMessageError] = useState<boolean>(false);
     const [userPasswordMessageError] = useState<boolean>(true);
     const [userPasswordCheckMessageError] = useState<boolean>(true);
-    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
+    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(true);
     const [userEmailMessageError, setUserEmailMessageError] = useState<boolean>(false);
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
 
@@ -319,6 +319,8 @@ function SignUp() {
         singUpRequest(requestBody).then(signUpResponse);
     };
 
+    const onHomeButtonClickHandler = () => navigator(MAIN_ABSOLUTE_PATH);
+
     //                  Effect                  //
     useEffect(() => {
         if (focusRef.current) focusRef.current.focus();
@@ -329,6 +331,9 @@ function SignUp() {
     return (
         <div id="sign-up-wrapper">
             <div className="sign-up-content">
+                <div className='go-to-home'>
+                    <div className='go-to-home-link' onClick={onHomeButtonClickHandler}>홈으로</div>
+                </div>
                 <div className="sign-up-title">회원가입</div>
                 <div className="sign-up-input-container">
                     <InputBox

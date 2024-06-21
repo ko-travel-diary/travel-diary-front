@@ -112,7 +112,7 @@ function Restlist({
                     </div>
                 ) : (
                     <div className="travel-list-picture">
-                        <img title="travel" width="200px" height="135px" src={`${restaurantImageUrl}`} />
+                        <img title="travel" src={`${restaurantImageUrl}`} />
                     </div>
                 )}
                 <div>

@@ -211,6 +211,8 @@ html::-webkit-scrollbar {
 }
 
 .travel-list-picture {
+    display: flex;
+    
     width: 200px;
     height: 135px;
 }

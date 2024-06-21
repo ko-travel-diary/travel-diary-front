@@ -204,6 +204,7 @@ export default function QnaList() {
                             {currentPage}/{totalPage}
                         </span>
                     </div>
+                    {cookies.accessToken &&
                     <div className="qna-list-top-right">
                         {loginUserRole === "ROLE_USER" ? (
                             <>
@@ -217,6 +218,7 @@ export default function QnaList() {
                             </>
                         )}
                     </div>
+                    }
                 </div>
 
                 <div className="qna-list-table">

@@ -102,20 +102,31 @@ function SignIn() {
         const requestBody: SignInRequestDto = { userId, userPassword };
         signInRequest(requestBody).then(signInResponse);
 
-        navigator(MAIN_ABSOLUTE_PATH);
+        if (cookies.accessToken) navigator(MAIN_ABSOLUTE_PATH);
     };
 
     const onSignUpButtonClickHandler = () => navigator(SIGN_UP_ABSOLUTE_PATH);
+    const onHomeButtonClickHandler = () => navigator(MAIN_ABSOLUTE_PATH);
 
     //                  Effect                  //
     useEffect(() => {
         if (focusRef.current) focusRef.current.focus();
     }, []);
 
+    useEffect(() => {
+        if (cookies.accessToken) {
+            getUserInfoRequest(cookies.accessToken).then(getSignInUserResponse);
+            navigator(MAIN_ABSOLUTE_PATH);
+        }
+    }, [cookies.accessToken]);
+
     //                    render : 로그인 화면 컴포넌트                     //
     return (
         <div id="sign-in-wrapper">
             <div className="sign-in-content">
+                <div className='go-to-home'>
+                    <div className='go-to-home-link' onClick={onHomeButtonClickHandler}>홈으로</div>
+                </div>
                 <div className="sign-in-title">로그인</div>
                 <div className="sign-in-input-container">
                     <div className="sign-in-input-box">
