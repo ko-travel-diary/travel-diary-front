@@ -91,7 +91,7 @@ function SignUp() {
     const [userIdMessageError, setUserIdMessageError] = useState<boolean>(false);
     const [userPasswordMessageError] = useState<boolean>(true);
     const [userPasswordCheckMessageError] = useState<boolean>(true);
-    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(true);
+    const [nickNameMessageError, setNickNameMessageError] = useState<boolean>(false);
     const [userEmailMessageError, setUserEmailMessageError] = useState<boolean>(false);
     const [authNumberMessageError, setAuthNumberMessageError] = useState<boolean>(false);
 
@@ -134,7 +134,7 @@ function SignUp() {
         const nickNameCheck = !nickNameError;
 
         setNickNameMessage(nickNameMessage);
-        setNickNameMessageError(nickNameMessageError);
+        setNickNameMessageError(!nickNameMessageError);
         setNickNameCheck(nickNameCheck);
     };
 
