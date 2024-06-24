@@ -29,17 +29,23 @@ export default function DeleteUser() {
         const message = !result
             ? "서버에 문제가 있습니다."
             : result.code === "AF"
-            ? "권한이 없습니다."
+            ? "비밀번호가 일치하지 않습니다."
             : result.code === "NU"
             ? "존재하지 않는 아이디입니다."
             : result.code === "DBE"
             ? "서버에 문제가 있습니다."
-            : "감사합니다.";
+            : "삭제가 완료되었습니다.";
 
         if (!result || result.code !== "SU") {
             alert(message);
             return;
         }
+        navigator(MAIN_ABSOLUTE_PATH);
+
+        const expiration = new Date(Date.now());
+        setLoginUserId("");
+        setLoginUserId("");
+        setCookies("accessToken", "", { path: "/", expires: expiration });
     };
 
     const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -49,20 +55,12 @@ export default function DeleteUser() {
 
     const onYesButtonClickHandler = () => {
         if (!cookies.accessToken || !password) return;
-        alert("삭제가 완료되었습니다.");
 
         const requestBody: DeleteUserRequestDto = { userPassword: password };
 
         if (!requestBody) return;
         if (!cookies.accessToken) return;
         deleteUserRequest(requestBody, cookies.accessToken).then(deleteUserResponse);
-
-        const expiration = new Date(Date.now());
-        setLoginUserId("");
-        setLoginUserId("");
-        setCookies("accessToken", "", { path: "/", expires: expiration });
-
-        navigator(MAIN_ABSOLUTE_PATH);
     };
 
     //                    render                     //
